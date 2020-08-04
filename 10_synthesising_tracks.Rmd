@@ -1,0 +1,7 @@
+# Synthesising movement tracks
+
+## Challenges in synthesising high-frequency trajectories
+
+Having passed through the steps above, animal tracking data are ready to be processed to make biological inferences. Yet these data may still be too large to be handled efficiently by statistical modelling methods without resorting to operations unfamiliar to many biologists, such as parallel processing. Many of these methods attempt to identify correlates of movement behaviour, which can be broadly categorised into correlates of residency, and correlates of movement between residence areas, or more colloquially, why does the animal stay versus why does the animal go. Examples include relating residence time to proxies of resource density, or movement between foraging areas to a proxy of competition.
+
+Why residence patches, why other methods are slow etc. WIP
