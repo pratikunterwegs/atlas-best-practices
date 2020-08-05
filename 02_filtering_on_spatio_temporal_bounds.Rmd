@@ -88,30 +88,7 @@ ggsave("figures/fig_filter_bbox.png", dpi = 300, width = 8, height = 2)
 Explicit spatial filtering is a finer method which examines whether the tracking data lie within a polygon, which may be irregular. This typically involves converting the data’s position coordinates to a multi-point spatial geometry, and finding the intersection with a polygon or multi-polygon geometry representing a study area. 
 Combined with knowledge of species’ biology and the study site, explicit spatial filtering can be used to remove obviously erroneous positions such as those that would place an individual in an area it is physiologically incapable of traversing. The main drawback to explicit spatial filtering is that it is computationally intensive, and it is advisable to apply a coarse bounding box filter first in order to reduce the computational load, and only then filter by an irregular spatial feature.
 
-```{r make_explicit_spatial_filter}
-# read in data again
-# read in the data
-data <- data.table::fread("data/sim_data_sec_02_01.csv")
-
-# make circular buffer around centroid
-centroid <- c(median(data$x), median(data$y))
-
-library(sf)
-centroid <- st_point(centroid)
-buffer <- st_buffer(centroid, dist = 10)
-```
-
-
 Both bounding box and explicit spatial filters can be combined with the timestamp of a position to remove locations where time is an important determinant of accessibility. For example, terrestrial species may be able to access the bottom of a waterbody only during certain times of day or year, and data whose time and position coordinates do not meet these criteria can be removed. 
 Temporal filtering can also be applied independently of spatial filtering to exclude positions from certain time periods during tracking. These are typically periods when data are expected to be biased, such as where an animal has been fitted with a tracker but has not been released, or from the first day after fitting a tracker to avoid including movement behaviour biased by the stress of the capture. 
 
-> When combining spatial and temporal filters, it is better to apply the temporal filter first, since it is less computationally intensive than even a bounding box filter, and much less so than an explicit spatial filter, while reducing the number of positions that must be examined by these subsequent filters.
-
-**To do**
-
-- benchmark time filter
-- bmark spatial filter
-- bmark time and space filter (both indep, eg. filter before release)
-- bmark time filter (non-indep, both evald together)
-
-In any case, broad filters must always be applied with caution; they are especially susceptible to excluding data that represent novel behaviour of which researchers are unaware, such as a new movement mode or changed local conditions which make it possible for species to move across previously inaccessible regions.
+When combining spatial and temporal filters, it is better to apply the temporal filter first, since it is less computationally intensive than even a bounding box filter, and much less so than an explicit spatial filter, while reducing the number of positions that must be examined by these subsequent filters. In any case, broad filters must always be applied with caution; they are especially susceptible to excluding data that represent novel behaviour of which researchers are unaware, such as a new movement mode or changed local conditions which make it possible for species to move across previously inaccessible regions.
