@@ -4,222 +4,146 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Cleaning point data
+This section covers:
 
-## Filtering within spatio-temporal bounds
+1. Simple spatio-temporal filtering of point data to remove gross positioning errors,
 
-Here, we simulate some movement data using the `smoove` `R` package from [@gurarie2017].
+2. Filtering positions on covariates that may be associated with increased positioning error,
+
+3. Filtering movement tracks using the 'non-movement' approach to remove implausible movement segments, and
+
+4. The challenge of reflected positions, and how it can be addressed.
+
+# Filtering data
+
+## Prepare libraries {-}
 
 ```{r prep_libs_02_01}
 library(data.table)
-library(ggplot2)
-
 library(atlastools)
 ```
 
-```{r sim_data}
-# uses smoove from Gurarie et al. (2017)
-library(smoove)
-nu <- 2
-tau <- 5
-dt <- .1 
-ucvm1 <- simulateUCVM(nu=nu, tau=tau, T.max = 100, dt = dt)
 
-# add a reflection to x_max + x_max / 10, y_max + y_max / 10
-data <- as.data.table(ucvm1$XY)
-data[, time := seq_len(nrow(data))]
-data <- data[seq_len(1000), ]
+## Introducing errors {-}
 
-fwrite(data, "data/sim_data_sec_02_01.csv")
-```
+Here we read the simulated data in. The limits of the coordinates are 0 and 1, so we add a few extraneous coordinates within a plausible distance to demonstrate the basic forms of filtering. We also assign a fictional _NBS_ value ranging between 2 and 6 to demonstrate filtering on covariates. Finally, we introduce a 'reflection', a phenomenon that results when a TOA system's position likelihood estimator shifts the real position by a large distance for an extended duration.
 
-Here we read the simulated data in, and plot it to observe its extent.
-
-```{r read_sim_data, eval=TRUE}
+```{r read_sim_data}
 # read in the data
-data <- data.table::fread("data/sim_data_sec_02_01.csv")
+data <- fread("data/data_sim.csv")
 
-# process the data to remove points in this range
-data_excluded <- atlastools::atl_filter_bounds(data,
-                                               x = "x", y = "y",
-                                               x_range = c(-15, 0),
-                                               y_range = c(-35, -15))
-# process to keep points inside
-data_included <- atlastools::atl_filter_bounds(data,
-                                               x = "x", y = "y",
-                                               x_range = c(-15, 0),
-                                               y_range = c(-35, -15),
-                                               remove_inside = FALSE)
+# add some gross positioning errors
+data[sample(nrow(data), 100), c("x", "y") := lapply(.SD,
+                                                   function(z) {
+                                                     z + rnorm(100, sd = 0.1)
+                                                   }),
+     .SDcols = c("x", "y")]
 
-# join the data
-data[, type := "raw"]
-data_excluded[, type := "bbox excluded"]
-data_included[, type := "bbox included"]
-data <- rbind(data, data_excluded, data_included)
-
-# arrange type
-data$type <- factor(data$type, 
-                    levels = c("raw", "bbox excluded", "bbox included"))
+# add a fictional NBS covariate
+data[, NBS := floor(rnorm(n = nrow(data), mean = 4, sd = 1))]
 ```
 
-```{r plot_sim_data, include=FALSE}
-# plot the data
-fig_filter_bbox <- ggplot(data)+
-  geom_path(aes(x, y),
-            col = "blue")+
-  geom_rect(xmin = -12, xmax = 0,
-            ymin = -35, ymax = -15,
-            colour = "red",
-            fill = NA)+
-  facet_grid(~ type)+
-  theme_test()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  labs(x = "X coordinate",
-       y = "Y coordinate")
+## Excluding gross positioning errors
 
-# save figure
-ggsave("figures/fig-filter-bbox.png", dpi = 300, width = 8, height = 2)
-```
-
-![Filtering by bounding box.](figures/fig_filter_bbox.png)
-
-## Explicit spatial filtering
-
-```{r make_non-bbox_polygon}
-# make a polygon buffer around centroid
-library(sf)
-data <- data.table::fread("data/sim_data_sec_02_01.csv")
-centroid <- st_point(c(median(data$x), median(data$y)))
-buffer <- st_buffer(centroid, 5)
-```
-
-```{r spatial_filter_function}
-# an ad-hoc spatial filter function which assumes two coordinate columns
-# from a data table or dataframe
-do_spatial_filter <- function(data,
-                              spatial_object) {
-  
-  data_coords <- data[, c("x", "y")]
-  data_coords <- st_sfc(st_multipoint(as.matrix(data_coords, byrow = TRUE)))
-  data_coords <- st_cast(data_coords, "POINT")
-  overlaps <- sf::st_intersects(data_coords, spatial_object)
-  
-  # not length but lengths
-  data <- data[lengths(overlaps) > 0, ]
-  
-  return(data)
-}
-```
-
-```{r do_filter_spatial}
-# filter the data
-filtered_data <- do_spatial_filter(data = data, 
-                                   spatial_object = buffer)
-
-# assign types and plot
-data$type <- "raw"
-filtered_data$type <- "filtered"
-
-# bind rows
-data <- rbind(data, filtered_data)
-
-# assign levels
-data$type <- factor(data$type,
-                    levels = c("raw", "filtered"))
-```
-
-
-```{r fig_spatial_filter}
-fig_spatial_filter <- 
-  ggplot(data)+
-  geom_path(aes(x, y),
-            col = "blue")+
-  theme_test()+
-  geom_sf(data = buffer, 
-          fill = "grey", 
-          alpha = 0.2)+
-  facet_grid(~ type)+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  labs(x = "X coordinate",
-       y = "Y coordinate")
-
-# save figure
-ggsave("figures/fig-spatial-filter.png", dpi = 300, width = 5, height = 2)
-```
-
-## Bounding box before spatial filter
-
-### Make a larger dataset
-
-Here we simulate a dataset of 50,000 positions, and save it to file for further use.
-
-```{r sim_data_large, eval=FALSE}
-# uses smoove from Gurarie et al. (2017)
-library(smoove)
-nu <- 2
-tau <- 5
-dt <- .1 
-ucvm1 <- simulateUCVM(nu=nu, tau=tau, T.max = 5e4L, dt = dt)
-
-# add a reflection to x_max + x_max / 10, y_max + y_max / 10
-data <- as.data.table(ucvm1$XY)
-data[, time := seq_len(nrow(data))]
-
-fwrite(data, "data/sim_data_large.csv")
-```
-
-### Resample large data
-
-```{r get_resample_prop}
-# powers of 10
-resample_rate <- c(
-  # 1, 2, 3, 10, 
-                   100)
-
-# get range of coordinates
-data_range <- sapply(data[, c("x", "y")], range)
-
-# get resample parameters
-resample_parameters <- CJ(rate = resample_rate,
-                          bbox_size = resample_rate)
-```
+First we remove gross positioning errors using a bounding box filter, i.e., knowing or assuming the real bounds of the movement track (in this case, 0 -- 1), we remove all positions outside those bounds.
 
 ```{r}
-do_resample_benchmark <- function(data,
-                                  resamp_rate, prop_bbox) {
-  
-  bbox <- sapply(data[, c("x", "y")], range) / prop_bbox
-  data <- data[floor(sample(nrow(data) / resamp_rate)), ]
-  
-  microbenchmark::microbenchmark(
-    atl_filter_bounds(data,
-                      x_range = bbox[, "x"],
-                      y_range = bbox[, "y"],
-                      remove_inside = FALSE),
-    unit = "s"
-  )
-}
+# remove positions outside a bounding box
+data_inside_bbox <- data.table::copy(data)
+
+# NB: set remove_inside to FALSE
+data_inside_bbox <- atlastools::atl_filter_bounds(data = data,
+                                                  x_range = c(0, 1),
+                                                  y_range = c(0, 1),
+                                                  remove_inside = FALSE)
+```
+
+## Excluding data on covariate values
+
+Some position covariates may be indicators of unreliable data, due to being linked with increased spatial uncertainty. The number of base-stations (NBS) used to localise a transmitting tag in ATLAS systems is one such covariate, with a minimum of three base-stations required for a two-dimensional localisation. Here, we remove all positions with < 3 base-stations.
+
+```{r}
+# remove positions with few base stations
+data_many_nbs <- copy(data_inside_bbox)
+data_many_nbs <- atl_filter_covariates(data_many_nbs, 
+                                       filters = c("NBS >= 3"))
+```
+
+## The non-movement approach
+
+Bjorneraas et al. (2010) describe intuitive filtering steps for trajectories that are based in the biology of the study species (moose _Alces alces_ in their case). Briefly, this 'non-movement method' identifies implausible segments of a trajectory, and removes them. Here, we adopt elements of their method to identify and remove 'spikes' in the movement track, i.e., positions which indicate an improbably fast and short excursion away from the real trajectory.
+
+We begin by calculating the speed and turning angle along the track. For both metrics, the first value is set at `NA`, indicating that we do not know the position of the individual prior to the start of the trajectory. The turning angle is calculated using the cosine rule and requires three positions to yield a values; thus it has an `NA` at the very last position as well.
+
+```{r}
+# get speed and turning angle
+data_many_nbs[, `:=`(in_speed = atl_get_speed(data_many_nbs),
+                     out_speed = c(atl_get_speed(data_many_nbs)[-1], NA),
+                     angle = atl_turning_angle(data_many_nbs))]
+
+```
+
+Next we idenfify the 90th and 95th percentile of speed and turning angle. This is more general than identifying the limits of implausibility for each individual (since there may be inter-individual differences), let alone each species in a large dataset.
+An alternative approach is to define a speed cutoff based on expert knowledge, and this is best suited to well studied species.
+
+```{r}
+# get 90 and 95 percentile of speed and turning angle
+sapply(data_many_nbs[, c("in_speed", "angle")], function(z) {
+  quantile(z, probs = c(0.9, 0.95), na.rm = TRUE)
+})
+```
+
+Finally, we remove positions whose incoming and outgoing speeds are both greater than the 95th speed percentile.
+
+```{r}
+# make a copy of the data
+data_non_move <- copy(data_many_nbs)
+
+# filter the copy
+data_non_move <- atl_filter_covariates(data_non_move,
+                                       filters = c("in_speed < 0.0012",
+                                                   "out_speed < 0.0012",
+                                                   "angle < 40"))
+```
+
+## Reflections: Challenges to the non-movement approach
+
+A curious issue affecting TOA tracking systems is the phenomenon of ‘reflected’ positions, in which the estimated location is instantaneously displaced many hundreds of metres from the individual’s real position for some time, followed by a return to the real position.
+
+These reflections cannot be resolved in the same way as spikes, since they consist of several points with very realistic speeds bookended by a pair with either an extreme incoming or outgoing speed.
+
+A reflection appears thus:
+
+```{r}
+# make a copy of data with spikes removed
+data_with_reflection <- copy(data_non_move)
+
+# add a reflection
+data_with_reflection[500:600, c("x", "y") := runif(101, min = 1, max = 1.1)]
 ```
 
 
-### Benchmarking bounding box filters
+Removing reflections involves using the phenomenon’s properties to first identify its bounds and then removing all positions between these bounds.
 
-```{r benchmark_bbox_filter}
-library(microbenchmark)
+The procedure is as follows:
 
-microbenchmark(
-  atlastools::atl_filter_bounds(data,
-                                x = "x", y = "y",
-                                x_range = c(-15, 0),
-                                y_range = c(-35, -15)),
-  unit = "s"
-)
+1. Identify positions with anomalous (usually extremely high) speeds and turning angles, as with spikes, and
+
+2. Split the trajectory into pre- and post-anomaly segments, and the first position of the post-anomaly segment, which is the inner bound of the reflection, can be set as an anchor point.
+
+3. The first position after the anchor point with an instantaneous outgoing speed >= the speed cutoff is set as the outer bound of the reflection.
+
+4. The positions between these bounds can be identified as a trajectory reflection and removed, along with one position before and after the bounds for safety's sake.
+
+This method is robust to variable displacement of the reflections from the real positions, and also to displacement in the real position of the individual itself.
+
+
+```{r}
+# attempt to remove reflections
+data_no_reflections <- copy(data_with_reflection)
+
+data_no_reflections <- atl_remove_reflections(data_with_reflection,
+                                              point_angle_cutoff = 40,
+                                              reflection_speed_cutoff = 0.0012)
 ```
 
-
-Both bounding box and explicit spatial filters can be combined with the timestamp of a position to remove locations where time is an important determinant of accessibility. For example, terrestrial species may be able to access the bottom of a waterbody only during certain times of day or year, and data whose time and position coordinates do not meet these criteria can be removed. 
-Temporal filtering can also be applied independently of spatial filtering to exclude positions from certain time periods during tracking. These are typically periods when data are expected to be biased, such as where an animal has been fitted with a tracker but has not been released, or from the first day after fitting a tracker to avoid including movement behaviour biased by the stress of the capture. 
-
-When combining spatial and temporal filters, it is better to apply the temporal filter first, since it is less computationally intensive than even a bounding box filter, and much less so than an explicit spatial filter, while reducing the number of positions that must be examined by these subsequent filters. In any case, broad filters must always be applied with caution; they are especially susceptible to excluding data that represent novel behaviour of which researchers are unaware, such as a new movement mode or changed local conditions which make it possible for species to move across previously inaccessible regions.
