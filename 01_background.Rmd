@@ -1,7 +1,24 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Getting started
+
+This section covers:
+
+1. Installing the `R` package `atlastools`,
+
+2. Simulating some realistic looking movement data using the `R` package `smoove` from [@gurarie2017], and
+
+3. Introducing positioning errors into the simulated movement data.
 
 ## Installing `atlastools`
 
-This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from an online repository.
+This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from [Github.](https://github.com/pratikunterwegs/atlastools). 
+See the repository for information on the build status.
+The code chunk below shows how to install `atlastools`.
 
 ```{r install_package, eval=FALSE}
 # use either devtools or remotes to install
@@ -9,5 +26,69 @@ install.packages("devtools")
 
 # installation using devtools
 devtools::install_github("pratikunterwegs/atlastools")
+```
+
+## Simulating movement data
+
+Here, we simulate some movement data using the `smoove` `R` package from [@gurarie2017].
+
+```{r prep_libs_01_02}
+# load smoove and datatable
+library(smoove)
+library(data.table)
+```
+
+```{r sim_smoove_data}
+# define parameters
+nu <- 2
+tau <- 1
+dt <- .01 
+ucvm1 <- simulateUCVM(nu = nu, tau = tau, T.max = 100, dt = dt)
+
+# get the data in data.table format
+data <- as.data.table(ucvm1$XY)
+
+# rescale coordinates
+data[, c("x", "y") := (lapply(.SD, 
+                          scales::rescale)),
+     .SDcols = c("x", "y")]
+
+# add a time column
+data[, time := seq_len(nrow(data))]
+
+# save simulated data
+fwrite(data, "data/data_sim.csv")
+```
+
+Here, we write functions to add normally distributed errors to the position coordinates of the simulated data.
+
+```{r fun_add_error}
+# simple function to introduce normally distributed error
+do_add_error <- function(v, std_dev = 0.5) {
+  pos_error <- stats::rnorm(length(v), sd = std_dev)
+  return(v + pos_error)
+}
+```
+
+Example of introduced error.
+
+```{r}
+# load data
+data <- fread("data/data_sim.csv")
+
+# introduce errors to data
+data[, `:=`(x_error = do_add_error(x, std_dev = 0.01),
+            y_error = do_add_error(y, std_dev = 0.01))]
+
+# plot real and introduced error
+ggplot(d2)+
+
+  geom_path(aes(x_error, y_error),
+            col = "red", size = 0.2)+
+  geom_path(aes(x, y))##+
+  geom_path(data = data, aes(x, y),
+            col = "blue")
+
+atlastools::atl_compare_tracks(d2, data)
 ```
 
