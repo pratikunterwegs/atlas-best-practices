@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # remove pdfs in main
 *.pdf
+
+# large data
+data/*large*

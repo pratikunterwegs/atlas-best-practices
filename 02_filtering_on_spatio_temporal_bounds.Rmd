@@ -17,7 +17,6 @@ library(ggplot2)
 library(atlastools)
 ```
 
-
 ```{r sim_data}
 # uses smoove from Gurarie et al. (2017)
 library(smoove)
@@ -80,13 +79,145 @@ fig_filter_bbox <- ggplot(data)+
        y = "Y coordinate")
 
 # save figure
-ggsave("figures/fig_filter_bbox.png", dpi = 300, width = 8, height = 2)
+ggsave("figures/fig-filter-bbox.png", dpi = 300, width = 8, height = 2)
 ```
 
 ![Filtering by bounding box.](figures/fig_filter_bbox.png)
 
-Explicit spatial filtering is a finer method which examines whether the tracking data lie within a polygon, which may be irregular. This typically involves converting the data’s position coordinates to a multi-point spatial geometry, and finding the intersection with a polygon or multi-polygon geometry representing a study area. 
-Combined with knowledge of species’ biology and the study site, explicit spatial filtering can be used to remove obviously erroneous positions such as those that would place an individual in an area it is physiologically incapable of traversing. The main drawback to explicit spatial filtering is that it is computationally intensive, and it is advisable to apply a coarse bounding box filter first in order to reduce the computational load, and only then filter by an irregular spatial feature.
+## Explicit spatial filtering
+
+```{r make_non-bbox_polygon}
+# make a polygon buffer around centroid
+library(sf)
+data <- data.table::fread("data/sim_data_sec_02_01.csv")
+centroid <- st_point(c(median(data$x), median(data$y)))
+buffer <- st_buffer(centroid, 5)
+```
+
+```{r spatial_filter_function}
+# an ad-hoc spatial filter function which assumes two coordinate columns
+# from a data table or dataframe
+do_spatial_filter <- function(data,
+                              spatial_object) {
+  
+  data_coords <- data[, c("x", "y")]
+  data_coords <- st_sfc(st_multipoint(as.matrix(data_coords, byrow = TRUE)))
+  data_coords <- st_cast(data_coords, "POINT")
+  overlaps <- sf::st_intersects(data_coords, spatial_object)
+  
+  # not length but lengths
+  data <- data[lengths(overlaps) > 0, ]
+  
+  return(data)
+}
+```
+
+```{r do_filter_spatial}
+# filter the data
+filtered_data <- do_spatial_filter(data = data, 
+                                   spatial_object = buffer)
+
+# assign types and plot
+data$type <- "raw"
+filtered_data$type <- "filtered"
+
+# bind rows
+data <- rbind(data, filtered_data)
+
+# assign levels
+data$type <- factor(data$type,
+                    levels = c("raw", "filtered"))
+```
+
+
+```{r fig_spatial_filter}
+fig_spatial_filter <- 
+  ggplot(data)+
+  geom_path(aes(x, y),
+            col = "blue")+
+  theme_test()+
+  geom_sf(data = buffer, 
+          fill = "grey", 
+          alpha = 0.2)+
+  facet_grid(~ type)+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank())+
+  labs(x = "X coordinate",
+       y = "Y coordinate")
+
+# save figure
+ggsave("figures/fig-spatial-filter.png", dpi = 300, width = 5, height = 2)
+```
+
+## Bounding box before spatial filter
+
+### Make a larger dataset
+
+Here we simulate a dataset of 50,000 positions, and save it to file for further use.
+
+```{r sim_data_large, eval=FALSE}
+# uses smoove from Gurarie et al. (2017)
+library(smoove)
+nu <- 2
+tau <- 5
+dt <- .1 
+ucvm1 <- simulateUCVM(nu=nu, tau=tau, T.max = 5e4L, dt = dt)
+
+# add a reflection to x_max + x_max / 10, y_max + y_max / 10
+data <- as.data.table(ucvm1$XY)
+data[, time := seq_len(nrow(data))]
+
+fwrite(data, "data/sim_data_large.csv")
+```
+
+### Resample large data
+
+```{r get_resample_prop}
+# powers of 10
+resample_rate <- c(
+  # 1, 2, 3, 10, 
+                   100)
+
+# get range of coordinates
+data_range <- sapply(data[, c("x", "y")], range)
+
+# get resample parameters
+resample_parameters <- CJ(rate = resample_rate,
+                          bbox_size = resample_rate)
+```
+
+```{r}
+do_resample_benchmark <- function(data,
+                                  resamp_rate, prop_bbox) {
+  
+  bbox <- sapply(data[, c("x", "y")], range) / prop_bbox
+  data <- data[floor(sample(nrow(data) / resamp_rate)), ]
+  
+  microbenchmark::microbenchmark(
+    atl_filter_bounds(data,
+                      x_range = bbox[, "x"],
+                      y_range = bbox[, "y"],
+                      remove_inside = FALSE),
+    unit = "s"
+  )
+}
+```
+
+
+### Benchmarking bounding box filters
+
+```{r benchmark_bbox_filter}
+library(microbenchmark)
+
+microbenchmark(
+  atlastools::atl_filter_bounds(data,
+                                x = "x", y = "y",
+                                x_range = c(-15, 0),
+                                y_range = c(-35, -15)),
+  unit = "s"
+)
+```
+
 
 Both bounding box and explicit spatial filters can be combined with the timestamp of a position to remove locations where time is an important determinant of accessibility. For example, terrestrial species may be able to access the bottom of a waterbody only during certain times of day or year, and data whose time and position coordinates do not meet these criteria can be removed. 
 Temporal filtering can also be applied independently of spatial filtering to exclude positions from certain time periods during tracking. These are typically periods when data are expected to be biased, such as where an animal has been fitted with a tracker but has not been released, or from the first day after fitting a tracker to avoid including movement behaviour biased by the stress of the capture. 

@@ -4,7 +4,7 @@ title: "Pre-processing high frequency animal tracking data"
 author: "Pratik R. Gupte and others"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: bookdown::pdf_book
 documentclass: book
 # bibliography: [refs.bib]
 biblio-style: apalike

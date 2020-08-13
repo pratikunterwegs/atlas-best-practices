@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 4 Smoothing positioning errors | Pre-processing high frequency animal tracking data</title>
+  <title>Section 3 Smoothing positioning errors | Pre-processing high frequency animal tracking data</title>
   <meta name="description" content="TRES Tidyverse Tutorial" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 4 Smoothing positioning errors | Pre-processing high frequency animal tracking data" />
+  <meta property="og:title" content="Section 3 Smoothing positioning errors | Pre-processing high frequency animal tracking data" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 4 Smoothing positioning errors | Pre-processing high frequency animal tracking data" />
+  <meta name="twitter:title" content="Section 3 Smoothing positioning errors | Pre-processing high frequency animal tracking data" />
   
   <meta name="twitter:description" content="TRES Tidyverse Tutorial" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-08-04" />
+<meta name="date" content="2020-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,36 +129,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Outline</a></li>
-<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Outline</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#install-atlastools"><i class="fa fa-check"></i><b>1.1</b> Install <code>atlastools</code></a></li>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#installing-atlastools"><i class="fa fa-check"></i><b>0.1</b> Installing <code>atlastools</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html"><i class="fa fa-check"></i><b>2</b> Cleaning point data</a>
+<li class="chapter" data-level="1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html"><i class="fa fa-check"></i><b>1</b> Cleaning point data</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-within-spatio-temporal-bounds"><i class="fa fa-check"></i><b>2.1</b> Filtering within spatio-temporal bounds</a></li>
-<li class="chapter" data-level="2.2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-on-covariates"><i class="fa fa-check"></i><b>2.2</b> Filtering on covariates</a></li>
+<li class="chapter" data-level="1.1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-within-spatio-temporal-bounds"><i class="fa fa-check"></i><b>1.1</b> Filtering within spatio-temporal bounds</a></li>
+<li class="chapter" data-level="1.2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-on-covariates"><i class="fa fa-check"></i><b>1.2</b> Filtering on covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html"><i class="fa fa-check"></i><b>3</b> Cleaning movement tracks</a>
+<li class="chapter" data-level="2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html"><i class="fa fa-check"></i><b>2</b> Cleaning movement tracks</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#filtering-on-speed-and-turning-angle"><i class="fa fa-check"></i><b>3.1</b> Filtering on speed and turning angle</a></li>
-<li class="chapter" data-level="3.2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#challenges-to-speed-filters"><i class="fa fa-check"></i><b>3.2</b> Challenges to speed filters</a></li>
+<li class="chapter" data-level="2.1" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#filtering-on-speed-and-turning-angle"><i class="fa fa-check"></i><b>2.1</b> Filtering on speed and turning angle</a></li>
+<li class="chapter" data-level="2.2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#challenges-to-speed-filters"><i class="fa fa-check"></i><b>2.2</b> Challenges to speed filters</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html"><i class="fa fa-check"></i><b>4</b> Smoothing positioning errors</a>
+<li class="chapter" data-level="3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html"><i class="fa fa-check"></i><b>3</b> Smoothing positioning errors</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#the-median-smooth"><i class="fa fa-check"></i><b>4.1</b> The median smooth</a></li>
-<li class="chapter" data-level="4.2" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#other-smooths"><i class="fa fa-check"></i><b>4.2</b> Other smooths</a></li>
-<li class="chapter" data-level="4.3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#interpolating-data"><i class="fa fa-check"></i><b>4.3</b> Interpolating data</a></li>
+<li class="chapter" data-level="3.1" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#the-median-smooth"><i class="fa fa-check"></i><b>3.1</b> The median smooth</a></li>
+<li class="chapter" data-level="3.2" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#other-smooths"><i class="fa fa-check"></i><b>3.2</b> Other smooths</a></li>
+<li class="chapter" data-level="3.3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#interpolating-data"><i class="fa fa-check"></i><b>3.3</b> Interpolating data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html"><i class="fa fa-check"></i><b>5</b> Reducing data volume</a>
+<li class="chapter" data-level="4" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html"><i class="fa fa-check"></i><b>4</b> Reducing data volume</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#thinning-animal-tracks"><i class="fa fa-check"></i><b>5.1</b> Thinning animal tracks</a></li>
-<li class="chapter" data-level="5.2" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#subsetting-on-behaviourenv-covariates"><i class="fa fa-check"></i><b>5.2</b> Subsetting on behaviour/env covariates</a></li>
+<li class="chapter" data-level="4.1" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#thinning-animal-tracks"><i class="fa fa-check"></i><b>4.1</b> Thinning animal tracks</a></li>
+<li class="chapter" data-level="4.2" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#subsetting-on-behaviourenv-covariates"><i class="fa fa-check"></i><b>4.2</b> Subsetting on behaviour/env covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html"><i class="fa fa-check"></i><b>6</b> Synthesising movement tracks</a>
+<li class="chapter" data-level="5" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html"><i class="fa fa-check"></i><b>5</b> Synthesising movement tracks</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#challenges-in-synthesising-high-frequency-trajectories"><i class="fa fa-check"></i><b>6.1</b> Challenges in synthesising high-frequency trajectories</a></li>
-<li class="chapter" data-level="6.2" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#residence-patches-and-their-construction"><i class="fa fa-check"></i><b>6.2</b> Residence patches and their construction</a></li>
+<li class="chapter" data-level="5.1" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#challenges-in-synthesising-high-frequency-trajectories"><i class="fa fa-check"></i><b>5.1</b> Challenges in synthesising high-frequency trajectories</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#residence-patches-and-their-construction"><i class="fa fa-check"></i><b>5.2</b> Residence patches and their construction</a></li>
 </ul></li>
 </ul>
 
@@ -178,19 +177,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="smoothing-positioning-errors" class="section level1">
-<h1><span class="header-section-number">Section 4</span> Smoothing positioning errors</h1>
+<h1><span class="header-section-number">Section 3</span> Smoothing positioning errors</h1>
 <div id="the-median-smooth" class="section level2">
-<h2><span class="header-section-number">4.1</span> The median smooth</h2>
+<h2><span class="header-section-number">3.1</span> The median smooth</h2>
 <p>While the filters described so far are sufficient to remove serious positioning errors, careful examination of the resulting trajectories may reveal that smaller positioning errors remain – the trajectory appears ‘spiky’ at small scales. These smaller errors are usually more challenging to remove since they have covariates (such as speed and turning angles) which are within the expected range of movement behaviour for the study species, hence their persistence in the data. The high volumes of data generated by high frequency tracking studies can be brought to bear upon this issue, by smoothing the trajectory. A ‘smooth’ works by approximating the true value of an observation based on neighbouring values. A common and easily implemented smoothing technique is nearest neighbour averaging, in which the value of an observation X0 is the average of some K nearest neighbours.</p>
 <p>The median smooth (confusingly also called the median filter) is a variant of nearest neighbour averaging which replaces X0 with the median of its neighbours, and this is recommended over simple averaging as it is robust to outliers. A median smooth with an appropriate smoothing window (usually 3 – 5 positions) centred on each observation can be applied to the X and Y coordinates of the trajectory to obtain a smoothed track. The median smooth will return as many smoothed coordinates as there are observations in the data, and does not interpolate between positions when data are missing. However, it is robust to even very large gaps, and it is not necessary to split the data into segments separated by periods of missing observations when applying the filter.</p>
 
 </div>
 <div id="other-smooths" class="section level2">
-<h2><span class="header-section-number">4.2</span> Other smooths</h2>
+<h2><span class="header-section-number">3.2</span> Other smooths</h2>
 
 </div>
 <div id="interpolating-data" class="section level2">
-<h2><span class="header-section-number">4.3</span> Interpolating data</h2>
+<h2><span class="header-section-number">3.3</span> Interpolating data</h2>
 
 </div>
 </div>

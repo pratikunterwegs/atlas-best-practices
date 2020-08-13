@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 5 Reducing data volume | Pre-processing high frequency animal tracking data</title>
+  <title>Section 4 Reducing data volume | Pre-processing high frequency animal tracking data</title>
   <meta name="description" content="TRES Tidyverse Tutorial" />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 5 Reducing data volume | Pre-processing high frequency animal tracking data" />
+  <meta property="og:title" content="Section 4 Reducing data volume | Pre-processing high frequency animal tracking data" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 5 Reducing data volume | Pre-processing high frequency animal tracking data" />
+  <meta name="twitter:title" content="Section 4 Reducing data volume | Pre-processing high frequency animal tracking data" />
   
   <meta name="twitter:description" content="TRES Tidyverse Tutorial" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-08-04" />
+<meta name="date" content="2020-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,36 +129,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Outline</a></li>
-<li class="chapter" data-level="1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>1</b> Background</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Outline</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="background.html"><a href="background.html#install-atlastools"><i class="fa fa-check"></i><b>1.1</b> Install <code>atlastools</code></a></li>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#installing-atlastools"><i class="fa fa-check"></i><b>0.1</b> Installing <code>atlastools</code></a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html"><i class="fa fa-check"></i><b>2</b> Cleaning point data</a>
+<li class="chapter" data-level="1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html"><i class="fa fa-check"></i><b>1</b> Cleaning point data</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-within-spatio-temporal-bounds"><i class="fa fa-check"></i><b>2.1</b> Filtering within spatio-temporal bounds</a></li>
-<li class="chapter" data-level="2.2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-on-covariates"><i class="fa fa-check"></i><b>2.2</b> Filtering on covariates</a></li>
+<li class="chapter" data-level="1.1" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-within-spatio-temporal-bounds"><i class="fa fa-check"></i><b>1.1</b> Filtering within spatio-temporal bounds</a></li>
+<li class="chapter" data-level="1.2" data-path="cleaning-point-data.html"><a href="cleaning-point-data.html#filtering-on-covariates"><i class="fa fa-check"></i><b>1.2</b> Filtering on covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html"><i class="fa fa-check"></i><b>3</b> Cleaning movement tracks</a>
+<li class="chapter" data-level="2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html"><i class="fa fa-check"></i><b>2</b> Cleaning movement tracks</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#filtering-on-speed-and-turning-angle"><i class="fa fa-check"></i><b>3.1</b> Filtering on speed and turning angle</a></li>
-<li class="chapter" data-level="3.2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#challenges-to-speed-filters"><i class="fa fa-check"></i><b>3.2</b> Challenges to speed filters</a></li>
+<li class="chapter" data-level="2.1" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#filtering-on-speed-and-turning-angle"><i class="fa fa-check"></i><b>2.1</b> Filtering on speed and turning angle</a></li>
+<li class="chapter" data-level="2.2" data-path="cleaning-movement-tracks.html"><a href="cleaning-movement-tracks.html#challenges-to-speed-filters"><i class="fa fa-check"></i><b>2.2</b> Challenges to speed filters</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html"><i class="fa fa-check"></i><b>4</b> Smoothing positioning errors</a>
+<li class="chapter" data-level="3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html"><i class="fa fa-check"></i><b>3</b> Smoothing positioning errors</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#the-median-smooth"><i class="fa fa-check"></i><b>4.1</b> The median smooth</a></li>
-<li class="chapter" data-level="4.2" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#other-smooths"><i class="fa fa-check"></i><b>4.2</b> Other smooths</a></li>
-<li class="chapter" data-level="4.3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#interpolating-data"><i class="fa fa-check"></i><b>4.3</b> Interpolating data</a></li>
+<li class="chapter" data-level="3.1" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#the-median-smooth"><i class="fa fa-check"></i><b>3.1</b> The median smooth</a></li>
+<li class="chapter" data-level="3.2" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#other-smooths"><i class="fa fa-check"></i><b>3.2</b> Other smooths</a></li>
+<li class="chapter" data-level="3.3" data-path="smoothing-positioning-errors.html"><a href="smoothing-positioning-errors.html#interpolating-data"><i class="fa fa-check"></i><b>3.3</b> Interpolating data</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html"><i class="fa fa-check"></i><b>5</b> Reducing data volume</a>
+<li class="chapter" data-level="4" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html"><i class="fa fa-check"></i><b>4</b> Reducing data volume</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#thinning-animal-tracks"><i class="fa fa-check"></i><b>5.1</b> Thinning animal tracks</a></li>
-<li class="chapter" data-level="5.2" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#subsetting-on-behaviourenv-covariates"><i class="fa fa-check"></i><b>5.2</b> Subsetting on behaviour/env covariates</a></li>
+<li class="chapter" data-level="4.1" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#thinning-animal-tracks"><i class="fa fa-check"></i><b>4.1</b> Thinning animal tracks</a></li>
+<li class="chapter" data-level="4.2" data-path="reducing-data-volume.html"><a href="reducing-data-volume.html#subsetting-on-behaviourenv-covariates"><i class="fa fa-check"></i><b>4.2</b> Subsetting on behaviour/env covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html"><i class="fa fa-check"></i><b>6</b> Synthesising movement tracks</a>
+<li class="chapter" data-level="5" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html"><i class="fa fa-check"></i><b>5</b> Synthesising movement tracks</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#challenges-in-synthesising-high-frequency-trajectories"><i class="fa fa-check"></i><b>6.1</b> Challenges in synthesising high-frequency trajectories</a></li>
-<li class="chapter" data-level="6.2" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#residence-patches-and-their-construction"><i class="fa fa-check"></i><b>6.2</b> Residence patches and their construction</a></li>
+<li class="chapter" data-level="5.1" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#challenges-in-synthesising-high-frequency-trajectories"><i class="fa fa-check"></i><b>5.1</b> Challenges in synthesising high-frequency trajectories</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesising-movement-tracks.html"><a href="synthesising-movement-tracks.html#residence-patches-and-their-construction"><i class="fa fa-check"></i><b>5.2</b> Residence patches and their construction</a></li>
 </ul></li>
 </ul>
 
@@ -178,15 +177,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="reducing-data-volume" class="section level1">
-<h1><span class="header-section-number">Section 5</span> Reducing data volume</h1>
+<h1><span class="header-section-number">Section 4</span> Reducing data volume</h1>
 <div id="thinning-animal-tracks" class="section level2">
-<h2><span class="header-section-number">5.1</span> Thinning animal tracks</h2>
+<h2><span class="header-section-number">4.1</span> Thinning animal tracks</h2>
 <p>Most data at this stage is technically ‘clean’, yet its volume alone may pose challenges for older hardware (such as computers or storage) and software (data analysis functions) if these are not optimised for efficient computation. Examples in the R statistical environment favoured by movement ecologists (Joo et al. 2020) include the default function for importing data from a file read.csv, which is much slower than newer alternatives (such as data.table’s fread; Dowle et al. XXXX). This coupled with the requirement of uniform sampling intervals by many methods in the field (e.g. Hidden Markov Models from Michelot et al. 2016, and Step Selection Functions from Signer et al. 2019) makes evenly reducing data volumes worthwhile. The two approaches here are aggregation and resampling, and both begin with rounding the timestamp of the observations to the nearest multiple of the desired interval. When resampling the data, one position for each unique value of the rounded timestamp is retained, while aggregation involves computing the median of values at the positions sharing the same rounded timestamp. While the median aggregation method is less sensitive to position outliers than resampling, it may result in inappropriate fractional values for some position covariates (e.g. the number of base stations in ATLAS data), while others such as positioning error estimates cannot be aggregated using a simple median alone. It is thus advisable to evaluate whether position covariates will be required unaltered in further steps (e.g. positioning error for movement models), in which case resampling may be more appropriate, or whether it is more important to optimise the position estimate, for which aggregation may be better suited.</p>
 <p>It is natural to consider evenly reducing data volume before implementing filters or smooths, since this is computationally more efficient than thinning after filtering-smoothing. While resampling data will preserve position covariates which may be passed to further filters, it may also sample outliers which could then be discarded by filters, resulting in uneven sampling once more. On the other hand, median aggregation may not correctly handle position covariates on which data can be filtered, rendering further filtering steps suspect. Even assuming median aggregation is applied to data without covariates, increasing the sampling interval by an order of magnitude or more (e.g. from 3 s to 30 s in ATLAS data) will result in significant underestimation of instantaneous speed (see Noonan et al. 2019). This could have knock-on effects on the efficacy of speed filters applied after aggregation, since the instantaneous speeds of point outliers or trajectory reflections may now be within the range of speeds realistically expected for the study species, making these artifacts more challenging to remove.</p>
 
 </div>
 <div id="subsetting-on-behaviourenv-covariates" class="section level2">
-<h2><span class="header-section-number">5.2</span> Subsetting on behaviour/env covariates</h2>
+<h2><span class="header-section-number">4.2</span> Subsetting on behaviour/env covariates</h2>
 <p>Haven’t really spoken about subsetting on behaviour and perhaps this should be merged with the next section which mentions subsetting on speed or other covariates.</p>
 
 </div>

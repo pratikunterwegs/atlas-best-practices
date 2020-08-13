@@ -1,15 +1,13 @@
 
-# Background
+## Installing `atlastools`
 
-Tracking individual movement has become a firmly established component of animal ecology, helped by the adoption of the movement ecology paradigm (Nathan et al. 2008; Holyoak et al. 2008) and the rapid proliferation of animal tracking technologies (Kays et al. 2015; Hussey et al. 2015). The animal tracking revolution has offered unprecedented insights into the causes and consequences of animal space-use, from the mechanisms behind collective behaviour (e.g. Strandburg-Peshkin et al. 2015), to how animal migrations engineer landscape level processes (Geremia et al. 2019).
+This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from an online repository.
 
-## Install `atlastools`
-
-```{r install_package}
+```{r install_package, eval=FALSE}
 # use either devtools or remotes to install
-# install.packages("devtools")
+install.packages("devtools")
 
-# install using devtools
+# installation using devtools
 devtools::install_github("pratikunterwegs/atlastools")
 ```
 

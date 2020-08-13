@@ -1,4 +1,0 @@
-
-## Subsetting on behaviour/env covariates
-
-Haven’t really spoken about subsetting on behaviour and perhaps this should be merged with the next section which mentions subsetting on speed or other covariates.
