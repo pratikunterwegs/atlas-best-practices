@@ -48,7 +48,7 @@ data <- fread("data/data_sim.csv")
 # function for point outliers
 do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
   n_rows <- floor(p_data * nrow(data))
-  tmp_data <- copy(data)
+  tmp_data <- data.table::copy(data)
   
   tmp_data[sample(nrow(data), n_rows),
             c("x", "y") := lapply(.SD,
@@ -57,6 +57,14 @@ do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
                                   }),
             .SDcols = c("x", "y")]
   return(tmp_data)
+}
+
+# functions for extracting and tallying landscape values
+do_count_landcover <- function(land, track) {
+  land_values <- raster::extract(land, track[, c("x", "y")])
+  land_values <- data.table::as.data.table(table(land_values))
+  land_values[, p_land := N / sum(N)]
+  return(land_values)
 }
 ```
 
@@ -188,25 +196,50 @@ extent(landscape) <- bounds
 ```{r}
 sim_data <- mapply(function(p_outlier, ext_outlier) {
   # make simulated data
-  this_data <- do_smoove_data()
+  ref_data <- do_smoove_data()
   
   # extract 'true' movement metrics
-  speed <- atl_get_speed(this_data, type = "in")
+  speed <- atl_get_speed(ref_data, type = "in")
+  land_vals <- do_count_landcover(landscape, ref_data)
+  lands_vals[, type := "reference"]
   
-  # extract proportion of landscape used
-  land_vals <- extract(landscape,
-                       this_data[, c("x", "y")])
-  
-  land_vals <- as.data.table(table(landscape))
-  
-  # what to return
-  
-  # WORK IN PROGRESS HERE
-  
+  # now add error
   error_data <- do_add_outliers(this_data, 
                                 p_data = p_outlier,
                                 std_dev = ext_outlier)
-  return(error_data)
+  
+  # get movement metrics with error
+  error_speed <- atl_get_speed(error_data, type = "in")
+  error_land_vals <- do_count_landcover(landscape, error_data)
+  error_land_vals[, type := "outliers"]
+  
+  # now clean data
+  clean_data <- copy(error_data)
+  clean_data[, `:=`(in_speed = atl_get_speed(clean_data, type = "in"),
+                    out_speed = atl_get_speed(clean_data, type = "out"),
+                    angle = atl_turning_angle(clean_data))]
+  upper_speed_cutoff <- stats::quantile(clean_data$in_speed, probs = 0.9)
+  angle_cutoff <- 40
+  clean_data <- atl_filter_covariates(clean_data,
+                                      filters = c(glue('{c("in_speed", 
+                                                           "out_speed")} < 
+                                                         {upper_speed_cutoff}'),
+                                                  glue('angle < {angle_cutoff}')
+                                                  )
+                                      )
+  
+  # get speed and land proportion
+  clean_speed <- atl_get_speed(clean_data, type = "in")
+  clean_land_vals <- do_count_landcover(landscape, clean_data)
+  clean_land_vals[, type := "cleaned"]
+  
+  # synthesize data
+  land_props <- rbindlist(land_vals, error_land_vals, clean_land_vals)
+  setnames(land_props, old = "V1", new = "landcover")
+  # count proportion
+  land_props <- dcast(land_props, landcover ~ type, value.var = "p_land")
+  
+  return(errorCondition("WORK IN PROGRESS"))
 }, 
 param_c$p_outlier, 
 param_c$ext_outlier, 
