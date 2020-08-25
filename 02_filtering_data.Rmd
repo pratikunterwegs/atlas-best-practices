@@ -1,0 +1,268 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+This section covers:
+
+1. Simple spatio-temporal filtering of point data to remove gross positioning errors,
+
+2. Filtering positions on covariates that may be associated with increased positioning error,
+
+3. Filtering movement tracks using the 'non-movement' approach to remove implausible movement segments, and
+
+4. The challenge of reflected positions, and how it can be addressed.
+
+# Filtering data
+
+## Prepare libraries {-}
+
+```{r prep_libs_02_01}
+# to handle movement data
+library(data.table)
+library(atlastools)
+
+# to simulate movement
+library(smoove)
+
+# to generate a landscape
+library(raster)
+library(NLMR)
+
+# to plot
+library(ggplot2)
+```
+
+
+## Introducing errors {-}
+
+Here we read the simulated data in. The limits of the coordinates are 0 and 1, so we add a few extraneous coordinates within a plausible distance to demonstrate the basic forms of filtering. We also assign a fictional _NBS_ value ranging between 2 and 6 to demonstrate filtering on covariates. Finally, we introduce a 'reflection', a phenomenon that results when a TOA system's position likelihood estimator shifts the real position by a large distance for an extended duration.
+
+```{r read_sim_data}
+# read in the data
+data <- fread("data/data_sim.csv")
+```
+
+```{r function_add_outliers}
+# function for point outliers
+do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
+  n_rows <- floor(p_data * nrow(data))
+  tmp_data <- copy(data)
+  
+  tmp_data[sample(nrow(data), n_rows),
+            c("x", "y") := lapply(.SD,
+                                  function(z) {
+                                    z + stats::rnorm(n_rows, sd = std_dev)
+                                  }),
+            .SDcols = c("x", "y")]
+  return(tmp_data)
+}
+```
+
+We add outliers at random to the data to demonstrate their removal.
+
+```{r add_outlier}
+# add 100 outliers
+data_copy <- do_add_outliers(data, p_data = 0.01, std_dev = 0.05)
+```
+
+## Removing gross positioning errors
+
+First we remove gross positioning errors using a bounding box filter, i.e., knowing or assuming the real bounds of the movement track (in this case, 0 -- 1), we remove all positions outside those bounds.
+
+```{r remove_outside_bbox, eval=FALSE}
+# remove positions outside a bounding box
+data_inside_bbox <- data.table::copy(data_copy)
+
+# NB: set remove_inside to FALSE
+data_inside_bbox <- atlastools::atl_filter_bounds(data = data,
+                                                  x_range = c(0, 1),
+                                                  y_range = c(0, 1),
+                                                  remove_inside = FALSE)
+```
+
+```{r}
+ggplot()+
+  geom_path(data = data_copy, aes(x, y), col = "red")+
+  geom_path(data = data_inside_bbox, aes(x, y))
+```
+
+## Removing point outliers: The non-movement approach
+
+Bjorneraas et al. (2010) describe intuitive filtering steps for trajectories that are based in the biology of the study species (moose _Alces alces_ in their case). Briefly, this 'non-movement method' identifies implausible segments of a trajectory, and removes them. Here, we adopt elements of their method to identify and remove 'spikes' or point outliers in the movement track, i.e., positions which indicate an improbably fast and short excursion away from the real trajectory.
+
+We begin by calculating the speed and turning angle along the track. For both metrics, the first value is set at `NA`, indicating that we do not know the position of the individual prior to the start of the trajectory. The turning angle is calculated using the cosine rule and requires three positions to yield a values; thus it has an `NA` at the very last position as well.
+
+```{r example_remove_outliers, eval=FALSE}
+# get speed and turning angle
+data_many_nbs[, `:=`(in_speed = atl_get_speed(data_many_nbs,
+                                              type = "in"),
+                     out_speed = atl_get_speed(data_many_nbs,
+                                               type = "out"),
+                     angle = atl_turning_angle(data_many_nbs))]
+
+```
+
+Next we idenfify the 90th and 95th percentile of speed and turning angle. This is more general than identifying the limits of implausibility for each individual (since there may be inter-individual differences), let alone each species in a large dataset.
+An alternative approach is to define a speed cutoff based on expert knowledge, and this is best suited to well studied species.
+
+```{r}
+# get 90 and 95 percentile of speed and turning angle
+sapply(data_many_nbs[, c("in_speed", "angle")], function(z) {
+  quantile(z, probs = c(0.9, 0.95), na.rm = TRUE)
+})
+```
+
+Finally, we remove positions whose incoming and outgoing speeds are both greater than the 95th speed percentile.
+
+```{r}
+# make a copy of the data
+data_non_move <- copy(data_many_nbs)
+
+# filter the copy
+data_non_move <- atl_filter_covariates(data_non_move,
+                                       filters = c("in_speed < 0.001",
+                                                   "out_speed < 0.001",
+                                                   "angle < 40"))
+```
+
+```{r}
+ggplot()+
+  geom_path(data = data_inside_bbox,
+            aes(x, y),
+            colour = "black")+
+  geom_path(data = data_non_move,
+            aes(x, y),
+            colour = "red")
+```
+
+## Does removing point outliers help?
+
+### Making error combinations
+
+Point outliers in a trajectory can be boiled down to two parameters: (1) how many positions have been converted into point outliers or spikes, and (2) how large the spikes are relative to the scale of the movement track.
+
+Here we create combinations of these parameters and create 25 replicates of each combination using the error generator on the imported simulated data.
+
+```{r outlier_error_combinations}
+# define unique values
+p_outlier <- c(0.01, 0.05, 0.1, 0.25)
+ext_outlier <- c(0.01, 0.05, 0.1)
+replicate <- seq_len(1)
+
+# make combinations
+param_c <- CJ(p_outlier, ext_outlier, replicate)
+```
+
+### Procedural landscape generation
+
+Next we procedurally generate (simulate) a landscape from which to extract habitat choice.
+
+```{r make_landscape}
+# use NLMR
+landscape <- NLMR::nlm_randomcluster(100, 100, 
+                                     p = 0.2, 
+                                     ai = c(0.2, 0.3, 0.5),
+                                     rescale = TRUE)
+
+# save landscape as raster
+raster::writeRaster(landscape,
+                    filename = "data/data_landscape.tif",
+                    format = "GTiff", 
+                    overwrite = TRUE)
+```
+
+```{r read_landscape}
+# read landscape
+landscape <- raster("data/data_landscape.tif")
+
+# scale landscape?
+bounds <- c(0, 1, 0, 1)
+bound_scale <- c(1, 2, 5, 10)
+extent(landscape) <- bounds
+```
+
+### Make movement track replicates
+
+```{r}
+sim_data <- mapply(function(p_outlier, ext_outlier) {
+  # make simulated data
+  this_data <- do_smoove_data()
+  
+  # extract 'true' movement metrics
+  speed <- atl_get_speed(this_data, type = "in")
+  
+  # extract proportion of landscape used
+  land_vals <- extract(landscape,
+                       this_data[, c("x", "y")])
+  
+  land_vals <- as.data.table(table(landscape))
+  
+  # what to return
+  
+  # WORK IN PROGRESS HERE
+  
+  error_data <- do_add_outliers(this_data, 
+                                p_data = p_outlier,
+                                std_dev = ext_outlier)
+  return(error_data)
+}, 
+param_c$p_outlier, 
+param_c$ext_outlier, 
+SIMPLIFY = FALSE)
+```
+
+
+## Reflections: Challenges to the non-movement approach
+
+A peculiar issue affecting TOA tracking systems is the phenomenon of ‘reflected’ positions, in which the estimated location is instantaneously displaced many hundreds of metres from the individual’s real position for some time, followed by a return to the real position.
+
+These reflections cannot be resolved in the same way as spikes, since they consist of several points with very realistic speeds bookended by a pair with either an extreme incoming or outgoing speed.
+
+A reflection looks like this:
+
+```{r}
+# make a copy of data with spikes removed
+data_with_reflection <- copy(data_non_move)
+
+# add a reflection
+data_with_reflection[500:600, `:=`(x = runif(101, 1, 1.01),
+                                   y = runif(101, 1, 1.01))]
+```
+
+
+Removing reflections involves using the phenomenon’s properties to first identify its bounds and then removing all positions between these bounds.
+
+The procedure is as follows:
+
+1. Identify positions with anomalous (usually extremely high) speeds and turning angles, as with spikes, and
+
+2. Split the trajectory into pre- and post-anomaly segments, and the first position of the post-anomaly segment, which is the inner bound of the reflection, can be set as an anchor point.
+
+3. The first position after the anchor point with an instantaneous outgoing speed >= the speed cutoff is set as the outer bound of the reflection.
+
+4. The positions between these bounds can be identified as a trajectory reflection and removed, along with one position before and after the bounds for safety's sake.
+
+This method is robust to variable displacement of the reflections from the real positions, and also to displacement in the real position of the individual itself.
+
+
+```{r}
+# attempt to remove reflections
+data_no_reflection <- copy(data_with_reflection)
+
+data_no_reflection <- atl_remove_reflections(data_with_reflection,
+                                              point_angle_cutoff = 10,
+                                              reflection_speed_cutoff = 0.0015)
+```
+
+```{r}
+ggplot()+
+  geom_path(data = data_with_reflection,
+            aes(x, y))+
+  geom_path(data = data_no_reflection,
+            aes(x, y),
+            colour = "red")
+```
+
+## Assessing whether filtering helps
