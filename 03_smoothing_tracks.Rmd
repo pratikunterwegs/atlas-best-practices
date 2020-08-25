@@ -1,0 +1,67 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Smoothing positioning errors
+
+## Prepare libraries {-}
+
+```{r prep_libs_02_01}
+library(data.table)
+library(atlastools)
+library(ggplot2)
+```
+
+
+## Introducing 'reasonable' psoitioning errors {-}
+
+Here we read the simulated data in. The limits of the coordinates are 0 and 1, so we add a few extraneous coordinates within a plausible distance to demonstrate the basic forms of filtering. We also assign a fictional _NBS_ value ranging between 2 and 6 to demonstrate filtering on covariates. Finally, we introduce a 'reflection', a phenomenon that results when a TOA system's position likelihood estimator shifts the real position by a large distance for an extended duration.
+
+```{r read_sim_data_2}
+# read in the data
+data <- fread("data/data_sim.csv")
+
+# add small position errors to either X or Y
+data_with_errors <- copy(data)
+data_with_errors[, `:=`(x = x + rnorm(nrow(data), mean = 0, sd = 0.005),
+                        y = y + rnorm(nrow(data), mean = 0, sd = 0.005))]
+
+# plot for sanity
+ggplot()+
+  geom_point(data = data_with_errors,
+             aes(x, y),
+             shape = 16,
+             size = 0.2)+
+  theme_void()
+```
+
+## Applying a median smooth
+
+```{r}
+# make a copy
+data_median_smooth <- copy(data_with_errors)
+data_median_smooth <- atl_median_smooth(data_median_smooth,
+                                        x = "x", 
+                                        y = "y",
+                                        time = "time",
+                                        moving_window = 5)
+
+# plot for sanity
+ggplot()+
+  geom_path(data = data,
+            aes(x, y),
+            colour = "blue",
+            size = 2)+
+  geom_point(data = data_with_errors,
+             aes(x, y),
+             shape = 16,
+             size = 0.2)+
+  geom_path(data = data_median_smooth,
+            aes(x, y),
+            colour = "red",
+            size = 1)+
+  theme_void()
+```
+
