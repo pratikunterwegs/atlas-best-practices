@@ -59,7 +59,7 @@ do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
   return(tmp_data)
 }
 
-# functions for extracting and tallying landscape values
+# function for extracting and tallying landscape values
 do_count_landcover <- function(land, track) {
   land_values <- raster::extract(land, track[, c("x", "y")])
   land_values <- data.table::as.data.table(table(land_values))
@@ -155,12 +155,13 @@ Here we create combinations of these parameters and create 25 replicates of each
 
 ```{r outlier_error_combinations}
 # define unique values
-p_outlier <- c(0.01, 0.05, 0.1, 0.25)
+p_outlier <- c(0.05)
 ext_outlier <- c(0.01, 0.05, 0.1)
-replicate <- seq_len(1)
+land_scale <- c(1, 2, 5, 10)
+replicate <- seq_len(10)
 
 # make combinations
-param_c <- CJ(p_outlier, ext_outlier, replicate)
+param_c <- CJ(p_outlier, ext_outlier, land_scale, replicate)
 ```
 
 ### Procedural landscape generation
@@ -184,33 +185,45 @@ raster::writeRaster(landscape,
 ```{r read_landscape}
 # read landscape
 landscape <- raster("data/data_landscape.tif")
-
-# scale landscape?
-bounds <- c(0, 1, 0, 1)
-bound_scale <- c(1, 2, 5, 10)
-extent(landscape) <- bounds
 ```
 
-### Make movement track replicates
+```{r scale_landscape}
+# a function to scale the landscape
+do_scale_landscape <- function(land_, scale_factor) {
+  bounds <- c(0, 1, 0, 1)
+  bounds <- bounds * scale_factor
+  raster::extent(land_) <- bounds
+  return(land_)
+}
+```
+
+
+### Simulate movement over a landscape
 
 ```{r}
-sim_data <- mapply(function(p_outlier, ext_outlier) {
+sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
+  
+  # scale the landscape
+  tmp_land <- do_scale_landscape(land_ = landscape,
+                                 scale_factor = scale)
+  
   # make simulated data
   ref_data <- do_smoove_data()
   
   # extract 'true' movement metrics
   speed <- atl_get_speed(ref_data, type = "in")
-  land_vals <- do_count_landcover(landscape, ref_data)
-  lands_vals[, type := "reference"]
+  speed
+  land_vals <- do_count_landcover(tmp_land, ref_data)
+  land_vals[, type := "reference"]
   
   # now add error
-  error_data <- do_add_outliers(this_data, 
+  error_data <- do_add_outliers(ref_data, 
                                 p_data = p_outlier,
                                 std_dev = ext_outlier)
   
   # get movement metrics with error
   error_speed <- atl_get_speed(error_data, type = "in")
-  error_land_vals <- do_count_landcover(landscape, error_data)
+  error_land_vals <- do_count_landcover(tmp_land, error_data)
   error_land_vals[, type := "outliers"]
   
   # now clean data
@@ -218,7 +231,9 @@ sim_data <- mapply(function(p_outlier, ext_outlier) {
   clean_data[, `:=`(in_speed = atl_get_speed(clean_data, type = "in"),
                     out_speed = atl_get_speed(clean_data, type = "out"),
                     angle = atl_turning_angle(clean_data))]
-  upper_speed_cutoff <- stats::quantile(clean_data$in_speed, probs = 0.9)
+  upper_speed_cutoff <- stats::quantile(clean_data$in_speed, 
+                                        probs = 0.9,
+                                        na.rm = TRUE)
   angle_cutoff <- 40
   clean_data <- atl_filter_covariates(clean_data,
                                       filters = c(glue('{c("in_speed", 
@@ -230,20 +245,50 @@ sim_data <- mapply(function(p_outlier, ext_outlier) {
   
   # get speed and land proportion
   clean_speed <- atl_get_speed(clean_data, type = "in")
-  clean_land_vals <- do_count_landcover(landscape, clean_data)
+  clean_land_vals <- do_count_landcover(tmp_land, clean_data)
   clean_land_vals[, type := "cleaned"]
   
   # synthesize data
-  land_props <- rbindlist(land_vals, error_land_vals, clean_land_vals)
-  setnames(land_props, old = "V1", new = "landcover")
+  land_props <- rbindlist(list(land_vals, error_land_vals, clean_land_vals))
   # count proportion
-  land_props <- dcast(land_props, landcover ~ type, value.var = "p_land")
+  land_props <- dcast(land_props, land_values ~ type, value.var = "p_land")
   
-  return(errorCondition("WORK IN PROGRESS"))
+  land_props[, `:=`(scale = scale,
+                    p_outlier = p_outlier,
+                    ext_outlier = ext_outlier)]
+  
+  # make speed results
+  speed_res <- data.table(type = c("reference", "outliers", "cleaned"),
+                          speed = c(speed, error_speed, clean_speed))
+  results <- list(land_props = land_props,
+                  speed_res = speed_res)
+  
+  return(land_props)
 }, 
 param_c$p_outlier, 
-param_c$ext_outlier, 
+param_c$ext_outlier,
+param_c$land_scale,
 SIMPLIFY = FALSE)
+```
+
+```{r}
+# get bound list
+sim_data <- rbindlist(sim_data)
+# get differences between outliers and cleaned wrt ref
+#sim_data[, `:=`(d_cleaned = abs(cleaned - reference),
+ #               d_outliers = abs(outliers - reference))]
+
+sim_data_long <- copy(sim_data)
+
+sim_data_long <- melt(sim_data_long, 
+                      id.vars = c("land_values", "ext_outlier", 
+                                  "p_outlier", "scale"))
+
+ggplot(sim_data_long)+
+  geom_boxplot(aes(x = factor(land_values),
+                   y = value,
+                   col = variable))+
+  facet_grid(scale ~ ext_outlier, scales = "free")
 ```
 
 
