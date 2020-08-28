@@ -163,17 +163,6 @@ raster::writeRaster(landscape,
 landscape <- raster("data/data_landscape.tif")
 ```
 
-```{r scale_landscape}
-# a function to scale the landscape
-do_scale_landscape <- function(land_, scale_factor) {
-  bounds <- c(0, 1, 0, 1)
-  bounds <- bounds * scale_factor
-  raster::extent(land_) <- bounds
-  return(land_)
-}
-```
-
-
 ### Simulate movement over a landscape
 
 ```{r}
