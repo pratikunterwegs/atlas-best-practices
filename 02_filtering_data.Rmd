@@ -30,6 +30,9 @@ library(smoove)
 library(raster)
 library(NLMR)
 
+# strings
+library(glue)
+
 # to plot
 library(ggplot2)
 ```
@@ -224,11 +227,22 @@ sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
   
   # make speed results
   speed_res <- data.table(type = c("reference", "outliers", "cleaned"),
-                          speed = c(speed, error_speed, clean_speed))
+                          speed_mean = unlist(lapply(list(speed, 
+                                                          error_speed, 
+                                                          clean_speed),
+                                                     mean, na.rm = TRUE)),
+                          speed_sd = unlist(lapply(list(speed, 
+                                                          error_speed, 
+                                                          clean_speed),
+                                                     sd, na.rm = TRUE)),
+                          scale = scale,
+                          p_outlier = p_outlier,
+                          ext_outlier = ext_outlier
+                          )
   results <- list(land_props = land_props,
                   speed_res = speed_res)
   
-  return(land_props)
+  return(results)
 }, 
 param_c$p_outlier, 
 param_c$ext_outlier,
@@ -236,24 +250,70 @@ param_c$land_scale,
 SIMPLIFY = FALSE)
 ```
 
-```{r}
+```{r outlier_removal_land_prop}
 # get bound list
-sim_data <- rbindlist(sim_data)
+land_prop_data <- rbindlist(lapply(sim_data, function(l) { l$land_props }))
 # get differences between outliers and cleaned wrt ref
-#sim_data[, `:=`(d_cleaned = abs(cleaned - reference),
+#land_prop_data[, `:=`(d_cleaned = abs(cleaned - reference),
  #               d_outliers = abs(outliers - reference))]
 
-sim_data_long <- copy(sim_data)
+land_prop_data_long <- copy(land_prop_data)
 
-sim_data_long <- melt(sim_data_long, 
-                      id.vars = c("land_values", "ext_outlier", 
-                                  "p_outlier", "scale"))
+land_prop_data_long <- melt(land_prop_data_long, 
+                            id.vars = c("land_values", "ext_outlier", 
+                                        "p_outlier", "scale"))
 
-ggplot(sim_data_long)+
-  geom_boxplot(aes(x = factor(land_values),
+ggplot(land_prop_data_long)+
+  # geom_boxplot(aes(x = factor(land_values),
+  #                  y = value,
+  #                  group = interaction(variable, scale, land_values),
+  #                  fill = variable))+
+  geom_line(aes(x = (land_values),
+                y = value,
+                group = interaction(variable, scale),
+                col = variable,
+                lty = factor(scale)),
+            stat = "summary")+
+  geom_point(aes(x = (land_values),
+                 y = value,
+                 group = interaction(variable, scale),
+                 col = variable,
+                 shape = factor(scale)),
+             size = 2,
+             stat = "summary")+
+  facet_grid( ~ ext_outlier, 
+              scales = "free_y",
+              labeller = label_both)+
+  theme_classic()+
+  theme(strip.background = element_rect(fill = "grey90",
+                                        colour = NA))
+```
+
+```{r outlier_removal_speed}
+# get speed data
+speed_data <- rbindlist(lapply(sim_data, function(l) { l$speed_res }))
+
+# melt to
+speed_data_long <- copy(speed_data)
+
+speed_data_long <- melt(speed_data_long, 
+                            id.vars = c("ext_outlier", "type",
+                                        "p_outlier", "scale"))
+
+ggplot(speed_data_long)+
+  # geom_boxplot(aes(x = factor(land_values),
+  #                  y = value,
+  #                  group = interaction(variable, scale, land_values),
+  #                  fill = variable))+
+  geom_boxplot(aes(x = factor(ext_outlier),
                    y = value,
-                   col = variable))+
-  facet_grid(scale ~ ext_outlier, scales = "free")
+                   col = type))+
+  facet_grid(~ variable, 
+              scales = "free_y",
+              labeller = label_both)+
+  theme_classic()+
+  theme(strip.background = element_rect(fill = "grey90",
+                                        colour = NA))
 ```
 
 
