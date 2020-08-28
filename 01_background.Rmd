@@ -38,27 +38,6 @@ library(smoove)
 library(data.table)
 ```
 
-```{r sim_smoove_data}
-do_smoove_data <- function(t_max = 100, dt = dt) {
-  # define parameters
-  nu <- 2
-  tau <- 1
-  dt <- .01 
-  ucvm1 <- smoove::simulateUCVM(nu = nu, tau = tau, T.max = 100, dt = dt)
-  
-  # get the data in data.table format
-  tmp_data <- data.table::as.data.table(ucvm1$XY)
-  # rescale coordinates
-  tmp_data[, c("x", "y") := (lapply(.SD, 
-                                scales::rescale)),
-       .SDcols = c("x", "y")]
-  
-  # add a time column
-  tmp_data[, time := seq_len(nrow(tmp_data))]
-
-  return(tmp_data)
-}
-```
 
 ```{r save_data}
 data <- do_smoove_data()
@@ -68,14 +47,6 @@ fwrite(data, "data/data_sim.csv")
 ```
 
 Here, we write functions to add normally distributed errors to the position coordinates of the simulated data.
-
-```{r fun_add_error}
-# simple function to introduce normally distributed error
-do_add_error <- function(v, std_dev = 0.5) {
-  pos_error <- stats::rnorm(length(v), sd = std_dev)
-  return(v + pos_error)
-}
-```
 
 Example of introduced error.
 

@@ -44,30 +44,6 @@ Here we read the simulated data in. The limits of the coordinates are 0 and 1, s
 data <- fread("data/data_sim.csv")
 ```
 
-```{r function_add_outliers}
-# function for point outliers
-do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
-  n_rows <- floor(p_data * nrow(data))
-  tmp_data <- data.table::copy(data)
-  
-  tmp_data[sample(nrow(data), n_rows),
-            c("x", "y") := lapply(.SD,
-                                  function(z) {
-                                    z + stats::rnorm(n_rows, sd = std_dev)
-                                  }),
-            .SDcols = c("x", "y")]
-  return(tmp_data)
-}
-
-# function for extracting and tallying landscape values
-do_count_landcover <- function(land, track) {
-  land_values <- raster::extract(land, track[, c("x", "y")])
-  land_values <- data.table::as.data.table(table(land_values))
-  land_values[, p_land := N / sum(N)]
-  return(land_values)
-}
-```
-
 We add outliers at random to the data to demonstrate their removal.
 
 ```{r add_outlier}
