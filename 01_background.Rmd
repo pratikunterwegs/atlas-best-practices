@@ -36,6 +36,9 @@ Here, we simulate some movement data using the `smoove` `R` package from [@gurar
 # load smoove and datatable
 library(smoove)
 library(data.table)
+
+# source helper functions
+source("R/helper_functions.R")
 ```
 
 
