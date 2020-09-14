@@ -63,7 +63,7 @@ First we remove gross positioning errors using a bounding box filter, i.e., know
 data_inside_bbox <- data.table::copy(data_copy)
 
 # NB: set remove_inside to FALSE
-data_inside_bbox <- atlastools::atl_filter_bounds(data = data,
+data_inside_bbox <- atlastools::atl_filter_bounds(data = data_copy,
                                                   x_range = c(0, 1),
                                                   y_range = c(0, 1),
                                                   remove_inside = FALSE)
@@ -72,7 +72,8 @@ data_inside_bbox <- atlastools::atl_filter_bounds(data = data,
 ```{r}
 ggplot()+
   geom_path(data = data_copy, aes(x, y), col = "red")+
-  geom_path(data = data_inside_bbox, aes(x, y))
+  geom_path(data = data_inside_bbox, aes(x, y))+
+  theme_test()
 ```
 
 ## Removing point outliers: The non-movement approach
@@ -82,6 +83,9 @@ Bjorneraas et al. (2010) describe intuitive filtering steps for trajectories tha
 We begin by calculating the speed and turning angle along the track. For both metrics, the first value is set at `NA`, indicating that we do not know the position of the individual prior to the start of the trajectory. The turning angle is calculated using the cosine rule and requires three positions to yield a values; thus it has an `NA` at the very last position as well.
 
 ```{r example_remove_outliers, eval=FALSE}
+# make a copy of the data
+data_many_nbs <- copy(data_inside_bbox)
+
 # get speed and turning angle
 data_many_nbs[, `:=`(in_speed = atl_get_speed(data_many_nbs,
                                               type = "in"),
@@ -109,9 +113,7 @@ data_non_move <- copy(data_many_nbs)
 
 # filter the copy
 data_non_move <- atl_filter_covariates(data_non_move,
-                                       filters = c("in_speed < 0.001",
-                                                   "out_speed < 0.001",
-                                                   "angle < 40"))
+            filters = c("(in_speed < 0.001 & out_speed < 0.001) | angle < 40"))
 ```
 
 ```{r}
@@ -169,7 +171,7 @@ landscape <- raster("data/data_landscape.tif")
 ### Simulate movement over a landscape
 
 ```{r}
-sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
+sim_data <- mapply(function(p_outlier, ext_outlier, scale, replicate) {
   
   # scale the landscape
   tmp_land <- do_scale_landscape(land_ = landscape,
@@ -223,7 +225,8 @@ sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
   
   land_props[, `:=`(scale = scale,
                     p_outlier = p_outlier,
-                    ext_outlier = ext_outlier)]
+                    ext_outlier = ext_outlier,
+                    replicate = replicate)]
   
   # make speed results
   speed_res <- data.table(type = c("reference", "outliers", "cleaned"),
@@ -237,7 +240,8 @@ sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
                                                      sd, na.rm = TRUE)),
                           scale = scale,
                           p_outlier = p_outlier,
-                          ext_outlier = ext_outlier
+                          ext_outlier = ext_outlier,
+                          replicate = replicate
                           )
   results <- list(land_props = land_props,
                   speed_res = speed_res)
@@ -247,6 +251,7 @@ sim_data <- mapply(function(p_outlier, ext_outlier, scale) {
 param_c$p_outlier, 
 param_c$ext_outlier,
 param_c$land_scale,
+param_c$replicate,
 SIMPLIFY = FALSE)
 ```
 
@@ -293,25 +298,39 @@ ggplot(land_prop_data_long)+
 # get speed data
 speed_data <- rbindlist(lapply(sim_data, function(l) { l$speed_res }))
 
-# melt to
-speed_data_long <- copy(speed_data)
+# cast wide
+speed_data <- speed_data[, !"speed_sd"]
 
-speed_data_long <- melt(speed_data_long, 
-                            id.vars = c("ext_outlier", "type",
-                                        "p_outlier", "scale"))
+# find proportion of speed data
+speed_data <- dcast(speed_data, 
+      scale + p_outlier + ext_outlier + replicate ~ type, 
+      value.var = "speed_mean")
 
-ggplot(speed_data_long)+
-  # geom_boxplot(aes(x = factor(land_values),
-  #                  y = value,
-  #                  group = interaction(variable, scale, land_values),
-  #                  fill = variable))+
-  geom_boxplot(aes(x = factor(ext_outlier),
-                   y = value,
-                   col = type))+
-  facet_grid(~ variable, 
-              scales = "free_y",
-              labeller = label_both)+
-  theme_classic()+
+# get proportion of speeds
+speed_data[, `:=`(d_clean = cleaned * 100 / reference,
+                  d_outlier = cleaned * 100 / reference)]
+
+# melt
+speed_data <- melt(speed_data[, !c("replicate", "cleaned", 
+                                   "reference", "outliers")], 
+                   id.vars = c("scale", "p_outlier", "ext_outlier"))
+
+# summarise
+speed_data <- speed_data[, list(mean = mean(value),
+                                sd = sd(value)),
+                         by = list(scale, p_outlier, ext_outlier, variable)]
+
+ggplot(speed_data)+
+  geom_pointrange(aes(factor(ext_outlier), mean - 100,
+                      ymin = mean - sd - 100,
+                      ymax = mean + sd - 100,
+                      colour = scale,
+                      group = interaction(scale, ext_outlier)),
+                  position = position_dodge(width = 0.2))+
+  geom_line(aes(factor(ext_outlier), mean - 100,
+                      group = scale),
+            position = position_dodge(width = 0.2))+
+  theme_test()+
   theme(strip.background = element_rect(fill = "grey90",
                                         colour = NA))
 ```
