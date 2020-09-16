@@ -35,6 +35,12 @@ library(glue)
 
 # to plot
 library(ggplot2)
+library(patchwork)
+```
+
+```{r}
+# source helper functions
+source("R/helper_functions.R")
 ```
 
 
@@ -50,30 +56,117 @@ data <- fread("data/data_sim.csv")
 We add outliers at random to the data to demonstrate their removal.
 
 ```{r add_outlier}
+# make a dopy
+data_copy <- copy(data)
+
+# add normal error
+data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
+                 y = do_add_error(y, std_dev = 0.005))]
 # add 100 outliers
-data_copy <- do_add_outliers(data, p_data = 0.01, std_dev = 0.05)
+data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.05)
 ```
 
-## Removing gross positioning errors
+## Show data with errors
+
+```{r}
+# make list of data to plot
+data_plot <- list(data, data_copy)
+
+# make plot list
+plots <- lapply(data_plot, function(df) {
+  ggplot(data = df)+
+    
+    geom_path(aes(x, y),
+              col = "red", 
+              alpha = 1)+
+    geom_point(aes(x, y),
+              col = "steelblue", 
+              alpha = 0.2,
+              pch = 16)+
+    theme_test()+
+    theme(axis.text = element_blank(),
+          axis.title = element_blank())
+})
+
+# wrap plots
+plot_figure <- wrap_plots(plots) +
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+# save figure
+ggsave(plot_figure, filename = "figures/fig_add_errors.png", dpi = 300,
+       width = 185, height = 90, units = "mm")
+```
+
+
+## Filtering by spatial bounds
 
 First we remove gross positioning errors using a bounding box filter, i.e., knowing or assuming the real bounds of the movement track (in this case, 0 -- 1), we remove all positions outside those bounds.
 
 ```{r remove_outside_bbox, eval=FALSE}
 # remove positions outside a bounding box
-data_inside_bbox <- data.table::copy(data_copy)
-
 # NB: set remove_inside to FALSE
 data_inside_bbox <- atlastools::atl_filter_bounds(data = data_copy,
-                                                  x_range = c(0, 1),
-                                                  y_range = c(0, 1),
+                                                  x_range = c(0.25, 0.75),
+                                                  y_range = c(0.25, 0.75),
                                                   remove_inside = FALSE)
+
+# data outside a box
+data_outside_bbox <- atlastools::atl_filter_bounds(data = data_copy,
+                                                  x_range = c(-1, 0.2),
+                                                  y_range = c(-1, 0.2),
+                                                  remove_inside = TRUE)
 ```
 
 ```{r}
-ggplot()+
-  geom_path(data = data_copy, aes(x, y), col = "red")+
-  geom_path(data = data_inside_bbox, aes(x, y))+
-  theme_test()
+# data to plot
+data_plot <- list(data_copy, data_inside_bbox, data_outside_bbox)
+
+# make plots
+plots <- lapply(data_plot, function(df) {
+  ggplot()+
+    
+    geom_path(data = df,
+              aes(x, y),
+              col = "red", 
+              alpha = 1, lwd = 0.2)+
+    geom_point(data = df,
+               aes(x, y),
+              col = "steelblue", 
+              alpha = 0.2,
+              pch = 16)+
+    theme_test()+
+    coord_cartesian(xlim = c(0, 1),
+                    ylim = c(0, 1)) +
+    theme(axis.title = element_blank(),
+          axis.text = element_blank())
+})
+
+# add elements
+plots[[1]] <- plots[[1]] + 
+  annotate(xmin = 0.25, xmax = 0.75, ymin = 0.25, ymax = 0.75,
+              fill = NA, col = "black", lty = 1, geom = "rect")+
+  annotate(x = 0.25, y = 0.8, label = "(b)", 
+           fontface = "bold", geom = "text", size = 4)
+
+# add to plot
+plots[[1]] <- plots[[1]] + 
+  annotate(xmin = -0., xmax = 0.2, ymin = -0.1, ymax = 0.2,
+              fill = NA, col = "black", lty = 1, geom = "rect")+
+  annotate(x = 0, y = 0.25, label = "(c)", 
+           fontface = "bold", geom = "text", size = 4)
+
+# wrap plots
+plot_figure <- wrap_plots(plots) +
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+ggsave(plot_figure, filename = "figures/fig_filter_bounds.png", 
+       width = 185, height = 65, units = "mm")
 ```
 
 ## Removing point outliers: The non-movement approach
@@ -83,15 +176,12 @@ Bjorneraas et al. (2010) describe intuitive filtering steps for trajectories tha
 We begin by calculating the speed and turning angle along the track. For both metrics, the first value is set at `NA`, indicating that we do not know the position of the individual prior to the start of the trajectory. The turning angle is calculated using the cosine rule and requires three positions to yield a values; thus it has an `NA` at the very last position as well.
 
 ```{r example_remove_outliers, eval=FALSE}
-# make a copy of the data
-data_many_nbs <- copy(data_inside_bbox)
-
 # get speed and turning angle
-data_many_nbs[, `:=`(in_speed = atl_get_speed(data_many_nbs,
-                                              type = "in"),
-                     out_speed = atl_get_speed(data_many_nbs,
-                                               type = "out"),
-                     angle = atl_turning_angle(data_many_nbs))]
+data_copy[, `:=`(in_speed = atl_get_speed(data_copy,
+                                          type = "in"),
+                 out_speed = atl_get_speed(data_copy,
+                                           type = "out"),
+                 angle = atl_turning_angle(data_copy))]
 
 ```
 
@@ -100,7 +190,7 @@ An alternative approach is to define a speed cutoff based on expert knowledge, a
 
 ```{r}
 # get 90 and 95 percentile of speed and turning angle
-sapply(data_many_nbs[, c("in_speed", "angle")], function(z) {
+sapply(data_copy[, c("in_speed", "angle")], function(z) {
   quantile(z, probs = c(0.9, 0.95), na.rm = TRUE)
 })
 ```
@@ -108,22 +198,44 @@ sapply(data_many_nbs[, c("in_speed", "angle")], function(z) {
 Finally, we remove positions whose incoming and outgoing speeds are both greater than the 95th speed percentile.
 
 ```{r}
-# make a copy of the data
-data_non_move <- copy(data_many_nbs)
-
-# filter the copy
-data_non_move <- atl_filter_covariates(data_non_move,
-            filters = c("(in_speed < 0.001 & out_speed < 0.001) | angle < 40"))
+# filter the copy by the 95th percentile
+data_filtered <- atl_filter_covariates(data_copy,
+            filters = c("(in_speed < 0.029 & out_speed < 0.029) | angle < 40"))
 ```
 
 ```{r}
-ggplot()+
-  geom_path(data = data_inside_bbox,
-            aes(x, y),
-            colour = "black")+
-  geom_path(data = data_non_move,
-            aes(x, y),
-            colour = "red")
+# data plot
+data_plot <- list(data_copy, data_filtered)
+
+plots <- lapply(data_plot, function(df) {
+  ggplot()+
+     geom_path(data = df,
+              aes(x, y),
+              col = "red", 
+              alpha = 1, lwd = 0.2)+
+    geom_point(data = df,
+               aes(x, y, 
+                   col = (in_speed >= 0.029 & out_speed >= 0.029)),
+               shape = ifelse((df$in_speed >= 0.029 & df$out_speed >= 0.029), 
+                              16, 1),
+               show.legend = F)+
+    scale_colour_manual(values = c("steelblue", "red"))+
+    theme_test()+
+    coord_cartesian(xlim = c(0, 1),
+                    ylim = c(0, 1)) +
+    theme(axis.title = element_blank(),
+          axis.text = element_blank())
+})
+
+plot_figure <- wrap_plots(plots) +
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+plot_figure
+ggsave(plot_figure, filename = "figures/fig_filter_spikes.png", 
+       width = 185, height = 90, units = "mm")
 ```
 
 ## Does removing point outliers help?
@@ -379,12 +491,23 @@ data_no_reflection <- atl_remove_reflections(data_with_reflection,
 ```
 
 ```{r}
-ggplot()+
-  geom_path(data = data_with_reflection,
-            aes(x, y))+
-  geom_path(data = data_no_reflection,
-            aes(x, y),
-            colour = "red")
+# data to plot
+plot_data <- list(data_with_reflection, data_no_reflection)
+
+# get plots
+plots <- lapply(plot_data, function(df) {
+  ggplot(data = df)+
+    geom_path(aes(x, y),
+              col = "red")+
+    theme_test()+
+    theme(axis.text = element_blank(),
+          axis.title = element_blank())
+})
+
+patchwork::wrap_plots(plots)+ 
+  patchwork::plot_annotation(tag_levels = "a",
+                             tag_prefix = "(",
+                             tag_suffix = ")")
 ```
 
 ## Assessing whether filtering helps
