@@ -50,7 +50,7 @@ Here we read the simulated data in. The limits of the coordinates are 0 and 1, s
 
 ```{r read_sim_data}
 # read in the data
-data <- fread("data/data_sim.csv")
+data <- fread("data/data_sim.csv")[5000:10000, ]
 ```
 
 We add outliers at random to the data to demonstrate their removal.
@@ -63,7 +63,7 @@ data_copy <- copy(data)
 data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
                  y = do_add_error(y, std_dev = 0.005))]
 # add 100 outliers
-data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.05)
+data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 ```
 
 ## Show data with errors
@@ -78,11 +78,14 @@ plots <- lapply(data_plot, function(df) {
     
     geom_path(aes(x, y),
               col = "red", 
-              alpha = 1)+
+              alpha = 1, lwd = 0.2)+
     geom_point(aes(x, y),
-              col = "steelblue", 
-              alpha = 0.2,
-              pch = 16)+
+              col = "darkblue", 
+              alpha = 0.1,
+              shape = 16)+
+    # coord_cartesian(xlim = c(0.5, 1),
+    #                 ylim = c(0.5, 1)) +
+    coord_equal()+
     theme_test()+
     theme(axis.text = element_blank(),
           axis.title = element_blank())
@@ -95,8 +98,10 @@ plot_figure <- wrap_plots(plots) +
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
+plot_figure
+
 # save figure
-ggsave(plot_figure, filename = "figures/fig_add_errors.png", dpi = 300,
+ggsave(plot_figure, filename = "figures/fig_add_errors.png",
        width = 185, height = 90, units = "mm")
 ```
 
@@ -109,20 +114,13 @@ First we remove gross positioning errors using a bounding box filter, i.e., know
 # remove positions outside a bounding box
 # NB: set remove_inside to FALSE
 data_inside_bbox <- atlastools::atl_filter_bounds(data = data_copy,
-                                                  x_range = c(0.25, 0.75),
-                                                  y_range = c(0.25, 0.75),
+                                                  y_range = c(0.5, 1),
                                                   remove_inside = FALSE)
-
-# data outside a box
-data_outside_bbox <- atlastools::atl_filter_bounds(data = data_copy,
-                                                  x_range = c(-1, 0.2),
-                                                  y_range = c(-1, 0.2),
-                                                  remove_inside = TRUE)
 ```
 
 ```{r}
 # data to plot
-data_plot <- list(data_copy, data_inside_bbox, data_outside_bbox)
+data_plot <- list(data_copy, data_inside_bbox)
 
 # make plots
 plots <- lapply(data_plot, function(df) {
@@ -134,28 +132,22 @@ plots <- lapply(data_plot, function(df) {
               alpha = 1, lwd = 0.2)+
     geom_point(data = df,
                aes(x, y),
-              col = "steelblue", 
-              alpha = 0.2,
+              col = "darkblue", 
+              alpha = 0.1,
               pch = 16)+
     theme_test()+
-    coord_cartesian(xlim = c(0, 1),
-                    ylim = c(0, 1)) +
+    coord_equal() +
     theme(axis.title = element_blank(),
           axis.text = element_blank())
 })
 
 # add elements
 plots[[1]] <- plots[[1]] + 
-  annotate(xmin = 0.25, xmax = 0.75, ymin = 0.25, ymax = 0.75,
-              fill = NA, col = "black", lty = 1, geom = "rect")+
-  annotate(x = 0.25, y = 0.8, label = "(b)", 
-           fontface = "bold", geom = "text", size = 4)
-
-# add to plot
-plots[[1]] <- plots[[1]] + 
-  annotate(xmin = -0., xmax = 0.2, ymin = -0.1, ymax = 0.2,
-              fill = NA, col = "black", lty = 1, geom = "rect")+
-  annotate(x = 0, y = 0.25, label = "(c)", 
+  annotate(xmin = 0.5, xmax = 1,
+           ymin = 0.5, ymax = 1,
+           fill = NA, col = "black", 
+           lty = 2, geom = "rect")+
+  annotate(x = 0.5, y = 1.1, label = "(b)", 
            fontface = "bold", geom = "text", size = 4)
 
 # wrap plots
@@ -165,8 +157,10 @@ plot_figure <- wrap_plots(plots) +
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
+plot_figure
+
 ggsave(plot_figure, filename = "figures/fig_filter_bounds.png", 
-       width = 185, height = 65, units = "mm")
+       width = 185, height = 90, units = "mm")
 ```
 
 ## Removing point outliers: The non-movement approach
@@ -200,7 +194,7 @@ Finally, we remove positions whose incoming and outgoing speeds are both greater
 ```{r}
 # filter the copy by the 95th percentile
 data_filtered <- atl_filter_covariates(data_copy,
-            filters = c("(in_speed < 0.029 & out_speed < 0.029) | angle < 40"))
+            filters = c("(in_speed < 0.03 & out_speed < 0.03) | angle < 40"))
 ```
 
 ```{r}
@@ -214,15 +208,15 @@ plots <- lapply(data_plot, function(df) {
               col = "red", 
               alpha = 1, lwd = 0.2)+
     geom_point(data = df,
+               alpha = 0.1,
                aes(x, y, 
-                   col = (in_speed >= 0.029 & out_speed >= 0.029)),
-               shape = ifelse((df$in_speed >= 0.029 & df$out_speed >= 0.029), 
+                   col = (in_speed >= 0.03 & out_speed >= 0.03)),
+               shape = ifelse((df$in_speed >= 0.03 & df$out_speed >= 0.03), 
                               16, 1),
                show.legend = F)+
-    scale_colour_manual(values = c("steelblue", "red"))+
+    scale_colour_manual(values = c("darkblue", "red"))+
     theme_test()+
-    coord_cartesian(xlim = c(0, 1),
-                    ylim = c(0, 1)) +
+    coord_equal()+
     theme(axis.title = element_blank(),
           axis.text = element_blank())
 })
@@ -250,201 +244,10 @@ Here we create combinations of these parameters and create 25 replicates of each
 # define unique values
 p_outlier <- c(0.05)
 ext_outlier <- c(0.01, 0.05, 0.1)
-land_scale <- c(1, 2, 5, 10)
 replicate <- seq_len(10)
 
 # make combinations
-param_c <- CJ(p_outlier, ext_outlier, land_scale, replicate)
-```
-
-### Procedural landscape generation
-
-Next we procedurally generate (simulate) a landscape from which to extract habitat choice.
-
-```{r make_landscape}
-# use NLMR
-landscape <- NLMR::nlm_randomcluster(100, 100, 
-                                     p = 0.2, 
-                                     ai = c(0.2, 0.3, 0.5),
-                                     rescale = TRUE)
-
-# save landscape as raster
-raster::writeRaster(landscape,
-                    filename = "data/data_landscape.tif",
-                    format = "GTiff", 
-                    overwrite = TRUE)
-```
-
-```{r read_landscape}
-# read landscape
-landscape <- raster("data/data_landscape.tif")
-```
-
-### Simulate movement over a landscape
-
-```{r}
-sim_data <- mapply(function(p_outlier, ext_outlier, scale, replicate) {
-  
-  # scale the landscape
-  tmp_land <- do_scale_landscape(land_ = landscape,
-                                 scale_factor = scale)
-  
-  # make simulated data
-  ref_data <- do_smoove_data()
-  
-  # extract 'true' movement metrics
-  speed <- atl_get_speed(ref_data, type = "in")
-  speed
-  land_vals <- do_count_landcover(tmp_land, ref_data)
-  land_vals[, type := "reference"]
-  
-  # now add error
-  error_data <- do_add_outliers(ref_data, 
-                                p_data = p_outlier,
-                                std_dev = ext_outlier)
-  
-  # get movement metrics with error
-  error_speed <- atl_get_speed(error_data, type = "in")
-  error_land_vals <- do_count_landcover(tmp_land, error_data)
-  error_land_vals[, type := "outliers"]
-  
-  # now clean data
-  clean_data <- copy(error_data)
-  clean_data[, `:=`(in_speed = atl_get_speed(clean_data, type = "in"),
-                    out_speed = atl_get_speed(clean_data, type = "out"),
-                    angle = atl_turning_angle(clean_data))]
-  upper_speed_cutoff <- stats::quantile(clean_data$in_speed, 
-                                        probs = 0.9,
-                                        na.rm = TRUE)
-  angle_cutoff <- 40
-  clean_data <- atl_filter_covariates(clean_data,
-                                      filters = c(glue('{c("in_speed", 
-                                                           "out_speed")} < 
-                                                         {upper_speed_cutoff}'),
-                                                  glue('angle < {angle_cutoff}')
-                                                  )
-                                      )
-  
-  # get speed and land proportion
-  clean_speed <- atl_get_speed(clean_data, type = "in")
-  clean_land_vals <- do_count_landcover(tmp_land, clean_data)
-  clean_land_vals[, type := "cleaned"]
-  
-  # synthesize data
-  land_props <- rbindlist(list(land_vals, error_land_vals, clean_land_vals))
-  # count proportion
-  land_props <- dcast(land_props, land_values ~ type, value.var = "p_land")
-  
-  land_props[, `:=`(scale = scale,
-                    p_outlier = p_outlier,
-                    ext_outlier = ext_outlier,
-                    replicate = replicate)]
-  
-  # make speed results
-  speed_res <- data.table(type = c("reference", "outliers", "cleaned"),
-                          speed_mean = unlist(lapply(list(speed, 
-                                                          error_speed, 
-                                                          clean_speed),
-                                                     mean, na.rm = TRUE)),
-                          speed_sd = unlist(lapply(list(speed, 
-                                                          error_speed, 
-                                                          clean_speed),
-                                                     sd, na.rm = TRUE)),
-                          scale = scale,
-                          p_outlier = p_outlier,
-                          ext_outlier = ext_outlier,
-                          replicate = replicate
-                          )
-  results <- list(land_props = land_props,
-                  speed_res = speed_res)
-  
-  return(results)
-}, 
-param_c$p_outlier, 
-param_c$ext_outlier,
-param_c$land_scale,
-param_c$replicate,
-SIMPLIFY = FALSE)
-```
-
-```{r outlier_removal_land_prop}
-# get bound list
-land_prop_data <- rbindlist(lapply(sim_data, function(l) { l$land_props }))
-# get differences between outliers and cleaned wrt ref
-#land_prop_data[, `:=`(d_cleaned = abs(cleaned - reference),
- #               d_outliers = abs(outliers - reference))]
-
-land_prop_data_long <- copy(land_prop_data)
-
-land_prop_data_long <- melt(land_prop_data_long, 
-                            id.vars = c("land_values", "ext_outlier", 
-                                        "p_outlier", "scale"))
-
-ggplot(land_prop_data_long)+
-  # geom_boxplot(aes(x = factor(land_values),
-  #                  y = value,
-  #                  group = interaction(variable, scale, land_values),
-  #                  fill = variable))+
-  geom_line(aes(x = (land_values),
-                y = value,
-                group = interaction(variable, scale),
-                col = variable,
-                lty = factor(scale)),
-            stat = "summary")+
-  geom_point(aes(x = (land_values),
-                 y = value,
-                 group = interaction(variable, scale),
-                 col = variable,
-                 shape = factor(scale)),
-             size = 2,
-             stat = "summary")+
-  facet_grid( ~ ext_outlier, 
-              scales = "free_y",
-              labeller = label_both)+
-  theme_classic()+
-  theme(strip.background = element_rect(fill = "grey90",
-                                        colour = NA))
-```
-
-```{r outlier_removal_speed}
-# get speed data
-speed_data <- rbindlist(lapply(sim_data, function(l) { l$speed_res }))
-
-# cast wide
-speed_data <- speed_data[, !"speed_sd"]
-
-# find proportion of speed data
-speed_data <- dcast(speed_data, 
-      scale + p_outlier + ext_outlier + replicate ~ type, 
-      value.var = "speed_mean")
-
-# get proportion of speeds
-speed_data[, `:=`(d_clean = cleaned * 100 / reference,
-                  d_outlier = cleaned * 100 / reference)]
-
-# melt
-speed_data <- melt(speed_data[, !c("replicate", "cleaned", 
-                                   "reference", "outliers")], 
-                   id.vars = c("scale", "p_outlier", "ext_outlier"))
-
-# summarise
-speed_data <- speed_data[, list(mean = mean(value),
-                                sd = sd(value)),
-                         by = list(scale, p_outlier, ext_outlier, variable)]
-
-ggplot(speed_data)+
-  geom_pointrange(aes(factor(ext_outlier), mean - 100,
-                      ymin = mean - sd - 100,
-                      ymax = mean + sd - 100,
-                      colour = scale,
-                      group = interaction(scale, ext_outlier)),
-                  position = position_dodge(width = 0.2))+
-  geom_line(aes(factor(ext_outlier), mean - 100,
-                      group = scale),
-            position = position_dodge(width = 0.2))+
-  theme_test()+
-  theme(strip.background = element_rect(fill = "grey90",
-                                        colour = NA))
+param_c <- CJ(p_outlier, ext_outlier, replicate)
 ```
 
 
@@ -458,7 +261,7 @@ A reflection looks like this:
 
 ```{r}
 # make a copy of data with spikes removed
-data_with_reflection <- copy(data_non_move)
+data_with_reflection <- copy(data_filtered)
 
 # add a reflection
 data_with_reflection[500:600, `:=`(x = runif(101, 1, 1.01),
@@ -467,6 +270,18 @@ data_with_reflection[500:600, `:=`(x = runif(101, 1, 1.01),
 
 
 Removing reflections involves using the phenomenon’s properties to first identify its bounds and then removing all positions between these bounds.
+
+In some instances, the estimated location is instantaneously displaced from the real movement track for multiple consecutive timesteps in the sampling process, followed by a return to the real position.
+Removing such prolonged spikes (which we call `reflections') using Bjorneraas and colleagues' approach (2010) would be ineffective --- the bounds of the reflection have either extreme incoming \textit{or} outgoing speeds, and there are no positions with both.
+When encountering such data, users are advised to identify the bounds of the reflection as first step to removing them: the inner bound (where the position estimate first shifts away from the track) will have a high incoming speed ($v_i$), while the outer bound (after which the position estimate returns to the real track) will have a high outgoing speed ($v_o$).
+We suggest locating the first reflected point $p_1$ by comparing the incoming speeds of the track positions ($v_i$) against the speed cutoff $S$.
+An optional turning angle cutoff $A$ may be used if the track includes plausible fast transit segments.
+The first position to satisfy this comparison $v_i > S$ AND $\theta > A$ can be considered the inner bound of the reflection and set as an `anchor point'.
+The position after the anchor point with the highest outgoing speed $v_o$ (such that $v_o > S$) can be considered to be the outer bound of the reflection.
+The positions between these bounds can be identified as a trajectory reflection and removed.
+For a system-specific reasons and the pre-processing steps thus far, a reflection may not end before the last position in the movement track.
+In such cases, the entirety of the track following the first anchor point should be removed, as it is better to exclude moderate chunks of data than to make inferences from unsound data.
+Removing reflections is implemented in a convenient form in \texttt{atlastools} in the \texttt{{atl\_remove\_reflections}} function.
 
 The procedure is as follows:
 
@@ -483,11 +298,9 @@ This method is robust to variable displacement of the reflections from the real 
 
 ```{r}
 # attempt to remove reflections
-data_no_reflection <- copy(data_with_reflection)
-
 data_no_reflection <- atl_remove_reflections(data_with_reflection,
                                               point_angle_cutoff = 10,
-                                              reflection_speed_cutoff = 0.0015)
+                                              reflection_speed_cutoff = 0.03)
 ```
 
 ```{r}
@@ -496,18 +309,40 @@ plot_data <- list(data_with_reflection, data_no_reflection)
 
 # get plots
 plots <- lapply(plot_data, function(df) {
-  ggplot(data = df)+
-    geom_path(aes(x, y),
-              col = "red")+
+  ggplot()+
+    geom_path(data = df,
+              aes(x, y),
+              col = "red", 
+              alpha = 1, lwd = 0.2)+
+    geom_point(data = df,
+               aes(x, y),
+               alpha = 0.1,
+               colour = "darkblue",
+               shape = 16,
+               show.legend = F)+
+    scale_colour_manual(values = c("darkblue", "red"))+
     theme_test()+
-    theme(axis.text = element_blank(),
-          axis.title = element_blank())
+    coord_equal()+
+    theme(axis.title = element_blank(),
+          axis.text = element_blank())
 })
 
-patchwork::wrap_plots(plots)+ 
-  patchwork::plot_annotation(tag_levels = "a",
-                             tag_prefix = "(",
-                             tag_suffix = ")")
+# wrap figures
+plot_figure <- wrap_plots(plots) +
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+plot_figure
+
+ggsave(plot_figure, filename = "figures/fig_filter_reflection.png", 
+       width = 185, height = 90, units = "mm")
 ```
 
-## Assessing whether filtering helps
+## Export data
+
+```{r}
+fwrite(data_no_reflection, file = "data/data_no_reflection.csv")
+```
+
