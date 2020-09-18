@@ -9,3 +9,16 @@ While this algorithm considers only spatio-temporal differences between proto-pa
 Having classified the track into residence patches, it is useful to extract summary data which may be passed on to a statistical analysis. Simple metrics of interest to animal ecologists include the patch duration, the distance travelled within the patch, the displacement within the patch, the tortuosity of movement within the patch (the distance – displacement ratio), the displacement between consecutive patches, as well as the median coordinates of the patch. These may be supplemented by more advanced metrics, such as the total patch area (assuming the previously defined buffer radius around each position), and the patch circularity which is a measure of roundness (e.g. Polsby and Popper 1991). 
 
 The latter spatial metrics require the patch positions to be converted into spatial objects and merged to correct for overlapping buffers. These multi-polygon spatial objects representing each patch can be combined into a convenient spatial object representing the individual’s entire trajectory as a string of residence patches with summary statistics as covariates. Further environmental covariates for these patches are easily extracted from raster or vector spatial data.
+
+```{r}
+# read in the data
+data <- fread("data/data_sim.csv")[5000:10000, ]
+data[, id := "a"]
+
+# make residence patch
+patch <- atl_res_patch(data, buffer_radius = 0.01, 
+                       lim_spat_indep = 0.05, lim_time_indep = 5)
+
+patch_sf <- atl_patch_summary(patch_data = patch, which_data = "summary", buffer_radius = 0.01)
+```
+
