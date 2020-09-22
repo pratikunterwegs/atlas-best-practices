@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ## Residence patches and their construction
 
 We propose a simpler alternative which is to synthesise high frequency trajectories into ‘residence patches’ using an intuitive multi-step, multi-scale segmentation and clustering procedure based on first principles/prior knowledge of the species’ biology. The residence patch is defined as a spatio-temporally proximate sequence of consistent positions where the individual was stationary (as in Oudman et al. 2019). While there are sophisticated ways of identifying stationary points in a track (e.g. recursion analysis; Bracis et al. 2018), the simplest method is to subset data with low speeds. The residence patch method uses only three parameters to determine the appropriate clustering. 
@@ -10,15 +15,81 @@ Having classified the track into residence patches, it is useful to extract summ
 
 The latter spatial metrics require the patch positions to be converted into spatial objects and merged to correct for overlapping buffers. These multi-polygon spatial objects representing each patch can be combined into a convenient spatial object representing the individual’s entire trajectory as a string of residence patches with summary statistics as covariates. Further environmental covariates for these patches are easily extracted from raster or vector spatial data.
 
+## Prepare libraries {-}
+
+```{r prep_libs_02_01}
+library(data.table)
+library(atlastools)
+library(ggplot2)
+```
+
+## Read data and classify
+
 ```{r}
 # read in the data
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, id := "a"]
 
 # make residence patch
-patch <- atl_res_patch(data, buffer_radius = 0.01, 
-                       lim_spat_indep = 0.05, lim_time_indep = 5)
+patch <- atl_res_patch(data, 
+                       buffer_radius = 0.0001, 
+                       lim_spat_indep = 0.02, 
+                       lim_time_indep = 3)
+# get spatial representation
+patch_sf <- atl_patch_summary(patch_data = patch, 
+                              which_data = "spatial", 
+                              buffer_radius = 0.01)
 
-patch_sf <- atl_patch_summary(patch_data = patch, which_data = "summary", buffer_radius = 0.01)
+# get summary data
+patch_summary <- atl_patch_summary(patch_data = patch,
+                                   which_data = "summary")
+```
+
+## Plot classified residence patches
+
+```{r}
+plot_patches <- ggplot()+
+  geom_sf(data = patch_sf,
+          colour = "NA",
+          aes(fill = duration),
+          show.legend = FALSE)+
+  geom_point(data = data,
+             aes(x, y),
+             size = 0.1,
+             alpha = 0.1)+
+  geom_point(data = patch_summary,
+             aes(x_median + 0.5, y_median),
+             size = 5,
+             shape = 21,
+             fill = "grey")+
+  annotate(geom = "text",
+           x = patch_summary$x_median + 0.5, 
+           y = patch_summary$y_median + 0.02,
+           label = patch_summary$patch,
+           col = "red")+
+  annotate(geom = "text",
+           x = patch_summary$x_median, 
+           y = patch_summary$y_median + 0.02,
+           label = patch_summary$patch,
+           col = "red")+
+  annotate(geom = "text",
+           x = c(0.5, 1.1),
+           y = 1,
+           label = sprintf("(%s)", c("a", "b")),
+           fontface = "bold")+
+  geom_path(data = patch_summary,
+            aes(x_median + 0.5, y_median),
+            colour = "darkblue",
+            arrow = arrow(angle = 10, 
+                          type = "closed"))+
+  scale_fill_viridis_c()+
+  theme_void()
+
+plot_patches
+
+# save figure
+ggsave(plot_patches, 
+       filename = "figures/fig_residence_patch.png",
+       width = 185, height = 185 * 2 / 3, units = "mm")
 ```
 
