@@ -9,9 +9,14 @@ editor_options:
 ## Prepare libraries {-}
 
 ```{r prep_libs_02_01}
+# prep libs
 library(data.table)
 library(atlastools)
 library(ggplot2)
+library(patchwork)
+
+# prepare a palette
+pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
 
@@ -46,46 +51,61 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(z) {
 ```{r}
 # prepare data to plot
 # make list of data to plot
-data_plot <- append(list(data, data_errors), list_of_smooths)
+data_plot <- append(list(data_errors), list_of_smooths)
 
-# add offset
-data_plot <- mapply(FUN = function(df, offset) {
-  df[, x := x + offset]
-}, data_plot, seq(from = 0, to = 1, length.out = length(data_plot)),
-SIMPLIFY = FALSE)
+figure_median_smooth <- 
+  mapply(function(df, col) {
+    ggplot()+
+      geom_point(data = df,
+                 aes(x, y),
+                 size = 0.5,
+                 show.legend = FALSE,
+                 col = col,
+                 shape = 16)+
+      geom_path(data = data,
+                aes(x, y),
+                lwd = 0.2,
+                col = pal[4])+
+      scale_colour_distiller(
+        palette = "YlGnBu",
+        na.value = "grey20")+
+      coord_cartesian(expand = T,
+                  ylim = c(0.6, 0.8)) +
+      ggthemes::theme_map()+
+      theme(plot.background = element_rect(fill = NA))
+}, data_plot, c("grey", RColorBrewer::brewer.pal(7, "Greens")[2:5]),
+SIMPLIFY = F)
 
-# bind rows
-data_plot <- rbindlist(data_plot, fill = TRUE)
-
-plot_figure <- ggplot()+
-  # geom_point(data = data_plot,
-  #            aes(x, y),
-  #            col = "darkgrey", 
-  #            alpha = 1,
-  #            shape = 1)+
-  geom_path(data = data_plot,
-            aes(x, y, 
-                col = window_size,
-                group = window_size),
-            alpha = 1,
-            show.legend = FALSE)+
-  annotate(x = 0.6 + seq(0, 1, length.out = 6),
-           y = 1.05,
-           label = glue::glue('({letters[seq(6)]})'),
-           geom = "text",
-           fontface = "bold")+
-  scale_colour_viridis_c(option = "D",
-                         na.value = "red")+
+# make basic plot with rectangle
+fig_bounds <- ggplot()+
+  geom_path(data = data,
+            aes(x, y),
+            col = pal[4])+
+  geom_hline(yintercept = c(0.6, 0.8),
+             col = "grey20",
+             lty = 2, lwd = 0.2)+
   coord_equal() +
-  theme_test()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())
+  ggthemes::theme_map()
 
-plot_figure
+# append to first figure
+figure_median_smooth[[1]] <-
+  figure_median_smooth[[1]]+
+  annotation_custom(grob = ggplotGrob(fig_bounds),
+                    ymin = 0.6, ymax = 0.8,
+                    xmin = 0.55, xmax = 0.7)
 
+# wrap plots
+fig_median_smooth <- wrap_plots(figure_median_smooth, ncol = 3)+
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+
+fig_median_smooth
 # save figure
-ggsave(plot_figure, filename = "figures/fig_median_smooth.png",
-       width = 185, height = 185 * 2 / 3, units = "mm")
+ggsave(fig_median_smooth, filename = "figures/fig_median_smooth.png",
+       width = 170, height = 90, units = "mm")
 ```
 
 ## Aggregating data
