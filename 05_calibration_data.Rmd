@@ -20,7 +20,7 @@ library(ggplot2)
 ```{r}
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
-
+data_raw <- copy(data)
 # plot data
 fig_data_raw <- ggplot(data)+
   geom_path(aes(x, y),
@@ -37,10 +37,10 @@ ggsave(fig_data_raw, filename = "figures/fig_calibration_raw.png",
 
 ## Filter by bounding box
 
-Save a raw copy.
+Save an unprocessed copy.
 
 ```{r}
-data_raw <- copy(data)
+data_unproc <- copy(data)
 ```
 
 Filter by a bounding box.
@@ -59,17 +59,19 @@ Plot the result.
 # plot data
 fig_data_bbox <-
   ggplot()+
-  geom_path(data = data_raw,
+  geom_path(data = data_unproc,
             aes(x, y),
              col = "grey", alpha = 0.5, size = 0.3)+
-  geom_point(data = data_raw[!data, on = c("x", "y")],
-             aes(x, y),
-             col = "red", alpha = 1, size = 2)+
-  geom_point(data = data,
-             aes(x, y),
-             col = "steelblue", alpha = 0.2, size = 2)+
+  geom_point(data = data_unproc,
+             aes(x, y,
+                 col = x > 645000),
+             alpha = ifelse(data_unproc$x > 645000, 0.5, 1),
+             size = ifelse(data_unproc$x > 645000, 0.3, 2),
+             show.legend = F)+
+  scale_color_brewer(palette = "Set1")+
   geom_vline(xintercept = 645000,
              col = "grey", lty = 2)+
+  ggspatial::annotation_scale(location = "br")+
   ggthemes::theme_map()+
   coord_sf(crs = 32631)
 
@@ -82,7 +84,7 @@ ggsave(fig_data_bbox, filename = "figures/fig_calib_bbox.png",
 
 ```{r}
 # save a copy
-data_raw <- copy(data)
+data_unproc <- copy(data)
 
 # remove NBS <= 3
 data <- atl_filter_covariates(data = data,
@@ -90,20 +92,19 @@ data <- atl_filter_covariates(data = data,
 ```
 
 ```{r}
-fig_low_nbs <- ggplot()+
+fig_low_nbs <-
+  ggplot()+
   geom_path(data = data,
             aes(x, y),
              col = "grey", alpha = 0.5, size = 0.3)+
-  geom_point(data = data_raw[!data, on = c("x", "y")],
-            aes(x, y),
-            shape = 4,
-            col = "red", alpha = 0.5, size = 0.3)+
-  geom_point(data = data,
-             aes(x, y, col = NBS),
-             alpha = 1, size = 0.2)+
-  scico::scale_colour_scico(palette = "davos",
-                         labels = scales::comma, end = 0.9)+
+  geom_point(data = data_unproc,
+            aes(x, y,
+                col = as.factor(NBS > 3)),
+            shape = 1,
+            alpha = 0.5, size = 0.3, show.legend = F)+
+  scale_color_brewer(palette = "Set1")+
   ggthemes::theme_map()+
+  ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "NBS")
 
@@ -169,17 +170,13 @@ fig_speed_outliers <-
             aes(x, y),
              col = "grey", alpha = 0.5, size = 0.3)+
   geom_point(data = data,
-             aes(x, y, col = speed_in),
-             size = 0.2)+
-  scico::scale_colour_scico(palette = "davos", 
-                         direction = 1, 
-                         limits = c(NA, speed_angle_thresholds[1]),
-                         na.value = "red",
-                         labels = scales::comma,
-                         end = 0.9,
-                         trans = "sqrt")+
+             aes(x, y, 
+                 col = speed_in < 15.7),
+             size = 0.3, alpha = 0.5,
+             show.legend = F)+
+  scale_color_brewer(palette = "Set1")+
   ggthemes::theme_map()+
-  theme(legend.position = c(0, 0.8))+
+  ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "speed (m/s)")
 
@@ -194,7 +191,7 @@ Here we use a speed threshold of 20 m/s, 4 m/s lower than the 95th percentile.
 
 ```{r}
 # make a copy
-data_raw <- copy(data)
+data_unproc <- copy(data)
 
 # remove speed outliers
 data <- atl_filter_covariates(data = data,
@@ -215,7 +212,7 @@ data[, angle := atl_turning_angle(data = data)]
 
 ```{r}
 # apply a 5 point median smooth, first make a copy
-data_raw <- copy(data)
+data_unproc <- copy(data)
 
 # now apply the smooth
 data <- atl_median_smooth(data = data,
@@ -225,25 +222,75 @@ data <- atl_median_smooth(data = data,
 
 ```{r}
 # make figure
-fig_speed_outliers <-
+fig_smooth <-
   ggplot()+
-  geom_path(data = data_raw,
-            aes(x, y, col = "red"), 
-            alpha = 0.5, size = 4)+
   geom_path(data = data,
-             aes(x, y, col = "black"))+
-  scico::scale_colour_scico_d(palette = "roma",
-                         direction = -1, begin = 0.1,
-                         labels = c("smoothed", "raw"))+
-  ggthemes::theme_map()+
-  theme(legend.position = c(0, 0.8))+
+             aes(x, y),
+            col = RColorBrewer::brewer.pal(4, "Set1")[4])+
+  annotate(geom = "rect",
+           xmin = c(650785, 650045),
+           ymin = c(5904450, 5902700),
+           xmax = c(652500, 650682),
+           ymax = c(5906133, 5903080),
+           fill = "grey90",
+           alpha = 0.5,
+           col = NA)+
+    annotate(geom = "text",
+           x = c(650785, 650045) + 400,
+           y = c(5904450, 5902700) + 300,
+           col = "black",
+           label = c("(a)", "(b)"))+
+  theme_void()+
   coord_sf(crs = 32631)+
   labs(colour = "track")
 
+# make zoomed in figures
+fig_inset <- mapply(function(xl, yl) {
+  ggplot()+
+    geom_point(data = data_raw[!data_unproc, on = c("x", "y")],
+               aes(x, y),
+               col = "grey",
+               shape = 4,
+               size = 0.4)+
+    geom_point(data = data_unproc,
+               aes(x, y),
+               col = RColorBrewer::brewer.pal(3, "Set1")[3],
+               shape = 1, 
+               alpha = 0.5)+
+    geom_path(data = data,
+              aes(x, y),
+              col = RColorBrewer::brewer.pal(4, "Set1")[4])+
+    ggthemes::theme_few()+
+    theme(axis.title = element_blank(),
+          axis.text = element_blank())+
+    ggspatial::annotation_scale(location = "br")+
+    coord_sf(crs = 32631,
+             xlim = xl,
+             ylim = yl, expand = F
+             )+
+    labs(colour = "track")
+}, list(xl1 = c(650785, 652500),
+        xl2 = c(650045, 650682)),
+   list(yl1 = c(5904450, 5906133),
+        yl2 = c(5902700, 5903080)),
+SIMPLIFY = FALSE)
+
+# add global figure to second inset
+fig_inset[[2]] <- fig_inset[[2]] +
+  annotation_custom(grob = ggplotGrob(fig_smooth),
+                    xmin = 649990,
+                    xmax = 650045 + (650682 - 650045)/2,
+                    ymin = 5903080 - (5903080 - 5902700)/2.5,
+                    ymax = 5903080
+                    )
+  
+wrap_plots(fig_inset)+
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")")
 # save figure
-ggsave(fig_speed_outliers, 
-       filename = "figures/fig_calib_median_smooth.png",
-       width = 185 / 25, height = 185 / 25)
+ggsave(filename = "figures/fig_calib_median_smooth.png",
+       width = 185 / 25, height = 90 / 25)
 ```
 
 ## Making residence patches
@@ -256,7 +303,7 @@ In this dataset, residence positions are marked in the `tID` column as beginning
 
 ```{r}
 # make a data copy
-data_raw <- copy(data)
+data_unproc <- copy(data)
 
 # assign residence positions
 data[, residence := stringi::stri_detect(tID, regex = "WP")]
@@ -265,7 +312,7 @@ data[, residence := stringi::stri_detect(tID, regex = "WP")]
 data_res <- data[residence == T, ]
 
 # get a simple inverse of speed as residence time classification
-data_slow <- copy(data_raw)
+data_slow <- copy(data_unproc)
 data_slow <- data_slow[speed_in < 1, ]
 ```
 
@@ -294,6 +341,12 @@ patch_res_unknown <- atl_res_patch(data_slow,
 patch_sf_data <- lapply(list(patch_res_known, patch_res_unknown),
                         atl_patch_summary, which_data = "spatial")
 
+# assign a crs
+patch_sf_data <- lapply(patch_sf_data, function(df) {
+  sf::st_crs(df) <- 32631
+  return(df)
+})
+
 patch_summary_data <- lapply(list(patch_res_known, patch_res_unknown),
                         atl_patch_summary)
 ```
@@ -310,13 +363,12 @@ fig_basic_residence <-
             size = ifelse(data$residence, 4, 0.2),
             shape = ifelse(data$residence, 2, 1),
             show.legend = FALSE)+
-  scico::scale_color_scico_d(palette = "berlin",
-                             direction = -1,
-                             begin = 0.2, end = 0.8)+
-  ggthemes::theme_map()
+  scale_color_brewer(palette = "Set1")+
+  ggthemes::theme_map()+
+  coord_sf(crs = 32631)
 
 # figure of residence patches known
-fig_patch_known <- 
+# fig_patch_known <- 
   ggplot()+
   geom_sf(data = patch_sf_data[[1]],
           fill = "steelblue", col = NA)+
@@ -324,6 +376,28 @@ fig_patch_known <-
             aes(x_median, y_median),
             col = "red")+
   ggthemes::theme_map()
+    
+pla = mapply(function(pol) {
+  
+  bbox = st_bbox(pol)
+
+  ggplot()+
+    geom_path(data = data_unproc,
+               aes(x, y),
+               col = RColorBrewer::brewer.pal(4, "Set1")[4])+
+    geom_sf(data = pol,
+            alpha = 0.2)+
+    ggthemes::theme_map()+
+    coord_sf(
+      expand = F,
+      xlim = c(bbox[["xmin"]], bbox[["xmax"]]),
+      ylim = c(bbox[["ymin"]], bbox[["ymax"]]))
+}, patch_sf_data[[1]]$polygons, SIMPLIFY = F)
+
+fig_patches_small <- wrap_plots(pla)+
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")")
 
 # figure of unknown patches
 fig_patch_unknown <-
@@ -389,18 +463,20 @@ patch_summary_compare <-
 # make figure comparing different methods
 ggplot()+
   geom_point(data = patch_summary_compare,
-             aes(nfixes_real, 
-                 nfixes),
+             aes(duration_real, 
+                 duration),
              show.legend = F,
             size = 4,
             shape = 1)+
   geom_smooth(data = patch_summary_compare,
-             aes(nfixes_real, 
-                 nfixes),
+             aes(duration_real, 
+                 duration),
+             se = F,
+             method = "glm",
              show.legend = F)+
-  scale_x_log10()+
-  scale_y_log10()+
-  coord_cartesian(xlim = c(10, NA))+
+  # scale_x_log10()+
+  # scale_y_log10()+
+  # coord_cartesian(xlim = c(10, NA))+
   ggthemes::theme_few()+
   labs(x = "# positions (real)",
        y = "# positions (inferred)")
