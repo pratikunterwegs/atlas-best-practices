@@ -56,6 +56,13 @@ data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
 data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 ```
 
+Save the error-added data.
+
+```{r}
+fwrite(data_copy, file = "data/data_errors.csv")
+```
+
+
 ```{r}
 # define red and blue
 pal <- RColorBrewer::brewer.pal(4, "Set1")

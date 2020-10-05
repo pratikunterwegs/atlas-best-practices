@@ -48,43 +48,69 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(z) {
 })
 ```
 
+### Robustness to large gaps
+
+```{r}
+# make a single list
+data_plot <- append(list(data_errors), list_of_smooths)
+
+# now prep gap
+fig_smooth_1d <- 
+  ggplot()+
+  geom_path(data = data[1:2000,],
+            aes(time, y),
+            size = 0.2)+
+  geom_point(data = rbindlist(data_plot),
+             aes(time, y,
+                 col = factor(window_size)),
+             alpha = 0.5,
+             size = 1,
+             show.legend = FALSE,
+             shape = 16)+
+  coord_cartesian(xlim = c(5000, 7000),
+                  ylim = c(0.7, NA),
+                  expand = F)+
+  scale_colour_brewer(palette = "Spectral")+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank())+
+  labs(x = "position index", y = "Y coordinate")
+```
+
+### Plot results
+
 ```{r}
 # prepare data to plot
 # make list of data to plot
-data_plot <- append(list(data_errors), list_of_smooths)
-
 figure_median_smooth <- 
   mapply(function(df, col) {
     ggplot()+
       geom_point(data = df,
                  aes(x, y),
                  size = 0.5,
+                 alpha = 0.5,
                  show.legend = FALSE,
                  col = col,
-                 shape = 16)+
+                 shape = 1)+
       geom_path(data = data,
                 aes(x, y),
-                lwd = 0.2,
-                col = pal[4])+
-      scale_colour_distiller(
-        palette = "YlGnBu",
-        na.value = "grey20")+
+                col = "grey20")+
       coord_cartesian(expand = T,
                   ylim = c(0.6, 0.8)) +
-      ggthemes::theme_map()+
-      theme(plot.background = element_rect(fill = NA))
-}, data_plot, c("grey", RColorBrewer::brewer.pal(7, "Greens")[2:5]),
+      ggthemes::theme_map()
+}, data_plot, c(pal[2], rep(
+  RColorBrewer::brewer.pal(3, "Greens")[2],
+  4)),
 SIMPLIFY = F)
 
 # make basic plot with rectangle
-fig_bounds <- ggplot()+
+fig_bounds <- 
+  ggplot()+
   geom_path(data = data,
-            aes(x, y),
-            col = pal[4])+
+            aes(x, y))+
   geom_hline(yintercept = c(0.6, 0.8),
              col = "grey20",
              lty = 2, lwd = 0.2)+
-  coord_equal() +
+  coord_equal(expand = F) +
   ggthemes::theme_map()
 
 # append to first figure
@@ -92,10 +118,12 @@ figure_median_smooth[[1]] <-
   figure_median_smooth[[1]]+
   annotation_custom(grob = ggplotGrob(fig_bounds),
                     ymin = 0.6, ymax = 0.8,
-                    xmin = 0.55, xmax = 0.7)
+                    xmin = 0.5, xmax = 0.7)
 
 # wrap plots
-fig_median_smooth <- wrap_plots(figure_median_smooth, ncol = 3)+
+fig_median_smooth <- wrap_plots(append(figure_median_smooth, 
+                                       list(fig_smooth_1d)), 
+                                       ncol = 3)+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")") &
@@ -103,62 +131,151 @@ fig_median_smooth <- wrap_plots(figure_median_smooth, ncol = 3)+
 
 
 fig_median_smooth
+
 # save figure
 ggsave(fig_median_smooth, filename = "figures/fig_median_smooth.png",
-       width = 170, height = 90, units = "mm")
+       width = 225, height = 225 / 1.77, units = "mm")
 ```
 
 ## Aggregating data
 
 ```{r}
 # choose the data
-data_agg <- copy(data)
+data_agg <- copy(list_of_smooths[[3]])
 
-list_of_agg <- lapply(c(10, 30, 120), function(z) {
-  data_agg <- atl_thin_data(data = data_agg,
+# get list of aggregated data
+list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
+  data_return <- atl_thin_data(data = data_agg,
                             interval = z,
                             method = "aggregate")
-  data_agg[, interval := z]
-  
+  data_return[, interval := z]
+  return(data_return)
 })
 ```
 
 ```{r}
-# plot
-data_plot <- append(list(data[, `:=`(SD = 0, interval = NA)]), list_of_agg)
-
-# add offset
-data_plot <- mapply(FUN = function(df, offset) {
-  df[, x := x + offset]
-}, data_plot, seq(from = 0, to = 1, length.out = length(data_plot)),
+# make figure
+figure_aggregate <- 
+  mapply(FUN = function(df) {
+  ggplot(data = df)+
+      geom_point(data = list_of_smooths[[3]],
+                 aes(x, y),
+                 col = pal[3],
+                 size = 0.3, alpha = 0.5)+
+      geom_point(aes(x, y, size = SD),
+                 colour = pal[4],
+                 alpha = 1,
+                 stroke = 1,
+                 shape = 4, show.legend = F)+
+      geom_path(aes(x, y),
+                 colour = pal[4],
+                 alpha = 1)+
+      geom_path(data = data,
+                lwd = 0.2,
+                aes(x, y),
+                col = "grey20")+
+      coord_equal(ylim = c(0.6, 0.8))+
+      ggthemes::theme_few()+
+      theme(axis.title = element_blank(),
+            axis.text = element_blank())
+}, list_of_agg[2:3],
 SIMPLIFY = FALSE)
 
-data_plot <- rbindlist(data_plot, fill = TRUE)
+figure_aggregate <- wrap_plots(figure_aggregate)
 
-plot_figure <- ggplot(data = data_plot)+
-  geom_point(aes(x, y, size = SD),
-             colour = "darkblue",
-             alpha = 0.5,
-             shape = 16, show.legend = F)+
-  geom_path(aes(x, y,
-                group = interval,
-                col = interval),
-            col = "red",
-            show.legend = FALSE)+
-  annotate(x = 0.6 + seq(0, 1, length.out = 4),
-           y = 1.05,
-           label = glue::glue('({letters[seq(4)]})'),
-           geom = "text",
-           fontface = "bold")+
-  coord_equal()+
-  theme_test()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())
-
-plot_figure
-
+figure_aggregate
 # save figure
 ggsave(plot_figure, filename = "figures/fig_aggregate_data.png",
        width = 185, height = 90, units = "mm")
+```
+
+### Aggregation before correction, a warning
+
+```{r}
+# read data with errors
+data_errors <- fread("data/data_errors.csv")
+  
+# aggregate before correction
+list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
+  data_return <- atl_thin_data(data = data_errors,
+                            interval = z,
+                            method = "aggregate")
+  data_return[, interval := z]
+  data_return[, speed := atl_get_speed(data_return)]
+  return(data_return)
+})
+
+# get real speed
+data[, speed := atl_get_speed(data)]
+
+### plot figures
+fig_agg_data <- 
+  lapply(list_of_agg, function(df) {
+    ggplot(df)+
+      geom_path(aes(x,y), 
+                # col = factor(interval), 
+                # group = interval),
+                lwd = 0.2)+
+      geom_point(aes(x,y, 
+                     size = SD,
+                     shape = speed < quantile(data$speed, 0.95, na.rm = T),
+                     col = speed < quantile(data$speed, 0.95, na.rm = T),
+                     group = interval),
+                 stroke = ifelse(df$speed < quantile(data$speed, 0.95, na.rm = T),
+                                 1, 1),
+                 show.legend = F)+
+      geom_path(data = data,
+                aes(x, y),
+                lwd = 0.1)+
+      scale_shape_manual(values = c(2, 4))+
+      scale_colour_manual(values = pal[c(1, 2)])+
+      coord_cartesian(ylim = c(0.6, NA))+
+      ggthemes::theme_map()  
+  })
+```
+
+```{r}
+# now plot hist of speed
+data_agg <- rbindlist(list_of_agg)
+
+# show boxplot of speed
+fig_agg_speed <- ggplot(data_agg)+
+  geom_jitter(aes(factor(interval), speed),
+              col = "grey",
+              shape = 4, alpha = 0.5)+
+  geom_boxplot(aes(factor(interval), speed),
+               fill = NA,
+               show.legend = F, 
+               width = 0.3, 
+               outlier.size = 0.2)+
+  geom_hline(yintercept =
+               c(mean(data$speed, na.rm = T),
+                 quantile(data$speed, na.rm = T,
+                          probs = c(0.95))
+               ),
+             lty = c(1, 2))+
+  scale_y_log10(label = scales::comma)+
+  ggthemes::theme_few()+
+  theme(axis.text.y = element_blank())+
+  labs(x = "interval (s)",
+       y = "speed")
+```
+
+### Combine with aggregations
+
+```{r}
+# make combined figure
+fig_aggregate <- 
+  wrap_plots(append(fig_agg_data[2:3], list(fig_agg_speed)),
+           design = "AAABBBCC")+
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+# save figure
+ggsave(fig_aggregate,
+       filename = "figures/fig_aggregate_data.png",
+       width = 170, height = 170 / 1.67, units = "mm")
 ```
 

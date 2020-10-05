@@ -12,6 +12,9 @@ editor_options:
 library(data.table)
 library(atlastools)
 library(ggplot2)
+
+# prepare a palette
+pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
 ## An example with simulated data
@@ -28,6 +31,7 @@ patch <- atl_res_patch(data,
                        buffer_radius = 0.0001, 
                        lim_spat_indep = 0.02, 
                        lim_time_indep = 3)
+
 # get spatial representation
 patch_sf <- atl_patch_summary(patch_data = patch, 
                               which_data = "spatial", 
@@ -41,47 +45,52 @@ patch_summary <- atl_patch_summary(patch_data = patch,
 ### Plot classified residence patches
 
 ```{r}
-plot_patches <- ggplot()+
+plot_patches <-
+  ggplot()+
   geom_sf(data = patch_sf,
-          colour = "NA",
-          aes(fill = duration),
+          colour = "grey20",
+          fill = "grey90",
           show.legend = FALSE)+
-  geom_point(data = data,
-             aes(x, y),
-             size = 0.1,
-             alpha = 0.1)+
   geom_point(data = patch_summary,
-             aes(x_median + 0.5, y_median),
-             size = 5,
-             shape = 21,
-             fill = "grey")+
-  annotate(geom = "text",
-           x = patch_summary$x_median + 0.5, 
-           y = patch_summary$y_median + 0.02,
-           label = patch_summary$patch,
-           col = "red")+
-  annotate(geom = "text",
-           x = patch_summary$x_median, 
-           y = patch_summary$y_median + 0.02,
-           label = patch_summary$patch,
-           col = "red")+
+             aes(x_median + 0.5, 
+                 y_median,
+                 size = duration),
+             # size = 8,
+             shape = 2,
+             col = pal[2],
+             stroke = 2,
+             show.legend = F)+
+  geom_path(data = data,
+             aes(x, y),
+            size = 0.3)+
+  geom_curve(data = patch_summary,
+            aes(x = x_end + 0.5, y = y_end,
+                xend = shift(patch_summary$x_start, 
+                             type = "lag") + 0.5,
+                yend = shift(patch_summary$y_start, 
+                             type = "lag")),
+            col = "grey30",
+            size = 0.3,
+            ncp = 2,
+            curvature = -0.4,
+            arrow = arrow(angle = 20,
+                          length = unit(2, units = "mm"), 
+                          type = "closed", ends = "first"))+
   annotate(geom = "text",
            x = c(0.5, 1.1),
            y = 1,
            label = sprintf("(%s)", c("a", "b")),
            fontface = "bold")+
-  geom_path(data = patch_summary,
-            aes(x_median + 0.5, y_median),
-            colour = "darkblue",
-            arrow = arrow(angle = 10, 
-                          type = "closed"))+
-  scale_fill_viridis_c()+
-  theme_void()
+  scale_colour_distiller(palette = "YlGnBu",
+                         trans = "log10")+
+  coord_sf()+
+  ggthemes::theme_map()+
+  theme(legend.position = "right")
 
 plot_patches
 
 # save figure
 ggsave(plot_patches, 
        filename = "figures/fig_residence_patch.png",
-       width = 185, height = 185 * 2 / 3, units = "mm")
+       width = 170, height = 100, units = "mm")
 ```
