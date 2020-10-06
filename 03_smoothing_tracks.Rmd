@@ -55,11 +55,8 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(z) {
 data_plot <- append(list(data_errors), list_of_smooths)
 
 # now prep gap
-fig_smooth_1d <- 
+fig_smooth_1d <-
   ggplot()+
-  geom_path(data = data[1:2000,],
-            aes(time, y),
-            size = 0.2)+
   geom_point(data = rbindlist(data_plot),
              aes(time, y,
                  col = factor(window_size)),
@@ -103,10 +100,15 @@ figure_median_smooth <-
 SIMPLIFY = F)
 
 # make basic plot with rectangle
-fig_bounds <- 
+fig_bounds <-
   ggplot()+
+  geom_point(data = data_errors,
+            aes(x, y),
+            size = 0.1, alpha = 0.2, 
+            col = "grey")+
   geom_path(data = data,
-            aes(x, y))+
+            aes(x, y),
+            size = 0.1)+
   geom_hline(yintercept = c(0.6, 0.8),
              col = "grey20",
              lty = 2, lwd = 0.2)+
