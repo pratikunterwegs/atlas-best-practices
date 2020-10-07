@@ -4,24 +4,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Filtering data
+# Reducing Large-Scale Positioning Error by Filtering
 
 ## Prepare libraries {-}
+
+Here we load some useful libraries, and the helper functions.
 
 ```{r prep_libs_02_01}
 # to handle movement data
 library(data.table)
 library(atlastools)
-
-# to simulate movement
-library(smoove)
-
-# to generate a landscape
-library(raster)
-library(NLMR)
-
-# strings
-library(glue)
 
 # to plot
 library(ggplot2)
@@ -34,7 +26,17 @@ source("R/helper_functions.R")
 ```
 
 
-## Introducing errors {-}
+## Introducing Errors to the Data
+
+Here we introduce three kinds of errors to the data:
+
+1. Small-scale normally distributed errors at each position;
+
+2. Large-scale error at a random 0.5% of positions;
+
+3. A large-scale displacement of a sequence of 300 positions.
+
+While the data are 10,000 positions at 1-second interval, we shall use only 5,000 of these.
 
 ```{r read_sim_data}
 # read in the data
@@ -44,34 +46,40 @@ data <- fread("data/data_sim.csv")[5000:10000, ]
 We add outliers at random to the data to demonstrate their removal.
 
 ```{r add_outlier}
-# make a dopy
+# make a copy
 data_copy <- copy(data)
-# add a reflection
+
+# add a prolonged spike or reflection to 300 positions
 data_copy[500:800, `:=`(x = x + 0.25,
                         y = y + 0.25)]
+
 # add normal error
 data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
                  y = do_add_error(y, std_dev = 0.005))]
+
 # add 100 outliers
 data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 ```
 
-Save the error-added data.
+Save the data to which errors have been added.
 
 ```{r}
 fwrite(data_copy, file = "data/data_errors.csv")
 ```
 
+Define a palette with 4 colours for convenience.
 
 ```{r}
-# define red and blue
+# define a four colour palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
-## Show data with errors
+## Make Figure of Simulated Data
+
+We make a figure of the canonical data (grey line) along with the artificially added error (grey points).
 
 ```{r}
-# make figure
+# make figure of canonical data with added errors
 figure_raw <-
   ggplot()+
   geom_point(data = data_copy,
@@ -94,7 +102,12 @@ figure_raw <-
 
 ## Filtering by spatial bounds
 
-First we remove gross positioning errors using a bounding box filter, i.e., knowing or assuming the real bounds of the movement track (in this case, 0 -- 1), we remove all positions outside those bounds.
+First we remove gross positioning errors using a bounding box filter using the function `atl_filter_bounds`. In this example, we show filtering only on the Y coordinate.
+`atl_filter_bounds` takes coordinate ranges as two-element vectors of the lower and higher bound.
+It is possible to pass one the bounds as `NA`, in which case, only the other bound is used for filtering, i.e., `y_range = c(NA, 1)` is equivalent to selecting all Y coordinates < 1.
+
+`atl_filter_bounds` was initially designed to remove positions _inside_ a specific range, hence the argument `remove_inside`.
+The default value of the argument is `FALSE`, and `atl_filter_bounds` is thus a bounding box filter.
 
 ```{r remove_outside_bbox, eval=FALSE}
 # remove positions outside a bounding box
@@ -103,6 +116,11 @@ data_inside_bbox <- atl_filter_bounds(data = data_copy,
                                       y_range = c(0.5, 1),
                                       remove_inside = FALSE)
 ```
+
+`atl_filter_bounds` is not vectorised, and if there are two or more bounds per coordinate (for instance, $x_1 \ldots x_2$, and $x_3_ \ldots x_4$), they must be passed in two different function calls.
+
+
+
 
 ```{r}
 # plot data inside and outside bbox
