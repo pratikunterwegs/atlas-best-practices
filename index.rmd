@@ -15,4 +15,4 @@ description: "TRES Tidyverse Tutorial"
 
 # Outline {-}
 
-An outline here.
+![](figures/fig_recipe.png)
