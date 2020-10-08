@@ -13,8 +13,11 @@ library(data.table)
 library(atlastools)
 library(ggplot2)
 
+# for residence time
+library(recurse)
+
 # prepare a palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- RColorBrewer::brewer.pal(3, "PRGn")
 ```
 
 ## An example with simulated data
@@ -23,17 +26,52 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 ```{r}
 # read in the data
-data <- fread("data/data_sim.csv")[5000:10000, ]
+data_raw <- fread("data/data_sim.csv")[5000:10000, ]
+data <- fread("data/data_smooth.csv")
 data[, id := "a"]
 
+# do recurse
+data_recurse <- getRecursions(data[, list(x, y, time, id)],
+                              radius = 0.1)
+
+# assign residence time
+data[, residence_time := data_recurse$residenceTime]
+```
+
+We first plot a figure of residence time per positions, and residence time per timestamp.
+
+```{r}
+# restime by position
+ggplot()+
+  geom_point(data = data,
+             aes(x, y, 
+                 col = residence_time > 0.15),
+             shape = 1,
+             show.legend = F)+
+  geom_path(data = data_raw,
+            aes(x, y),
+            lwd = 0.2,
+            col = "grey20")+
+  scale_colour_manual(values = c("grey", pal[3]))+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))
+```
+
+We construct residence patches from data where residence time is > 0.15.
+
+```{r}
 # make residence patch
-patch <- atl_res_patch(data, 
-                       buffer_radius = 0.0001, 
+patch <- atl_res_patch(data[residence_time > 0.15, ], 
+                       buffer_radius = 0.001, 
                        lim_spat_indep = 0.02, 
-                       lim_time_indep = 3)
+                       lim_time_indep = 5)
+
+
 
 # get spatial representation
-patch_sf <- atl_patch_summary(patch_data = patch, 
+patch_sf <- atl_patch_summary(patch_data = patch,
                               which_data = "spatial", 
                               buffer_radius = 0.01)
 
@@ -45,49 +83,74 @@ patch_summary <- atl_patch_summary(patch_data = patch,
 ### Plot classified residence patches
 
 ```{r}
-plot_patches <-
+# plot_patches <-
   ggplot()+
-  geom_sf(data = patch_sf,
-          colour = "grey20",
-          fill = "grey90",
-          show.legend = FALSE)+
-  geom_point(data = patch_summary,
-             aes(x_median + 0.5, 
-                 y_median,
-                 size = duration),
-             # size = 8,
-             shape = 2,
-             col = pal[2],
-             stroke = 2,
-             show.legend = F)+
   geom_path(data = data,
-             aes(x, y),
-            size = 0.3)+
-  geom_curve(data = patch_summary,
-            aes(x = x_end + 0.5, y = y_end,
-                xend = shift(patch_summary$x_start, 
-                             type = "lag") + 0.5,
-                yend = shift(patch_summary$y_start, 
-                             type = "lag")),
-            col = "grey30",
-            size = 0.3,
-            ncp = 2,
-            curvature = -0.4,
-            arrow = arrow(angle = 20,
-                          length = unit(2, units = "mm"), 
-                          type = "closed", ends = "first"))+
+            aes(x, y),
+            col = "grey20")+
+  scale_colour_manual(values = c("grey", pal[3]))+
+  geom_sf(data = patch_sf,
+          aes(fill = patch),
+          colour = "grey20",
+          alpha = 0.8,
+          lwd = 0.2,
+          show.legend = FALSE)+
+  
+  geom_path(data = patch_summary,
+            aes(x_start + 0.3, y_start),
+            col = "grey20",
+            size = 0.5)+
+  geom_point(data = data,
+             aes(x + 0.3, y, 
+                 col = residence_time > 0.15),
+             shape = 1,
+             show.legend = F)+
+  geom_point(data = patch_summary,
+             aes(x_start + 0.3,
+                 y_start,
+                 fill = patch),
+             col = "grey20",
+             size = 8,
+             stroke = 1,
+             shape = 21,
+             show.legend = F)+
+  # geom_path(data = data,
+  #            aes(x + 0.3, y),
+  #           size = 0.2,
+  #           col = "grey40")+
   annotate(geom = "text",
-           x = c(0.5, 1.1),
+           x = c(0.75, 1.05),
            y = 1,
-           label = sprintf("(%s)", c("a", "b")),
+           label = sprintf("(%s)", c("c", "d")),
            fontface = "bold")+
-  scale_colour_distiller(palette = "YlGnBu",
-                         trans = "log10")+
-  coord_sf()+
-  ggthemes::theme_map()+
-  theme(legend.position = "right")
+  scale_fill_distiller(palette = "RdPu")+
+  # coord_sf(xlim = c(0.7, 1))+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))
 
-plot_patches
+# res time by time
+ggplot()+
+  geom_rect(data = patch_summary,
+            aes(xmin = time_start,
+                xmax = time_end,
+                ymin = 0.05, ymax = 0.65,
+                fill = factor(patch)),
+            alpha = 0.8,
+            show.legend = F)+
+  geom_path(data = data,
+            aes(time, residence_time),
+            show.legend = F)+
+  geom_hline(yintercept = 0.15,
+             col = "grey20",
+             lwd = 0.5,
+             lty = 2)+
+  scale_fill_brewer(palette = "RdPu", direction = -1)+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))
 
 # save figure
 ggsave(plot_patches, 
