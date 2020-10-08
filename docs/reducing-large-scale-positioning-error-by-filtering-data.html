@@ -188,6 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
 </ul>
 
       </nav>
@@ -336,7 +337,7 @@ The goal of pre-processing such datasets is to get the estimated positions (grey
 </div>
 <div id="filtering-unrealistic-movement" class="section level2">
 <h2><span class="header-section-number">3.4</span> Filtering Unrealistic Movement</h2>
-<p>Large-scale positioning error can affect both point locations as well as entire subsets of a track, leading to a track appearing to show unrealistic movement for the study species <span class="citation">[@bjorneraas2010]</span>.</p>
+<p>Large-scale positioning error can affect both point locations as well as entire subsets of a track, leading to a track appearing to show unrealistic movement for the study species <span class="citation">(Bjørneraas et al. <a href="#ref-bjorneraas2010">2010</a>)</span>.</p>
 <p>The best way to examine whether a track contains such positioning errors is to plot the data, and especially to join the dots, i.e., to connect the positions with lines rather than simply plot points.</p>
 <p>Users with extensive experience of their study system will readily recognise segments of a track where the movement appears to be unrealistic.</p>
 <p>Briefly, the two main kinds of errors are mentioned here, and named based on their appearance in a tack: those that affect single positions lend a spiky appearance to a track, and are referred to as <em>point outliers</em> or <em>spikes</em>, while errors affecting continuous subsets of a track cause it to appear as though it has been reflected along a plane, and are hence called <em>reflections</em>, or <em>prolonged spikes</em>.</p>
@@ -470,6 +471,12 @@ Fortunately, this can be avoided by setting the length to the number of observat
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">fwrite</span>(data_no_reflection, <span class="dt">file =</span> <span class="st">&quot;data/data_no_reflection.csv&quot;</span>)</a></code></pre></div>
 
 </div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-bjorneraas2010">
+<p>Bjørneraas, Kari, Bram Van Moorter, Christer Moe Rolandsen, and Ivar Herfindal. 2010. “Screening Global Positioning System Location Data for Errors Using Animal Movement Characteristics.” <em>The Journal of Wildlife Management</em> 74 (6): 1361–6. <a href="https://doi.org/10.1111/j.1937-2817.2010.tb01258.x">https://doi.org/10.1111/j.1937-2817.2010.tb01258.x</a>.</p>
 </div>
 </div>
             </section>

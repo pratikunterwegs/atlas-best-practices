@@ -188,6 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
 </ul>
 
       </nav>
@@ -210,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This section covers:</p>
 <ol style="list-style-type: decimal">
 <li><p>Installing the <code>R</code> package <code>atlastools</code>,</p></li>
-<li><p>Simulating some realistic looking movement data using the <code>R</code> package <code>smoove</code> from <span class="citation">[@gurarie2017]</span>, and</p></li>
+<li><p>Simulating some realistic looking movement data using the <code>R</code> package <code>smoove</code> from <span class="citation">(Gurarie et al. <a href="#ref-gurarie2017">2017</a>)</span>, and</p></li>
 <li><p>Introducing positioning errors into the simulated movement data.</p></li>
 </ol>
 <div id="installing-atlastools" class="section level2">
@@ -232,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="simulating-movement-data" class="section level2">
 <h2><span class="header-section-number">2.2</span> Simulating movement data</h2>
-<p>Here, we simulate some movement data using the <code>smoove</code> <code>R</code> package from <span class="citation">[@gurarie2017]</span>.</p>
+<p>Here, we simulate some movement data using the <code>smoove</code> <code>R</code> package from <span class="citation">(Gurarie et al. <a href="#ref-gurarie2017">2017</a>)</span>.</p>
 <p>First, we load <code>smoove</code> and <code>data.table</code>, as well as some helper functions that make use of them to simulate data for use.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># load smoove and datatable</span></a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="kw">library</span>(smoove)</a>
@@ -244,6 +245,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb3-2" title="2"><span class="co"># save simulated data</span></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="kw">fwrite</span>(data, <span class="st">&quot;data/data_sim.csv&quot;</span>)</a></code></pre></div>
 
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-gurarie2017">
+<p>Gurarie, Eliezer, Christen H. Fleming, William F. Fagan, Kristin L. Laidre, Jesús Hernández-Pliego, and Otso Ovaskainen. 2017. “Correlated Velocity Models as a Fundamental Unit of Animal Movement: Synthesis and Applications.” <em>Movement Ecology</em> 5 (1): 13. <a href="https://doi.org/10.1186/s40462-017-0103-3">https://doi.org/10.1186/s40462-017-0103-3</a>.</p>
 </div>
 </div>
             </section>

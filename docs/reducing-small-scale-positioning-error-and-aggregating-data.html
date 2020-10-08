@@ -188,6 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
 </ul>
 
       </nav>
@@ -208,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="reducing-small-scale-positioning-error-and-aggregating-data" class="section level1">
 <h1><span class="header-section-number">Section 4</span> Reducing Small-Scale Positioning Error and Aggregating Data</h1>
 <p>Once large-scale positioning errors have been removed using filters on bounds or on unrealistic movement, small-scale positioning errors may remain. Why is this the case?</p>
-<p>The simple reason is that high-frequency tracking has a large component of error relative to the real movement of an individual, and the error / movement ratio increases with the frequency of tracking. <span class="citation">[@noonan2019]</span> has a better explanation, which users are strongly recommended to read.</p>
+<p>The simple reason is that high-frequency tracking has a large component of error relative to the real movement of an individual, and the error / movement ratio increases with the frequency of tracking. <span class="citation">(Noonan et al. <a href="#ref-noonan2019">2019</a>)</span> has a better explanation, which users are strongly recommended to read.</p>
 <p>The effect of these small-scale errors for high-frequency data is to cause overestimations of straight-line displacement (distance between two positions) and speed. If users were to apply a very strict speed filter, many of these positions would be lost. This loss of information would certainly reduce the sampling frequency, which would lead to better estimates of total distance and mean speed. However, while <em>total</em> distance and <em>mean</em> speed estimates would improve, the instantaneous distance and speed estimates would remain biased, which will most likely lead to erroneous inferences from the data.</p>
 <p>However, users can turn the high-frequency of their data against itself by applying a simple smooth. The median smooth is recommended because it is robust to outliers, and is very well understood.</p>
 <div id="preparing-libraries-and-data" class="section level2">
@@ -485,6 +486,12 @@ Blue crosses represent positions with speed <span class="math inline">\(\leq\)</
 <strong>(c)</strong> Boxplot of instantaneous speeds after median aggregation of a 1s interval track over intervals of 3, 10, 30, and 120 seconds, but without the removal of positioning errors. The mean and 95^th percentile of speed in the canonical track are shown as solid and dashed lines, respectively.
 Aggregation without reducing positioning errors can result in speed estimates that are substantially different from the true speed.</p>
 
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-noonan2019">
+<p>Noonan, Michael J., Christen H. Fleming, Thomas S. Akre, Jonathan Drescher-Lehman, Eliezer Gurarie, Autumn-Lynn Harrison, Roland Kays, and Justin M. Calabrese. 2019. “Scale-Insensitive Estimation of Speed and Distance Traveled from Animal Tracking Data.” <em>Movement Ecology</em> 7 (1): 35. <a href="https://doi.org/10.1186/s40462-019-0177-1">https://doi.org/10.1186/s40462-019-0177-1</a>.</p>
 </div>
 </div>
             </section>
