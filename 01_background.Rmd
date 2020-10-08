@@ -16,8 +16,18 @@ This section covers:
 
 ## Installing `atlastools`
 
-This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from [Github.](https://github.com/pratikunterwegs/atlastools). 
-See the repository for information on the build status.
+This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from [Github](https://github.com/pratikunterwegs/atlastools). 
+
+Releases of the package from Github can be found on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4033155.svg)](https://doi.org/10.5281/zenodo.4033155) 
+
+The build status of the 'Master' branch is shown here:
+
+<!-- badges: start -->
+  [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/pratikunterwegs/atlastools?branch=master&svg=true)](https://ci.appveyor.com/project/pratikunterwegs/atlastools) 
+  [![Build Status](https://travis-ci.org/pratikunterwegs/atlastools.svg?branch=master)](https://travis-ci.org/pratikunterwegs/atlastools) 
+  [![codecov.io](https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master)](https://codecov.io/github/pratikunterwegs/atlastools/branch/master)
+<!-- badges: end -->
+
 The code chunk below shows how to install `atlastools`.
 
 ```{r install_package, eval=FALSE}
@@ -32,7 +42,9 @@ devtools::install_github("pratikunterwegs/atlastools")
 
 Here, we simulate some movement data using the `smoove` `R` package from [@gurarie2017].
 
-```{r prep_libs_01_02}
+First, we load `smoove` and `data.table`, as well as some helper functions that make use of them to simulate data for use.
+
+```{r prep_libs_01_02, eval=FALSE}
 # load smoove and datatable
 library(smoove)
 library(data.table)
@@ -41,31 +53,8 @@ library(data.table)
 source("R/helper_functions.R")
 ```
 
-
 ```{r save_data}
 data <- do_smoove_data()
-
 # save simulated data
 fwrite(data, "data/data_sim.csv")
 ```
-
-Here, we write functions to add normally distributed errors to the position coordinates of the simulated data.
-
-Example of introduced error.
-
-```{r}
-# load data
-data <- fread("data/data_sim.csv")
-
-# introduce errors to data
-data[, `:=`(x_error = do_add_error(x, std_dev = 0.01),
-            y_error = do_add_error(y, std_dev = 0.01))]
-
-# plot real and introduced error
-ggplot()+
-  geom_path(data = data, aes(x, y),
-            col = "blue")
-
-atlastools::atl_compare_tracks(d2, data)
-```
-

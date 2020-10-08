@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <title>Section 2 Getting started | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
   <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:title" content="Section 2 Getting started | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="twitter:title" content="Section 2 Getting started | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   
   <meta name="twitter:description" content="Source code for a guide to pre-processing high-frequency tracking data." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="getting-started.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="reducing-large-scale-positioning-error-by-filtering-data.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -206,34 +206,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</h1>
-<p class="author"><em>Pratik R. Gupte and others</em></p>
-<p class="date"><em>2020-10-08</em></p>
+<div id="getting-started" class="section level1">
+<h1><span class="header-section-number">Section 2</span> Getting started</h1>
+<p>This section covers:</p>
+<ol style="list-style-type: decimal">
+<li><p>Installing the <code>R</code> package <code>atlastools</code>,</p></li>
+<li><p>Simulating some realistic looking movement data using the <code>R</code> package <code>smoove</code> from <span class="citation">(Gurarie et al. <a href="#ref-gurarie2017">2017</a>)</span>, and</p></li>
+<li><p>Introducing positioning errors into the simulated movement data.</p></li>
+</ol>
+<div id="installing-atlastools" class="section level2">
+<h2><span class="header-section-number">2.1</span> Installing <code>atlastools</code></h2>
+<p>This paper refers extensively to the <code>R</code> package <code>atlastools</code> (Gupte 2020), which can be installed from <a href="https://github.com/pratikunterwegs/atlastools">Github</a>.</p>
+<p>Releases of the package from Github can be found on Zenodo: <a href="https://doi.org/10.5281/zenodo.4033155"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4033155.svg" alt="DOI" /></a></p>
+<p>The build status of the ‘Master’ branch is shown here:</p>
+<!-- badges: start -->
+<p><a href="https://ci.appveyor.com/project/pratikunterwegs/atlastools"><img src="https://ci.appveyor.com/api/projects/status/github/pratikunterwegs/atlastools?branch=master&amp;svg=true" alt="AppVeyor build status" /></a>
+<a href="https://travis-ci.org/pratikunterwegs/atlastools"><img src="https://travis-ci.org/pratikunterwegs/atlastools.svg?branch=master" alt="Build Status" /></a>
+<a href="https://codecov.io/github/pratikunterwegs/atlastools/branch/master"><img src="https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master" alt="codecov.io" /></a>
+<!-- badges: end --></p>
+<p>The code chunk below shows how to install <code>atlastools</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># use either devtools or remotes to install</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># installation using devtools</span></a>
+<a class="sourceLine" id="cb1-5" title="5">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;pratikunterwegs/atlastools&quot;</span>)</a></code></pre></div>
 </div>
-<div id="abstract" class="section level1">
-<h1><span class="header-section-number">Section 1</span> Abstract</h1>
-<p>Data cleaning is a ubiquitous pre-processing step in analysis pipelines, and its automation is essential for large data volumes such as those generated in animal tracking studies using high-frequency Time-of-Arrival (TOA) systems.
-Users of systems such as ATLAS must contend with two intertwined data cleaning challenges: (1) reducing positioning errors, and (2) the high volume of data itself.
-Making biological inferences from data with positioning errors is not straightforward, and processing large data volumes is computationally intensive.
-Though reducing positioning error is widely recommended, users are without uniform guidance on how to go about this, and lack a common set of computationally efficient tools.
-Further, many methods that synthesize movement tracks for ecological inference are either (1) not suited to very large datasets, or (2) not intuitive to understand in terms of the tracked animal’s biology.</p>
-<p>In this article we introduce a pipeline to pre-process high-frequency animal tracking data in order to prepare it for subsequent analysis.
-We demonstrate this pipeline on simulated movement data to which we have randomly added positioning errors.
-This pipeline is suited to any tracking study in which the high data volume combined with knowledge of the tracked individuals’ biology can be used to smooth out positioning errors.
-We further suggest how large volumes of cleaned data may be synthesized into biologically meaningful ‘residence patches’, and demonstrate how this accurately captures animal space-use.
-Finally, we introduce the <code>R</code> package <code>atlastools</code> which provides fast implementations of the methods we describe.
-Though aimed at ATLAS systems, <code>atlastools</code> can be used with any time-series animal movement data, and we demonstrate its usage with both simulated and empirical examples.</p>
-<p><img src="figures/fig_recipe.png" /></p>
+<div id="simulating-movement-data" class="section level2">
+<h2><span class="header-section-number">2.2</span> Simulating movement data</h2>
+<p>Here, we simulate some movement data using the <code>smoove</code> <code>R</code> package from <span class="citation">(Gurarie et al. <a href="#ref-gurarie2017">2017</a>)</span>.</p>
+<p>First, we load <code>smoove</code> and <code>data.table</code>, as well as some helper functions that make use of them to simulate data for use.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># load smoove and datatable</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">library</span>(smoove)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">library</span>(data.table)</a>
+<a class="sourceLine" id="cb2-4" title="4"></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># source helper functions</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">source</span>(<span class="st">&quot;R/helper_functions.R&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">data &lt;-<span class="st"> </span><span class="kw">do_smoove_data</span>()</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># save simulated data</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">fwrite</span>(data, <span class="st">&quot;data/data_sim.csv&quot;</span>)</a></code></pre></div>
 
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-gurarie2017">
+<p>Gurarie, Eliezer, Christen H. Fleming, William F. Fagan, Kristin L. Laidre, Jesús Hernández-Pliego, and Otso Ovaskainen. 2017. “Correlated Velocity Models as a Fundamental Unit of Animal Movement: Synthesis and Applications.” <em>Movement Ecology</em> 5 (1): 13. <a href="https://doi.org/10.1186/s40462-017-0103-3">https://doi.org/10.1186/s40462-017-0103-3</a>.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reducing-large-scale-positioning-error-by-filtering-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

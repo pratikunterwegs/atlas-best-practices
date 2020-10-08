@@ -25,6 +25,7 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
+
 # plot data
 fig_data_raw <-
   ggplot(data)+
@@ -340,6 +341,18 @@ data[, residence := stringi::stri_detect(tID, regex = "WP")]
 data_res <- data[residence == T, ]
 ```
 
+### Calculate residence time
+
+```{r}
+# load recurse
+library(recurse)
+
+# get recurse data for a 10m radius
+data_recurse <- getRecursions(data_unproc[, list(x, y, time, TAG)],
+                              radius = 200)
+```
+
+
 ### Run residence patch method
 
 ```{r}
@@ -434,7 +447,7 @@ patch_summary_compare <-
 
 ```{r}
 # get linear model
-model_duration <- lm(duration ~ duration_real,
+model_duration <- lm(duration_real ~ duration,
                      data = patch_summary_compare)
 
 # get R2
@@ -448,19 +461,19 @@ figure_patch_duration <-
   ggplot()+
   geom_segment(data = patch_summary_compare,
                aes(x = 100,
-                   xend = duration_real,
-                   y = duration,
-                   yend = duration),
+                   xend = duration,
+                   y = duration_real,
+                   yend = duration_real),
                col = "grey")+
   geom_segment(data = patch_summary_compare,
-               aes(x = duration_real,
-                   xend = duration_real,
+               aes(x = duration,
+                   xend = duration,
                    y = 100,
-                   yend = duration),
+                   yend = duration_real),
                col = "grey")+
   geom_point(data = patch_summary_compare,
-             aes(duration_real, 
-                 duration),
+             aes(duration, 
+                 duration_real),
              show.legend = F,
             size = 3,
             stroke = 1,
@@ -468,8 +481,8 @@ figure_patch_duration <-
             fill = pal[2],
             col = "white")+
   geom_smooth(data = patch_summary_compare,
-             aes(duration_real, 
-                 duration),
+             aes(duration, 
+                 duration_real),
              se = F,
              size = 0.5,
              col = pal[1],
@@ -479,7 +492,7 @@ figure_patch_duration <-
   annotate(geom = "text",
            x = 300, y = 900,
            size = 5,
-           label = "R^2 == 0.845",
+           label = "R^2 == 0.849",
            parse = T)+
   scale_x_log10(breaks = c(300, 600, 900),
                 labels = as.integer(c(300, 600, 900) / 60))+
@@ -489,8 +502,8 @@ figure_patch_duration <-
               xlim = c(200, 1200),
               ylim = c(200, 1200))+
   ggthemes::theme_few()+
-  labs(x = "duration (min)",
-       y = "inferred duration (min)")
+  labs(x = "inferred duration (min)",
+       y = "real duration (min)")
 ```
 
 ### Join patch map and duration comparison figure
@@ -509,4 +522,3 @@ ggsave(figure_res_patch,
        filename = "figures/fig_calib_residence_patch.png",
        height = 130, width = 225, units = "mm")
 ```
-

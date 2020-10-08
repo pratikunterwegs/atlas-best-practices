@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <title>Section 7 References | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
   <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:title" content="Section 7 References | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="twitter:title" content="Section 7 References | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   
   <meta name="twitter:description" content="Source code for a guide to pre-processing high-frequency tracking data." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="processing-calibration-data.html"/>
 
-<link rel="next" href="getting-started.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -206,34 +206,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</h1>
-<p class="author"><em>Pratik R. Gupte and others</em></p>
-<p class="date"><em>2020-10-08</em></p>
-</div>
-<div id="abstract" class="section level1">
-<h1><span class="header-section-number">Section 1</span> Abstract</h1>
-<p>Data cleaning is a ubiquitous pre-processing step in analysis pipelines, and its automation is essential for large data volumes such as those generated in animal tracking studies using high-frequency Time-of-Arrival (TOA) systems.
-Users of systems such as ATLAS must contend with two intertwined data cleaning challenges: (1) reducing positioning errors, and (2) the high volume of data itself.
-Making biological inferences from data with positioning errors is not straightforward, and processing large data volumes is computationally intensive.
-Though reducing positioning error is widely recommended, users are without uniform guidance on how to go about this, and lack a common set of computationally efficient tools.
-Further, many methods that synthesize movement tracks for ecological inference are either (1) not suited to very large datasets, or (2) not intuitive to understand in terms of the tracked animal’s biology.</p>
-<p>In this article we introduce a pipeline to pre-process high-frequency animal tracking data in order to prepare it for subsequent analysis.
-We demonstrate this pipeline on simulated movement data to which we have randomly added positioning errors.
-This pipeline is suited to any tracking study in which the high data volume combined with knowledge of the tracked individuals’ biology can be used to smooth out positioning errors.
-We further suggest how large volumes of cleaned data may be synthesized into biologically meaningful ‘residence patches’, and demonstrate how this accurately captures animal space-use.
-Finally, we introduce the <code>R</code> package <code>atlastools</code> which provides fast implementations of the methods we describe.
-Though aimed at ATLAS systems, <code>atlastools</code> can be used with any time-series animal movement data, and we demonstrate its usage with both simulated and empirical examples.</p>
-<p><img src="figures/fig_recipe.png" /></p>
+<div id="references" class="section level1">
+<h1><span class="header-section-number">Section 7</span> References</h1>
 
+<div id="refs" class="references">
+<div>
+<p>Bjørneraas, Kari, Bram Van Moorter, Christer Moe Rolandsen, and Ivar Herfindal. 2010. “Screening Global Positioning System Location Data for Errors Using Animal Movement Characteristics.” <em>The Journal of Wildlife Management</em> 74 (6): 1361–6. <a href="https://doi.org/10.1111/j.1937-2817.2010.tb01258.x">https://doi.org/10.1111/j.1937-2817.2010.tb01258.x</a>.</p>
+</div>
+<div>
+<p>Gurarie, Eliezer, Christen H. Fleming, William F. Fagan, Kristin L. Laidre, Jesús Hernández-Pliego, and Otso Ovaskainen. 2017. “Correlated Velocity Models as a Fundamental Unit of Animal Movement: Synthesis and Applications.” <em>Movement Ecology</em> 5 (1): 13. <a href="https://doi.org/10.1186/s40462-017-0103-3">https://doi.org/10.1186/s40462-017-0103-3</a>.</p>
+</div>
+<div>
+<p>Noonan, Michael J., Christen H. Fleming, Thomas S. Akre, Jonathan Drescher-Lehman, Eliezer Gurarie, Autumn-Lynn Harrison, Roland Kays, and Justin M. Calabrese. 2019. “Scale-Insensitive Estimation of Speed and Distance Traveled from Animal Tracking Data.” <em>Movement Ecology</em> 7 (1): 35. <a href="https://doi.org/10.1186/s40462-019-0177-1">https://doi.org/10.1186/s40462-019-0177-1</a>.</p>
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="processing-calibration-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

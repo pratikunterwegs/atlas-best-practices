@@ -4,11 +4,21 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Smoothing tracks and aggregating dat
+# Reducing Small-Scale Positioning Error and Aggregating Data
 
-## Prepare libraries {-}
+Once large-scale positioning errors have been removed using filters on bounds or on unrealistic movement, small-scale positioning errors may remain. Why is this the case?
 
-```{r prep_libs_02_01}
+The simple reason is that high-frequency tracking has a large component of error relative to the real movement of an individual, and the error / movement ratio increases with the frequency of tracking. [@noonan2019] has a better explanation, which users are strongly recommended to read.
+
+The effect of these small-scale errors for high-frequency data is to cause overestimations of straight-line displacement (distance between two positions) and speed. If users were to apply a very strict speed filter, many of these positions would be lost. This loss of information would certainly reduce the sampling frequency, which would lead to better estimates of total distance and mean speed. However, while _total_ distance and _mean_ speed estimates would improve, the instantaneous distance and speed estimates would remain biased, which will most likely lead to erroneous inferences from the data.
+
+However, users can turn the high-frequency of their data against itself by applying a simple smooth. The median smooth is recommended because it is robust to outliers, and is very well understood.
+
+## Preparing Libraries and Data
+
+We first load some useful packages and define a colour palette.
+
+```{r}
 # prep libs
 library(data.table)
 library(atlastools)
@@ -19,42 +29,55 @@ library(patchwork)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
+We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.
 
-## Reading in data {-}
-
-Here we read the simulated data in. The limits of the coordinates are 0 and 1, so we add a few extraneous coordinates within a plausible distance to demonstrate the basic forms of filtering. We also assign a fictional _NBS_ value ranging between 2 and 6 to demonstrate filtering on covariates. Finally, we introduce a 'reflection', a phenomenon that results when a TOA system's position likelihood estimator shifts the real position by a large distance for an extended duration.
+We also assign a variable, `window_size`, which will help identify the datasets when comparing median smooth moving window ($K$) sizes.
 
 ```{r read_sim_data_2}
-# read in the data
+# read in the data and set the window size variable
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, window_size := NA]
+
 # data with small scale errors but no reflections or outliers
 data_errors <- fread("data/data_no_reflection.csv")
 data_errors[, window_size := 0]
 ```
 
-## Applying a median smooth
+## Median Smoothing
+
+We apply a median smooth with four different values of $K$, the moving window size --- 3, 5, 11, and 21 positions.
+$K$ must be an odd number, but apart from that there is no correct magnitude of $K$.
+Very large $K$ will lead to unrealistic tracks, while small $K$ will not result in much reduction of error.
+Users are encouraged to plot their data before and after smoothing to examine the effect of different window sizes.
+
+The `atlastools` function `atl_median_smooth` is quite fast and users can readily try multiple $K$ values as shown in the example below.
 
 ```{r}
-# smooth the data
-list_of_smooths <- lapply(c(3, 5, 11, 21), function(z) {
+# smooth the data over four K values
+list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
+  
   data_copy <- copy(data_errors)
+  
   data_copy <- atl_median_smooth(data = data_copy,
                     x = "x", 
                     y = "y",
                     time = "time",
-                    moving_window = z)
-  data_copy[, window_size := z]
+                    moving_window = K)
+  
+  data_copy[, window_size := K]
 })
 ```
 
-### Robustness to large gaps
+### Robustness to Large Gaps
+
+The median smooth is robust to large gaps in the data, and tracks do not need to be split when a large chunk of data are missing.
+The easiest way to illustrate this is with a figure.
 
 ```{r}
-# make a single list
+# make a single list of data
 data_plot <- append(list(data_errors), list_of_smooths)
 
-# now prep gap
+# now prep smooth over Y coordinate
 fig_smooth_1d <-
   ggplot()+
   geom_point(data = rbindlist(data_plot),
@@ -73,7 +96,7 @@ fig_smooth_1d <-
   labs(x = "position index", y = "Y coordinate")
 ```
 
-### Plot results
+We prepare a plot of the smoothed data as well as the demonstration of the method relative to gaps.
 
 ```{r}
 # prepare data to plot
@@ -131,32 +154,38 @@ fig_median_smooth <- wrap_plots(append(figure_median_smooth,
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
-
-fig_median_smooth
-
 # save figure
 ggsave(fig_median_smooth, filename = "figures/fig_median_smooth.png",
        width = 225, height = 225 / 1.77, units = "mm")
 ```
 
-## Aggregating data
+## Thinning Data by Aggregation
+
+Evenly thinning data is a good idea if statistical methods require even sampling, or if the volume of data is too large for statistical packages to efficiently handle it. In `R`, both may be true at once.
+
+Here, we demonstrate thinning by aggregation on data that has been median smoothed using a $K$ of 11.
 
 ```{r}
-# choose the data
+# choose the 11 point median smooth data
 data_agg <- copy(list_of_smooths[[3]])
 
 # get list of aggregated data
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
+  
   data_return <- atl_thin_data(data = data_agg,
                             interval = z,
                             method = "aggregate")
+  
   data_return[, interval := z]
+  
   return(data_return)
 })
 ```
 
+We shall prepare a figure showing the aggregation steps.
+
 ```{r}
-# make figure
+# make figure of aggregation
 figure_aggregate <- 
   mapply(FUN = function(df) {
   ggplot(data = df)+
@@ -183,15 +212,28 @@ figure_aggregate <-
 }, list_of_agg[2:3],
 SIMPLIFY = FALSE)
 
-figure_aggregate <- wrap_plots(figure_aggregate)
+figure_aggregate <- wrap_plots(figure_aggregate)+
+    plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+    theme(plot.tag = element_text(face = "bold"))
 
-figure_aggregate
 # save figure
-ggsave(plot_figure, filename = "figures/fig_aggregate_data.png",
+ggsave(figure_aggregate, 
+       filename = "figures/fig_aggregate_data.png",
        width = 185, height = 90, units = "mm")
 ```
 
-### Aggregation before correction, a warning
+## Aggregation Before Reducing Positioning Errors
+
+Users may rightly wonder whether they can get away with aggregating their data, using a median aggregation function, and reduce data volumes, correct uneven sampling frequency, and reduce large-scale errors all in one go.
+
+The answer to most questions in ecology is, "It depends". Median aggregation before correcting positioning errors can indeed be advantageous; for instance for faster visualisation while preserving the broad structure of a track.
+
+However, there are drawbacks. The main one is that information is lost in the aggregation process, lending less power to steps such as smoothing applied after aggregation.
+Further, aggregation (and indeed any kind of thinning) results in significantly different estimates of speed and distance from the real speed.
+
+We show the effect of aggregating before any error correction here.
 
 ```{r}
 # read data with errors
@@ -209,7 +251,11 @@ list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
 
 # get real speed
 data[, speed := atl_get_speed(data)]
+```
 
+We prepare the figures.
+
+```{r}
 ### plot figures
 fig_agg_data <- 
   lapply(list_of_agg, function(df) {
@@ -237,7 +283,7 @@ fig_agg_data <-
 ```
 
 ```{r}
-# now plot hist of speed
+# now plot distribution of speed
 data_agg <- rbindlist(list_of_agg)
 
 # show boxplot of speed
@@ -263,8 +309,6 @@ fig_agg_speed <- ggplot(data_agg)+
        y = "speed")
 ```
 
-### Combine with aggregations
-
 ```{r}
 # make combined figure
 fig_aggregate <- 
@@ -277,7 +321,14 @@ fig_aggregate <-
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_aggregate_data.png",
+       filename = "figures/fig_aggregate_errors.png",
        width = 170, height = 170 / 1.67, units = "mm")
 ```
 
+![](figures/fig_aggregate_errors.png)
+
+Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
+**(a, b)** Movement tracks with a canonical interval of 1s aggregated over intervals of **(a)** 10 and **(b)** 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.
+Blue crosses represent positions with speed $\leq$ the 95^th percentile of canonical speeds, while red triangles represent positions with speed $\geq$ 95^th percentile of canonical speeds.
+**(c)** Boxplot of instantaneous speeds after median aggregation of a 1s interval track over intervals of 3, 10, 30, and 120 seconds, but without the removal of positioning errors. The mean and 95^th percentile of speed in the canonical track are shown as solid and dashed lines, respectively. 
+Aggregation without reducing positioning errors can result in speed estimates that are substantially different from the true speed.

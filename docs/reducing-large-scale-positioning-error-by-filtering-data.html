@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 3 Reducing Large-Scale Positioning Error by Filtering Data | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 3 Reducing Large-Scale Positioning Error by Filtering Data | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Source code for a guide to pre-processing high-frequency tracking data." />
+  <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 3 Reducing Large-Scale Positioning Error by Filtering Data | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  
+  <meta name="twitter:description" content="Source code for a guide to pre-processing high-frequency tracking data." />
+  
+
+<meta name="author" content="Pratik R. Gupte and others" />
+
+
+<meta name="date" content="2020-10-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="getting-started.html"/>
+<link rel="next" href="reducing-small-scale-positioning-error-and-aggregating-data.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a><ul>
+<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installing-atlastools"><i class="fa fa-check"></i><b>2.1</b> Installing <code>atlastools</code></a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#simulating-movement-data"><i class="fa fa-check"></i><b>2.2</b> Simulating movement data</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a><ul>
+<li class="chapter" data-level="3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>3.1</b> Prepare Libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#introducing-errors-to-the-data"><i class="fa fa-check"></i><b>3.2</b> Introducing Errors to the Data</a></li>
+<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#a-note-on-filtering-by-bounds"><i class="fa fa-check"></i><b>3.3.1</b> A Note on Filtering by Bounds</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-point-outliers-or-spikes"><i class="fa fa-check"></i><b>3.4.1</b> Filtering Point Outliers or Spikes</a></li>
+<li class="chapter" data-level="3.4.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-reflections-or-track-subsets"><i class="fa fa-check"></i><b>3.4.2</b> Filtering Reflections or Track Subsets</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#preparing-libraries-and-data"><i class="fa fa-check"></i><b>4.1</b> Preparing Libraries and Data</a></li>
+<li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#robustness-to-large-gaps"><i class="fa fa-check"></i><b>4.2.1</b> Robustness to Large Gaps</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#thinning-data-by-aggregation"><i class="fa fa-check"></i><b>4.3</b> Thinning Data by Aggregation</a></li>
+<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a><ul>
+<li class="chapter" data-level="" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#prepare-libraries-1"><i class="fa fa-check"></i>Prepare libraries</a></li>
+<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#read-data-and-classify"><i class="fa fa-check"></i><b>5.1.1</b> Read data and classify</a></li>
+<li class="chapter" data-level="5.1.2" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#plot-classified-residence-patches"><i class="fa fa-check"></i><b>5.1.2</b> Plot classified residence patches</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a><ul>
+<li class="chapter" data-level="6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#preliminary-visualisation"><i class="fa fa-check"></i><b>6.2</b> Preliminary visualisation</a></li>
+<li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#remove-low-base-station-positions"><i class="fa fa-check"></i><b>6.3.1</b> Remove low base station positions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>6.4.1</b> Handle time</a></li>
+<li class="chapter" data-level="6.4.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>6.4.2</b> Add speed and turning angle</a></li>
+<li class="chapter" data-level="6.4.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-95th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>6.4.3</b> Get 95th percentile of speed and angle</a></li>
+<li class="chapter" data-level="6.4.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-to-see-speeds"><i class="fa fa-check"></i><b>6.4.4</b> Plot to see speeds</a></li>
+<li class="chapter" data-level="6.4.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>6.4.5</b> Filter on speed</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-pre-processing-steps"><i class="fa fa-check"></i><b>6.5.1</b> Plot pre-processing steps</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>6.6.1</b> Prepare data</a></li>
+<li class="chapter" data-level="6.6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#calculate-residence-time"><i class="fa fa-check"></i><b>6.6.2</b> Calculate residence time</a></li>
+<li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#run-residence-patch-method"><i class="fa fa-check"></i><b>6.6.3</b> Run residence patch method</a></li>
+<li class="chapter" data-level="6.6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>6.6.4</b> Get spatial and summary objects</a></li>
+<li class="chapter" data-level="6.6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.5</b> Plot the outcome</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a><ul>
+<li class="chapter" data-level="6.7.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-known-patches"><i class="fa fa-check"></i><b>6.7.1</b> Compare known patches</a></li>
+<li class="chapter" data-level="6.7.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-durations-comparisons"><i class="fa fa-check"></i><b>6.7.2</b> Plot durations comparisons</a></li>
+<li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="reducing-large-scale-positioning-error-by-filtering-data" class="section level1">
+<h1><span class="header-section-number">Section 3</span> Reducing Large-Scale Positioning Error by Filtering Data</h1>
+<div id="prepare-libraries" class="section level2">
+<h2><span class="header-section-number">3.1</span> Prepare Libraries</h2>
+<p>Here we load some useful libraries, and the helper functions.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># to handle movement data</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">library</span>(data.table)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">library</span>(atlastools)</a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co"># to plot</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="kw">library</span>(patchwork)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># source helper functions</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">source</span>(<span class="st">&quot;R/helper_functions.R&quot;</span>)</a></code></pre></div>
+</div>
+<div id="introducing-errors-to-the-data" class="section level2">
+<h2><span class="header-section-number">3.2</span> Introducing Errors to the Data</h2>
+<p>Here we introduce three kinds of errors to the data:</p>
+<ol style="list-style-type: decimal">
+<li><p>Small-scale normally distributed errors at each position;</p></li>
+<li><p>Large-scale error at a random 0.5% of positions;</p></li>
+<li><p>A large-scale displacement of a sequence of 300 positions.</p></li>
+</ol>
+<p>While the data are 10,000 positions at 1-second interval, we shall use only 5,000 of these.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># read in the data</span></a>
+<a class="sourceLine" id="cb6-2" title="2">data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_sim.csv&quot;</span>)[<span class="dv">5000</span><span class="op">:</span><span class="dv">10000</span>, ]</a></code></pre></div>
+<p>We add outliers at random to the data to demonstrate their removal.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># make a copy</span></a>
+<a class="sourceLine" id="cb7-2" title="2">data_copy &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co"># add a prolonged spike or reflection to 300 positions</span></a>
+<a class="sourceLine" id="cb7-5" title="5">data_copy[<span class="dv">500</span><span class="op">:</span><span class="dv">800</span>, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">x =</span> x <span class="op">+</span><span class="st"> </span><span class="fl">0.25</span>,</a>
+<a class="sourceLine" id="cb7-6" title="6">                        <span class="dt">y =</span> y <span class="op">+</span><span class="st"> </span><span class="fl">0.25</span>)]</a>
+<a class="sourceLine" id="cb7-7" title="7"></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co"># add normal error</span></a>
+<a class="sourceLine" id="cb7-9" title="9">data_copy[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">x =</span> <span class="kw">do_add_error</span>(x, <span class="dt">std_dev =</span> <span class="fl">0.01</span>),</a>
+<a class="sourceLine" id="cb7-10" title="10">                 <span class="dt">y =</span> <span class="kw">do_add_error</span>(y, <span class="dt">std_dev =</span> <span class="fl">0.005</span>))]</a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co"># add 100 outliers</span></a>
+<a class="sourceLine" id="cb7-13" title="13">data_copy &lt;-<span class="st"> </span><span class="kw">do_add_outliers</span>(data_copy, <span class="dt">p_data =</span> <span class="fl">0.005</span>, <span class="dt">std_dev =</span> <span class="fl">0.1</span>)</a></code></pre></div>
+<p>Save the data to which errors have been added.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">fwrite</span>(data_copy, <span class="dt">file =</span> <span class="st">&quot;data/data_errors.csv&quot;</span>)</a></code></pre></div>
+<p>Define a palette with 4 colours for convenience.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># define a four colour palette</span></a>
+<a class="sourceLine" id="cb9-2" title="2">pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<p>We make a figure of the canonical data (grey line) along with the artificially added error (grey points).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># make figure of canonical data with added errors</span></a>
+<a class="sourceLine" id="cb10-2" title="2">figure_raw &lt;-</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_copy,</a>
+<a class="sourceLine" id="cb10-5" title="5">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb10-6" title="6">            <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
+<a class="sourceLine" id="cb10-7" title="7">            <span class="dt">alpha =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb10-8" title="8">            <span class="dt">size =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb10-10" title="10">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb10-11" title="11">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb10-12" title="12">            <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="st">  </span><span class="kw">coord_equal</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb10-16" title="16">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb10-17" title="17">        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">colour =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+</div>
+<div id="filtering-by-spatial-bounds" class="section level2">
+<h2><span class="header-section-number">3.3</span> Filtering by Spatial Bounds</h2>
+<p>Filtering by spatial bounds is a good way to begin reducing gross, large-scale positioning errors.
+There are two main ways of doing this:</p>
+<ol style="list-style-type: decimal">
+<li><p>Filtering by a bounding box: Compare the coordinates of observations against a range of acceptable coordinates, and retain those which fall within the range, or</p></li>
+<li><p>Filtering by a spatial polygon: An explicit geometric intersection between the positions and a polygon representing an area of interest.</p></li>
+</ol>
+<p>Here, we remove gross positioning errors using a bounding box filter using the function <code>atl_filter_bounds</code>. In this example, we show filtering only on the Y coordinate.</p>
+<p><code>atl_filter_bounds</code> takes coordinate ranges as two-element vectors of the lower and higher bound.
+It is possible to pass one of the bounds as <code>NA</code>, in which case, only the other bound is used for filtering, i.e., <code>y_range = c(NA, 1)</code> is equivalent to selecting all Y coordinates &lt; 1.</p>
+<p><code>atl_filter_bounds</code> was initially designed to remove positions <em>inside</em> a specific range, hence the argument <code>remove_inside</code>.
+The default value of the argument is <code>FALSE</code>, and <code>atl_filter_bounds</code> is thus a bounding box filter.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># remove positions outside a bounding box</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co"># NB: set remove_inside to FALSE</span></a>
+<a class="sourceLine" id="cb11-3" title="3">data_inside_bbox &lt;-<span class="st"> </span><span class="kw">atl_filter_bounds</span>(<span class="dt">data =</span> data_copy,</a>
+<a class="sourceLine" id="cb11-4" title="4">                                      <span class="dt">y_range =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb11-5" title="5">                                      <span class="dt">remove_inside =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><code>atl_filter_bounds</code> is not vectorised, and if there are two or more bounds per coordinate (for instance, <span class="math inline">\(X_1 \ldots X_2\)</span>, and <span class="math inline">\(X_3 \ldots X_4\)</span>), they must be passed in two different function calls.
+The same is true for filtering by an <code>sf</code> polygon. <code>atl_filter_bounds</code> also supports filtering by multi-polygon objects.</p>
+<p>Having filtered the data we shall prepare it for plotting.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co"># plot data inside and outside bbox</span></a>
+<a class="sourceLine" id="cb12-2" title="2">fig_filter_bounds &lt;-</a>
+<a class="sourceLine" id="cb12-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_inside_bbox,</a>
+<a class="sourceLine" id="cb12-5" title="5">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb12-6" title="6">             <span class="dt">col =</span> pal[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb12-7" title="7">             <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_copy[<span class="op">!</span>data_inside_bbox,</a>
+<a class="sourceLine" id="cb12-9" title="9">                              <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)],</a>
+<a class="sourceLine" id="cb12-10" title="10">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb12-11" title="11">             <span class="dt">col =</span> pal[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb12-12" title="12">             <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb12-14" title="14">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb12-15" title="15">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb12-16" title="16">            <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb12-18" title="18">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
+<a class="sourceLine" id="cb12-19" title="19">             <span class="dt">lty =</span> <span class="dv">2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-21" title="21"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="st">  </span><span class="kw">coord_equal</span>()</a>
+<a class="sourceLine" id="cb12-23" title="23"></a>
+<a class="sourceLine" id="cb12-24" title="24"><span class="co"># wrap plots</span></a>
+<a class="sourceLine" id="cb12-25" title="25">plot_figure &lt;-</a>
+<a class="sourceLine" id="cb12-26" title="26"><span class="st">  </span><span class="kw">wrap_plots</span>(<span class="kw">list</span>(figure_raw, fig_filter_bounds)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-27" title="27"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
+<a class="sourceLine" id="cb12-28" title="28">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
+<a class="sourceLine" id="cb12-29" title="29">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb12-30" title="30"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
+<a class="sourceLine" id="cb12-31" title="31"></a>
+<a class="sourceLine" id="cb12-32" title="32"><span class="kw">ggsave</span>(plot_figure, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_raw_bounds.png&quot;</span>, </a>
+<a class="sourceLine" id="cb12-33" title="33">       <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">height =</span> <span class="dv">170</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<p><img src="figures/fig_raw_bounds.png" /></p>
+<p><strong>(a)</strong> A velocity-autocorrelated movement track simulated for 5,000 positions (black line) using the <code>smoove</code> package (Gurarie et al. 2017). Three kinds of errors have been artificially added: (1) each position (grey points) is offset from the canonical track with the addition of normally distributed small-scale error, (2) large-scale error has been added to 0.5% of positions, and (3) 300 positions (indices 500 – 800) have been displaced to the top-right of the track to simulate a gross distortion that affects a continuous subset of the track.
+The goal of pre-processing such datasets is to get the estimated positions (grey points) to match the canonical track (solid black line) as closely as possible.
+<strong>(b)</strong> Tracks can be quickly filtered by spatial bounds (<span class="math inline">\(0.5 \leq Y \leq 1.0\)</span>; dashed grey lines) using the <code>atlastools</code> function <code>atl_filter_bounds</code>. Setting the function argument <code>remove_inside = FALSE</code> retains positions within user supplied bounds (blue points), and excludes those outside (red points).</p>
+<div id="a-note-on-filtering-by-bounds" class="section level3">
+<h3><span class="header-section-number">3.3.1</span> A Note on Filtering by Bounds</h3>
+<p>The filter on spatial bounds is only for demonstration, and is not applied to the data.</p>
+</div>
+</div>
+<div id="filtering-unrealistic-movement" class="section level2">
+<h2><span class="header-section-number">3.4</span> Filtering Unrealistic Movement</h2>
+<p>Large-scale positioning error can affect both point locations as well as entire subsets of a track, leading to a track appearing to show unrealistic movement for the study species <span class="citation">(Bjørneraas et al. <a href="#ref-bjorneraas2010">2010</a>)</span>.</p>
+<p>The best way to examine whether a track contains such positioning errors is to plot the data, and especially to join the dots, i.e., to connect the positions with lines rather than simply plot points.</p>
+<p>Users with extensive experience of their study system will readily recognise segments of a track where the movement appears to be unrealistic.</p>
+<p>Briefly, the two main kinds of errors are mentioned here, and named based on their appearance in a tack: those that affect single positions lend a spiky appearance to a track, and are referred to as <em>point outliers</em> or <em>spikes</em>, while errors affecting continuous subsets of a track cause it to appear as though it has been reflected along a plane, and are hence called <em>reflections</em>, or <em>prolonged spikes</em>.</p>
+<div id="filtering-point-outliers-or-spikes" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> Filtering Point Outliers or Spikes</h3>
+<p>We begin by removing unrealistic movement in the form of point outliers, or spikes.</p>
+<p>The first step is to determine how spikes should be identified. The non-movement approach prescribes determining whether movement metrics associated with each position are realistic or not, and targeting those positions where the movement metrics are unrealistic for the study species.</p>
+<p>In this case we shall calculate only two metrics, speed and turning angle.
+These are conveniently implemented in <code>atlastools</code> using the functions <code>atl_get_speed</code> and <code>atl_turning_angle</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># get speed and turning angle</span></a>
+<a class="sourceLine" id="cb13-2" title="2">data_copy[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">in_speed =</span> <span class="kw">atl_get_speed</span>(data_copy,</a>
+<a class="sourceLine" id="cb13-3" title="3">                                          <span class="dt">type =</span> <span class="st">&quot;in&quot;</span>),</a>
+<a class="sourceLine" id="cb13-4" title="4">                 <span class="dt">out_speed =</span> <span class="kw">atl_get_speed</span>(data_copy,</a>
+<a class="sourceLine" id="cb13-5" title="5">                                           <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>),</a>
+<a class="sourceLine" id="cb13-6" title="6">                 <span class="dt">angle =</span> <span class="kw">atl_turning_angle</span>(data_copy))]</a></code></pre></div>
+<p>Having calculated speed and turning angle, the next step is to remove positions with extremely high incoming and outgoing speeds. This means using the <code>atl_filter_covariates</code> function to remove positions with speed <span class="math inline">\(\geq\)</span> a plausible speed threshold. The use of a turning angle filter is optional, and not necessary in this case.</p>
+<p>One approach is to define a speed cutoff based on expert knowledge, and this is best suited to well studied species.</p>
+<p>For simulated data, there is no plausible speed threshold from prior knowledge — a reasonable choice here is to use the 90^th or 95^th percentile of speed and turning angle (when this metric is used).</p>
+<p>This is also more general than identifying the limits of implausibility for each individual (since there may be inter-individual differences), let alone each species in a large dataset.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># get 90 and 95 percentile of speed and turning angle</span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="kw">sapply</span>(data_copy[, <span class="kw">c</span>(<span class="st">&quot;in_speed&quot;</span>, <span class="st">&quot;angle&quot;</span>)], <span class="cf">function</span>(z) {</a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="kw">quantile</span>(z, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.9</span>, <span class="fl">0.95</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb14-4" title="4">})</a></code></pre></div>
+<p>Finally, we shall remove positions whose incoming and outgoing speeds are both greater than the 95th speed percentile using <code>atl_filter_covariates</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># filter the copy by the 95th percentile</span></a>
+<a class="sourceLine" id="cb15-2" title="2">data_filtered &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(data_copy,</a>
+<a class="sourceLine" id="cb15-3" title="3">    <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;(in_speed &lt; 0.024 &amp; out_speed &lt; 0.024) | angle &lt; 40&quot;</span>))</a></code></pre></div>
+<p>We prepare the data for plotting.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co"># data plot</span></a>
+<a class="sourceLine" id="cb16-2" title="2">fig_outlier_remove &lt;-</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_copy,</a>
+<a class="sourceLine" id="cb16-5" title="5">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb16-6" title="6">            <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
+<a class="sourceLine" id="cb16-7" title="7">            <span class="dt">lwd =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_copy[<span class="dv">500</span><span class="op">:</span><span class="dv">800</span>, ],</a>
+<a class="sourceLine" id="cb16-9" title="9">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb16-10" title="10">             <span class="dt">shape =</span> <span class="dv">2</span>, <span class="dt">col =</span> pal[<span class="dv">4</span>])<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_copy[<span class="op">!</span>data_copy[<span class="dv">500</span><span class="op">:</span><span class="dv">800</span>, ],</a>
+<a class="sourceLine" id="cb16-12" title="12">                              <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)],</a>
+<a class="sourceLine" id="cb16-13" title="13">             <span class="kw">aes</span>(x, y, </a>
+<a class="sourceLine" id="cb16-14" title="14">                 <span class="dt">col =</span> (in_speed <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.03</span> <span class="op">&amp;</span><span class="st"> </span>out_speed <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.03</span>),</a>
+<a class="sourceLine" id="cb16-15" title="15">                 <span class="dt">shape =</span> (in_speed <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.03</span> <span class="op">&amp;</span><span class="st"> </span>out_speed <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.03</span>)),</a>
+<a class="sourceLine" id="cb16-16" title="16">             <span class="dt">show.legend =</span> F,</a>
+<a class="sourceLine" id="cb16-17" title="17">             <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-18" title="18"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb16-19" title="19">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb16-20" title="20">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb16-21" title="21">            <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-22" title="22"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb16-23" title="23">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb16-24" title="24">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb16-25" title="25">            <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-26" title="26"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-27" title="27"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Set1&quot;</span>, <span class="dt">direction =</span> <span class="dv">-1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-28" title="28"><span class="st">  </span><span class="kw">scale_shape_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">19</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-29" title="29"><span class="st">  </span><span class="kw">coord_equal</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb16-30" title="30"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))</a></code></pre></div>
+</div>
+<div id="filtering-reflections-or-track-subsets" class="section level3">
+<h3><span class="header-section-number">3.4.2</span> Filtering Reflections or Track Subsets</h3>
+<p>When entire track subsets are affected by positioning error, they are more difficult to remove. This is the case when positions are <em>reflected</em> along a plane in the coordinate axis — the simplest way in which this can be explained is to examine the way in which we simulated the reflection earlier in this text, by simply adding an offset to the X and Y coordinates of each of 300 consecutive positions (indices 500 – 800).</p>
+<p>An explanation of why these reflections occur is found in WATLAS PAPER: Bijleveld et al. in prep. In short, they are results of an error in the ATLAS localisation algorithm, and are usually removed in the localisation step’s quality control procedures. However, some reflections may remain to confront users.</p>
+<p>Reflections and other issues affecting track subsets cannot be resolved by targeting single positions, since there are rarely any position-specific covariates that can be used to identify a position as part of a larger subset that should be removed.</p>
+<p>However, it is often possible to identify the <em>bounds</em> of problematic subsets, such as reflections, and remove positions between them. The way this is done is conceptually similar to the point outlier algorithm.</p>
+<p>The <code>atl_remove_reflection</code> function implements one method remove reflected subsets of a track. The working is described:</p>
+<ol style="list-style-type: decimal">
+<li><p>Remove point outliers,</p></li>
+<li><p>Re-calculate speed and turning angles</p></li>
+<li><p>Identify the first unrealistic movement position (fast speed and high turning angle)</p></li>
+<li><p>Setting this point as an anchor, identify the next position with unrealistic movement (as above)</p></li>
+<li><p>Remove all positions between these two points,</p></li>
+<li><p>Search for the next unrealistic movement, and repeat the process.</p></li>
+</ol>
+<p>This is a minimal algorithm which can be developed further, and iterated multiple times to comprehensively remove reflections.</p>
+<p>One important function argument is the estimated reflection length, i.e., how many positions are estimated to be reflected. This argument controls how many positions after the anchor are candidates for the reflection’s end.</p>
+<p>If the reflection does not end within this number of positions, the algorithm goes awry, and considers part of the reflection to be the valid data.
+Fortunately, this can be avoided by setting the length to the number of observations in the data.</p>
+<p>However, if the reflection does not end at all, the algorithm will simply delete all positions from the anchor point onwards.</p>
+<p>Thus, the algorithm is less of a double-edged sword and more a sword with no hilt — there are few safe ways to use it.</p>
+<p>The difficulty in implementing a reasonable algorithm for dealing with this kind of track-subset wide positioning error reveals the general problem that algorithms are <strong>not</strong> easy to conceptualise or efficiently implement.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># attempt to remove reflections</span></a>
+<a class="sourceLine" id="cb17-2" title="2">data_no_reflection &lt;-<span class="st"> </span><span class="kw">atl_remove_reflections</span>(data_with_reflection,</a>
+<a class="sourceLine" id="cb17-3" title="3">                          <span class="dt">point_angle_cutoff =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb17-4" title="4">                          <span class="dt">reflection_speed_cutoff =</span> <span class="fl">0.024</span>)</a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="co"># get reflections</span></a>
+<a class="sourceLine" id="cb17-6" title="6">reflection &lt;-<span class="st"> </span>data_with_reflection[<span class="op">!</span>data_no_reflection,</a>
+<a class="sourceLine" id="cb17-7" title="7">                                         on =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)]</a>
+<a class="sourceLine" id="cb17-8" title="8">reflection &lt;-<span class="st"> </span><span class="kw">na.omit</span>(reflection)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># get plots</span></a>
+<a class="sourceLine" id="cb18-2" title="2">fig_reflection &lt;-</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="st">    </span><span class="kw">geom_path</span>(<span class="dt">data =</span> reflection,</a>
+<a class="sourceLine" id="cb18-5" title="5">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb18-6" title="6">             <span class="dt">alpha =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb18-7" title="7">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> reflection,</a>
+<a class="sourceLine" id="cb18-9" title="9">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb18-10" title="10">             <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
+<a class="sourceLine" id="cb18-11" title="11">             <span class="dt">col =</span> pal[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb18-12" title="12">             <span class="dt">shape =</span> <span class="dv">2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_no_reflection,</a>
+<a class="sourceLine" id="cb18-14" title="14">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb18-15" title="15">             <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
+<a class="sourceLine" id="cb18-16" title="16">             <span class="dt">colour =</span> pal[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb18-17" title="17">             <span class="dt">shape =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb18-18" title="18">             <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-19" title="19"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb18-20" title="20">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb18-21" title="21">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb18-22" title="22">            <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-23" title="23"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-24" title="24"><span class="st">  </span><span class="kw">coord_equal</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb18-25" title="25"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))</a>
+<a class="sourceLine" id="cb18-26" title="26"></a>
+<a class="sourceLine" id="cb18-27" title="27"><span class="co"># wrap figures</span></a>
+<a class="sourceLine" id="cb18-28" title="28">plot_figure &lt;-<span class="st"> </span><span class="kw">wrap_plots</span>(<span class="kw">list</span>(fig_outlier_remove, </a>
+<a class="sourceLine" id="cb18-29" title="29">                               fig_reflection)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb18-30" title="30"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
+<a class="sourceLine" id="cb18-31" title="31">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
+<a class="sourceLine" id="cb18-32" title="32">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb18-33" title="33"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
+<a class="sourceLine" id="cb18-34" title="34"></a>
+<a class="sourceLine" id="cb18-35" title="35">plot_figure</a>
+<a class="sourceLine" id="cb18-36" title="36"></a>
+<a class="sourceLine" id="cb18-37" title="37"><span class="kw">ggsave</span>(plot_figure, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_correct_tracks.png&quot;</span>, </a>
+<a class="sourceLine" id="cb18-38" title="38">       <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">height =</span> <span class="dv">170</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<p><img src="figures/fig_correct_tracks.png" /></p>
+<p>Reducing large-scale positioning error in a movement track. <strong>(a)</strong> Positioning error may affect single observations resulting in point outliers or ‘spikes’ (red points), but it may also affect continuous susbets of a track, which we call a <code>prolonged spike' (purple triangles). While the former may be targeted by filtering on appropriate covariates such as speed and turning angle using the</code>atlastools<code>function</code>atl_filter_covariates<code>, the latter cannot be effectively corrected by targeting each coordinate pair in isolation. **(b)** The</code>atlastools<code>function</code>atl_remove_reflections` to identify prolonged spikes (red triangles) in tracking data is an illustrative example of targeting positioning errors that affect track subsets. While this method returns the canonical track without the prolonged spike (blue points) in this example, users are cautioned to frequently check this and similar semi-supervised algorithms’ results.</p>
+<p>Finally, we export the data without spikes and reflections to be used later.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">fwrite</span>(data_no_reflection, <span class="dt">file =</span> <span class="st">&quot;data/data_no_reflection.csv&quot;</span>)</a></code></pre></div>
+
+</div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references">
+<div id="ref-bjorneraas2010">
+<p>Bjørneraas, Kari, Bram Van Moorter, Christer Moe Rolandsen, and Ivar Herfindal. 2010. “Screening Global Positioning System Location Data for Errors Using Animal Movement Characteristics.” <em>The Journal of Wildlife Management</em> 74 (6): 1361–6. <a href="https://doi.org/10.1111/j.1937-2817.2010.tb01258.x">https://doi.org/10.1111/j.1937-2817.2010.tb01258.x</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="getting-started.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reducing-small-scale-positioning-error-and-aggregating-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
