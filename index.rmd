@@ -6,8 +6,9 @@ date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::pdf_book
 documentclass: book
-# bibliography: [refs.bib]
+bibliography: [references.bib]
 biblio-style: apalike
+link-citations: yes
 link-citations: yes
 github-repo: pratikunterwegs/atlas-best-practices
 description: "Source code for a guide to pre-processing high-frequency tracking data."
