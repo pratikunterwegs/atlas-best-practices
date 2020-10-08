@@ -296,8 +296,6 @@ Thus, the algorithm is less of a double-edged sword and more a sword with no hil
 
 The difficulty in implementing a reasonable algorithm for dealing with this kind of track-subset wide positioning error reveals the general problem that algorithms are **not** easy to conceptualise or efficiently implement.
 
-Users are cautioned to use this and simi
-
 ```{r}
 # attempt to remove reflections
 data_no_reflection <- atl_remove_reflections(data_with_reflection,
@@ -350,9 +348,10 @@ ggsave(plot_figure, filename = "figures/fig_correct_tracks.png",
        width = 170, height = 170, units = "mm")
 ```
 
-![](figures/figure_correct_tracks.png)
+![](figures/fig_correct_tracks.png)
 
-
+Reducing large-scale positioning error in a movement track. **(a)** Positioning error may affect single observations resulting in point outliers or 'spikes' (red points), but it may also affect continuous susbets of a track, which we call a `prolonged spike' (purple triangles). While the former may be targeted by filtering on appropriate covariates such as speed and turning angle using the `atlastools` function `atl_filter_covariates`, the latter cannot be effectively corrected by targeting each coordinate pair in isolation.
+**(b)** The `atlastools` function `atl_remove_reflections` to identify prolonged spikes (red triangles) in tracking data is an illustrative example of targeting positioning errors that affect track subsets. While this method returns the canonical track without the prolonged spike (blue points) in this example, users are cautioned to frequently check this and similar semi-supervised algorithms' results.
 
 Finally, we export the data without spikes and reflections to be used later.
 
