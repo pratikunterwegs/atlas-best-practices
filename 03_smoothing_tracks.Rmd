@@ -68,10 +68,13 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
 })
 ```
 
-### Robustness to Large Gaps
+We save the 11 point smoothed data.
 
-The median smooth is robust to large gaps in the data, and tracks do not need to be split when a large chunk of data are missing.
-The easiest way to illustrate this is with a figure.
+```{r}
+fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
+```
+
+We prepare the data for plotting.
 
 ```{r}
 # bind list after offset
