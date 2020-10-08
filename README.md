@@ -8,5 +8,4 @@ A human readable version can be found by clicking on the title above.
 
 The pre-processing pipeline we propose is shown in this diagram.
 
-![](
-https://github.com/pratikunterwegs/atlas-best-practices/blob/master/figures/fig_recipe.png | width=200)
+<img src="https://github.com/pratikunterwegs/atlas-best-practices/blob/master/figures/fig_recipe.png" width="250">
