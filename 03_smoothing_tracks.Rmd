@@ -123,38 +123,6 @@ figure_median_smooth <-
         axis.title = element_blank(),
         panel.background = element_rect(fill = "grey99"))
 
-# # make basic plot with rectangle
-# fig_bounds <-
-#   ggplot()+
-#   geom_point(data = data_errors,
-#             aes(x, y),
-#             size = 0.1, alpha = 0.2, 
-#             col = "grey")+
-#   geom_path(data = data,
-#             aes(x, y),
-#             size = 0.1)+
-#   geom_hline(yintercept = c(0.6, 0.8),
-#              col = "grey20",
-#              lty = 2, lwd = 0.2)+
-#   coord_equal(expand = F) +
-#   ggthemes::theme_map()
-
-# # append to first figure
-# figure_median_smooth[[1]] <-
-#   figure_median_smooth[[1]]+
-#   annotation_custom(grob = ggplotGrob(fig_bounds),
-#                     ymin = 0.6, ymax = 0.8,
-#                     xmin = 0.5, xmax = 0.7)
-
-# wrap plots
-# fig_median_smooth <- 
-  # wrap_plots(figure_median_smooth, 
-  #            ncol = 3)+
-  # plot_annotation(tag_levels = "a",
-  #                 tag_prefix = "(",
-  #                 tag_suffix = ")") &
-  # theme(plot.tag = element_text(face = "bold"))
-
 # save figure
 ggsave(figure_median_smooth, filename = "figures/fig_median_smooth.png",
        width = 170, height = 170 / 3, units = "mm")
@@ -181,6 +149,19 @@ list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
   
   return(data_return)
 })
+
+# get mean speed estimate and sd
+speed_agg_smooth <- 
+  lapply(list_of_agg, function(df) {
+    na.omit(df)
+    df[, speed := atl_get_speed(df)]
+    df[, list(median = median(speed, na.rm = T),
+              sd = sd(speed, na.rm = T),
+              interval = first(interval))]
+  })
+
+# bind
+speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ```
 
 ## Aggregation Before Reducing Positioning Errors
@@ -253,21 +234,36 @@ data_agg <- rbindlist(list_of_agg)
 # show boxplot of speed
 fig_agg_speed <-
   ggplot(data_agg)+
-  geom_jitter(aes(factor(interval), speed),
+  geom_jitter(aes(factor(interval), 1 + speed),
               col = pal[1],
               shape = 4, alpha = 0.5)+
-  geom_boxplot(aes(factor(interval), speed),
-               fill = NA,
-               show.legend = F, 
-               width = 0.3, 
-               outlier.size = 0.2)+
+  
   geom_hline(yintercept =
-               c(mean(data$speed, na.rm = T),
-                 quantile(data$speed, na.rm = T,
-                          probs = c(0.95))
-               ),
+               1 + quantile(data$speed, na.rm = T,
+                        probs = c(0.5, 0.95)),
              lty = c(1, 2))+
-  scale_y_log10(label = scales::comma)+
+  geom_errorbar(data = speed_agg_smooth,
+                aes(x = factor(interval),
+                    ymin = 1 + median - sd,
+                    ymax = 1 + median + sd),
+                width = 0.2,
+                position = position_nudge(x = 0.25)) +
+  geom_point(data = speed_agg_smooth,
+             aes(x = factor(interval),
+                 y = 1 + median),
+             shape = 21,
+             size = 3,
+             fill = pal[3],
+             position = position_nudge(x = 0.25)) +
+  geom_boxplot(aes(factor(interval), 1 + speed),
+               position = position_nudge(x = -0.25,),
+               fill = pal[2],
+               alpha = 0.5,
+               show.legend = F, 
+               width = 0.25, 
+               outlier.size = 0.2)+
+  scale_y_log10(label = scales::comma,
+                limits = c(NA, 1.005))+
   ggthemes::theme_few()+
   theme(axis.text.y = element_blank())+
   labs(x = "interval (s)",
@@ -278,7 +274,7 @@ fig_agg_speed <-
 # make combined figure
 fig_aggregate <-
   wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
-           design = "AABBC")+
+             design = "AABBC")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")") &
