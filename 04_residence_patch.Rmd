@@ -12,7 +12,7 @@ editor_options:
 library(data.table)
 library(atlastools)
 library(ggplot2)
-
+library(patchwork)
 # for residence time
 library(recurse)
 
@@ -42,7 +42,8 @@ We first plot a figure of residence time per positions, and residence time per t
 
 ```{r}
 # restime by position
-ggplot()+
+fig_res_a <- 
+  ggplot()+
   geom_point(data = data,
              aes(x, y, 
                  col = residence_time > 0.15),
@@ -54,6 +55,7 @@ ggplot()+
             col = "grey20")+
   scale_colour_manual(values = c("grey", pal[3]))+
   ggthemes::theme_few()+
+  coord_equal()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
         panel.background = element_rect(fill = "grey99"))
@@ -84,6 +86,7 @@ patch_summary <- atl_patch_summary(patch_data = patch,
 
 ```{r}
 # plot_patches <-
+fig_res_b <-
   ggplot()+
   geom_path(data = data,
             aes(x, y),
@@ -97,20 +100,20 @@ patch_summary <- atl_patch_summary(patch_data = patch,
           show.legend = FALSE)+
   
   geom_path(data = patch_summary,
-            aes(x_start + 0.3, y_start),
+            aes(x_start + 0.4, y_start),
             col = "grey20",
             size = 0.5)+
-  geom_point(data = data,
-             aes(x + 0.3, y, 
-                 col = residence_time > 0.15),
-             shape = 1,
-             show.legend = F)+
+  # geom_point(data = data,
+  #            aes(x + 0.3, y, 
+  #                col = residence_time > 0.15),
+  #            shape = 1,
+  #            show.legend = F)+
   geom_point(data = patch_summary,
-             aes(x_start + 0.3,
+             aes(x_start + 0.4,
                  y_start,
                  fill = patch),
              col = "grey20",
-             size = 8,
+             size = 4,
              stroke = 1,
              shape = 21,
              show.legend = F)+
@@ -118,12 +121,12 @@ patch_summary <- atl_patch_summary(patch_data = patch,
   #            aes(x + 0.3, y),
   #           size = 0.2,
   #           col = "grey40")+
-  annotate(geom = "text",
-           x = c(0.75, 1.05),
-           y = 1,
-           label = sprintf("(%s)", c("c", "d")),
-           fontface = "bold")+
-  scale_fill_distiller(palette = "RdPu")+
+  # annotate(geom = "text",
+  #          x = c(0.75, 1.05),
+  #          y = 1,
+  #          label = sprintf("(%s)", c("c", "d")),
+  #          fontface = "bold")+
+  scale_fill_distiller(palette = "Purples")+
   # coord_sf(xlim = c(0.7, 1))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
@@ -131,29 +134,52 @@ patch_summary <- atl_patch_summary(patch_data = patch,
         panel.background = element_rect(fill = "grey99"))
 
 # res time by time
-ggplot()+
+fig_res_c <-
+  ggplot()+
   geom_rect(data = patch_summary,
             aes(xmin = time_start,
                 xmax = time_end,
                 ymin = 0.05, ymax = 0.65,
                 fill = factor(patch)),
-            alpha = 0.8,
+            col = "grey",
+            lwd = 0.1,
+            alpha = 0.5,
             show.legend = F)+
   geom_path(data = data,
-            aes(time, residence_time),
+            aes(time, residence_time,
+                group = NA,
+                col = residence_time > 0.15),
             show.legend = F)+
   geom_hline(yintercept = 0.15,
              col = "grey20",
              lwd = 0.5,
              lty = 2)+
-  scale_fill_brewer(palette = "RdPu", direction = -1)+
+  scale_fill_brewer(palette = "Purples", direction = -1)+
+  scale_colour_manual(values = c("grey20", "darkgreen"))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))
-
-# save figure
-ggsave(plot_patches, 
-       filename = "figures/fig_residence_patch.png",
-       width = 170, height = 100, units = "mm")
+        panel.background = element_rect(fill = "grey99"))+
+  coord_fixed(expand = F,
+              ratio = 2500)+
+  labs(x = "time",
+       y = "res. time")
 ```
+
+We arrange the figures together.
+
+```{r}
+fig_residence <- 
+  wrap_plots(list(fig_res_a, fig_res_c, fig_res_b),
+           design = "AB\nAC")+
+  plot_annotation(tag_levels = "a",
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
+
+# save the figure
+ggsave(fig_residence,
+       filename = "figures/fig_residence.png",
+       height = 110 / 25, width = 170 / 25)
+```
+
+![](figures/fig_residence.png)
