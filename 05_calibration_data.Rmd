@@ -74,49 +74,19 @@ fig_data_bbox <-
              alpha = ifelse(data_raw$x > 645000, 0.5, 1),
              size = ifelse(data_raw$x > 645000, 0.3, 2),
              show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
+  scale_colour_manual(values = c("grey", pal[3]))+
   geom_vline(xintercept = 645000,
              col = "grey", lty = 2)+
   ggspatial::annotation_scale(location = "br")+
-  ggthemes::theme_map()+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
   coord_sf(crs = 32631)
 
 # save result
 ggsave(fig_data_bbox, filename = "figures/fig_calib_bbox.png",
        width = 185 / 25)
-```
-
-### Remove low base station positions
-
-```{r}
-# save a copy
-data_unproc <- copy(data)
-
-# remove NBS <= 3
-data <- atl_filter_covariates(data = data,
-                              filters = "NBS > 3")
-```
-
-```{r}
-fig_low_nbs <-
-  ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-             col = "grey", alpha = 0.5, size = 0.3)+
-  geom_point(data = data_unproc,
-            aes(x, y,
-                col = as.factor(NBS > 3)),
-            shape = 1,
-            alpha = 0.5, size = 0.3, show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
-  ggthemes::theme_map()+
-  ggspatial::annotation_scale(location = "tl")+
-  coord_sf(crs = 32631)+
-  labs(colour = "NBS")
-
-# save figure
-ggsave(fig_low_nbs, filename = "figures/fig_low_nbs.png",
-       width = 185 / 25, height = 185 / 25)
 ```
 
 ## Filter trajectories
@@ -172,16 +142,16 @@ speed_angle_thresholds <-
 # plot filtered data
 fig_speed_outliers <-
   ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-             col = "grey", alpha = 0.5, size = 0.3)+
   geom_point(data = data,
              aes(x, y, 
-                 col = speed_in < 15.7),
+                 col = speed_in < 24),
              size = 0.3, alpha = 0.5,
              show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
-  ggthemes::theme_map()+
+  scale_color_manual(values = c("grey", pal[3]))+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
   ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "speed (m/s)")
@@ -228,27 +198,27 @@ data <- atl_median_smooth(data = data,
 
 ```{r}
 # make figure
-fig_smooth <-
-  ggplot()+
-  geom_path(data = data,
-             aes(x, y),
-            col = RColorBrewer::brewer.pal(4, "Set1")[4])+
-  annotate(geom = "rect",
-           xmin = c(650785, 650045),
-           ymin = c(5904450, 5902700),
-           xmax = c(652500, 650682),
-           ymax = c(5906133, 5903080),
-           fill = "grey90",
-           alpha = 0.5,
-           col = NA)+
-    annotate(geom = "text",
-           x = c(650785, 650045) + 400,
-           y = c(5904450, 5902700) + 300,
-           col = "black",
-           label = c("d", "e"))+
-  theme_void()+
-  coord_sf(crs = 32631)+
-  labs(colour = "track")
+# fig_smooth <-
+#   ggplot()+
+#   geom_path(data = data,
+#              aes(x, y),
+#             col = RColorBrewer::brewer.pal(4, "Set1")[4])+
+#   annotate(geom = "rect",
+#            xmin = c(650785, 650045),
+#            ymin = c(5904450, 5902700),
+#            xmax = c(652500, 650682),
+#            ymax = c(5906133, 5903080),
+#            fill = "grey90",
+#            alpha = 0.5,
+#            col = NA)+
+#     annotate(geom = "text",
+#            x = c(650785, 650045) + 400,
+#            y = c(5904450, 5902700) + 300,
+#            col = "black",
+#            label = c("d", "e"))+
+#   theme_void()+
+#   coord_sf(crs = 32631)+
+#   labs(colour = "track")
 
 # make zoomed in figures
 fig_inset <- mapply(function(xl, yl) {
@@ -260,8 +230,8 @@ fig_inset <- mapply(function(xl, yl) {
                size = 0.4)+
     geom_point(data = data_unproc,
                aes(x, y),
-               col = RColorBrewer::brewer.pal(3, "Set1")[3],
-               shape = 1, 
+               col = pal[3],
+               shape = 19, 
                alpha = 0.5)+
     geom_path(data = data,
               aes(x, y),
@@ -275,42 +245,41 @@ fig_inset <- mapply(function(xl, yl) {
              ylim = yl, expand = F
              )+
     labs(colour = "track")
-}, list(xl1 = c(650785, 652500),
+}, list(xl1 = c(650785, 653250),
         xl2 = c(650045, 650682)),
    list(yl1 = c(5904450, 5906133),
         yl2 = c(5902700, 5903080)),
 SIMPLIFY = FALSE)
 
-# add global figure to second inset
-fig_inset[[2]] <- fig_inset[[2]] +
-  annotation_custom(grob = ggplotGrob(fig_smooth),
-                    xmin = 649990,
-                    xmax = 650045 + (650682 - 650045)/2,
-                    ymin = 5903080 - (5903080 - 5902700)/2.5,
-                    ymax = 5903080
-                    )
+# # add global figure to second inset
+# fig_inset[[2]] <- fig_inset[[2]] +
+#   annotation_custom(grob = ggplotGrob(fig_smooth),
+#                     xmin = 649990,
+#                     xmax = 650045 + (650682 - 650045)/2,
+#                     ymin = 5903080 - (5903080 - 5902700)/2.5,
+#                     ymax = 5903080
+#                     )
   
-fig_median_smooth <- 
-  wrap_plots(fig_inset)+
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")")
+fig_median_smooth <- fig_inset[[1]]
+  # wrap_plots(fig_inset)+
+  # plot_annotation(tag_levels = "a",
+  #                 tag_prefix = "(",
+  #                 tag_suffix = ")")
 # save figure
-ggsave(filename = "figures/fig_calib_median_smooth.png",
-       width = 185 / 25, height = 90 / 25)
+ggsave(fig_median_smooth,
+       filename = "figures/fig_calib_median_smooth.png",
+       width = 90 / 25, height = 90 / 25)
 ```
 
 ### Plot pre-processing steps
 
 ```{r}
 # make combined walkthrough figure
-figure_walkthrough <- 
-  wrap_plots(
-  append(
-    list(
-      fig_data_bbox, fig_low_nbs, fig_speed_outliers), 
-    fig_inset),
-design = "ABD\nACE")+
+figure_walkthrough <-
+wrap_plots(
+  list(
+    fig_data_bbox, fig_speed_outliers, fig_median_smooth),
+  design = "AB\nAC")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")")
@@ -318,7 +287,7 @@ design = "ABD\nACE")+
 # save combined figure
 ggsave(figure_walkthrough,
        filename = "figures/fig_walkthrough.png",
-       height = 130, width = 225, units = "mm")
+       height = 130, width = 170, units = "mm")
 ```
 
 
@@ -349,7 +318,7 @@ library(recurse)
 
 # get recurse data for a 10m radius
 data_recurse <- getRecursions(data_unproc[, list(x, y, time, TAG)],
-                              radius = 200)
+                              radius = 100)
 ```
 
 
