@@ -32,7 +32,7 @@ fig_data_raw <-
   geom_path(aes(x, y),
              col = "grey", alpha = 0.5, size = 0.3)+
   geom_point(aes(x, y),
-             col = "steelblue", alpha = 0.2, size = 2)+
+             col = pal[3], alpha = 0.2, size = 2)+
   ggthemes::theme_map()+
   coord_sf(crs = 32631)
 
@@ -74,49 +74,19 @@ fig_data_bbox <-
              alpha = ifelse(data_raw$x > 645000, 0.5, 1),
              size = ifelse(data_raw$x > 645000, 0.3, 2),
              show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
+  scale_colour_manual(values = c("grey", pal[3]))+
   geom_vline(xintercept = 645000,
              col = "grey", lty = 2)+
   ggspatial::annotation_scale(location = "br")+
-  ggthemes::theme_map()+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
   coord_sf(crs = 32631)
 
 # save result
 ggsave(fig_data_bbox, filename = "figures/fig_calib_bbox.png",
        width = 185 / 25)
-```
-
-### Remove low base station positions
-
-```{r}
-# save a copy
-data_unproc <- copy(data)
-
-# remove NBS <= 3
-data <- atl_filter_covariates(data = data,
-                              filters = "NBS > 3")
-```
-
-```{r}
-fig_low_nbs <-
-  ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-             col = "grey", alpha = 0.5, size = 0.3)+
-  geom_point(data = data_unproc,
-            aes(x, y,
-                col = as.factor(NBS > 3)),
-            shape = 1,
-            alpha = 0.5, size = 0.3, show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
-  ggthemes::theme_map()+
-  ggspatial::annotation_scale(location = "tl")+
-  coord_sf(crs = 32631)+
-  labs(colour = "NBS")
-
-# save figure
-ggsave(fig_low_nbs, filename = "figures/fig_low_nbs.png",
-       width = 185 / 25, height = 185 / 25)
 ```
 
 ## Filter trajectories
@@ -139,8 +109,7 @@ In the spirit of not destroying data, we create a second lower-case column calle
 
 ```{r}
 # divide by 1000, convert to integer, then convert to POSIXct
-data[, time := as.POSIXct(as.integer(TIME / 1000), 
-                          origin = "1970-01-01")]
+data[, time := as.integer(TIME / 1000)]
 ```
 
 ### Add speed and turning angle
@@ -172,28 +141,28 @@ speed_angle_thresholds <-
 # plot filtered data
 fig_speed_outliers <-
   ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-             col = "grey", alpha = 0.5, size = 0.3)+
   geom_point(data = data,
              aes(x, y, 
-                 col = speed_in < 15.7),
+                 col = speed_in < 25.6),
              size = 0.3, alpha = 0.5,
              show.legend = F)+
-  scale_color_brewer(palette = "Set1")+
-  ggthemes::theme_map()+
+  scale_color_manual(values = c("grey", pal[3]))+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
   ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "speed (m/s)")
 
 # save
 ggsave(fig_speed_outliers, filename = "figures/fig_speed_outlier.png",
-       width = 185 / 25, height = 185 / 25)
+       width = 170 / 25, height = 170 / 25)
 ```
 
 ### Filter on speed
 
-Here we use a speed threshold of 20 m/s, 4 m/s lower than the 95th percentile.
+Here we use a speed threshold of 25.6 m/s, a little lower than the 95th percentile.
 
 ```{r}
 # make a copy
@@ -201,7 +170,7 @@ data_unproc <- copy(data)
 
 # remove speed outliers
 data <- atl_filter_covariates(data = data,
-            filters = c("(speed_in < 15.7 & speed_out < 15.7)"))
+            filters = c("(speed_in < 15 & speed_out < 15)"))
 
 # recalculate speed and angle
 data[, `:=` (speed_in = atl_get_speed(data, 
@@ -228,27 +197,27 @@ data <- atl_median_smooth(data = data,
 
 ```{r}
 # make figure
-fig_smooth <-
-  ggplot()+
-  geom_path(data = data,
-             aes(x, y),
-            col = RColorBrewer::brewer.pal(4, "Set1")[4])+
-  annotate(geom = "rect",
-           xmin = c(650785, 650045),
-           ymin = c(5904450, 5902700),
-           xmax = c(652500, 650682),
-           ymax = c(5906133, 5903080),
-           fill = "grey90",
-           alpha = 0.5,
-           col = NA)+
-    annotate(geom = "text",
-           x = c(650785, 650045) + 400,
-           y = c(5904450, 5902700) + 300,
-           col = "black",
-           label = c("d", "e"))+
-  theme_void()+
-  coord_sf(crs = 32631)+
-  labs(colour = "track")
+# fig_smooth <-
+#   ggplot()+
+#   geom_path(data = data,
+#              aes(x, y),
+#             col = RColorBrewer::brewer.pal(4, "Set1")[4])+
+#   annotate(geom = "rect",
+#            xmin = c(650785, 650045),
+#            ymin = c(5904450, 5902700),
+#            xmax = c(652500, 650682),
+#            ymax = c(5906133, 5903080),
+#            fill = "grey90",
+#            alpha = 0.5,
+#            col = NA)+
+#     annotate(geom = "text",
+#            x = c(650785, 650045) + 400,
+#            y = c(5904450, 5902700) + 300,
+#            col = "black",
+#            label = c("d", "e"))+
+#   theme_void()+
+#   coord_sf(crs = 32631)+
+#   labs(colour = "track")
 
 # make zoomed in figures
 fig_inset <- mapply(function(xl, yl) {
@@ -260,8 +229,8 @@ fig_inset <- mapply(function(xl, yl) {
                size = 0.4)+
     geom_point(data = data_unproc,
                aes(x, y),
-               col = RColorBrewer::brewer.pal(3, "Set1")[3],
-               shape = 1, 
+               col = pal[3],
+               shape = 19, 
                alpha = 0.5)+
     geom_path(data = data,
               aes(x, y),
@@ -275,42 +244,41 @@ fig_inset <- mapply(function(xl, yl) {
              ylim = yl, expand = F
              )+
     labs(colour = "track")
-}, list(xl1 = c(650785, 652500),
+}, list(xl1 = c(650785, 653250),
         xl2 = c(650045, 650682)),
    list(yl1 = c(5904450, 5906133),
         yl2 = c(5902700, 5903080)),
 SIMPLIFY = FALSE)
 
-# add global figure to second inset
-fig_inset[[2]] <- fig_inset[[2]] +
-  annotation_custom(grob = ggplotGrob(fig_smooth),
-                    xmin = 649990,
-                    xmax = 650045 + (650682 - 650045)/2,
-                    ymin = 5903080 - (5903080 - 5902700)/2.5,
-                    ymax = 5903080
-                    )
+# # add global figure to second inset
+# fig_inset[[2]] <- fig_inset[[2]] +
+#   annotation_custom(grob = ggplotGrob(fig_smooth),
+#                     xmin = 649990,
+#                     xmax = 650045 + (650682 - 650045)/2,
+#                     ymin = 5903080 - (5903080 - 5902700)/2.5,
+#                     ymax = 5903080
+#                     )
   
-fig_median_smooth <- 
-  wrap_plots(fig_inset)+
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")")
+fig_median_smooth <- fig_inset[[1]]
+  # wrap_plots(fig_inset)+
+  # plot_annotation(tag_levels = "a",
+  #                 tag_prefix = "(",
+  #                 tag_suffix = ")")
 # save figure
-ggsave(filename = "figures/fig_calib_median_smooth.png",
-       width = 185 / 25, height = 90 / 25)
+ggsave(fig_median_smooth,
+       filename = "figures/fig_calib_median_smooth.png",
+       width = 90 / 25, height = 90 / 25)
 ```
 
 ### Plot pre-processing steps
 
 ```{r}
 # make combined walkthrough figure
-figure_walkthrough <- 
-  wrap_plots(
-  append(
-    list(
-      fig_data_bbox, fig_low_nbs, fig_speed_outliers), 
-    fig_inset),
-design = "ABD\nACE")+
+figure_walkthrough <-
+wrap_plots(
+  list(
+    fig_data_bbox, fig_speed_outliers, fig_median_smooth),
+  design = "AB\nAC")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")")
@@ -318,7 +286,7 @@ design = "ABD\nACE")+
 # save combined figure
 ggsave(figure_walkthrough,
        filename = "figures/fig_walkthrough.png",
-       height = 130, width = 225, units = "mm")
+       height = 130, width = 170, units = "mm")
 ```
 
 
@@ -333,32 +301,70 @@ In this dataset, residence positions are marked in the `tID` column as beginning
 ```{r}
 # make a data copy
 data_unproc <- copy(data)
-
-# assign residence positions
-data[, residence := stringi::stri_detect(tID, regex = "WP")]
-
-# make a copy of only residence points
-data_res <- data[residence == T, ]
 ```
 
 ### Calculate residence time
 
+Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
+
 ```{r}
 # load recurse
 library(recurse)
+data_recurse <- data_unproc[, list(x, y, time, TAG, UTCtime)]
+
+# filter for boating segment
+data_recurse <- atl_filter_covariates(data = data_recurse,
+  filters = c("between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11')"))
+
+# get 4 column data
+data_recurse <- data_recurse[, list(x, y, time, TAG)]
 
 # get recurse data for a 10m radius
-data_recurse <- getRecursions(data_unproc[, list(x, y, time, TAG)],
-                              radius = 200)
+recurse_stats <- getRecursions(data_recurse,
+                               radius = 500, timeunits = "mins")
+
+# assign to recurse data
+data_recurse[, res_time := recurse_stats$residenceTime]
+
+# save recurse data
+fwrite(data_recurse, file = "data/data_calib_boat_recurse.csv")
+```
+
+### Plot residence time
+
+```{r}
+fig_calib_residence <- 
+  ggplot()+
+  geom_point(data = data_recurse,
+             aes(x, y, col = res_time),
+             shape = 19, alpha = 0.5,
+             show.legend = F)+
+  scale_colour_distiller(palette = "Greens", direction = 1,
+                         trans = "log10",
+                         labels = scales::comma,
+                         limits = c(5, NA),
+                         na.value = "grey")+
+  ggspatial::annotation_scale(location = "br")+
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
+  coord_sf(crs = 32631)
 ```
 
 
 ### Run residence patch method
 
 ```{r}
+# assign id as tag
+data_recurse[, id := as.character(TAG)]
+
+# subset on 5 minute residence time
+data_recurse_subset <- data_recurse[res_time >= 5, ]
+
 # on known residence points
-patch_res_known <- atl_res_patch(data_res, 
-                                buffer_radius = 10,
+patch_res_known <- atl_res_patch(data_recurse_subset, 
+                                buffer_radius = 5,
                                 lim_spat_indep = 100,
                                 lim_time_indep = 30,
                                 min_fixes = 3)
@@ -383,35 +389,30 @@ patch_summary_data <- atl_patch_summary(patch_res_known, which_data = "summary")
 # patch with residence points and all patches
 fig_basic_residence <-
   ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-            lwd = 0.2,
-            col = "grey20")+
-  geom_point(data = data_res,
-             aes(x, y),
-             shape = 2,
-             size = 2,
-             col = pal[2])+
+  geom_point(data = data_recurse,
+            aes(x, y,
+                col = res_time > 5),
+            show.legend = F,
+            size = 1)+
   geom_path(data = patch_summary_data,
-            aes(x_median + 200, y_median),
-            col = "orange", lty = 1)+
+            aes(x_median, y_median),
+            col = pal[4], lty = 1)+
   geom_point(data = patch_summary_data,
-             aes(x_median + 200, y_median,
-                 fill = duration / 60),
-             size = 5,
-             shape = 21)+
-  
-  scale_fill_distiller(palette = "YlOrRd",
-                       direction = 1,
-                       trans = "log10",
-                       limits = c(1, 60))+
-  ggthemes::theme_map()+
-  theme(legend.position = c(0, 0.3),
-        legend.key.width = unit(3, units = "mm"),
-        legend.background = element_blank())+
+             aes(x_median, y_median),
+             size = 10,
+             stroke = 2,
+             col = pal[4],
+             shape = 1,
+             show.legend = F)+
+  scale_colour_manual(values = c("grey", pal[3]))+
+  scale_fill_distiller(palette = "RdPu")+
   ggspatial::annotation_scale(location = "tl")+
-  coord_sf(crs = 32631)+
-  labs(fill = "inferred\nduration (min)")
+  ggthemes::theme_few()+
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "grey99"))+
+  coord_sf(crs = 32631,
+           xlim = c(NA, 650000))
 ```
 
 ## Compare patch metrics
@@ -420,6 +421,11 @@ fig_basic_residence <-
 
 ```{r}
 # get known patch summary
+data_res <- data_unproc[stringi::stri_detect(tID, regex = "(WP)"), ]
+# filter for boating
+data_res <- data_res[between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11'), ]
+
+# get waypoint summary
 patch_summary_real <- data_res[, list(nfixes_real = .N,
                                       x_median = round(median(x), digits = -2),
                                       y_median = round(median(y), digits = -2),
@@ -457,20 +463,8 @@ summary(model_duration)
 
 ```{r}
 # make figure comparing different methods
-figure_patch_duration <-
+# figure_patch_duration <-
   ggplot()+
-  geom_segment(data = patch_summary_compare,
-               aes(x = 100,
-                   xend = duration,
-                   y = duration_real,
-                   yend = duration_real),
-               col = "grey")+
-  geom_segment(data = patch_summary_compare,
-               aes(x = duration,
-                   xend = duration,
-                   y = 100,
-                   yend = duration_real),
-               col = "grey")+
   geom_point(data = patch_summary_compare,
              aes(duration, 
                  duration_real),
@@ -490,17 +484,15 @@ figure_patch_duration <-
              method = "glm",
              show.legend = F)+
   annotate(geom = "text",
-           x = 300, y = 900,
+           x = 500, y = 320,
            size = 5,
            label = "R^2 == 0.849",
            parse = T)+
-  scale_x_log10(breaks = c(300, 600, 900),
-                labels = as.integer(c(300, 600, 900) / 60))+
-  scale_y_log10(breaks = c(300, 600, 900),
-                labels = as.integer(c(300, 600, 900) / 60))+
-  coord_equal(expand = F,
-              xlim = c(200, 1200),
-              ylim = c(200, 1200))+
+  # scale_x_log10(breaks = c(300, 600, 900),
+  #               labels = as.integer(c(300, 600, 900) / 60))+
+  # scale_y_log10(breaks = c(300, 600, 900),
+  #               labels = as.integer(c(300, 600, 900) / 60))+
+  # coord_equal(expand = F)+
   ggthemes::theme_few()+
   labs(x = "inferred duration (min)",
        y = "real duration (min)")
