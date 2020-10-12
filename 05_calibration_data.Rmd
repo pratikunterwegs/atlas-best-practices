@@ -325,6 +325,9 @@ recurse_stats <- getRecursions(data_recurse,
 
 # assign to recurse data
 data_recurse[, res_time := recurse_stats$residenceTime]
+
+# save recurse data
+fwrite(data_recurse, file = "data/data_calib_boat_recurse.csv")
 ```
 
 ### Plot residence time
