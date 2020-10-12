@@ -43,3 +43,4 @@ vignettes/*.pdf
 
 # large data
 data/*large*
+data/*atlas*
