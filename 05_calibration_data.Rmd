@@ -162,7 +162,7 @@ ggsave(fig_speed_outliers, filename = "figures/fig_speed_outlier.png",
 
 ### Filter on speed
 
-Here we use a speed threshold of 25.6 m/s, a little lower than the 95th percentile.
+Here we use a speed threshold of 15 m/s, the fastest known boat speed.
 
 ```{r}
 # make a copy
@@ -312,38 +312,59 @@ Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
 library(recurse)
 data_recurse <- data_unproc[, list(x, y, time, TAG, UTCtime)]
 
-# filter for boating segment
-data_recurse <- atl_filter_covariates(data = data_recurse,
-  filters = c("between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11')"))
+# thin the data
+data_recurse <- atl_thin_data(data = data_recurse,
+                              interval = 30, id_columns = "TAG",
+                              method = "resample")
 
 # get 4 column data
 data_recurse <- data_recurse[, list(x, y, time, TAG)]
 
 # get recurse data for a 10m radius
 recurse_stats <- getRecursions(data_recurse,
-                               radius = 500, timeunits = "mins")
+                               radius = 50, timeunits = "mins")
 
 # assign to recurse data
 data_recurse[, res_time := recurse_stats$residenceTime]
 
 # save recurse data
-fwrite(data_recurse, file = "data/data_calib_boat_recurse.csv")
+fwrite(data_recurse, file = "data/data_calib_recurse.csv")
 ```
+
+Read in the data.
+
+```{r}
+data_recurse <- fread("data/data_calib_recurse.csv")
+```
+
+Subset waypoint data.
+
+```{r}
+library(stringi)
+data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
+```
+
 
 ### Plot residence time
 
 ```{r}
-fig_calib_residence <- 
+fig_calib_residence <-
   ggplot()+
+  geom_point(data = data_res, 
+             aes(x, y),
+             size = 5, shape = 2,
+             alpha = 0.1)+
   geom_point(data = data_recurse,
-             aes(x, y, col = res_time),
-             shape = 19, alpha = 0.5,
+             aes(x, y, 
+                 col = res_time > 5,
+                 size = res_time > 5),
+             shape = 19, alpha = 0.4,
              show.legend = F)+
-  scale_colour_distiller(palette = "Greens", direction = 1,
-                         trans = "log10",
-                         labels = scales::comma,
-                         limits = c(5, NA),
-                         na.value = "grey")+
+  geom_path(data = data_recurse,
+             aes(x, y),
+            col = "grey", lwd = 0.2)+
+  scale_colour_manual(values = c("grey40", pal[3]))+
+  scale_size_manual(values = c(0.5, 2))+
   ggspatial::annotation_scale(location = "br")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
@@ -364,9 +385,9 @@ data_recurse_subset <- data_recurse[res_time >= 5, ]
 
 # on known residence points
 patch_res_known <- atl_res_patch(data_recurse_subset, 
-                                buffer_radius = 5,
+                                buffer_radius = 10,
                                 lim_spat_indep = 100,
-                                lim_time_indep = 30,
+                                lim_time_indep = 5,
                                 min_fixes = 3)
 ```
 
@@ -374,7 +395,8 @@ patch_res_known <- atl_res_patch(data_recurse_subset,
 
 ```{r}
 # for the known and unkniwn patches
-patch_sf_data <- atl_patch_summary(patch_res_known, which_data = "spatial")
+patch_sf_data <- atl_patch_summary(patch_res_known, which_data = "spatial",
+                                   buffer_radius = 20)
 
 # assign crs
 sf::st_crs(patch_sf_data) <- 32631
@@ -383,28 +405,91 @@ sf::st_crs(patch_sf_data) <- 32631
 patch_summary_data <- atl_patch_summary(patch_res_known, which_data = "summary")
 ```
 
+### Get waypoint centroids
+
+```{r}
+# get centroid
+data_res_summary <- data_res[, list(x_median = median(x),
+                                    y_median = median(y),
+                                    t_median = median(time)),
+                             by = "tID"]
+
+# now get times 10 mins before and after
+data_res_summary[, `:=`(t_min = t_median - (10 * 60),
+                        t_max = t_median + (10 * 60))]
+
+# make a list of positions 10min before and after
+wp_data <- mapply(function(l, u, mx, my) {
+  tmp_data <- data_unproc[inrange(time, l, u)]
+  tmp_data[, distance := sqrt((mx - x)^2 + (my - y)^2)]
+  # keep within 50
+  tmp_data <- tmp_data[distance <= 50, ]
+  # get duration
+  return(diff(range(tmp_data$time)))
+}, data_res_summary$t_min, data_res_summary$t_max,
+   data_res_summary$x_median, data_res_summary$y_median,
+SIMPLIFY = FALSE)
+```
+
 ### Plot the outcome
 
 ```{r}
 # patch with residence points and all patches
 fig_basic_residence <-
   ggplot()+
+  geom_sf(data = griend)+
+  geom_point(data = data_res_summary, 
+             aes(x_median, y_median),
+             size = 10, shape = 7,
+             # stroke = ,
+             col = "grey20",
+             alpha = 1)+
+    # geom_path(data = data_recurse,
+    #          aes(x, y),
+    #         col = "grey", lwd = 0.2)+
+  # geom_text(data = data_res_summary,
+  #           aes(x_median, y_median,
+  #               label = tID),
+  #           # size = 10, shape = 7,
+  #           # stroke = ,
+  #           nudge_x = 100,
+  #           fontface = "bold",
+  #           col = "grey20",
+  #           alpha = 1)+
+  # geom_text(data = patch_summary_data, 
+  #           aes(x_median, y_median,
+  #               label = patch),
+  #           # size = 10, shape = 7,
+  #           # stroke = ,
+  #           nudge_x = -50,
+  #           fontface = "bold",
+  #           col = pal[4],
+  #           alpha = 1)+
   geom_point(data = data_recurse,
             aes(x, y,
-                col = res_time > 5),
+                col = res_time > 5,
+                shape = res_time > 5),
             show.legend = F,
-            size = 1)+
-  geom_path(data = patch_summary_data,
-            aes(x_median, y_median),
-            col = pal[4], lty = 1)+
-  geom_point(data = patch_summary_data,
-             aes(x_median, y_median),
-             size = 10,
-             stroke = 2,
-             col = pal[4],
-             shape = 1,
-             show.legend = F)+
-  scale_colour_manual(values = c("grey", pal[3]))+
+            size = 2)+
+  geom_sf(data = patch_sf_data,
+          fill = pal[4],
+          col = pal[4],
+          alpha = 0.3)+
+  geom_segment(data = patch_summary_data,
+            aes(x = x_end, y = y_end,
+                xend = shift(x_start, type = "lag"),
+                yend = shift(y_start, type = "lag")),
+            col = pal[4], lty = 1,
+            lwd = 0.5)+
+  # geom_point(data = patch_summary_data,
+  #            aes(x_median, y_median),
+  #            size = 5,
+  #            stroke = 1,
+  #            col = pal[4],
+  #            shape = 1,
+  #            show.legend = F)+
+  scale_colour_manual(values = c("grey40", pal[3]))+
+  scale_shape_manual(values = c(1, 19))+
   scale_fill_distiller(palette = "RdPu")+
   ggspatial::annotation_scale(location = "tl")+
   ggthemes::theme_few()+
@@ -412,7 +497,9 @@ fig_basic_residence <-
         axis.title = element_blank(),
         panel.background = element_rect(fill = "grey99"))+
   coord_sf(crs = 32631,
-           xlim = c(NA, 650000))
+           expand = F,
+           ylim = c(5901700, 5903150),
+           xlim = c(649300, 650700))
 ```
 
 ## Compare patch metrics
@@ -422,22 +509,20 @@ fig_basic_residence <-
 ```{r}
 # get known patch summary
 data_res <- data_unproc[stringi::stri_detect(tID, regex = "(WP)"), ]
-# filter for boating
-data_res <- data_res[between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11'), ]
 
 # get waypoint summary
 patch_summary_real <- data_res[, list(nfixes_real = .N,
                                       x_median = round(median(x), digits = -2),
-                                      y_median = round(median(y), digits = -2),
-                                      duration_real = as.numeric(
-                                        max(time) - min(time))), 
+                                      y_median = round(median(y), digits = -2)), 
                                by = "tID"]
 
+# add real duration
+patch_summary_real[, duration_real := unlist(wp_data)]
 # round median coordinate for inferred patches
 patch_summary_inferred <- 
   patch_summary_data[, 
                      c("x_median", "y_median", 
-                       "nfixes", "duration")
+                       "nfixes", "duration", "patch")
                      ][, `:=`(x_median = round(x_median, digits = -2),
                               y_median = round(y_median, digits = -2))]
 
@@ -447,7 +532,17 @@ patch_summary_compare <-
         patch_summary_inferred, 
         on = c("x_median", "y_median"),
         all.x = TRUE, all.y = TRUE)
+
+patch_summary_compare[!is.na(tID)]
+
+# drop nas
+patch_summary_compare <- na.omit(patch_summary_compare)
+
+# drop patch around WP080
+patch_summary_compare <- patch_summary_compare[tID != "WP080", ]
 ```
+
+12 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.
 
 ### Plot durations comparisons
 
@@ -463,37 +558,46 @@ summary(model_duration)
 
 ```{r}
 # make figure comparing different methods
-# figure_patch_duration <-
+figure_patch_duration <-
   ggplot()+
   geom_point(data = patch_summary_compare,
              aes(duration, 
                  duration_real),
              show.legend = F,
             size = 3,
-            stroke = 1,
-            shape = 21,
-            fill = pal[2],
-            col = "white")+
+            stroke = 2,
+            shape = 1,
+            col = pal[2])+
   geom_smooth(data = patch_summary_compare,
              aes(duration, 
                  duration_real),
              se = F,
-             size = 0.5,
              col = pal[1],
-             alpha = 0.2,
-             method = "glm",
+             lwd = 1,
+             method = "lm",
              show.legend = F)+
   annotate(geom = "text",
-           x = 500, y = 320,
+           x = 600, y = 1020,
            size = 5,
-           label = "R^2 == 0.849",
+           label = "R^2 == 0.98",
            parse = T)+
-  # scale_x_log10(breaks = c(300, 600, 900),
-  #               labels = as.integer(c(300, 600, 900) / 60))+
-  # scale_y_log10(breaks = c(300, 600, 900),
-  #               labels = as.integer(c(300, 600, 900) / 60))+
-  # coord_equal(expand = F)+
+  scale_x_continuous(
+    breaks = c(400, 600, 800, 1000),
+    labels = as.integer(c(400, 600, 800, 1000) / 60)
+    )+
+  scale_y_continuous(
+    breaks = c(400, 600, 800, 1000),
+    labels = as.integer(c(400, 600, 800, 1000) / 60)
+  )+
+  coord_cartesian(expand = T,
+  #             # xlim = c(400, 1050),
+  #             ylim = c(250, 1050)
+  )+
+  geom_abline(slope = 1, lty = 2,
+              col = "black")+
   ggthemes::theme_few()+
+  theme(panel.background = element_rect(fill = "grey99"),
+        panel.grid.minor = element_line(colour = "grey"))+
   labs(x = "inferred duration (min)",
        y = "real duration (min)")
 ```
@@ -503,14 +607,16 @@ summary(model_duration)
 ```{r}
 # wrap together
 figure_res_patch <-
-  wrap_plots(list(fig_basic_residence, figure_patch_duration))+
-    plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
+wrap_plots(list(fig_basic_residence, figure_patch_duration),
+           ncol = 1,
+           design = "AA\nAA\nAA\nAA\nBB")+
+  plot_annotation(tag_levels = "a",
+                tag_prefix = "(",
+                tag_suffix = ")") &
+theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(figure_res_patch,
        filename = "figures/fig_calib_residence_patch.png",
-       height = 130, width = 225, units = "mm")
+       height = 225, width = 170, units = "mm")
 ```
