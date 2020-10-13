@@ -313,21 +313,26 @@ library(recurse)
 data_recurse <- data_unproc[, list(x, y, time, TAG, UTCtime)]
 
 # filter for boating segment
-data_recurse <- atl_filter_covariates(data = data_recurse,
-  filters = c("between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11')"))
+# data_recurse <- atl_filter_covariates(data = data_recurse,
+#  filters = c("between(UTCtime, '2020-08-24 11:13:00', '2020-08-24 12:36:11')"))
+
+# thin the data
+data_recurse <- atl_thin_data(data = data_recurse,
+                              interval = 30, id_columns = "TAG",
+                              method = "resample")
 
 # get 4 column data
 data_recurse <- data_recurse[, list(x, y, time, TAG)]
 
 # get recurse data for a 10m radius
 recurse_stats <- getRecursions(data_recurse,
-                               radius = 500, timeunits = "mins")
+                               radius = 100, timeunits = "mins")
 
 # assign to recurse data
 data_recurse[, res_time := recurse_stats$residenceTime]
 
 # save recurse data
-fwrite(data_recurse, file = "data/data_calib_boat_recurse.csv")
+fwrite(data_recurse, file = "data/data_calib_recurse.csv")
 ```
 
 ### Plot residence time
