@@ -302,9 +302,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="647.24398"
-     inkscape:cy="594.52533"
+     inkscape:zoom="1.979899"
+     inkscape:cx="328.39259"
+     inkscape:cy="1150.9362"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -515,7 +515,7 @@
          xml:space="preserve"
          id="flowRoot5251"
          style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
-         transform="matrix(0.26458333,0,0,0.26458333,47.500676,16.549394)"><flowRegion
+         transform="matrix(0.26458333,0,0,0.26458333,47.500676,20.077173)"><flowRegion
            id="flowRegion5245"
            style="font-size:21.33333397px;text-align:center;text-anchor:middle"><rect
              id="rect5243"
@@ -524,8 +524,6 @@
              x="65.659912"
              y="-201.7903"
              style="font-size:21.33333397px;text-align:center;text-anchor:middle" /></flowRegion><flowPara
-           id="flowPara5249"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#0000ff">plot</flowPara><flowPara
            id="flowPara5255"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#800080">ggplot2</flowPara></flowRoot>    </g>
     <text
