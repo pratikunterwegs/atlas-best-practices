@@ -17,7 +17,7 @@ library(patchwork)
 library(recurse)
 
 # prepare a palette
-pal <- RColorBrewer::brewer.pal(3, "PRGn")
+pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
 ## An example with simulated data
@@ -25,14 +25,15 @@ pal <- RColorBrewer::brewer.pal(3, "PRGn")
 ### Read data and classify
 
 ```{r}
-# read in the data
-data_raw <- fread("data/data_sim.csv")[5000:10000, ]
-data <- fread("data/data_smooth.csv")
-data[, id := "a"]
+# read patch data
+data <- fread("data/data_for_res_patch.csv")
+
+# filter
+data <- data[y < 21, ]
 
 # do recurse
 data_recurse <- getRecursions(data[, list(x, y, time, id)],
-                              radius = 0.1)
+                              radius = 1)
 
 # assign residence time
 data[, residence_time := data_recurse$residenceTime]
@@ -42,20 +43,21 @@ We first plot a figure of residence time per positions, and residence time per t
 
 ```{r}
 # restime by position
-fig_res_a <- 
+fig_res_a <-
   ggplot()+
-  geom_point(data = data,
-             aes(x, y, 
-                 col = residence_time > 0.15),
-             shape = 1,
-             show.legend = F)+
-  geom_path(data = data_raw,
+  geom_path(data = data,
             aes(x, y),
             lwd = 0.2,
-            col = "grey20")+
+            col = "grey40")+
+  geom_point(data = data,
+             aes(x, y, 
+                 col = residence_time > 0.04,
+                 shape = residence_time > 0.04),
+             show.legend = F)+
+  coord_equal(ylim = c(NA, 20))+
   scale_colour_manual(values = c("grey", pal[3]))+
+  scale_shape_manual(values = c(1, 16))+
   ggthemes::theme_few()+
-  coord_equal()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
         panel.background = element_rect(fill = "grey99"))
@@ -65,17 +67,17 @@ We construct residence patches from data where residence time is > 0.15.
 
 ```{r}
 # make residence patch
-patch <- atl_res_patch(data[residence_time > 0.15, ], 
-                       buffer_radius = 0.001, 
-                       lim_spat_indep = 0.02, 
-                       lim_time_indep = 5)
+patch <- atl_res_patch(data[residence_time > 0.04, ], 
+                       buffer_radius = 0.1, 
+                       lim_spat_indep = 1, 
+                       lim_time_indep = 30)
 
 
 
 # get spatial representation
 patch_sf <- atl_patch_summary(patch_data = patch,
                               which_data = "spatial", 
-                              buffer_radius = 0.01)
+                              buffer_radius = 0.15)
 
 # get summary data
 patch_summary <- atl_patch_summary(patch_data = patch,
@@ -90,44 +92,30 @@ fig_res_b <-
   ggplot()+
   geom_path(data = data,
             aes(x, y),
-            col = "grey20")+
+            col = "grey20",
+            lwd = 0.2)+
   scale_colour_manual(values = c("grey", pal[3]))+
   geom_sf(data = patch_sf,
           aes(fill = patch),
           colour = "grey20",
-          alpha = 0.8,
+          alpha = 0.7,
           lwd = 0.2,
           show.legend = FALSE)+
-  
   geom_path(data = patch_summary,
-            aes(x_start + 0.4, y_start),
-            col = "grey20",
+            aes(x_median + 3, y_median),
+            col = "grey0",
             size = 0.5)+
-  # geom_point(data = data,
-  #            aes(x + 0.3, y, 
-  #                col = residence_time > 0.15),
-  #            shape = 1,
-  #            show.legend = F)+
   geom_point(data = patch_summary,
-             aes(x_start + 0.4,
-                 y_start,
+             aes(x_median + 3,
+                 y_median,
                  fill = patch),
              col = "grey20",
              size = 4,
              stroke = 1,
              shape = 21,
              show.legend = F)+
-  # geom_path(data = data,
-  #            aes(x + 0.3, y),
-  #           size = 0.2,
-  #           col = "grey40")+
-  # annotate(geom = "text",
-  #          x = c(0.75, 1.05),
-  #          y = 1,
-  #          label = sprintf("(%s)", c("c", "d")),
-  #          fontface = "bold")+
-  scale_fill_distiller(palette = "Purples")+
-  # coord_sf(xlim = c(0.7, 1))+
+  scale_fill_distiller(palette = "Paired")+
+  coord_sf(ylim = c(1, 20))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
@@ -139,28 +127,28 @@ fig_res_c <-
   geom_rect(data = patch_summary,
             aes(xmin = time_start,
                 xmax = time_end,
-                ymin = 0.05, ymax = 0.65,
-                fill = factor(patch)),
+                ymin = 0.0, ymax = 0.175,
+                fill = (patch)),
             col = "grey",
             lwd = 0.1,
             alpha = 0.5,
             show.legend = F)+
   geom_path(data = data,
             aes(time, residence_time,
-                group = NA,
-                col = residence_time > 0.15),
+                group = NA),
+            lwd = 0.2,
             show.legend = F)+
-  geom_hline(yintercept = 0.15,
+  geom_hline(yintercept = 0.04,
              col = "grey20",
              lwd = 0.5,
              lty = 2)+
-  scale_fill_brewer(palette = "Purples", direction = -1)+
+  scale_fill_distiller(palette = "Paired", direction = -1)+
   scale_colour_manual(values = c("grey20", "darkgreen"))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         panel.background = element_rect(fill = "grey99"))+
   coord_fixed(expand = F,
-              ratio = 2500)+
+              ratio = 10000)+
   labs(x = "time",
        y = "res. time")
 ```
@@ -168,9 +156,9 @@ fig_res_c <-
 We arrange the figures together.
 
 ```{r}
-fig_residence <- 
+fig_residence <-
   wrap_plots(list(fig_res_a, fig_res_c, fig_res_b),
-           design = "AB\nAC")+
+           design = "ACC\nBCC")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")") &
@@ -179,7 +167,7 @@ fig_residence <-
 # save the figure
 ggsave(fig_residence,
        filename = "figures/fig_residence.png",
-       height = 110 / 25, width = 170 / 25)
+       height = 170 / 25, width = 170 / 25)
 ```
 
 ![](figures/fig_residence.png)

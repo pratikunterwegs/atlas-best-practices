@@ -58,3 +58,21 @@ data <- do_smoove_data()
 # save simulated data
 fwrite(data, "data/data_sim.csv")
 ```
+
+## Simualte for residence patches
+
+```{r}
+# do smoove data using a RACVM
+data <- smoove::simulateRACVM(dt = 0.1, Tmax = 500, omega = 5, v0 = 1, mu = 0.1)
+data <- as.data.table(data$XY)
+
+# assign id
+data[, id := "test"]
+data[, time := seq_len(nrow(data))]
+# rename x and y
+setnames(data, old = c("x", "y"), new = c("y", "x"))
+
+# save data
+fwrite(data, "data/data_for_res_patch.csv")
+```
+

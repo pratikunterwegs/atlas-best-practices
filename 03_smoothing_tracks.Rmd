@@ -164,6 +164,36 @@ speed_agg_smooth <-
 speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ```
 
+```{r}
+### plot figures
+fig_agg_data <- 
+  lapply(list_of_agg, function(df) {
+    ggplot(df)+
+      geom_point(data = data_agg,
+                 aes(x, y),
+                 size = 0.2,
+                 col = pal[3])+
+      geom_path(aes(x,y), 
+                col = pal[1])+
+      geom_point(aes(x,y, 
+                     size = SD,
+                     fill = SD,
+                     group = interval),
+                 shape = 21,
+                 alpha = 0.8,
+                 show.legend = F)+
+      scale_fill_distiller(palette = "Purples", direction = 1,
+                           values = c(-0.25, 1))+
+      scale_size(range = c(2, 4))+
+      ggthemes::theme_few()+
+      theme(axis.text = element_blank(),
+            axis.title = element_blank(),
+            panel.background = element_rect(fill = "grey99"))+
+      coord_cartesian(ylim = c(0.6, NA))
+  })
+```
+
+
 ## Aggregation Before Reducing Positioning Errors
 
 Users may rightly wonder whether they can get away with aggregating their data, using a median aggregation function, and reduce data volumes, correct uneven sampling frequency, and reduce large-scale errors all in one go.
@@ -193,39 +223,7 @@ list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
 data[, speed := atl_get_speed(data)]
 ```
 
-We prepare the figures.
-
-```{r}
-### plot figures
-fig_agg_data <- 
-  lapply(list_of_agg, function(df) {
-    ggplot(df)+
-      geom_point(data = data_errors,
-                 aes(x, y),
-                 size = 0.2,
-                 col = pal[3])+
-      geom_path(data = data,
-                aes(x, y),
-                lwd = 0.3)+
-      geom_path(aes(x,y), 
-                col = pal[1])+
-      geom_point(aes(x,y, 
-                     size = SD,
-                     fill = SD,
-                     group = interval),
-                 shape = 21,
-                 alpha = 0.8,
-                 show.legend = F)+
-      scale_fill_distiller(palette = "RdPu", direction = 1,
-                           values = c(-0.25, 1))+
-      scale_size(range = c(2, 4))+
-      ggthemes::theme_few()+
-      theme(axis.text = element_blank(),
-            axis.title = element_blank(),
-            panel.background = element_rect(fill = "grey99"))+
-      coord_cartesian(ylim = c(0.6, NA))
-  })
-```
+### Comparing median aggregation with and without smoothing
 
 ```{r}
 # now plot distribution of speed
@@ -234,10 +232,6 @@ data_agg <- rbindlist(list_of_agg)
 # show boxplot of speed
 fig_agg_speed <-
   ggplot(data_agg)+
-  geom_jitter(aes(factor(interval), 1 + speed),
-              col = pal[1],
-              shape = 4, alpha = 0.5)+
-  
   geom_hline(yintercept =
                1 + quantile(data$speed, na.rm = T,
                         probs = c(0.5, 0.95)),
