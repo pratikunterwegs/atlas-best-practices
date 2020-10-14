@@ -431,6 +431,14 @@ wp_data <- mapply(function(l, u, mx, my) {
 SIMPLIFY = FALSE)
 ```
 
+### Read Griend
+
+```{r}
+# read griend
+griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
+```
+
+
 ### Plot the outcome
 
 ```{r}
@@ -475,12 +483,12 @@ fig_basic_residence <-
           fill = pal[4],
           col = pal[4],
           alpha = 0.3)+
-  geom_segment(data = patch_summary_data,
-            aes(x = x_end, y = y_end,
-                xend = shift(x_start, type = "lag"),
-                yend = shift(y_start, type = "lag")),
-            col = pal[4], lty = 1,
-            lwd = 0.5)+
+  # geom_segment(data = patch_summary_data,
+  #           aes(x = x_end, y = y_end,
+  #               xend = shift(x_start, type = "lag"),
+  #               yend = shift(y_start, type = "lag")),
+  #           col = pal[4], lty = 1,
+  #           lwd = 0.5)+
   # geom_point(data = patch_summary_data,
   #            aes(x_median, y_median),
   #            size = 5,
