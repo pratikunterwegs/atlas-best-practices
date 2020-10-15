@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-10-08" />
+<meta name="date" content="2020-10-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -132,6 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a><ul>
 <li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installing-atlastools"><i class="fa fa-check"></i><b>2.1</b> Installing <code>atlastools</code></a></li>
 <li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#simulating-movement-data"><i class="fa fa-check"></i><b>2.2</b> Simulating movement data</a></li>
+<li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#simualte-for-residence-patches"><i class="fa fa-check"></i><b>2.3</b> Simualte for residence patches</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a><ul>
 <li class="chapter" data-level="3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>3.1</b> Prepare Libraries</a></li>
@@ -146,11 +147,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a><ul>
 <li class="chapter" data-level="4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#preparing-libraries-and-data"><i class="fa fa-check"></i><b>4.1</b> Preparing Libraries and Data</a></li>
-<li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a><ul>
-<li class="chapter" data-level="4.2.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#robustness-to-large-gaps"><i class="fa fa-check"></i><b>4.2.1</b> Robustness to Large Gaps</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a></li>
 <li class="chapter" data-level="4.3" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#thinning-data-by-aggregation"><i class="fa fa-check"></i><b>4.3</b> Thinning Data by Aggregation</a></li>
-<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a></li>
+<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#comparing-median-aggregation-with-and-without-smoothing"><i class="fa fa-check"></i><b>4.4.1</b> Comparing median aggregation with and without smoothing</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a><ul>
 <li class="chapter" data-level="" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#prepare-libraries-1"><i class="fa fa-check"></i>Prepare libraries</a></li>
@@ -162,9 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a><ul>
 <li class="chapter" data-level="6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#preliminary-visualisation"><i class="fa fa-check"></i><b>6.2</b> Preliminary visualisation</a></li>
-<li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#remove-low-base-station-positions"><i class="fa fa-check"></i><b>6.3.1</b> Remove low base station positions</a></li>
-</ul></li>
+<li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a></li>
 <li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a><ul>
 <li class="chapter" data-level="6.4.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>6.4.1</b> Handle time</a></li>
 <li class="chapter" data-level="6.4.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>6.4.2</b> Add speed and turning angle</a></li>
@@ -178,9 +177,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a><ul>
 <li class="chapter" data-level="6.6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>6.6.1</b> Prepare data</a></li>
 <li class="chapter" data-level="6.6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#calculate-residence-time"><i class="fa fa-check"></i><b>6.6.2</b> Calculate residence time</a></li>
-<li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#run-residence-patch-method"><i class="fa fa-check"></i><b>6.6.3</b> Run residence patch method</a></li>
-<li class="chapter" data-level="6.6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>6.6.4</b> Get spatial and summary objects</a></li>
-<li class="chapter" data-level="6.6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.5</b> Plot the outcome</a></li>
+<li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-residence-time"><i class="fa fa-check"></i><b>6.6.3</b> Plot residence time</a></li>
+<li class="chapter" data-level="6.6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#run-residence-patch-method"><i class="fa fa-check"></i><b>6.6.4</b> Run residence patch method</a></li>
+<li class="chapter" data-level="6.6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>6.6.5</b> Get spatial and summary objects</a></li>
+<li class="chapter" data-level="6.6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-waypoint-centroids"><i class="fa fa-check"></i><b>6.6.6</b> Get waypoint centroids</a></li>
+<li class="chapter" data-level="6.6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#read-griend"><i class="fa fa-check"></i><b>6.6.7</b> Read Griend</a></li>
+<li class="chapter" data-level="6.6.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.8</b> Plot the outcome</a></li>
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a><ul>
 <li class="chapter" data-level="6.7.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-known-patches"><i class="fa fa-check"></i><b>6.7.1</b> Compare known patches</a></li>
@@ -215,23 +217,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="preparing-libraries-and-data" class="section level2">
 <h2><span class="header-section-number">4.1</span> Preparing Libraries and Data</h2>
 <p>We first load some useful packages and define a colour palette.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># prep libs</span></a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="kw">library</span>(atlastools)</a>
-<a class="sourceLine" id="cb20-4" title="4"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb20-5" title="5"><span class="kw">library</span>(patchwork)</a>
-<a class="sourceLine" id="cb20-6" title="6"></a>
-<a class="sourceLine" id="cb20-7" title="7"><span class="co"># prepare a palette</span></a>
-<a class="sourceLine" id="cb20-8" title="8">pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># prep libs</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">library</span>(data.table)</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">library</span>(atlastools)</a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="kw">library</span>(patchwork)</a>
+<a class="sourceLine" id="cb21-6" title="6"></a>
+<a class="sourceLine" id="cb21-7" title="7"><span class="co"># prepare a palette</span></a>
+<a class="sourceLine" id="cb21-8" title="8">pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">3</span>, <span class="st">&quot;PRGn&quot;</span>)</a></code></pre></div>
 <p>We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.</p>
 <p>We also assign a variable, <code>window_size</code>, which will help identify the datasets when comparing median smooth moving window (<span class="math inline">\(K\)</span>) sizes.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># read in the data and set the window size variable</span></a>
-<a class="sourceLine" id="cb21-2" title="2">data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_sim.csv&quot;</span>)[<span class="dv">5000</span><span class="op">:</span><span class="dv">10000</span>, ]</a>
-<a class="sourceLine" id="cb21-3" title="3">data[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="ot">NA</span>]</a>
-<a class="sourceLine" id="cb21-4" title="4"></a>
-<a class="sourceLine" id="cb21-5" title="5"><span class="co"># data with small scale errors but no reflections or outliers</span></a>
-<a class="sourceLine" id="cb21-6" title="6">data_errors &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_no_reflection.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb21-7" title="7">data_errors[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># read in the data and set the window size variable</span></a>
+<a class="sourceLine" id="cb22-2" title="2">data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_sim.csv&quot;</span>)[<span class="dv">5000</span><span class="op">:</span><span class="dv">10000</span>, ]</a>
+<a class="sourceLine" id="cb22-3" title="3">data[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="ot">NA</span>]</a>
+<a class="sourceLine" id="cb22-4" title="4"></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="co"># data with small scale errors but no reflections or outliers</span></a>
+<a class="sourceLine" id="cb22-6" title="6">data_errors &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_no_reflection.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb22-7" title="7">data_errors[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="dv">0</span>]</a></code></pre></div>
 </div>
 <div id="median-smoothing" class="section level2">
 <h2><span class="header-section-number">4.2</span> Median Smoothing</h2>
@@ -240,160 +242,125 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Very large <span class="math inline">\(K\)</span> will lead to unrealistic tracks, while small <span class="math inline">\(K\)</span> will not result in much reduction of error.
 Users are encouraged to plot their data before and after smoothing to examine the effect of different window sizes.</p>
 <p>The <code>atlastools</code> function <code>atl_median_smooth</code> is quite fast and users can readily try multiple <span class="math inline">\(K\)</span> values as shown in the example below.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># smooth the data over four K values</span></a>
-<a class="sourceLine" id="cb22-2" title="2">list_of_smooths &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">11</span>, <span class="dv">21</span>), <span class="cf">function</span>(K) {</a>
-<a class="sourceLine" id="cb22-3" title="3">  </a>
-<a class="sourceLine" id="cb22-4" title="4">  data_copy &lt;-<span class="st"> </span><span class="kw">copy</span>(data_errors)</a>
-<a class="sourceLine" id="cb22-5" title="5">  </a>
-<a class="sourceLine" id="cb22-6" title="6">  data_copy &lt;-<span class="st"> </span><span class="kw">atl_median_smooth</span>(<span class="dt">data =</span> data_copy,</a>
-<a class="sourceLine" id="cb22-7" title="7">                    <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </a>
-<a class="sourceLine" id="cb22-8" title="8">                    <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>,</a>
-<a class="sourceLine" id="cb22-9" title="9">                    <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb22-10" title="10">                    <span class="dt">moving_window =</span> K)</a>
-<a class="sourceLine" id="cb22-11" title="11">  </a>
-<a class="sourceLine" id="cb22-12" title="12">  data_copy[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span>K]</a>
-<a class="sourceLine" id="cb22-13" title="13">})</a></code></pre></div>
-<div id="robustness-to-large-gaps" class="section level3">
-<h3><span class="header-section-number">4.2.1</span> Robustness to Large Gaps</h3>
-<p>The median smooth is robust to large gaps in the data, and tracks do not need to be split when a large chunk of data are missing.
-The easiest way to illustrate this is with a figure.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># make a single list of data</span></a>
-<a class="sourceLine" id="cb23-2" title="2">data_plot &lt;-<span class="st"> </span><span class="kw">append</span>(<span class="kw">list</span>(data_errors), list_of_smooths)</a>
-<a class="sourceLine" id="cb23-3" title="3"></a>
-<a class="sourceLine" id="cb23-4" title="4"><span class="co"># now prep smooth over Y coordinate</span></a>
-<a class="sourceLine" id="cb23-5" title="5">fig_smooth_1d &lt;-</a>
-<a class="sourceLine" id="cb23-6" title="6"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">rbindlist</span>(data_plot),</a>
-<a class="sourceLine" id="cb23-8" title="8">             <span class="kw">aes</span>(time, y,</a>
-<a class="sourceLine" id="cb23-9" title="9">                 <span class="dt">col =</span> <span class="kw">factor</span>(window_size)),</a>
-<a class="sourceLine" id="cb23-10" title="10">             <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb23-11" title="11">             <span class="dt">size =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb23-12" title="12">             <span class="dt">show.legend =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb23-13" title="13">             <span class="dt">shape =</span> <span class="dv">16</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-14" title="14"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">5000</span>, <span class="dv">7000</span>),</a>
-<a class="sourceLine" id="cb23-15" title="15">                  <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.7</span>, <span class="ot">NA</span>),</a>
-<a class="sourceLine" id="cb23-16" title="16">                  <span class="dt">expand =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-17" title="17"><span class="st">  </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Spectral&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-18" title="18"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-19" title="19"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb23-20" title="20"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;position index&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Y coordinate&quot;</span>)</a></code></pre></div>
-<p>We prepare a plot of the smoothed data as well as the demonstration of the method relative to gaps.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co"># prepare data to plot</span></a>
-<a class="sourceLine" id="cb24-2" title="2"><span class="co"># make list of data to plot</span></a>
-<a class="sourceLine" id="cb24-3" title="3">figure_median_smooth &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb24-4" title="4"><span class="st">  </span><span class="kw">mapply</span>(<span class="cf">function</span>(df, col) {</a>
-<a class="sourceLine" id="cb24-5" title="5">    <span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-6" title="6"><span class="st">      </span><span class="kw">geom_point</span>(<span class="dt">data =</span> df,</a>
-<a class="sourceLine" id="cb24-7" title="7">                 <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb24-8" title="8">                 <span class="dt">size =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb24-9" title="9">                 <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb24-10" title="10">                 <span class="dt">show.legend =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb24-11" title="11">                 <span class="dt">col =</span> col,</a>
-<a class="sourceLine" id="cb24-12" title="12">                 <span class="dt">shape =</span> <span class="dv">1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-13" title="13"><span class="st">      </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb24-14" title="14">                <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb24-15" title="15">                <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-16" title="16"><span class="st">      </span><span class="kw">coord_cartesian</span>(<span class="dt">expand =</span> T,</a>
-<a class="sourceLine" id="cb24-17" title="17">                  <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.8</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb24-18" title="18"><span class="st">      </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()</a>
-<a class="sourceLine" id="cb24-19" title="19">}, data_plot, <span class="kw">c</span>(pal[<span class="dv">2</span>], <span class="kw">rep</span>(</a>
-<a class="sourceLine" id="cb24-20" title="20">  RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">3</span>, <span class="st">&quot;Greens&quot;</span>)[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb24-21" title="21">  <span class="dv">4</span>)),</a>
-<a class="sourceLine" id="cb24-22" title="22"><span class="dt">SIMPLIFY =</span> F)</a>
-<a class="sourceLine" id="cb24-23" title="23"></a>
-<a class="sourceLine" id="cb24-24" title="24"><span class="co"># make basic plot with rectangle</span></a>
-<a class="sourceLine" id="cb24-25" title="25">fig_bounds &lt;-</a>
-<a class="sourceLine" id="cb24-26" title="26"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-27" title="27"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_errors,</a>
-<a class="sourceLine" id="cb24-28" title="28">            <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb24-29" title="29">            <span class="dt">size =</span> <span class="fl">0.1</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, </a>
-<a class="sourceLine" id="cb24-30" title="30">            <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-31" title="31"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb24-32" title="32">            <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb24-33" title="33">            <span class="dt">size =</span> <span class="fl">0.1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-34" title="34"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.8</span>),</a>
-<a class="sourceLine" id="cb24-35" title="35">             <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
-<a class="sourceLine" id="cb24-36" title="36">             <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">lwd =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-37" title="37"><span class="st">  </span><span class="kw">coord_equal</span>(<span class="dt">expand =</span> F) <span class="op">+</span></a>
-<a class="sourceLine" id="cb24-38" title="38"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()</a>
-<a class="sourceLine" id="cb24-39" title="39"></a>
-<a class="sourceLine" id="cb24-40" title="40"><span class="co"># append to first figure</span></a>
-<a class="sourceLine" id="cb24-41" title="41">figure_median_smooth[[<span class="dv">1</span>]] &lt;-</a>
-<a class="sourceLine" id="cb24-42" title="42"><span class="st">  </span>figure_median_smooth[[<span class="dv">1</span>]]<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-43" title="43"><span class="st">  </span><span class="kw">annotation_custom</span>(<span class="dt">grob =</span> <span class="kw">ggplotGrob</span>(fig_bounds),</a>
-<a class="sourceLine" id="cb24-44" title="44">                    <span class="dt">ymin =</span> <span class="fl">0.6</span>, <span class="dt">ymax =</span> <span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb24-45" title="45">                    <span class="dt">xmin =</span> <span class="fl">0.5</span>, <span class="dt">xmax =</span> <span class="fl">0.7</span>)</a>
-<a class="sourceLine" id="cb24-46" title="46"></a>
-<a class="sourceLine" id="cb24-47" title="47"><span class="co"># wrap plots</span></a>
-<a class="sourceLine" id="cb24-48" title="48">fig_median_smooth &lt;-<span class="st"> </span><span class="kw">wrap_plots</span>(<span class="kw">append</span>(figure_median_smooth, </a>
-<a class="sourceLine" id="cb24-49" title="49">                                       <span class="kw">list</span>(fig_smooth_1d)), </a>
-<a class="sourceLine" id="cb24-50" title="50">                                       <span class="dt">ncol =</span> <span class="dv">3</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb24-51" title="51"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
-<a class="sourceLine" id="cb24-52" title="52">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
-<a class="sourceLine" id="cb24-53" title="53">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb24-54" title="54"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
-<a class="sourceLine" id="cb24-55" title="55"></a>
-<a class="sourceLine" id="cb24-56" title="56"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb24-57" title="57"><span class="kw">ggsave</span>(fig_median_smooth, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_median_smooth.png&quot;</span>,</a>
-<a class="sourceLine" id="cb24-58" title="58">       <span class="dt">width =</span> <span class="dv">225</span>, <span class="dt">height =</span> <span class="dv">225</span> <span class="op">/</span><span class="st"> </span><span class="fl">1.77</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
-</div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co"># smooth the data over four K values</span></a>
+<a class="sourceLine" id="cb23-2" title="2">list_of_smooths &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">11</span>, <span class="dv">21</span>), <span class="cf">function</span>(K) {</a>
+<a class="sourceLine" id="cb23-3" title="3">  </a>
+<a class="sourceLine" id="cb23-4" title="4">  data_copy &lt;-<span class="st"> </span><span class="kw">copy</span>(data_errors)</a>
+<a class="sourceLine" id="cb23-5" title="5">  </a>
+<a class="sourceLine" id="cb23-6" title="6">  data_copy &lt;-<span class="st"> </span><span class="kw">atl_median_smooth</span>(<span class="dt">data =</span> data_copy,</a>
+<a class="sourceLine" id="cb23-7" title="7">                    <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </a>
+<a class="sourceLine" id="cb23-8" title="8">                    <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>,</a>
+<a class="sourceLine" id="cb23-9" title="9">                    <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</a>
+<a class="sourceLine" id="cb23-10" title="10">                    <span class="dt">moving_window =</span> K)</a>
+<a class="sourceLine" id="cb23-11" title="11">  </a>
+<a class="sourceLine" id="cb23-12" title="12">  data_copy[, window_size <span class="op">:</span><span class="er">=</span><span class="st"> </span>K]</a>
+<a class="sourceLine" id="cb23-13" title="13">})</a></code></pre></div>
+<p>We save the 11 point smoothed data.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">fwrite</span>(list_of_smooths[[<span class="dv">3</span>]], <span class="dt">file =</span> <span class="st">&quot;data/data_smooth.csv&quot;</span>)</a></code></pre></div>
+<p>We prepare the data for plotting.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># bind list after offset</span></a>
+<a class="sourceLine" id="cb25-2" title="2">data_plot &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(df, offset) {</a>
+<a class="sourceLine" id="cb25-3" title="3">  df[, x <span class="op">:</span><span class="er">=</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>offset]</a>
+<a class="sourceLine" id="cb25-4" title="4">}, list_of_smooths, <span class="kw">seq</span>(<span class="fl">0.4</span>, <span class="fl">1.25</span>, <span class="dt">length.out =</span> <span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="dt">SIMPLIFY =</span> F)</a>
+<a class="sourceLine" id="cb25-6" title="6"></a>
+<a class="sourceLine" id="cb25-7" title="7">data_plot &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_plot)</a></code></pre></div>
+<p>We prepare a plot of the smoothed data.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="co"># prepare data to plot</span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="co"># make list of data to plot</span></a>
+<a class="sourceLine" id="cb26-3" title="3">figure_median_smooth &lt;-</a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_errors,</a>
+<a class="sourceLine" id="cb26-6" title="6">             <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb26-7" title="7">             <span class="dt">col =</span> pal[<span class="dv">3</span>],</a>
+<a class="sourceLine" id="cb26-8" title="8">             <span class="dt">size =</span> <span class="fl">0.2</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-9" title="9"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
+<a class="sourceLine" id="cb26-10" title="10">            <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb26-11" title="11">            <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
+<a class="sourceLine" id="cb26-12" title="12">            <span class="dt">lwd =</span> <span class="fl">0.5</span>)<span class="op">+</span><span class="st">          </span></a>
+<a class="sourceLine" id="cb26-13" title="13"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_plot,</a>
+<a class="sourceLine" id="cb26-14" title="14">            <span class="kw">aes</span>(x, y,</a>
+<a class="sourceLine" id="cb26-15" title="15">                <span class="dt">col =</span> window_size,</a>
+<a class="sourceLine" id="cb26-16" title="16">                <span class="dt">group =</span> window_size),</a>
+<a class="sourceLine" id="cb26-17" title="17">            <span class="dt">show.legend =</span> F,</a>
+<a class="sourceLine" id="cb26-18" title="18">            <span class="dt">lwd =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-19" title="19"><span class="st">  </span><span class="kw">coord_equal</span>(<span class="dt">expand =</span> F,</a>
+<a class="sourceLine" id="cb26-20" title="20">              <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.85</span>),</a>
+<a class="sourceLine" id="cb26-21" title="21">              <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="fl">2.3</span>),</a>
+<a class="sourceLine" id="cb26-22" title="22">              <span class="dt">ratio =</span> <span class="fl">1.75</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-23" title="23"><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>,</a>
+<a class="sourceLine" id="cb26-24" title="24">           <span class="dt">x =</span> <span class="kw">c</span>(<span class="fl">0.75</span>, <span class="kw">seq</span>(<span class="fl">1.1</span>, <span class="dv">2</span>, <span class="dt">length.out =</span> <span class="dv">4</span>)),</a>
+<a class="sourceLine" id="cb26-25" title="25">           <span class="dt">y =</span> <span class="fl">0.82</span>,</a>
+<a class="sourceLine" id="cb26-26" title="26">           <span class="dt">label =</span> <span class="kw">sprintf</span>(<span class="st">&quot;(%s)&quot;</span>, letters[<span class="kw">seq</span>(<span class="dv">5</span>)]),</a>
+<a class="sourceLine" id="cb26-27" title="27">           <span class="dt">fontface =</span> <span class="st">&quot;bold&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-28" title="28"><span class="st">  </span><span class="kw">scale_colour_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;BuPu&quot;</span>, <span class="dt">direction =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb26-29" title="29">                         <span class="dt">values =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">1</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-30" title="30"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb26-31" title="31"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb26-32" title="32">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb26-33" title="33">        <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;grey99&quot;</span>))</a>
+<a class="sourceLine" id="cb26-34" title="34"></a>
+<a class="sourceLine" id="cb26-35" title="35"><span class="co"># save figure</span></a>
+<a class="sourceLine" id="cb26-36" title="36"><span class="kw">ggsave</span>(figure_median_smooth, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_median_smooth.png&quot;</span>,</a>
+<a class="sourceLine" id="cb26-37" title="37">       <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">height =</span> <span class="dv">170</span> <span class="op">/</span><span class="st"> </span><span class="dv">3</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
 </div>
 <div id="thinning-data-by-aggregation" class="section level2">
 <h2><span class="header-section-number">4.3</span> Thinning Data by Aggregation</h2>
 <p>Evenly thinning data is a good idea if statistical methods require even sampling, or if the volume of data is too large for statistical packages to efficiently handle it. In <code>R</code>, both may be true at once.</p>
 <p>Here, we demonstrate thinning by aggregation on data that has been median smoothed using a <span class="math inline">\(K\)</span> of 11.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># choose the 11 point median smooth data</span></a>
-<a class="sourceLine" id="cb25-2" title="2">data_agg &lt;-<span class="st"> </span><span class="kw">copy</span>(list_of_smooths[[<span class="dv">3</span>]])</a>
-<a class="sourceLine" id="cb25-3" title="3"></a>
-<a class="sourceLine" id="cb25-4" title="4"><span class="co"># get list of aggregated data</span></a>
-<a class="sourceLine" id="cb25-5" title="5">list_of_agg &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">120</span>), <span class="cf">function</span>(z) {</a>
-<a class="sourceLine" id="cb25-6" title="6">  </a>
-<a class="sourceLine" id="cb25-7" title="7">  data_return &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_agg,</a>
-<a class="sourceLine" id="cb25-8" title="8">                            <span class="dt">interval =</span> z,</a>
-<a class="sourceLine" id="cb25-9" title="9">                            <span class="dt">method =</span> <span class="st">&quot;aggregate&quot;</span>)</a>
-<a class="sourceLine" id="cb25-10" title="10">  </a>
-<a class="sourceLine" id="cb25-11" title="11">  data_return[, interval <span class="op">:</span><span class="er">=</span><span class="st"> </span>z]</a>
-<a class="sourceLine" id="cb25-12" title="12">  </a>
-<a class="sourceLine" id="cb25-13" title="13">  <span class="kw">return</span>(data_return)</a>
-<a class="sourceLine" id="cb25-14" title="14">})</a></code></pre></div>
-<p>We shall prepare a figure showing the aggregation steps.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="co"># make figure of aggregation</span></a>
-<a class="sourceLine" id="cb26-2" title="2">figure_aggregate &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb26-3" title="3"><span class="st">  </span><span class="kw">mapply</span>(<span class="dt">FUN =</span> <span class="cf">function</span>(df) {</a>
-<a class="sourceLine" id="cb26-4" title="4">  <span class="kw">ggplot</span>(<span class="dt">data =</span> df)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-5" title="5"><span class="st">      </span><span class="kw">geom_point</span>(<span class="dt">data =</span> list_of_smooths[[<span class="dv">3</span>]],</a>
-<a class="sourceLine" id="cb26-6" title="6">                 <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb26-7" title="7">                 <span class="dt">col =</span> pal[<span class="dv">3</span>],</a>
-<a class="sourceLine" id="cb26-8" title="8">                 <span class="dt">size =</span> <span class="fl">0.3</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-9" title="9"><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(x, y, <span class="dt">size =</span> SD),</a>
-<a class="sourceLine" id="cb26-10" title="10">                 <span class="dt">colour =</span> pal[<span class="dv">4</span>],</a>
-<a class="sourceLine" id="cb26-11" title="11">                 <span class="dt">alpha =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb26-12" title="12">                 <span class="dt">stroke =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb26-13" title="13">                 <span class="dt">shape =</span> <span class="dv">4</span>, <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-14" title="14"><span class="st">      </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb26-15" title="15">                 <span class="dt">colour =</span> pal[<span class="dv">4</span>],</a>
-<a class="sourceLine" id="cb26-16" title="16">                 <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-17" title="17"><span class="st">      </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb26-18" title="18">                <span class="dt">lwd =</span> <span class="fl">0.2</span>,</a>
-<a class="sourceLine" id="cb26-19" title="19">                <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb26-20" title="20">                <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-21" title="21"><span class="st">      </span><span class="kw">coord_equal</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="fl">0.8</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-22" title="22"><span class="st">      </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-23" title="23"><span class="st">      </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb26-24" title="24">            <span class="dt">axis.text =</span> <span class="kw">element_blank</span>())</a>
-<a class="sourceLine" id="cb26-25" title="25">}, list_of_agg[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>],</a>
-<a class="sourceLine" id="cb26-26" title="26"><span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb26-27" title="27"></a>
-<a class="sourceLine" id="cb26-28" title="28">figure_aggregate &lt;-<span class="st"> </span><span class="kw">wrap_plots</span>(figure_aggregate)<span class="op">+</span></a>
-<a class="sourceLine" id="cb26-29" title="29"><span class="st">    </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
-<a class="sourceLine" id="cb26-30" title="30">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
-<a class="sourceLine" id="cb26-31" title="31">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb26-32" title="32"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
-<a class="sourceLine" id="cb26-33" title="33"></a>
-<a class="sourceLine" id="cb26-34" title="34"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb26-35" title="35"><span class="kw">ggsave</span>(figure_aggregate, </a>
-<a class="sourceLine" id="cb26-36" title="36">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_aggregate_data.png&quot;</span>,</a>
-<a class="sourceLine" id="cb26-37" title="37">       <span class="dt">width =</span> <span class="dv">185</span>, <span class="dt">height =</span> <span class="dv">90</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># choose the 11 point median smooth data</span></a>
+<a class="sourceLine" id="cb27-2" title="2">data_agg &lt;-<span class="st"> </span><span class="kw">copy</span>(list_of_smooths[[<span class="dv">3</span>]])</a>
+<a class="sourceLine" id="cb27-3" title="3"></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="co"># get list of aggregated data</span></a>
+<a class="sourceLine" id="cb27-5" title="5">list_of_agg &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">120</span>), <span class="cf">function</span>(z) {</a>
+<a class="sourceLine" id="cb27-6" title="6">  </a>
+<a class="sourceLine" id="cb27-7" title="7">  data_return &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_agg,</a>
+<a class="sourceLine" id="cb27-8" title="8">                            <span class="dt">interval =</span> z,</a>
+<a class="sourceLine" id="cb27-9" title="9">                            <span class="dt">method =</span> <span class="st">&quot;aggregate&quot;</span>)</a>
+<a class="sourceLine" id="cb27-10" title="10">  </a>
+<a class="sourceLine" id="cb27-11" title="11">  data_return[, interval <span class="op">:</span><span class="er">=</span><span class="st"> </span>z]</a>
+<a class="sourceLine" id="cb27-12" title="12">  </a>
+<a class="sourceLine" id="cb27-13" title="13">  <span class="kw">return</span>(data_return)</a>
+<a class="sourceLine" id="cb27-14" title="14">})</a>
+<a class="sourceLine" id="cb27-15" title="15"></a>
+<a class="sourceLine" id="cb27-16" title="16"><span class="co"># get mean speed estimate and sd</span></a>
+<a class="sourceLine" id="cb27-17" title="17">speed_agg_smooth &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb27-18" title="18"><span class="st">  </span><span class="kw">lapply</span>(list_of_agg, <span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb27-19" title="19">    <span class="kw">na.omit</span>(df)</a>
+<a class="sourceLine" id="cb27-20" title="20">    df[, speed <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_get_speed</span>(df)]</a>
+<a class="sourceLine" id="cb27-21" title="21">    df[, <span class="kw">list</span>(<span class="dt">median =</span> <span class="kw">median</span>(speed, <span class="dt">na.rm =</span> T),</a>
+<a class="sourceLine" id="cb27-22" title="22">              <span class="dt">sd =</span> <span class="kw">sd</span>(speed, <span class="dt">na.rm =</span> T),</a>
+<a class="sourceLine" id="cb27-23" title="23">              <span class="dt">interval =</span> <span class="kw">first</span>(interval))]</a>
+<a class="sourceLine" id="cb27-24" title="24">  })</a>
+<a class="sourceLine" id="cb27-25" title="25"></a>
+<a class="sourceLine" id="cb27-26" title="26"><span class="co"># bind</span></a>
+<a class="sourceLine" id="cb27-27" title="27">speed_agg_smooth &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(speed_agg_smooth)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co">### plot figures</span></a>
+<a class="sourceLine" id="cb28-2" title="2">fig_agg_data &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="st">  </span><span class="kw">lapply</span>(list_of_agg, <span class="cf">function</span>(df) {</a>
+<a class="sourceLine" id="cb28-4" title="4">    <span class="kw">ggplot</span>(df)<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="st">      </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_agg,</a>
+<a class="sourceLine" id="cb28-6" title="6">                 <span class="kw">aes</span>(x, y),</a>
+<a class="sourceLine" id="cb28-7" title="7">                 <span class="dt">size =</span> <span class="fl">0.2</span>,</a>
+<a class="sourceLine" id="cb28-8" title="8">                 <span class="dt">col =</span> pal[<span class="dv">3</span>])<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-9" title="9"><span class="st">      </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(x,y), </a>
+<a class="sourceLine" id="cb28-10" title="10">                <span class="dt">col =</span> pal[<span class="dv">1</span>])<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-11" title="11"><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(x,y, </a>
+<a class="sourceLine" id="cb28-12" title="12">                     <span class="dt">size =</span> SD,</a>
+<a class="sourceLine" id="cb28-13" title="13">                     <span class="dt">fill =</span> SD,</a>
+<a class="sourceLine" id="cb28-14" title="14">                     <span class="dt">group =</span> interval),</a>
+<a class="sourceLine" id="cb28-15" title="15">                 <span class="dt">shape =</span> <span class="dv">21</span>,</a>
+<a class="sourceLine" id="cb28-16" title="16">                 <span class="dt">alpha =</span> <span class="fl">0.8</span>,</a>
+<a class="sourceLine" id="cb28-17" title="17">                 <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-18" title="18"><span class="st">      </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;Purples&quot;</span>, <span class="dt">direction =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb28-19" title="19">                           <span class="dt">values =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.25</span>, <span class="dv">1</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-20" title="20"><span class="st">      </span><span class="kw">scale_size</span>(<span class="dt">range =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-21" title="21"><span class="st">      </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-22" title="22"><span class="st">      </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb28-23" title="23">            <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</a>
+<a class="sourceLine" id="cb28-24" title="24">            <span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;grey99&quot;</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-25" title="25"><span class="st">      </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="ot">NA</span>))</a>
+<a class="sourceLine" id="cb28-26" title="26">  })</a></code></pre></div>
 </div>
 <div id="aggregation-before-reducing-positioning-errors" class="section level2">
 <h2><span class="header-section-number">4.4</span> Aggregation Before Reducing Positioning Errors</h2>
@@ -402,83 +369,72 @@ The easiest way to illustrate this is with a figure.</p>
 <p>However, there are drawbacks. The main one is that information is lost in the aggregation process, lending less power to steps such as smoothing applied after aggregation.
 Further, aggregation (and indeed any kind of thinning) results in significantly different estimates of speed and distance from the real speed.</p>
 <p>We show the effect of aggregating before any error correction here.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># read data with errors</span></a>
-<a class="sourceLine" id="cb27-2" title="2">data_errors &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_errors.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb27-3" title="3">  </a>
-<a class="sourceLine" id="cb27-4" title="4"><span class="co"># aggregate before correction</span></a>
-<a class="sourceLine" id="cb27-5" title="5">list_of_agg &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">120</span>), <span class="cf">function</span>(z) {</a>
-<a class="sourceLine" id="cb27-6" title="6">  data_return &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_errors,</a>
-<a class="sourceLine" id="cb27-7" title="7">                            <span class="dt">interval =</span> z,</a>
-<a class="sourceLine" id="cb27-8" title="8">                            <span class="dt">method =</span> <span class="st">&quot;aggregate&quot;</span>)</a>
-<a class="sourceLine" id="cb27-9" title="9">  data_return[, interval <span class="op">:</span><span class="er">=</span><span class="st"> </span>z]</a>
-<a class="sourceLine" id="cb27-10" title="10">  data_return[, speed <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_get_speed</span>(data_return)]</a>
-<a class="sourceLine" id="cb27-11" title="11">  <span class="kw">return</span>(data_return)</a>
-<a class="sourceLine" id="cb27-12" title="12">})</a>
-<a class="sourceLine" id="cb27-13" title="13"></a>
-<a class="sourceLine" id="cb27-14" title="14"><span class="co"># get real speed</span></a>
-<a class="sourceLine" id="cb27-15" title="15">data[, speed <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_get_speed</span>(data)]</a></code></pre></div>
-<p>We prepare the figures.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co">### plot figures</span></a>
-<a class="sourceLine" id="cb28-2" title="2">fig_agg_data &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="st">  </span><span class="kw">lapply</span>(list_of_agg, <span class="cf">function</span>(df) {</a>
-<a class="sourceLine" id="cb28-4" title="4">    <span class="kw">ggplot</span>(df)<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-5" title="5"><span class="st">      </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(x,y), </a>
-<a class="sourceLine" id="cb28-6" title="6">                <span class="co"># col = factor(interval), </span></a>
-<a class="sourceLine" id="cb28-7" title="7">                <span class="co"># group = interval),</span></a>
-<a class="sourceLine" id="cb28-8" title="8">                <span class="dt">lwd =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-9" title="9"><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(x,y, </a>
-<a class="sourceLine" id="cb28-10" title="10">                     <span class="dt">size =</span> SD,</a>
-<a class="sourceLine" id="cb28-11" title="11">                     <span class="dt">shape =</span> speed <span class="op">&lt;</span><span class="st"> </span><span class="kw">quantile</span>(data<span class="op">$</span>speed, <span class="fl">0.95</span>, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb28-12" title="12">                     <span class="dt">col =</span> speed <span class="op">&lt;</span><span class="st"> </span><span class="kw">quantile</span>(data<span class="op">$</span>speed, <span class="fl">0.95</span>, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb28-13" title="13">                     <span class="dt">group =</span> interval),</a>
-<a class="sourceLine" id="cb28-14" title="14">                 <span class="dt">stroke =</span> <span class="kw">ifelse</span>(df<span class="op">$</span>speed <span class="op">&lt;</span><span class="st"> </span><span class="kw">quantile</span>(data<span class="op">$</span>speed, <span class="fl">0.95</span>, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb28-15" title="15">                                 <span class="dv">1</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb28-16" title="16">                 <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-17" title="17"><span class="st">      </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb28-18" title="18">                <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb28-19" title="19">                <span class="dt">lwd =</span> <span class="fl">0.1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-20" title="20"><span class="st">      </span><span class="kw">scale_shape_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-21" title="21"><span class="st">      </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> pal[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-22" title="22"><span class="st">      </span><span class="kw">coord_cartesian</span>(<span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.6</span>, <span class="ot">NA</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb28-23" title="23"><span class="st">      </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()  </a>
-<a class="sourceLine" id="cb28-24" title="24">  })</a></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># now plot distribution of speed</span></a>
-<a class="sourceLine" id="cb29-2" title="2">data_agg &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(list_of_agg)</a>
-<a class="sourceLine" id="cb29-3" title="3"></a>
-<a class="sourceLine" id="cb29-4" title="4"><span class="co"># show boxplot of speed</span></a>
-<a class="sourceLine" id="cb29-5" title="5">fig_agg_speed &lt;-<span class="st"> </span><span class="kw">ggplot</span>(data_agg)<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-6" title="6"><span class="st">  </span><span class="kw">geom_jitter</span>(<span class="kw">aes</span>(<span class="kw">factor</span>(interval), speed),</a>
-<a class="sourceLine" id="cb29-7" title="7">              <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb29-8" title="8">              <span class="dt">shape =</span> <span class="dv">4</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-9" title="9"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="kw">factor</span>(interval), speed),</a>
-<a class="sourceLine" id="cb29-10" title="10">               <span class="dt">fill =</span> <span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb29-11" title="11">               <span class="dt">show.legend =</span> F, </a>
-<a class="sourceLine" id="cb29-12" title="12">               <span class="dt">width =</span> <span class="fl">0.3</span>, </a>
-<a class="sourceLine" id="cb29-13" title="13">               <span class="dt">outlier.size =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-14" title="14"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span></a>
-<a class="sourceLine" id="cb29-15" title="15">               <span class="kw">c</span>(<span class="kw">mean</span>(data<span class="op">$</span>speed, <span class="dt">na.rm =</span> T),</a>
-<a class="sourceLine" id="cb29-16" title="16">                 <span class="kw">quantile</span>(data<span class="op">$</span>speed, <span class="dt">na.rm =</span> T,</a>
-<a class="sourceLine" id="cb29-17" title="17">                          <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.95</span>))</a>
-<a class="sourceLine" id="cb29-18" title="18">               ),</a>
-<a class="sourceLine" id="cb29-19" title="19">             <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-20" title="20"><span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">label =</span> scales<span class="op">::</span>comma)<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-21" title="21"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-22" title="22"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb29-23" title="23"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;interval (s)&quot;</span>,</a>
-<a class="sourceLine" id="cb29-24" title="24">       <span class="dt">y =</span> <span class="st">&quot;speed&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="co"># make combined figure</span></a>
-<a class="sourceLine" id="cb30-2" title="2">fig_aggregate &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb30-3" title="3"><span class="st">  </span><span class="kw">wrap_plots</span>(<span class="kw">append</span>(fig_agg_data[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>], <span class="kw">list</span>(fig_agg_speed)),</a>
-<a class="sourceLine" id="cb30-4" title="4">           <span class="dt">design =</span> <span class="st">&quot;AAABBBCC&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb30-5" title="5"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
-<a class="sourceLine" id="cb30-6" title="6">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
-<a class="sourceLine" id="cb30-7" title="7">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb30-8" title="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
-<a class="sourceLine" id="cb30-9" title="9"></a>
-<a class="sourceLine" id="cb30-10" title="10"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb30-11" title="11"><span class="kw">ggsave</span>(fig_aggregate,</a>
-<a class="sourceLine" id="cb30-12" title="12">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_aggregate_errors.png&quot;</span>,</a>
-<a class="sourceLine" id="cb30-13" title="13">       <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">height =</span> <span class="dv">170</span> <span class="op">/</span><span class="st"> </span><span class="fl">1.67</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="co"># read data with errors</span></a>
+<a class="sourceLine" id="cb29-2" title="2">data_errors &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_errors.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb29-3" title="3">  </a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="co"># aggregate before correction</span></a>
+<a class="sourceLine" id="cb29-5" title="5">list_of_agg &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">120</span>), <span class="cf">function</span>(z) {</a>
+<a class="sourceLine" id="cb29-6" title="6">  data_return &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_errors,</a>
+<a class="sourceLine" id="cb29-7" title="7">                            <span class="dt">interval =</span> z,</a>
+<a class="sourceLine" id="cb29-8" title="8">                            <span class="dt">method =</span> <span class="st">&quot;aggregate&quot;</span>)</a>
+<a class="sourceLine" id="cb29-9" title="9">  data_return[, interval <span class="op">:</span><span class="er">=</span><span class="st"> </span>z]</a>
+<a class="sourceLine" id="cb29-10" title="10">  data_return[, speed <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_get_speed</span>(data_return)]</a>
+<a class="sourceLine" id="cb29-11" title="11">  <span class="kw">return</span>(data_return)</a>
+<a class="sourceLine" id="cb29-12" title="12">})</a>
+<a class="sourceLine" id="cb29-13" title="13"></a>
+<a class="sourceLine" id="cb29-14" title="14"><span class="co"># get real speed</span></a>
+<a class="sourceLine" id="cb29-15" title="15">data[, speed <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_get_speed</span>(data)]</a></code></pre></div>
+<div id="comparing-median-aggregation-with-and-without-smoothing" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Comparing median aggregation with and without smoothing</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1"><span class="co"># now plot distribution of speed</span></a>
+<a class="sourceLine" id="cb30-2" title="2">data_agg &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(list_of_agg)</a>
+<a class="sourceLine" id="cb30-3" title="3"></a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="co"># show boxplot of speed</span></a>
+<a class="sourceLine" id="cb30-5" title="5">fig_agg_speed &lt;-</a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="st">  </span><span class="kw">ggplot</span>(data_agg)<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span></a>
+<a class="sourceLine" id="cb30-8" title="8">               <span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">quantile</span>(data<span class="op">$</span>speed, <span class="dt">na.rm =</span> T,</a>
+<a class="sourceLine" id="cb30-9" title="9">                        <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.95</span>)),</a>
+<a class="sourceLine" id="cb30-10" title="10">             <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-11" title="11"><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="dt">data =</span> speed_agg_smooth,</a>
+<a class="sourceLine" id="cb30-12" title="12">                <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(interval),</a>
+<a class="sourceLine" id="cb30-13" title="13">                    <span class="dt">ymin =</span> <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>median <span class="op">-</span><span class="st"> </span>sd,</a>
+<a class="sourceLine" id="cb30-14" title="14">                    <span class="dt">ymax =</span> <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>median <span class="op">+</span><span class="st"> </span>sd),</a>
+<a class="sourceLine" id="cb30-15" title="15">                <span class="dt">width =</span> <span class="fl">0.2</span>,</a>
+<a class="sourceLine" id="cb30-16" title="16">                <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="fl">0.25</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-17" title="17"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> speed_agg_smooth,</a>
+<a class="sourceLine" id="cb30-18" title="18">             <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">factor</span>(interval),</a>
+<a class="sourceLine" id="cb30-19" title="19">                 <span class="dt">y =</span> <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>median),</a>
+<a class="sourceLine" id="cb30-20" title="20">             <span class="dt">shape =</span> <span class="dv">21</span>,</a>
+<a class="sourceLine" id="cb30-21" title="21">             <span class="dt">size =</span> <span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb30-22" title="22">             <span class="dt">fill =</span> pal[<span class="dv">3</span>],</a>
+<a class="sourceLine" id="cb30-23" title="23">             <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="fl">0.25</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-24" title="24"><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="kw">aes</span>(<span class="kw">factor</span>(interval), <span class="dv">1</span> <span class="op">+</span><span class="st"> </span>speed),</a>
+<a class="sourceLine" id="cb30-25" title="25">               <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="fl">-0.25</span>,),</a>
+<a class="sourceLine" id="cb30-26" title="26">               <span class="dt">fill =</span> pal[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb30-27" title="27">               <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
+<a class="sourceLine" id="cb30-28" title="28">               <span class="dt">show.legend =</span> F, </a>
+<a class="sourceLine" id="cb30-29" title="29">               <span class="dt">width =</span> <span class="fl">0.25</span>, </a>
+<a class="sourceLine" id="cb30-30" title="30">               <span class="dt">outlier.size =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-31" title="31"><span class="st">  </span><span class="kw">scale_y_log10</span>(<span class="dt">label =</span> scales<span class="op">::</span>comma,</a>
+<a class="sourceLine" id="cb30-32" title="32">                <span class="dt">limits =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="fl">1.005</span>))<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-33" title="33"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-34" title="34"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.y =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
+<a class="sourceLine" id="cb30-35" title="35"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;interval (s)&quot;</span>,</a>
+<a class="sourceLine" id="cb30-36" title="36">       <span class="dt">y =</span> <span class="st">&quot;speed&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="co"># make combined figure</span></a>
+<a class="sourceLine" id="cb31-2" title="2">fig_aggregate &lt;-</a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="st">  </span><span class="kw">wrap_plots</span>(<span class="kw">append</span>(fig_agg_data[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>], <span class="kw">list</span>(fig_agg_speed)),</a>
+<a class="sourceLine" id="cb31-4" title="4">             <span class="dt">design =</span> <span class="st">&quot;AABBC&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
+<a class="sourceLine" id="cb31-6" title="6">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
+<a class="sourceLine" id="cb31-7" title="7">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb31-8" title="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
+<a class="sourceLine" id="cb31-9" title="9"></a>
+<a class="sourceLine" id="cb31-10" title="10"><span class="co"># save figure</span></a>
+<a class="sourceLine" id="cb31-11" title="11"><span class="kw">ggsave</span>(fig_aggregate,</a>
+<a class="sourceLine" id="cb31-12" title="12">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_aggregate_errors.png&quot;</span>,</a>
+<a class="sourceLine" id="cb31-13" title="13">       <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">height =</span> <span class="dv">85</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
 <p><img src="figures/fig_aggregate_errors.png" /></p>
 <p>Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
 <strong>(a, b)</strong> Movement tracks with a canonical interval of 1s aggregated over intervals of <strong>(a)</strong> 10 and <strong>(b)</strong> 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.
@@ -486,6 +442,7 @@ Blue crosses represent positions with speed <span class="math inline">\(\leq\)</
 <strong>(c)</strong> Boxplot of instantaneous speeds after median aggregation of a 1s interval track over intervals of 3, 10, 30, and 120 seconds, but without the removal of positioning errors. The mean and 95^th percentile of speed in the canonical track are shown as solid and dashed lines, respectively.
 Aggregation without reducing positioning errors can result in speed estimates that are substantially different from the true speed.</p>
 
+</div>
 </div>
 </div>
 <h3> References</h3>
