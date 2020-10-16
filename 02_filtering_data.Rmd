@@ -91,7 +91,7 @@ figure_raw <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   coord_equal()+
   labs(colour = NULL)
 ```
@@ -149,7 +149,7 @@ fig_filter_bounds <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   theme(plot.background = element_rect(fill = NA))+
   coord_equal(expand = T)
 
@@ -253,7 +253,7 @@ fig_outlier_remove <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   scale_color_manual(values = c(pal[3], "black"))+
   scale_shape_manual(values = c(16, 21))+
   coord_equal()+
@@ -336,7 +336,7 @@ fig_reflection <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   coord_equal()+
   theme(plot.background = element_rect(fill = NA))
 

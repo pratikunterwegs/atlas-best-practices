@@ -81,7 +81,7 @@ fig_data_bbox <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   coord_sf(crs = 32631)
 
 # save result
@@ -150,7 +150,7 @@ fig_speed_outliers <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "speed (m/s)")
@@ -369,7 +369,7 @@ fig_calib_residence <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   coord_sf(crs = 32631)
 ```
 
@@ -503,7 +503,7 @@ fig_basic_residence <-
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        panel.background = element_rect(fill = "white"))+
   coord_sf(crs = 32631,
            expand = F,
            ylim = c(5901700, 5903150),
@@ -604,7 +604,7 @@ figure_patch_duration <-
   geom_abline(slope = 1, lty = 2,
               col = "black")+
   ggthemes::theme_few()+
-  theme(panel.background = element_rect(fill = "grey99"),
+  theme(panel.background = element_rect(fill = "white"),
         panel.grid.minor = element_line(colour = "grey"))+
   labs(x = "inferred duration (min)",
        y = "real duration (min)")
