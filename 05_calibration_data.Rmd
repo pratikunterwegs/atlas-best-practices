@@ -80,8 +80,7 @@ fig_data_bbox <-
   ggspatial::annotation_scale(location = "br")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))+
+        axis.title = element_blank())+
   coord_sf(crs = 32631)
 
 # save result
@@ -149,8 +148,7 @@ fig_speed_outliers <-
   scale_color_manual(values = c("grey", pal[3]))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))+
+        axis.title = element_blank())+
   ggspatial::annotation_scale(location = "tl")+
   coord_sf(crs = 32631)+
   labs(colour = "speed (m/s)")
@@ -281,7 +279,8 @@ wrap_plots(
   design = "AB\nAC")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
-                  tag_suffix = ")")
+                  tag_suffix = ")")&
+  theme(plot.tag = element_text(face = "bold"))
 
 # save combined figure
 ggsave(figure_walkthrough,
@@ -368,8 +367,7 @@ fig_calib_residence <-
   ggspatial::annotation_scale(location = "br")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))+
+        axis.title = element_blank())+
   coord_sf(crs = 32631)
 ```
 
@@ -502,8 +500,7 @@ fig_basic_residence <-
   ggspatial::annotation_scale(location = "tl")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))+
+        axis.title = element_blank())+
   coord_sf(crs = 32631,
            expand = F,
            ylim = c(5901700, 5903150),

@@ -13,6 +13,7 @@ library(data.table)
 library(atlastools)
 library(ggplot2)
 library(patchwork)
+
 # for residence time
 library(recurse)
 
@@ -48,19 +49,18 @@ fig_res_a <-
   geom_path(data = data,
             aes(x, y),
             lwd = 0.2,
-            col = "grey40")+
+            col = "grey20")+
   geom_point(data = data,
              aes(x, y, 
-                 col = residence_time > 0.04,
-                 shape = residence_time > 0.04),
-             show.legend = F)+
+                 col = residence_time > 0.04),
+             show.legend = F,
+             alpha = 0.5)+
   coord_equal(ylim = c(NA, 20))+
   scale_colour_manual(values = c("grey", pal[3]))+
-  scale_shape_manual(values = c(1, 16))+
+  # scale_shape_manual(values = c(, 1))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))
+        axis.title = element_blank())
 ```
 
 We construct residence patches from data where residence time is > 0.15.
@@ -118,8 +118,7 @@ fig_res_b <-
   coord_sf(ylim = c(1, 20))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "white"))
+        axis.title = element_blank())
 
 # res time by time
 fig_res_c <-
@@ -145,8 +144,7 @@ fig_res_c <-
   scale_fill_distiller(palette = "Paired", direction = -1)+
   scale_colour_manual(values = c("grey20", "darkgreen"))+
   ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        panel.background = element_rect(fill = "white"))+
+  theme(axis.text = element_blank())+
   coord_fixed(expand = F,
               ratio = 10000)+
   labs(x = "time",
