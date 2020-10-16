@@ -46,15 +46,16 @@ We first plot a figure of residence time per positions, and residence time per t
 # restime by position
 fig_res_a <-
   ggplot()+
+  # geom_path(data = data,
+  #           aes(x, y),
+  #           lwd = 0.2,
+  #           col = "grey20")+
   geom_path(data = data,
-            aes(x, y),
-            lwd = 0.2,
-            col = "grey20")+
-  geom_point(data = data,
              aes(x, y, 
+                 group = NA,
                  col = residence_time > 0.04),
              show.legend = F,
-             alpha = 0.5)+
+             alpha = 1)+
   coord_equal(ylim = c(NA, 20))+
   scale_colour_manual(values = c("grey", pal[3]))+
   # scale_shape_manual(values = c(, 1))+
