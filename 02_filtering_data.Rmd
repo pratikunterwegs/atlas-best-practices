@@ -66,11 +66,16 @@ Save the data to which errors have been added.
 fwrite(data_copy, file = "data/data_errors.csv")
 ```
 
+```{r}
+data_copy <- fread("data/data_errors.csv")
+```
+
+
 Define a palette with 4 colours for convenience.
 
 ```{r}
 # define a four colour palette
-pal <- RColorBrewer::brewer.pal(3, "PRGn")
+pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
 We make a figure of the canonical data (grey line) along with the artificially added error (grey points).
@@ -90,8 +95,7 @@ figure_raw <-
             alpha = 1)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        axis.title = element_blank())+
   coord_equal()+
   labs(colour = NULL)
 ```
@@ -148,8 +152,7 @@ fig_filter_bounds <-
              lty = 2)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        axis.title = element_blank())+
   theme(plot.background = element_rect(fill = NA))+
   coord_equal(expand = T)
 
@@ -238,7 +241,8 @@ fig_outlier_remove <-
             lwd = 0.2)+
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
-             shape = 2, col = pal[1])+
+             size = 0.2,
+             shape = 2, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
              aes(x, y, 
@@ -252,8 +256,7 @@ fig_outlier_remove <-
             alpha = 1)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        axis.title = element_blank())+
   scale_color_manual(values = c(pal[3], "black"))+
   scale_shape_manual(values = c(16, 21))+
   coord_equal()+
@@ -320,8 +323,8 @@ fig_reflection <-
   geom_point(data = reflection,
              aes(x, y),
              alpha = 0.5,
-             col = "grey",
-             fill = pal[2],
+             col = "grey40",
+             fill = "grey",
              shape = 21)+
   geom_point(data = data_no_reflection,
              aes(x, y),
@@ -335,8 +338,7 @@ fig_reflection <-
             alpha = 1)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        panel.background = element_rect(fill = "grey99"))+
+        axis.title = element_blank())+
   coord_equal()+
   theme(plot.background = element_rect(fill = NA))
 
