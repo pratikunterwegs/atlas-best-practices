@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
   <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-10-15" />
+<meta name="date" content="2020-10-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,28 +50,30 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -129,52 +131,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
-<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a><ul>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installing-atlastools"><i class="fa fa-check"></i><b>2.1</b> Installing <code>atlastools</code></a></li>
 <li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#simulating-movement-data"><i class="fa fa-check"></i><b>2.2</b> Simulating movement data</a></li>
 <li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#simualte-for-residence-patches"><i class="fa fa-check"></i><b>2.3</b> Simualte for residence patches</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a><ul>
+<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>3.1</b> Prepare Libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#introducing-errors-to-the-data"><i class="fa fa-check"></i><b>3.2</b> Introducing Errors to the Data</a></li>
-<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a><ul>
+<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#a-note-on-filtering-by-bounds"><i class="fa fa-check"></i><b>3.3.1</b> A Note on Filtering by Bounds</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a><ul>
+<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-point-outliers-or-spikes"><i class="fa fa-check"></i><b>3.4.1</b> Filtering Point Outliers or Spikes</a></li>
 <li class="chapter" data-level="3.4.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-reflections-or-track-subsets"><i class="fa fa-check"></i><b>3.4.2</b> Filtering Reflections or Track Subsets</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a><ul>
+<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#preparing-libraries-and-data"><i class="fa fa-check"></i><b>4.1</b> Preparing Libraries and Data</a></li>
 <li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a></li>
 <li class="chapter" data-level="4.3" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#thinning-data-by-aggregation"><i class="fa fa-check"></i><b>4.3</b> Thinning Data by Aggregation</a></li>
-<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a><ul>
+<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#comparing-median-aggregation-with-and-without-smoothing"><i class="fa fa-check"></i><b>4.4.1</b> Comparing median aggregation with and without smoothing</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a><ul>
-<li class="chapter" data-level="" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#prepare-libraries-1"><i class="fa fa-check"></i>Prepare libraries</a></li>
-<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a><ul>
+<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a>
+<ul>
+<li class="chapter" data-level="" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i>Prepare libraries</a></li>
+<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#read-data-and-classify"><i class="fa fa-check"></i><b>5.1.1</b> Read data and classify</a></li>
 <li class="chapter" data-level="5.1.2" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#plot-classified-residence-patches"><i class="fa fa-check"></i><b>5.1.2</b> Plot classified residence patches</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a><ul>
-<li class="chapter" data-level="6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#preliminary-visualisation"><i class="fa fa-check"></i><b>6.2</b> Preliminary visualisation</a></li>
 <li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a></li>
-<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a><ul>
+<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>6.4.1</b> Handle time</a></li>
 <li class="chapter" data-level="6.4.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>6.4.2</b> Add speed and turning angle</a></li>
 <li class="chapter" data-level="6.4.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-95th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>6.4.3</b> Get 95th percentile of speed and angle</a></li>
 <li class="chapter" data-level="6.4.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-to-see-speeds"><i class="fa fa-check"></i><b>6.4.4</b> Plot to see speeds</a></li>
 <li class="chapter" data-level="6.4.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>6.4.5</b> Filter on speed</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a><ul>
+<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-pre-processing-steps"><i class="fa fa-check"></i><b>6.5.1</b> Plot pre-processing steps</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a><ul>
+<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a>
+<ul>
 <li class="chapter" data-level="6.6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>6.6.1</b> Prepare data</a></li>
 <li class="chapter" data-level="6.6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#calculate-residence-time"><i class="fa fa-check"></i><b>6.6.2</b> Calculate residence time</a></li>
 <li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-residence-time"><i class="fa fa-check"></i><b>6.6.3</b> Plot residence time</a></li>
@@ -184,13 +198,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#read-griend"><i class="fa fa-check"></i><b>6.6.7</b> Read Griend</a></li>
 <li class="chapter" data-level="6.6.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.8</b> Plot the outcome</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a><ul>
+<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a>
+<ul>
 <li class="chapter" data-level="6.7.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-known-patches"><i class="fa fa-check"></i><b>6.7.1</b> Compare known patches</a></li>
 <li class="chapter" data-level="6.7.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-durations-comparisons"><i class="fa fa-check"></i><b>6.7.2</b> Plot durations comparisons</a></li>
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>7</b> References</a></li>
+<li class="chapter" data-level="7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>7</b> Processing Egyptian fruit bat tracks</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>7.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="7.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#read-bat-data"><i class="fa fa-check"></i><b>7.2</b> Read bat data</a></li>
+<li class="chapter" data-level="7.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-bat-data"><i class="fa fa-check"></i><b>7.3</b> Sanity check: Plot bat data</a></li>
+<li class="chapter" data-level="7.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>7.4</b> Prepare data for filtering</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-per-individual"><i class="fa fa-check"></i><b>7.4.1</b> Prepare data per individual</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-covariates"><i class="fa fa-check"></i><b>7.5</b> Filter by covariates</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-filtered-data"><i class="fa fa-check"></i><b>7.5.1</b> Sanity check: Plot filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>7.6</b> Filter by speed</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-speed-filtered-data"><i class="fa fa-check"></i><b>7.6.1</b> Sanity check: Plot speed filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>7.7</b> Median smoothing</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-smoothed-data"><i class="fa fa-check"></i><b>7.7.1</b> Sanity check: Plot smoothed data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>7.8</b> Making residence patches</a>
+<ul>
+<li class="chapter" data-level="7.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>7.8.1</b> Calculating residence time</a></li>
+<li class="chapter" data-level="7.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-residence-time-time-series"><i class="fa fa-check"></i><b>7.8.2</b> Sanity check: Residence-time time-series</a></li>
+<li class="chapter" data-level="7.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>7.8.3</b> Constructing residence patches</a></li>
+<li class="chapter" data-level="7.8.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#getting-residence-patch-data"><i class="fa fa-check"></i><b>7.8.4</b> Getting residence patch data</a></li>
+<li class="chapter" data-level="7.8.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#write-patch-spatial-representations"><i class="fa fa-check"></i><b>7.8.5</b> Write patch spatial representations</a></li>
+</ul></li>
+<li class="chapter" data-level="7.9" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#processed-bat-patches"><i class="fa fa-check"></i><b>7.9</b> Processed bat patches</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>8</b> References</a></li>
 </ul>
 
       </nav>
@@ -211,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</h1>
 <p class="author"><em>Pratik R. Gupte and others</em></p>
-<p class="date"><em>2020-10-15</em></p>
+<p class="date"><em>2020-10-28</em></p>
 </div>
 <div id="abstract" class="section level1">
 <h1><span class="header-section-number">Section 1</span> Abstract</h1>
