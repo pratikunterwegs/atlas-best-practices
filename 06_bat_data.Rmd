@@ -1,0 +1,54 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Processing calibration data
+
+## Prepare libraries
+
+```{r}
+# load libs
+library(data.table)
+library(RSQLite)
+library(atlastools)
+library(ggplot2)
+library(patchwork)
+
+# prepare a palette
+pal <- RColorBrewer::brewer.pal(4, "Set1")
+```
+
+## Read bat data
+
+Read the bat data and convert to a csv file.
+
+```{r read_bat_data}
+# prepare the connection
+con <- dbConnect(drv = SQLite(), dbname = "data/Three_example_bats.sql")
+
+# list the tables
+table_name <- dbListTables(con)
+
+# prepare to query all tables
+query <- sprintf('select * from \"%s\"', table_name)
+
+# query the database
+data <- dbGetQuery(conn = con, statement = query)
+
+# disconnect from database
+dbDisconnect(con)
+```
+
+Convert data to csv.
+
+```{r}
+# convert data to datatable
+setDT(data)
+
+# write data for QGIS
+fwrite(data, file = "data/bat_data.csv")
+```
+
+## WIP
