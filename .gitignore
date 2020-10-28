@@ -38,9 +38,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# remove pdfs in main
-*.pdf
-
 # large data
 data/*large*
 data/*atlas*
