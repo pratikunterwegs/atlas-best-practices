@@ -425,7 +425,6 @@ fig_bat_res_timeseries <-
   scale_color_brewer(palette = "Dark2")+
   scale_x_datetime()+
   ggthemes::theme_few()+
-  coord_cartesian(ylim = c(0, 50))+
   labs(x = NULL,
        y = "residence time (mins)")
 ```
