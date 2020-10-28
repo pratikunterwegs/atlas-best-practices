@@ -77,7 +77,7 @@ Save the raw data plot.
 # save to figures
 ggsave(fig_bat_raw,
        filename = "figures/fig_bat_raw.png",
-       dpi = 150,
+       dpi = 300,
        width = 6, height = 4)
 ```
 
@@ -176,7 +176,7 @@ Save the filtered data plot.
 # save to figures
 ggsave(fig_bat_filter_cov,
        filename = "figures/fig_bat_filter_cov.png",
-       dpi = 150,
+       dpi = 300,
        width = 4, height = 6)
 ```
 
@@ -265,7 +265,7 @@ Save the speed filtered data plot.
 # save to figures
 ggsave(fig_bat_filter_speed,
        filename = "figures/fig_bat_filter_speed.png",
-       dpi = 150,
+       dpi = 300,
        width = 4, height = 6)
 ```
 
@@ -311,20 +311,15 @@ fig_bat_smooth <-
   ggplot()+
   geom_point(data = data_split,
              aes(X, Y),
-             col = pal[3],
-             alpha = 0.2,
-             shape = 16,
+             col = "grey",
+             shape = 4,
              show.legend = FALSE)+
   geom_path(data = data_smooth,
             aes(X, Y,
-                col = as.numeric(TAG)),
+                col = TAG),
             lwd = 0.3,
             show.legend = FALSE)+
-  scale_fill_distiller(palette = "Greens",
-                       direction = 1)+
-  scale_colour_distiller(palette = "Purples",
-                         direction = 1,
-                         values = c(-0.2, 1))+
+  scale_colour_brewer(palette = "Dark2")+
   ggspatial::annotation_scale(location = "br")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
@@ -340,7 +335,7 @@ Save the smoothed data plot.
 # save to figures
 ggsave(fig_bat_smooth,
        filename = "figures/fig_bat_smooth.png",
-       dpi = 150,
+       dpi = 300,
        width = 4, height = 6)
 ```
 
@@ -421,7 +416,7 @@ data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
 ```{r}
-# fig_bat_res_timeseries <- 
+fig_bat_res_timeseries <-
   ggplot()+
   geom_path(data = data_residence,
             aes(ts, resTime,
@@ -430,7 +425,6 @@ data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
   scale_color_brewer(palette = "Dark2")+
   scale_x_datetime()+
   ggthemes::theme_few()+
-  coord_cartesian(ylim = c(0, 50))+
   labs(x = NULL,
        y = "residence time (mins)")
 ```
@@ -441,7 +435,7 @@ Save the speed filtered data plot.
 # save to figures
 ggsave(fig_bat_res_timeseries,
        filename = "figures/fig_bat_res_timeseries.png",
-       dpi = 150,
+       dpi = 300,
        width = 6, height = 3)
 ```
 

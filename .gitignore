@@ -46,6 +46,7 @@ data/*large*
 data/*atlas*
 
 # bat data
-data/*bat*
+data/*bat*.csv
+data/*bat*.sql
 data/Roosts.csv
 data/*trees*
