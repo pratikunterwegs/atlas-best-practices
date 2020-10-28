@@ -44,3 +44,8 @@ vignettes/*.pdf
 # large data
 data/*large*
 data/*atlas*
+
+# bat data
+data/*bat*
+data/Roosts.csv
+data/*trees*
