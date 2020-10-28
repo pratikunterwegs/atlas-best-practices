@@ -183,6 +183,7 @@ ggsave(fig_bat_filter_cov,
 Show the plot.
 
 ![](figures/fig_bat_filter_cov.png)
+
 ## Filter by speed
 
 Some point outliers remain, and should be removed using a speed filter.
@@ -308,16 +309,11 @@ data_smooth <- rbindlist(data_smooth)
 # plot the raw, filtered, and smoothed data
 fig_bat_smooth <- 
   ggplot()+
-  geom_point(data = data[!data_split, 
-                         on = c("TAG", "X", "Y", "TIME")],
-             aes(X, Y),
-             col = "grey",
-             shape = 4)+
   geom_point(data = data_split,
              aes(X, Y),
              col = pal[3],
-             alpha = 0.5,
-             shape = 1,
+             alpha = 0.2,
+             shape = 16,
              show.legend = FALSE)+
   geom_path(data = data_smooth,
             aes(X, Y,
@@ -338,7 +334,7 @@ fig_bat_smooth <-
            ylim = range(data_smooth$Y))
 ```
 
-Save the speed filtered data plot.
+Save the smoothed data plot.
 
 ```{r}
 # save to figures
@@ -528,3 +524,8 @@ patch_summary <- rbindlist(patch_summary)
 fwrite(patch_summary,
        "data/data_bat_patch_summary.csv")
 ```
+
+
+## Processed bat patches
+
+![](figures/fig_bat_patches.png)
