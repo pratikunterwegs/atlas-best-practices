@@ -4,10 +4,12 @@ title: "A Rough Guide to Pre-processing High-Frequency Animal Tracking Data"
 author: "Pratik R. Gupte and others"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::pdf_book
-documentclass: book
+output: bookdown::pdf_document2
+toc-depth: 1
+secnumdepth: 2
+documentclass: scrreprt
+geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
 bibliography: [references.bib]
-biblio-style: apalike
 link-citations: yes
 github-repo: pratikunterwegs/atlas-best-practices
 description: "Source code for a guide to pre-processing high-frequency tracking data."
