@@ -42,7 +42,7 @@ data[, residence_time := data_recurse$residenceTime]
 
 We first plot a figure of residence time per positions, and residence time per timestamp.
 
-```{r}
+```{r echo=FALSE}
 # restime by position
 fig_res_a <-
   ggplot()+
@@ -87,7 +87,7 @@ patch_summary <- atl_patch_summary(patch_data = patch,
 
 ### Plot classified residence patches
 
-```{r}
+```{r echo=FALSE}
 # plot_patches <-
 fig_res_b <-
   ggplot()+
@@ -154,7 +154,7 @@ fig_res_c <-
 
 We arrange the figures together.
 
-```{r}
+```{r echo=FALSE}
 fig_residence <-
   wrap_plots(list(fig_res_a, fig_res_c, fig_res_b),
            design = "ACC\nBCC")+

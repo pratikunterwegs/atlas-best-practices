@@ -80,7 +80,7 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 We make a figure of the canonical data (grey line) along with the artificially added error (grey points).
 
-```{r}
+```{r echo=FALSE}
 # make figure of canonical data with added errors
 figure_raw <-
   ggplot()+
@@ -130,7 +130,7 @@ The same is true for filtering by an `sf` polygon. `atl_filter_bounds` also supp
 
 Having filtered the data we shall prepare it for plotting.
 
-```{r}
+```{r echo=FALSE}
 # plot data inside and outside bbox
 fig_filter_bounds <-
   ggplot()+
@@ -231,7 +231,7 @@ data_filtered <- atl_filter_covariates(data_copy,
 
 We prepare the data for plotting.
 
-```{r}
+```{r echo=FALSE}
 # data plot
 fig_outlier_remove <-
   ggplot()+
@@ -311,7 +311,7 @@ reflection <- data_filtered[!data_no_reflection,
 reflection <- na.omit(reflection)
 ```
 
-```{r}
+```{r echo=FALSE}
 # get plots
 fig_reflection <-
   ggplot()+
