@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 6 Processing calibration data | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
   <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 6 Processing calibration data | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-10-28" />
+<meta name="date" content="2020-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,28 +50,30 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -129,52 +131,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
-<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a><ul>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installing-atlastools"><i class="fa fa-check"></i><b>2.1</b> Installing <code>atlastools</code></a></li>
 <li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#simulating-movement-data"><i class="fa fa-check"></i><b>2.2</b> Simulating movement data</a></li>
 <li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#simualte-for-residence-patches"><i class="fa fa-check"></i><b>2.3</b> Simualte for residence patches</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a><ul>
+<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>3.1</b> Prepare Libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#introducing-errors-to-the-data"><i class="fa fa-check"></i><b>3.2</b> Introducing Errors to the Data</a></li>
-<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a><ul>
+<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#a-note-on-filtering-by-bounds"><i class="fa fa-check"></i><b>3.3.1</b> A Note on Filtering by Bounds</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a><ul>
+<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-point-outliers-or-spikes"><i class="fa fa-check"></i><b>3.4.1</b> Filtering Point Outliers or Spikes</a></li>
 <li class="chapter" data-level="3.4.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-reflections-or-track-subsets"><i class="fa fa-check"></i><b>3.4.2</b> Filtering Reflections or Track Subsets</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a><ul>
+<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#preparing-libraries-and-data"><i class="fa fa-check"></i><b>4.1</b> Preparing Libraries and Data</a></li>
 <li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a></li>
 <li class="chapter" data-level="4.3" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#thinning-data-by-aggregation"><i class="fa fa-check"></i><b>4.3</b> Thinning Data by Aggregation</a></li>
-<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a><ul>
+<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#comparing-median-aggregation-with-and-without-smoothing"><i class="fa fa-check"></i><b>4.4.1</b> Comparing median aggregation with and without smoothing</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a><ul>
-<li class="chapter" data-level="" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#prepare-libraries-1"><i class="fa fa-check"></i>Prepare libraries</a></li>
-<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a><ul>
+<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a>
+<ul>
+<li class="chapter" data-level="" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i>Prepare libraries</a></li>
+<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#read-data-and-classify"><i class="fa fa-check"></i><b>5.1.1</b> Read data and classify</a></li>
 <li class="chapter" data-level="5.1.2" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#plot-classified-residence-patches"><i class="fa fa-check"></i><b>5.1.2</b> Plot classified residence patches</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a><ul>
-<li class="chapter" data-level="6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#preliminary-visualisation"><i class="fa fa-check"></i><b>6.2</b> Preliminary visualisation</a></li>
 <li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a></li>
-<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a><ul>
+<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>6.4.1</b> Handle time</a></li>
 <li class="chapter" data-level="6.4.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>6.4.2</b> Add speed and turning angle</a></li>
 <li class="chapter" data-level="6.4.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-95th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>6.4.3</b> Get 95th percentile of speed and angle</a></li>
 <li class="chapter" data-level="6.4.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-to-see-speeds"><i class="fa fa-check"></i><b>6.4.4</b> Plot to see speeds</a></li>
 <li class="chapter" data-level="6.4.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>6.4.5</b> Filter on speed</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a><ul>
+<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-pre-processing-steps"><i class="fa fa-check"></i><b>6.5.1</b> Plot pre-processing steps</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a><ul>
+<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a>
+<ul>
 <li class="chapter" data-level="6.6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>6.6.1</b> Prepare data</a></li>
 <li class="chapter" data-level="6.6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#calculate-residence-time"><i class="fa fa-check"></i><b>6.6.2</b> Calculate residence time</a></li>
 <li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-residence-time"><i class="fa fa-check"></i><b>6.6.3</b> Plot residence time</a></li>
@@ -182,31 +196,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>6.6.5</b> Get spatial and summary objects</a></li>
 <li class="chapter" data-level="6.6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-waypoint-centroids"><i class="fa fa-check"></i><b>6.6.6</b> Get waypoint centroids</a></li>
 <li class="chapter" data-level="6.6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#read-griend"><i class="fa fa-check"></i><b>6.6.7</b> Read Griend</a></li>
-<li class="chapter" data-level="6.6.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.8</b> Plot the outcome</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a><ul>
+<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a>
+<ul>
 <li class="chapter" data-level="6.7.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-known-patches"><i class="fa fa-check"></i><b>6.7.1</b> Compare known patches</a></li>
 <li class="chapter" data-level="6.7.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-durations-comparisons"><i class="fa fa-check"></i><b>6.7.2</b> Plot durations comparisons</a></li>
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>7</b> Processing Egyptian fruit bat tracks</a><ul>
-<li class="chapter" data-level="7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-libraries-3"><i class="fa fa-check"></i><b>7.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>7</b> Processing Egyptian fruit bat tracks</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>7.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="7.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#read-bat-data"><i class="fa fa-check"></i><b>7.2</b> Read bat data</a></li>
 <li class="chapter" data-level="7.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-bat-data"><i class="fa fa-check"></i><b>7.3</b> Sanity check: Plot bat data</a></li>
-<li class="chapter" data-level="7.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>7.4</b> Prepare data for filtering</a><ul>
+<li class="chapter" data-level="7.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>7.4</b> Prepare data for filtering</a>
+<ul>
 <li class="chapter" data-level="7.4.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-per-individual"><i class="fa fa-check"></i><b>7.4.1</b> Prepare data per individual</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-covariates"><i class="fa fa-check"></i><b>7.5</b> Filter by covariates</a><ul>
+<li class="chapter" data-level="7.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-covariates"><i class="fa fa-check"></i><b>7.5</b> Filter by covariates</a>
+<ul>
 <li class="chapter" data-level="7.5.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-filtered-data"><i class="fa fa-check"></i><b>7.5.1</b> Sanity check: Plot filtered data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>7.6</b> Filter by speed</a><ul>
+<li class="chapter" data-level="7.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>7.6</b> Filter by speed</a>
+<ul>
 <li class="chapter" data-level="7.6.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-speed-filtered-data"><i class="fa fa-check"></i><b>7.6.1</b> Sanity check: Plot speed filtered data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#median-smoothing-1"><i class="fa fa-check"></i><b>7.7</b> Median smoothing</a><ul>
+<li class="chapter" data-level="7.7" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>7.7</b> Median smoothing</a>
+<ul>
 <li class="chapter" data-level="7.7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-smoothed-data"><i class="fa fa-check"></i><b>7.7.1</b> Sanity check: Plot smoothed data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.8" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#making-residence-patches-1"><i class="fa fa-check"></i><b>7.8</b> Making residence patches</a><ul>
+<li class="chapter" data-level="7.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>7.8</b> Making residence patches</a>
+<ul>
 <li class="chapter" data-level="7.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>7.8.1</b> Calculating residence time</a></li>
 <li class="chapter" data-level="7.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-residence-time-time-series"><i class="fa fa-check"></i><b>7.8.2</b> Sanity check: Residence-time time-series</a></li>
 <li class="chapter" data-level="7.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>7.8.3</b> Constructing residence patches</a></li>
@@ -235,72 +255,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="processing-calibration-data" class="section level1">
 <h1><span class="header-section-number">Section 6</span> Processing calibration data</h1>
-<div id="prepare-libraries-2" class="section level2">
+<div id="prepare-libraries" class="section level2">
 <h2><span class="header-section-number">6.1</span> Prepare libraries</h2>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="co"># load libs</span></a>
-<a class="sourceLine" id="cb39-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb39-3" title="3"><span class="kw">library</span>(atlastools)</a>
-<a class="sourceLine" id="cb39-4" title="4"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb39-5" title="5"><span class="kw">library</span>(patchwork)</a>
-<a class="sourceLine" id="cb39-6" title="6"></a>
-<a class="sourceLine" id="cb39-7" title="7"><span class="co"># prepare a palette</span></a>
-<a class="sourceLine" id="cb39-8" title="8">pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="processing-calibration-data.html#cb29-1"></a><span class="co"># load libs</span></span>
+<span id="cb29-2"><a href="processing-calibration-data.html#cb29-2"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb29-3"><a href="processing-calibration-data.html#cb29-3"></a><span class="kw">library</span>(atlastools)</span>
+<span id="cb29-4"><a href="processing-calibration-data.html#cb29-4"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb29-5"><a href="processing-calibration-data.html#cb29-5"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb29-6"><a href="processing-calibration-data.html#cb29-6"></a></span>
+<span id="cb29-7"><a href="processing-calibration-data.html#cb29-7"></a><span class="co"># prepare a palette</span></span>
+<span id="cb29-8"><a href="processing-calibration-data.html#cb29-8"></a>pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
 </div>
 <div id="preliminary-visualisation" class="section level2">
 <h2><span class="header-section-number">6.2</span> Preliminary visualisation</h2>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="co"># read and plot example data</span></a>
-<a class="sourceLine" id="cb40-2" title="2">data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/atlas1060_allTrials_annotated.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb40-3" title="3">data_raw &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a>
-<a class="sourceLine" id="cb40-4" title="4"></a>
-<a class="sourceLine" id="cb40-5" title="5"><span class="co"># plot data</span></a>
-<a class="sourceLine" id="cb40-6" title="6">fig_data_raw &lt;-</a>
-<a class="sourceLine" id="cb40-7" title="7"><span class="st">  </span><span class="kw">ggplot</span>(data)<span class="op">+</span></a>
-<a class="sourceLine" id="cb40-8" title="8"><span class="st">  </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb40-9" title="9">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="fl">0.3</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb40-10" title="10"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb40-11" title="11">             <span class="dt">col =</span> pal[<span class="dv">3</span>], <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">size =</span> <span class="dv">2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb40-12" title="12"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_map</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb40-13" title="13"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>)</a>
-<a class="sourceLine" id="cb40-14" title="14"></a>
-<a class="sourceLine" id="cb40-15" title="15"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb40-16" title="16"><span class="kw">ggsave</span>(fig_data_raw, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_calibration_raw.png&quot;</span>,</a>
-<a class="sourceLine" id="cb40-17" title="17">       <span class="dt">width =</span> <span class="dv">185</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="processing-calibration-data.html#cb30-1"></a><span class="co"># read and plot example data</span></span>
+<span id="cb30-2"><a href="processing-calibration-data.html#cb30-2"></a>data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/atlas1060_allTrials_annotated.csv&quot;</span>)</span>
+<span id="cb30-3"><a href="processing-calibration-data.html#cb30-3"></a>data_raw &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span></code></pre></div>
 </div>
 <div id="filter-by-bounding-box" class="section level2">
 <h2><span class="header-section-number">6.3</span> Filter by bounding box</h2>
 <p>Save an unprocessed copy.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="processing-calibration-data.html#cb31-1"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span></code></pre></div>
 <p>Filter by a bounding box.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="co"># remove inside must be set to falses</span></a>
-<a class="sourceLine" id="cb42-2" title="2">data &lt;-<span class="st"> </span><span class="kw">atl_filter_bounds</span>(<span class="dt">data =</span> data, </a>
-<a class="sourceLine" id="cb42-3" title="3">                          <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </a>
-<a class="sourceLine" id="cb42-4" title="4">                          <span class="dt">x_range =</span> <span class="kw">c</span>(<span class="dv">645000</span>, <span class="kw">max</span>(data<span class="op">$</span>x)), </a>
-<a class="sourceLine" id="cb42-5" title="5">                          <span class="dt">remove_inside =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Plot the result.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co"># plot data</span></a>
-<a class="sourceLine" id="cb43-2" title="2">fig_data_bbox &lt;-</a>
-<a class="sourceLine" id="cb43-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-4" title="4"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_raw,</a>
-<a class="sourceLine" id="cb43-5" title="5">            <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb43-6" title="6">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">size =</span> <span class="fl">0.3</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_raw,</a>
-<a class="sourceLine" id="cb43-8" title="8">             <span class="kw">aes</span>(x, y,</a>
-<a class="sourceLine" id="cb43-9" title="9">                 <span class="dt">col =</span> x <span class="op">&gt;</span><span class="st"> </span><span class="dv">645000</span>),</a>
-<a class="sourceLine" id="cb43-10" title="10">             <span class="dt">alpha =</span> <span class="kw">ifelse</span>(data_raw<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">645000</span>, <span class="fl">0.5</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb43-11" title="11">             <span class="dt">size =</span> <span class="kw">ifelse</span>(data_raw<span class="op">$</span>x <span class="op">&gt;</span><span class="st"> </span><span class="dv">645000</span>, <span class="fl">0.3</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb43-12" title="12">             <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-13" title="13"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;grey&quot;</span>, pal[<span class="dv">3</span>]))<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-14" title="14"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="dv">645000</span>,</a>
-<a class="sourceLine" id="cb43-15" title="15">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">lty =</span> <span class="dv">2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-16" title="16"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-17" title="17"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-18" title="18"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb43-19" title="19">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb43-20" title="20"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>)</a>
-<a class="sourceLine" id="cb43-21" title="21"></a>
-<a class="sourceLine" id="cb43-22" title="22"><span class="co"># save result</span></a>
-<a class="sourceLine" id="cb43-23" title="23"><span class="kw">ggsave</span>(fig_data_bbox, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_calib_bbox.png&quot;</span>,</a>
-<a class="sourceLine" id="cb43-24" title="24">       <span class="dt">width =</span> <span class="dv">185</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="processing-calibration-data.html#cb32-1"></a><span class="co"># remove inside must be set to falses</span></span>
+<span id="cb32-2"><a href="processing-calibration-data.html#cb32-2"></a>data &lt;-<span class="st"> </span><span class="kw">atl_filter_bounds</span>(<span class="dt">data =</span> data, </span>
+<span id="cb32-3"><a href="processing-calibration-data.html#cb32-3"></a>                          <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </span>
+<span id="cb32-4"><a href="processing-calibration-data.html#cb32-4"></a>                          <span class="dt">x_range =</span> <span class="kw">c</span>(<span class="dv">645000</span>, <span class="kw">max</span>(data<span class="op">$</span>x)), </span>
+<span id="cb32-5"><a href="processing-calibration-data.html#cb32-5"></a>                          <span class="dt">remove_inside =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="filter-trajectories" class="section level2">
 <h2><span class="header-section-number">6.4</span> Filter trajectories</h2>
@@ -313,169 +294,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There are two possible solutions. The parsimonious one is to convert the 64-bit number to a 32-bit short integer (dividing by 1000), or to use the <code>nanotime</code> package.</p>
 <p>The conversion method loses an imperceptible amount of precision. The <code>nanotime</code> requires installing another package. The first method is shown here.</p>
 <p>In the spirit of not destroying data, we create a second lower-case column called <code>time</code>.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="co"># divide by 1000, convert to integer, then convert to POSIXct</span></a>
-<a class="sourceLine" id="cb44-2" title="2">data[, time <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.integer</span>(TIME <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="processing-calibration-data.html#cb33-1"></a><span class="co"># divide by 1000, convert to integer, then convert to POSIXct</span></span>
+<span id="cb33-2"><a href="processing-calibration-data.html#cb33-2"></a>data[, time <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.integer</span>(TIME <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>)]</span></code></pre></div>
 </div>
 <div id="add-speed-and-turning-angle" class="section level3">
 <h3><span class="header-section-number">6.4.2</span> Add speed and turning angle</h3>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="co"># add incoming and outgoing speed</span></a>
-<a class="sourceLine" id="cb45-2" title="2">data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span> (<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data, </a>
-<a class="sourceLine" id="cb45-3" title="3">                                      <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </a>
-<a class="sourceLine" id="cb45-4" title="4">                                      <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </a>
-<a class="sourceLine" id="cb45-5" title="5">                                      <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>),</a>
-<a class="sourceLine" id="cb45-6" title="6">             <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</a>
-<a class="sourceLine" id="cb45-7" title="7"></a>
-<a class="sourceLine" id="cb45-8" title="8"><span class="co"># add turning angle</span></a>
-<a class="sourceLine" id="cb45-9" title="9">data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="processing-calibration-data.html#cb34-1"></a><span class="co"># add incoming and outgoing speed</span></span>
+<span id="cb34-2"><a href="processing-calibration-data.html#cb34-2"></a>data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span> (<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data, </span>
+<span id="cb34-3"><a href="processing-calibration-data.html#cb34-3"></a>                                      <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </span>
+<span id="cb34-4"><a href="processing-calibration-data.html#cb34-4"></a>                                      <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </span>
+<span id="cb34-5"><a href="processing-calibration-data.html#cb34-5"></a>                                      <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>),</span>
+<span id="cb34-6"><a href="processing-calibration-data.html#cb34-6"></a>             <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</span>
+<span id="cb34-7"><a href="processing-calibration-data.html#cb34-7"></a></span>
+<span id="cb34-8"><a href="processing-calibration-data.html#cb34-8"></a><span class="co"># add turning angle</span></span>
+<span id="cb34-9"><a href="processing-calibration-data.html#cb34-9"></a>data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</span></code></pre></div>
 </div>
 <div id="get-95th-percentile-of-speed-and-angle" class="section level3">
 <h3><span class="header-section-number">6.4.3</span> Get 95th percentile of speed and angle</h3>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="co"># use sapply</span></a>
-<a class="sourceLine" id="cb46-2" title="2">speed_angle_thresholds &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb46-3" title="3"><span class="st">  </span><span class="kw">sapply</span>(data[, <span class="kw">list</span>(speed_in, speed_out, angle)], </a>
-<a class="sourceLine" id="cb46-4" title="4">       quantile, <span class="dt">probs =</span> <span class="fl">0.9</span>, <span class="dt">na.rm =</span> T)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="processing-calibration-data.html#cb35-1"></a><span class="co"># use sapply</span></span>
+<span id="cb35-2"><a href="processing-calibration-data.html#cb35-2"></a>speed_angle_thresholds &lt;-<span class="st"> </span></span>
+<span id="cb35-3"><a href="processing-calibration-data.html#cb35-3"></a><span class="st">  </span><span class="kw">sapply</span>(data[, <span class="kw">list</span>(speed_in, speed_out, angle)], </span>
+<span id="cb35-4"><a href="processing-calibration-data.html#cb35-4"></a>       quantile, <span class="dt">probs =</span> <span class="fl">0.9</span>, <span class="dt">na.rm =</span> T)</span></code></pre></div>
 </div>
 <div id="plot-to-see-speeds" class="section level3">
 <h3><span class="header-section-number">6.4.4</span> Plot to see speeds</h3>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co"># plot filtered data</span></a>
-<a class="sourceLine" id="cb47-2" title="2">fig_speed_outliers &lt;-</a>
-<a class="sourceLine" id="cb47-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb47-5" title="5">             <span class="kw">aes</span>(x, y, </a>
-<a class="sourceLine" id="cb47-6" title="6">                 <span class="dt">col =</span> speed_in <span class="op">&lt;</span><span class="st"> </span><span class="fl">25.6</span>),</a>
-<a class="sourceLine" id="cb47-7" title="7">             <span class="dt">size =</span> <span class="fl">0.3</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>,</a>
-<a class="sourceLine" id="cb47-8" title="8">             <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-9" title="9"><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;grey&quot;</span>, pal[<span class="dv">3</span>]))<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-10" title="10"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-11" title="11"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb47-12" title="12">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-13" title="13"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;tl&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-14" title="14"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb47-15" title="15"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">colour =</span> <span class="st">&quot;speed (m/s)&quot;</span>)</a>
-<a class="sourceLine" id="cb47-16" title="16"></a>
-<a class="sourceLine" id="cb47-17" title="17"><span class="co"># save</span></a>
-<a class="sourceLine" id="cb47-18" title="18"><span class="kw">ggsave</span>(fig_speed_outliers, <span class="dt">filename =</span> <span class="st">&quot;figures/fig_speed_outlier.png&quot;</span>,</a>
-<a class="sourceLine" id="cb47-19" title="19">       <span class="dt">width =</span> <span class="dv">170</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>, <span class="dt">height =</span> <span class="dv">170</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>)</a></code></pre></div>
+<p><img src="figures/fig_speed_outlier.png" /></p>
 </div>
 <div id="filter-on-speed" class="section level3">
 <h3><span class="header-section-number">6.4.5</span> Filter on speed</h3>
 <p>Here we use a speed threshold of 15 m/s, the fastest known boat speed.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co"># make a copy</span></a>
-<a class="sourceLine" id="cb48-2" title="2">data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a>
-<a class="sourceLine" id="cb48-3" title="3"></a>
-<a class="sourceLine" id="cb48-4" title="4"><span class="co"># remove speed outliers</span></a>
-<a class="sourceLine" id="cb48-5" title="5">data &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb48-6" title="6">            <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;(speed_in &lt; 15 &amp; speed_out &lt; 15)&quot;</span>))</a>
-<a class="sourceLine" id="cb48-7" title="7"></a>
-<a class="sourceLine" id="cb48-8" title="8"><span class="co"># recalculate speed and angle</span></a>
-<a class="sourceLine" id="cb48-9" title="9">data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span> (<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data, </a>
-<a class="sourceLine" id="cb48-10" title="10">                                      <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </a>
-<a class="sourceLine" id="cb48-11" title="11">                                      <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </a>
-<a class="sourceLine" id="cb48-12" title="12">                                      <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>),</a>
-<a class="sourceLine" id="cb48-13" title="13">             <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</a>
-<a class="sourceLine" id="cb48-14" title="14"></a>
-<a class="sourceLine" id="cb48-15" title="15"><span class="co"># add turning angle</span></a>
-<a class="sourceLine" id="cb48-16" title="16">data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="processing-calibration-data.html#cb36-1"></a><span class="co"># make a copy</span></span>
+<span id="cb36-2"><a href="processing-calibration-data.html#cb36-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb36-3"><a href="processing-calibration-data.html#cb36-3"></a></span>
+<span id="cb36-4"><a href="processing-calibration-data.html#cb36-4"></a><span class="co"># remove speed outliers</span></span>
+<span id="cb36-5"><a href="processing-calibration-data.html#cb36-5"></a>data &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(<span class="dt">data =</span> data,</span>
+<span id="cb36-6"><a href="processing-calibration-data.html#cb36-6"></a>            <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;(speed_in &lt; 15 &amp; speed_out &lt; 15)&quot;</span>))</span>
+<span id="cb36-7"><a href="processing-calibration-data.html#cb36-7"></a></span>
+<span id="cb36-8"><a href="processing-calibration-data.html#cb36-8"></a><span class="co"># recalculate speed and angle</span></span>
+<span id="cb36-9"><a href="processing-calibration-data.html#cb36-9"></a>data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span> (<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data, </span>
+<span id="cb36-10"><a href="processing-calibration-data.html#cb36-10"></a>                                      <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, </span>
+<span id="cb36-11"><a href="processing-calibration-data.html#cb36-11"></a>                                      <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, </span>
+<span id="cb36-12"><a href="processing-calibration-data.html#cb36-12"></a>                                      <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>),</span>
+<span id="cb36-13"><a href="processing-calibration-data.html#cb36-13"></a>             <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</span>
+<span id="cb36-14"><a href="processing-calibration-data.html#cb36-14"></a></span>
+<span id="cb36-15"><a href="processing-calibration-data.html#cb36-15"></a><span class="co"># add turning angle</span></span>
+<span id="cb36-16"><a href="processing-calibration-data.html#cb36-16"></a>data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</span></code></pre></div>
 </div>
 </div>
 <div id="smoothing-the-trajectory" class="section level2">
 <h2><span class="header-section-number">6.5</span> Smoothing the trajectory</h2>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co"># apply a 5 point median smooth, first make a copy</span></a>
-<a class="sourceLine" id="cb49-2" title="2">data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a>
-<a class="sourceLine" id="cb49-3" title="3"></a>
-<a class="sourceLine" id="cb49-4" title="4"><span class="co"># now apply the smooth</span></a>
-<a class="sourceLine" id="cb49-5" title="5">data &lt;-<span class="st"> </span><span class="kw">atl_median_smooth</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb49-6" title="6">                          <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb49-7" title="7">                          <span class="dt">moving_window =</span> <span class="dv">5</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" title="1"><span class="co"># make figure</span></a>
-<a class="sourceLine" id="cb50-2" title="2"><span class="co"># fig_smooth &lt;-</span></a>
-<a class="sourceLine" id="cb50-3" title="3"><span class="co">#   ggplot()+</span></a>
-<a class="sourceLine" id="cb50-4" title="4"><span class="co">#   geom_path(data = data,</span></a>
-<a class="sourceLine" id="cb50-5" title="5"><span class="co">#              aes(x, y),</span></a>
-<a class="sourceLine" id="cb50-6" title="6"><span class="co">#             col = RColorBrewer::brewer.pal(4, &quot;Set1&quot;)[4])+</span></a>
-<a class="sourceLine" id="cb50-7" title="7"><span class="co">#   annotate(geom = &quot;rect&quot;,</span></a>
-<a class="sourceLine" id="cb50-8" title="8"><span class="co">#            xmin = c(650785, 650045),</span></a>
-<a class="sourceLine" id="cb50-9" title="9"><span class="co">#            ymin = c(5904450, 5902700),</span></a>
-<a class="sourceLine" id="cb50-10" title="10"><span class="co">#            xmax = c(652500, 650682),</span></a>
-<a class="sourceLine" id="cb50-11" title="11"><span class="co">#            ymax = c(5906133, 5903080),</span></a>
-<a class="sourceLine" id="cb50-12" title="12"><span class="co">#            fill = &quot;grey90&quot;,</span></a>
-<a class="sourceLine" id="cb50-13" title="13"><span class="co">#            alpha = 0.5,</span></a>
-<a class="sourceLine" id="cb50-14" title="14"><span class="co">#            col = NA)+</span></a>
-<a class="sourceLine" id="cb50-15" title="15"><span class="co">#     annotate(geom = &quot;text&quot;,</span></a>
-<a class="sourceLine" id="cb50-16" title="16"><span class="co">#            x = c(650785, 650045) + 400,</span></a>
-<a class="sourceLine" id="cb50-17" title="17"><span class="co">#            y = c(5904450, 5902700) + 300,</span></a>
-<a class="sourceLine" id="cb50-18" title="18"><span class="co">#            col = &quot;black&quot;,</span></a>
-<a class="sourceLine" id="cb50-19" title="19"><span class="co">#            label = c(&quot;d&quot;, &quot;e&quot;))+</span></a>
-<a class="sourceLine" id="cb50-20" title="20"><span class="co">#   theme_void()+</span></a>
-<a class="sourceLine" id="cb50-21" title="21"><span class="co">#   coord_sf(crs = 32631)+</span></a>
-<a class="sourceLine" id="cb50-22" title="22"><span class="co">#   labs(colour = &quot;track&quot;)</span></a>
-<a class="sourceLine" id="cb50-23" title="23"></a>
-<a class="sourceLine" id="cb50-24" title="24"><span class="co"># make zoomed in figures</span></a>
-<a class="sourceLine" id="cb50-25" title="25">fig_inset &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(xl, yl) {</a>
-<a class="sourceLine" id="cb50-26" title="26">  <span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-27" title="27"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_raw[<span class="op">!</span>data_unproc, <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)],</a>
-<a class="sourceLine" id="cb50-28" title="28">               <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb50-29" title="29">               <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb50-30" title="30">               <span class="dt">shape =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb50-31" title="31">               <span class="dt">size =</span> <span class="fl">0.4</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-32" title="32"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_unproc,</a>
-<a class="sourceLine" id="cb50-33" title="33">               <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb50-34" title="34">               <span class="dt">col =</span> pal[<span class="dv">3</span>],</a>
-<a class="sourceLine" id="cb50-35" title="35">               <span class="dt">shape =</span> <span class="dv">19</span>, </a>
-<a class="sourceLine" id="cb50-36" title="36">               <span class="dt">alpha =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-37" title="37"><span class="st">    </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data,</a>
-<a class="sourceLine" id="cb50-38" title="38">              <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb50-39" title="39">              <span class="dt">col =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)[<span class="dv">4</span>])<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-40" title="40"><span class="st">    </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-41" title="41"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb50-42" title="42">          <span class="dt">axis.text =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-43" title="43"><span class="st">    </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-44" title="44"><span class="st">    </span><span class="kw">coord_cartesian</span>(</a>
-<a class="sourceLine" id="cb50-45" title="45">             <span class="dt">xlim =</span> xl,</a>
-<a class="sourceLine" id="cb50-46" title="46">             <span class="dt">ylim =</span> yl, <span class="dt">expand =</span> F</a>
-<a class="sourceLine" id="cb50-47" title="47">             )<span class="op">+</span></a>
-<a class="sourceLine" id="cb50-48" title="48"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">colour =</span> <span class="st">&quot;track&quot;</span>)</a>
-<a class="sourceLine" id="cb50-49" title="49">}, <span class="kw">list</span>(<span class="dt">xl1 =</span> <span class="kw">c</span>(<span class="dv">650785</span>, <span class="dv">653250</span>),</a>
-<a class="sourceLine" id="cb50-50" title="50">        <span class="dt">xl2 =</span> <span class="kw">c</span>(<span class="dv">650045</span>, <span class="dv">650682</span>)),</a>
-<a class="sourceLine" id="cb50-51" title="51">   <span class="kw">list</span>(<span class="dt">yl1 =</span> <span class="kw">c</span>(<span class="dv">5904450</span>, <span class="dv">5906133</span>),</a>
-<a class="sourceLine" id="cb50-52" title="52">        <span class="dt">yl2 =</span> <span class="kw">c</span>(<span class="dv">5902700</span>, <span class="dv">5903080</span>)),</a>
-<a class="sourceLine" id="cb50-53" title="53"><span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb50-54" title="54"></a>
-<a class="sourceLine" id="cb50-55" title="55"><span class="co"># # add global figure to second inset</span></a>
-<a class="sourceLine" id="cb50-56" title="56"><span class="co"># fig_inset[[2]] &lt;- fig_inset[[2]] +</span></a>
-<a class="sourceLine" id="cb50-57" title="57"><span class="co">#   annotation_custom(grob = ggplotGrob(fig_smooth),</span></a>
-<a class="sourceLine" id="cb50-58" title="58"><span class="co">#                     xmin = 649990,</span></a>
-<a class="sourceLine" id="cb50-59" title="59"><span class="co">#                     xmax = 650045 + (650682 - 650045)/2,</span></a>
-<a class="sourceLine" id="cb50-60" title="60"><span class="co">#                     ymin = 5903080 - (5903080 - 5902700)/2.5,</span></a>
-<a class="sourceLine" id="cb50-61" title="61"><span class="co">#                     ymax = 5903080</span></a>
-<a class="sourceLine" id="cb50-62" title="62"><span class="co">#                     )</span></a>
-<a class="sourceLine" id="cb50-63" title="63">  </a>
-<a class="sourceLine" id="cb50-64" title="64">fig_median_smooth &lt;-<span class="st"> </span>fig_inset[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb50-65" title="65">  <span class="co"># wrap_plots(fig_inset)+</span></a>
-<a class="sourceLine" id="cb50-66" title="66">  <span class="co"># plot_annotation(tag_levels = &quot;a&quot;,</span></a>
-<a class="sourceLine" id="cb50-67" title="67">  <span class="co">#                 tag_prefix = &quot;(&quot;,</span></a>
-<a class="sourceLine" id="cb50-68" title="68">  <span class="co">#                 tag_suffix = &quot;)&quot;)</span></a>
-<a class="sourceLine" id="cb50-69" title="69"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb50-70" title="70"><span class="kw">ggsave</span>(fig_median_smooth,</a>
-<a class="sourceLine" id="cb50-71" title="71">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_calib_median_smooth.png&quot;</span>,</a>
-<a class="sourceLine" id="cb50-72" title="72">       <span class="dt">width =</span> <span class="dv">90</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>, <span class="dt">height =</span> <span class="dv">90</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="processing-calibration-data.html#cb37-1"></a><span class="co"># apply a 5 point median smooth, first make a copy</span></span>
+<span id="cb37-2"><a href="processing-calibration-data.html#cb37-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb37-3"><a href="processing-calibration-data.html#cb37-3"></a></span>
+<span id="cb37-4"><a href="processing-calibration-data.html#cb37-4"></a><span class="co"># now apply the smooth</span></span>
+<span id="cb37-5"><a href="processing-calibration-data.html#cb37-5"></a>data &lt;-<span class="st"> </span><span class="kw">atl_median_smooth</span>(<span class="dt">data =</span> data,</span>
+<span id="cb37-6"><a href="processing-calibration-data.html#cb37-6"></a>                          <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb37-7"><a href="processing-calibration-data.html#cb37-7"></a>                          <span class="dt">moving_window =</span> <span class="dv">5</span>)</span></code></pre></div>
 <div id="plot-pre-processing-steps" class="section level3">
 <h3><span class="header-section-number">6.5.1</span> Plot pre-processing steps</h3>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" title="1"><span class="co"># make combined walkthrough figure</span></a>
-<a class="sourceLine" id="cb51-2" title="2">figure_walkthrough &lt;-</a>
-<a class="sourceLine" id="cb51-3" title="3"><span class="kw">wrap_plots</span>(</a>
-<a class="sourceLine" id="cb51-4" title="4">  <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb51-5" title="5">    fig_data_bbox, fig_speed_outliers, fig_median_smooth),</a>
-<a class="sourceLine" id="cb51-6" title="6">  <span class="dt">design =</span> <span class="st">&quot;AB</span><span class="ch">\n</span><span class="st">AC&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb51-7" title="7"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
-<a class="sourceLine" id="cb51-8" title="8">                  <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
-<a class="sourceLine" id="cb51-9" title="9">                  <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>)<span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb51-10" title="10"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
-<a class="sourceLine" id="cb51-11" title="11"></a>
-<a class="sourceLine" id="cb51-12" title="12"><span class="co"># save combined figure</span></a>
-<a class="sourceLine" id="cb51-13" title="13"><span class="kw">ggsave</span>(figure_walkthrough,</a>
-<a class="sourceLine" id="cb51-14" title="14">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_walkthrough.png&quot;</span>,</a>
-<a class="sourceLine" id="cb51-15" title="15">       <span class="dt">height =</span> <span class="dv">130</span>, <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<p><img src="figures/fig_walkthrough.png" /></p>
 </div>
 </div>
 <div id="making-residence-patches" class="section level2">
@@ -484,296 +361,151 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">6.6.1</span> Prepare data</h3>
 <p>An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time (see Bracis et al. 2018).</p>
 <p>In this dataset, residence positions are marked in the <code>tID</code> column as beginning with <code>WP</code>. These can be extracted and converted into residence patches.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" title="1"><span class="co"># make a data copy</span></a>
-<a class="sourceLine" id="cb52-2" title="2">data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="processing-calibration-data.html#cb38-1"></a><span class="co"># make a data copy</span></span>
+<span id="cb38-2"><a href="processing-calibration-data.html#cb38-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span></code></pre></div>
 </div>
 <div id="calculate-residence-time" class="section level3">
 <h3><span class="header-section-number">6.6.2</span> Calculate residence time</h3>
 <p>Subset for boating segments: 2020-08-24 11:13:00 – 2020-08-24 12:36:11.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" title="1"><span class="co"># load recurse</span></a>
-<a class="sourceLine" id="cb53-2" title="2"><span class="kw">library</span>(recurse)</a>
-<a class="sourceLine" id="cb53-3" title="3">data_recurse &lt;-<span class="st"> </span>data_unproc[, <span class="kw">list</span>(x, y, time, TAG, UTCtime)]</a>
-<a class="sourceLine" id="cb53-4" title="4"></a>
-<a class="sourceLine" id="cb53-5" title="5"><span class="co"># thin the data</span></a>
-<a class="sourceLine" id="cb53-6" title="6">data_recurse &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_recurse,</a>
-<a class="sourceLine" id="cb53-7" title="7">                              <span class="dt">interval =</span> <span class="dv">30</span>, <span class="dt">id_columns =</span> <span class="st">&quot;TAG&quot;</span>,</a>
-<a class="sourceLine" id="cb53-8" title="8">                              <span class="dt">method =</span> <span class="st">&quot;resample&quot;</span>)</a>
-<a class="sourceLine" id="cb53-9" title="9"></a>
-<a class="sourceLine" id="cb53-10" title="10"><span class="co"># get 4 column data</span></a>
-<a class="sourceLine" id="cb53-11" title="11">data_recurse &lt;-<span class="st"> </span>data_recurse[, <span class="kw">list</span>(x, y, time, TAG)]</a>
-<a class="sourceLine" id="cb53-12" title="12"></a>
-<a class="sourceLine" id="cb53-13" title="13"><span class="co"># get recurse data for a 10m radius</span></a>
-<a class="sourceLine" id="cb53-14" title="14">recurse_stats &lt;-<span class="st"> </span><span class="kw">getRecursions</span>(data_recurse,</a>
-<a class="sourceLine" id="cb53-15" title="15">                               <span class="dt">radius =</span> <span class="dv">50</span>, <span class="dt">timeunits =</span> <span class="st">&quot;mins&quot;</span>)</a>
-<a class="sourceLine" id="cb53-16" title="16"></a>
-<a class="sourceLine" id="cb53-17" title="17"><span class="co"># assign to recurse data</span></a>
-<a class="sourceLine" id="cb53-18" title="18">data_recurse[, res_time <span class="op">:</span><span class="er">=</span><span class="st"> </span>recurse_stats<span class="op">$</span>residenceTime]</a>
-<a class="sourceLine" id="cb53-19" title="19"></a>
-<a class="sourceLine" id="cb53-20" title="20"><span class="co"># save recurse data</span></a>
-<a class="sourceLine" id="cb53-21" title="21"><span class="kw">fwrite</span>(data_recurse, <span class="dt">file =</span> <span class="st">&quot;data/data_calib_recurse.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="processing-calibration-data.html#cb39-1"></a><span class="co"># load recurse</span></span>
+<span id="cb39-2"><a href="processing-calibration-data.html#cb39-2"></a><span class="kw">library</span>(recurse)</span>
+<span id="cb39-3"><a href="processing-calibration-data.html#cb39-3"></a>data_recurse &lt;-<span class="st"> </span>data_unproc[, <span class="kw">list</span>(x, y, time, TAG, UTCtime)]</span>
+<span id="cb39-4"><a href="processing-calibration-data.html#cb39-4"></a></span>
+<span id="cb39-5"><a href="processing-calibration-data.html#cb39-5"></a><span class="co"># thin the data</span></span>
+<span id="cb39-6"><a href="processing-calibration-data.html#cb39-6"></a>data_recurse &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(<span class="dt">data =</span> data_recurse,</span>
+<span id="cb39-7"><a href="processing-calibration-data.html#cb39-7"></a>                              <span class="dt">interval =</span> <span class="dv">30</span>, <span class="dt">id_columns =</span> <span class="st">&quot;TAG&quot;</span>,</span>
+<span id="cb39-8"><a href="processing-calibration-data.html#cb39-8"></a>                              <span class="dt">method =</span> <span class="st">&quot;resample&quot;</span>)</span>
+<span id="cb39-9"><a href="processing-calibration-data.html#cb39-9"></a></span>
+<span id="cb39-10"><a href="processing-calibration-data.html#cb39-10"></a><span class="co"># get 4 column data</span></span>
+<span id="cb39-11"><a href="processing-calibration-data.html#cb39-11"></a>data_recurse &lt;-<span class="st"> </span>data_recurse[, <span class="kw">list</span>(x, y, time, TAG)]</span>
+<span id="cb39-12"><a href="processing-calibration-data.html#cb39-12"></a></span>
+<span id="cb39-13"><a href="processing-calibration-data.html#cb39-13"></a><span class="co"># get recurse data for a 10m radius</span></span>
+<span id="cb39-14"><a href="processing-calibration-data.html#cb39-14"></a>recurse_stats &lt;-<span class="st"> </span><span class="kw">getRecursions</span>(data_recurse,</span>
+<span id="cb39-15"><a href="processing-calibration-data.html#cb39-15"></a>                               <span class="dt">radius =</span> <span class="dv">50</span>, <span class="dt">timeunits =</span> <span class="st">&quot;mins&quot;</span>)</span>
+<span id="cb39-16"><a href="processing-calibration-data.html#cb39-16"></a></span>
+<span id="cb39-17"><a href="processing-calibration-data.html#cb39-17"></a><span class="co"># assign to recurse data</span></span>
+<span id="cb39-18"><a href="processing-calibration-data.html#cb39-18"></a>data_recurse[, res_time <span class="op">:</span><span class="er">=</span><span class="st"> </span>recurse_stats<span class="op">$</span>residenceTime]</span>
+<span id="cb39-19"><a href="processing-calibration-data.html#cb39-19"></a></span>
+<span id="cb39-20"><a href="processing-calibration-data.html#cb39-20"></a><span class="co"># save recurse data</span></span>
+<span id="cb39-21"><a href="processing-calibration-data.html#cb39-21"></a><span class="kw">fwrite</span>(data_recurse, <span class="dt">file =</span> <span class="st">&quot;data/data_calib_recurse.csv&quot;</span>)</span></code></pre></div>
 <p>Read in the data.</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" title="1">data_recurse &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_calib_recurse.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="processing-calibration-data.html#cb40-1"></a>data_recurse &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/data_calib_recurse.csv&quot;</span>)</span></code></pre></div>
 <p>Subset waypoint data.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">library</span>(stringi)</a>
-<a class="sourceLine" id="cb55-2" title="2">data_res &lt;-<span class="st"> </span>data_unproc[<span class="kw">stri_detect</span>(tID, <span class="dt">regex =</span> <span class="st">&quot;(WP)&quot;</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="processing-calibration-data.html#cb41-1"></a><span class="kw">library</span>(stringi)</span>
+<span id="cb41-2"><a href="processing-calibration-data.html#cb41-2"></a>data_res &lt;-<span class="st"> </span>data_unproc[<span class="kw">stri_detect</span>(tID, <span class="dt">regex =</span> <span class="st">&quot;(WP)&quot;</span>)]</span></code></pre></div>
 </div>
 <div id="plot-residence-time" class="section level3">
 <h3><span class="header-section-number">6.6.3</span> Plot residence time</h3>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" title="1">fig_calib_residence &lt;-</a>
-<a class="sourceLine" id="cb56-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-3" title="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_res, </a>
-<a class="sourceLine" id="cb56-4" title="4">             <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb56-5" title="5">             <span class="dt">size =</span> <span class="dv">5</span>, <span class="dt">shape =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb56-6" title="6">             <span class="dt">alpha =</span> <span class="fl">0.1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-7" title="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_recurse,</a>
-<a class="sourceLine" id="cb56-8" title="8">             <span class="kw">aes</span>(x, y, </a>
-<a class="sourceLine" id="cb56-9" title="9">                 <span class="dt">col =</span> res_time <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb56-10" title="10">                 <span class="dt">size =</span> res_time <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb56-11" title="11">             <span class="dt">shape =</span> <span class="dv">19</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>,</a>
-<a class="sourceLine" id="cb56-12" title="12">             <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-13" title="13"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_recurse,</a>
-<a class="sourceLine" id="cb56-14" title="14">             <span class="kw">aes</span>(x, y),</a>
-<a class="sourceLine" id="cb56-15" title="15">            <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">lwd =</span> <span class="fl">0.2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-16" title="16"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;grey40&quot;</span>, pal[<span class="dv">3</span>]))<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-17" title="17"><span class="st">  </span><span class="kw">scale_size_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">2</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-18" title="18"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-19" title="19"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-20" title="20"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb56-21" title="21">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb56-22" title="22"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>)</a></code></pre></div>
 </div>
 <div id="run-residence-patch-method" class="section level3">
 <h3><span class="header-section-number">6.6.4</span> Run residence patch method</h3>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" title="1"><span class="co"># assign id as tag</span></a>
-<a class="sourceLine" id="cb57-2" title="2">data_recurse[, id <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.character</span>(TAG)]</a>
-<a class="sourceLine" id="cb57-3" title="3"></a>
-<a class="sourceLine" id="cb57-4" title="4"><span class="co"># subset on 5 minute residence time</span></a>
-<a class="sourceLine" id="cb57-5" title="5">data_recurse_subset &lt;-<span class="st"> </span>data_recurse[res_time <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, ]</a>
-<a class="sourceLine" id="cb57-6" title="6"></a>
-<a class="sourceLine" id="cb57-7" title="7"><span class="co"># on known residence points</span></a>
-<a class="sourceLine" id="cb57-8" title="8">patch_res_known &lt;-<span class="st"> </span><span class="kw">atl_res_patch</span>(data_recurse_subset, </a>
-<a class="sourceLine" id="cb57-9" title="9">                                <span class="dt">buffer_radius =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb57-10" title="10">                                <span class="dt">lim_spat_indep =</span> <span class="dv">100</span>,</a>
-<a class="sourceLine" id="cb57-11" title="11">                                <span class="dt">lim_time_indep =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb57-12" title="12">                                <span class="dt">min_fixes =</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="processing-calibration-data.html#cb42-1"></a><span class="co"># assign id as tag</span></span>
+<span id="cb42-2"><a href="processing-calibration-data.html#cb42-2"></a>data_recurse[, id <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.character</span>(TAG)]</span>
+<span id="cb42-3"><a href="processing-calibration-data.html#cb42-3"></a></span>
+<span id="cb42-4"><a href="processing-calibration-data.html#cb42-4"></a><span class="co"># subset on 5 minute residence time</span></span>
+<span id="cb42-5"><a href="processing-calibration-data.html#cb42-5"></a>data_recurse_subset &lt;-<span class="st"> </span>data_recurse[res_time <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>, ]</span>
+<span id="cb42-6"><a href="processing-calibration-data.html#cb42-6"></a></span>
+<span id="cb42-7"><a href="processing-calibration-data.html#cb42-7"></a><span class="co"># on known residence points</span></span>
+<span id="cb42-8"><a href="processing-calibration-data.html#cb42-8"></a>patch_res_known &lt;-<span class="st"> </span><span class="kw">atl_res_patch</span>(data_recurse_subset, </span>
+<span id="cb42-9"><a href="processing-calibration-data.html#cb42-9"></a>                                <span class="dt">buffer_radius =</span> <span class="dv">10</span>,</span>
+<span id="cb42-10"><a href="processing-calibration-data.html#cb42-10"></a>                                <span class="dt">lim_spat_indep =</span> <span class="dv">100</span>,</span>
+<span id="cb42-11"><a href="processing-calibration-data.html#cb42-11"></a>                                <span class="dt">lim_time_indep =</span> <span class="dv">5</span>,</span>
+<span id="cb42-12"><a href="processing-calibration-data.html#cb42-12"></a>                                <span class="dt">min_fixes =</span> <span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="get-spatial-and-summary-objects" class="section level3">
 <h3><span class="header-section-number">6.6.5</span> Get spatial and summary objects</h3>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" title="1"><span class="co"># for the known and unkniwn patches</span></a>
-<a class="sourceLine" id="cb58-2" title="2">patch_sf_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known, <span class="dt">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</a>
-<a class="sourceLine" id="cb58-3" title="3">                                   <span class="dt">buffer_radius =</span> <span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb58-4" title="4"></a>
-<a class="sourceLine" id="cb58-5" title="5"><span class="co"># assign crs</span></a>
-<a class="sourceLine" id="cb58-6" title="6">sf<span class="op">::</span><span class="kw">st_crs</span>(patch_sf_data) &lt;-<span class="st"> </span><span class="dv">32631</span></a>
-<a class="sourceLine" id="cb58-7" title="7"></a>
-<a class="sourceLine" id="cb58-8" title="8"><span class="co"># get summary data</span></a>
-<a class="sourceLine" id="cb58-9" title="9">patch_summary_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known, <span class="dt">which_data =</span> <span class="st">&quot;summary&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="processing-calibration-data.html#cb43-1"></a><span class="co"># for the known and unkniwn patches</span></span>
+<span id="cb43-2"><a href="processing-calibration-data.html#cb43-2"></a>patch_sf_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known, <span class="dt">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
+<span id="cb43-3"><a href="processing-calibration-data.html#cb43-3"></a>                                   <span class="dt">buffer_radius =</span> <span class="dv">20</span>)</span>
+<span id="cb43-4"><a href="processing-calibration-data.html#cb43-4"></a></span>
+<span id="cb43-5"><a href="processing-calibration-data.html#cb43-5"></a><span class="co"># assign crs</span></span>
+<span id="cb43-6"><a href="processing-calibration-data.html#cb43-6"></a>sf<span class="op">::</span><span class="kw">st_crs</span>(patch_sf_data) &lt;-<span class="st"> </span><span class="dv">32631</span></span>
+<span id="cb43-7"><a href="processing-calibration-data.html#cb43-7"></a></span>
+<span id="cb43-8"><a href="processing-calibration-data.html#cb43-8"></a><span class="co"># get summary data</span></span>
+<span id="cb43-9"><a href="processing-calibration-data.html#cb43-9"></a>patch_summary_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known, <span class="dt">which_data =</span> <span class="st">&quot;summary&quot;</span>)</span></code></pre></div>
 </div>
 <div id="get-waypoint-centroids" class="section level3">
 <h3><span class="header-section-number">6.6.6</span> Get waypoint centroids</h3>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" title="1"><span class="co"># get centroid</span></a>
-<a class="sourceLine" id="cb59-2" title="2">data_res_summary &lt;-<span class="st"> </span>data_res[, <span class="kw">list</span>(<span class="dt">x_median =</span> <span class="kw">median</span>(x),</a>
-<a class="sourceLine" id="cb59-3" title="3">                                    <span class="dt">y_median =</span> <span class="kw">median</span>(y),</a>
-<a class="sourceLine" id="cb59-4" title="4">                                    <span class="dt">t_median =</span> <span class="kw">median</span>(time)),</a>
-<a class="sourceLine" id="cb59-5" title="5">                             by =<span class="st"> &quot;tID&quot;</span>]</a>
-<a class="sourceLine" id="cb59-6" title="6"></a>
-<a class="sourceLine" id="cb59-7" title="7"><span class="co"># now get times 10 mins before and after</span></a>
-<a class="sourceLine" id="cb59-8" title="8">data_res_summary[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">t_min =</span> t_median <span class="op">-</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb59-9" title="9">                        <span class="dt">t_max =</span> t_median <span class="op">+</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>))]</a>
-<a class="sourceLine" id="cb59-10" title="10"></a>
-<a class="sourceLine" id="cb59-11" title="11"><span class="co"># make a list of positions 10min before and after</span></a>
-<a class="sourceLine" id="cb59-12" title="12">wp_data &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(l, u, mx, my) {</a>
-<a class="sourceLine" id="cb59-13" title="13">  tmp_data &lt;-<span class="st"> </span>data_unproc[<span class="kw">inrange</span>(time, l, u)]</a>
-<a class="sourceLine" id="cb59-14" title="14">  tmp_data[, distance <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sqrt</span>((mx <span class="op">-</span><span class="st"> </span>x)<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(my <span class="op">-</span><span class="st"> </span>y)<span class="op">^</span><span class="dv">2</span>)]</a>
-<a class="sourceLine" id="cb59-15" title="15">  <span class="co"># keep within 50</span></a>
-<a class="sourceLine" id="cb59-16" title="16">  tmp_data &lt;-<span class="st"> </span>tmp_data[distance <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>, ]</a>
-<a class="sourceLine" id="cb59-17" title="17">  <span class="co"># get duration</span></a>
-<a class="sourceLine" id="cb59-18" title="18">  <span class="kw">return</span>(<span class="kw">diff</span>(<span class="kw">range</span>(tmp_data<span class="op">$</span>time)))</a>
-<a class="sourceLine" id="cb59-19" title="19">}, data_res_summary<span class="op">$</span>t_min, data_res_summary<span class="op">$</span>t_max,</a>
-<a class="sourceLine" id="cb59-20" title="20">   data_res_summary<span class="op">$</span>x_median, data_res_summary<span class="op">$</span>y_median,</a>
-<a class="sourceLine" id="cb59-21" title="21"><span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="processing-calibration-data.html#cb44-1"></a><span class="co"># get centroid</span></span>
+<span id="cb44-2"><a href="processing-calibration-data.html#cb44-2"></a>data_res_summary &lt;-<span class="st"> </span>data_res[, <span class="kw">list</span>(<span class="dt">x_median =</span> <span class="kw">median</span>(x),</span>
+<span id="cb44-3"><a href="processing-calibration-data.html#cb44-3"></a>                                    <span class="dt">y_median =</span> <span class="kw">median</span>(y),</span>
+<span id="cb44-4"><a href="processing-calibration-data.html#cb44-4"></a>                                    <span class="dt">t_median =</span> <span class="kw">median</span>(time)),</span>
+<span id="cb44-5"><a href="processing-calibration-data.html#cb44-5"></a>                             by =<span class="st"> &quot;tID&quot;</span>]</span>
+<span id="cb44-6"><a href="processing-calibration-data.html#cb44-6"></a></span>
+<span id="cb44-7"><a href="processing-calibration-data.html#cb44-7"></a><span class="co"># now get times 10 mins before and after</span></span>
+<span id="cb44-8"><a href="processing-calibration-data.html#cb44-8"></a>data_res_summary[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">t_min =</span> t_median <span class="op">-</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>),</span>
+<span id="cb44-9"><a href="processing-calibration-data.html#cb44-9"></a>                        <span class="dt">t_max =</span> t_median <span class="op">+</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>))]</span>
+<span id="cb44-10"><a href="processing-calibration-data.html#cb44-10"></a></span>
+<span id="cb44-11"><a href="processing-calibration-data.html#cb44-11"></a><span class="co"># make a list of positions 10min before and after</span></span>
+<span id="cb44-12"><a href="processing-calibration-data.html#cb44-12"></a>wp_data &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(l, u, mx, my) {</span>
+<span id="cb44-13"><a href="processing-calibration-data.html#cb44-13"></a>  tmp_data &lt;-<span class="st"> </span>data_unproc[<span class="kw">inrange</span>(time, l, u)]</span>
+<span id="cb44-14"><a href="processing-calibration-data.html#cb44-14"></a>  tmp_data[, distance <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sqrt</span>((mx <span class="op">-</span><span class="st"> </span>x)<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(my <span class="op">-</span><span class="st"> </span>y)<span class="op">^</span><span class="dv">2</span>)]</span>
+<span id="cb44-15"><a href="processing-calibration-data.html#cb44-15"></a>  <span class="co"># keep within 50</span></span>
+<span id="cb44-16"><a href="processing-calibration-data.html#cb44-16"></a>  tmp_data &lt;-<span class="st"> </span>tmp_data[distance <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>, ]</span>
+<span id="cb44-17"><a href="processing-calibration-data.html#cb44-17"></a>  <span class="co"># get duration</span></span>
+<span id="cb44-18"><a href="processing-calibration-data.html#cb44-18"></a>  <span class="kw">return</span>(<span class="kw">diff</span>(<span class="kw">range</span>(tmp_data<span class="op">$</span>time)))</span>
+<span id="cb44-19"><a href="processing-calibration-data.html#cb44-19"></a>}, data_res_summary<span class="op">$</span>t_min, data_res_summary<span class="op">$</span>t_max,</span>
+<span id="cb44-20"><a href="processing-calibration-data.html#cb44-20"></a>   data_res_summary<span class="op">$</span>x_median, data_res_summary<span class="op">$</span>y_median,</span>
+<span id="cb44-21"><a href="processing-calibration-data.html#cb44-21"></a><span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="read-griend" class="section level3">
 <h3><span class="header-section-number">6.6.7</span> Read Griend</h3>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" title="1"><span class="co"># read griend</span></a>
-<a class="sourceLine" id="cb60-2" title="2">griend &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_read</span>(<span class="st">&quot;data/griend_polygon/griend_polygon.shp&quot;</span>)</a></code></pre></div>
-</div>
-<div id="plot-the-outcome" class="section level3">
-<h3><span class="header-section-number">6.6.8</span> Plot the outcome</h3>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" title="1"><span class="co"># patch with residence points and all patches</span></a>
-<a class="sourceLine" id="cb61-2" title="2">fig_basic_residence &lt;-</a>
-<a class="sourceLine" id="cb61-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-4" title="4"><span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> griend)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_res_summary, </a>
-<a class="sourceLine" id="cb61-6" title="6">             <span class="kw">aes</span>(x_median, y_median),</a>
-<a class="sourceLine" id="cb61-7" title="7">             <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">shape =</span> <span class="dv">7</span>,</a>
-<a class="sourceLine" id="cb61-8" title="8">             <span class="co"># stroke = ,</span></a>
-<a class="sourceLine" id="cb61-9" title="9">             <span class="dt">col =</span> <span class="st">&quot;grey20&quot;</span>,</a>
-<a class="sourceLine" id="cb61-10" title="10">             <span class="dt">alpha =</span> <span class="dv">1</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-11" title="11"><span class="st">    </span><span class="co"># geom_path(data = data_recurse,</span></a>
-<a class="sourceLine" id="cb61-12" title="12"><span class="st">    </span><span class="co">#          aes(x, y),</span></a>
-<a class="sourceLine" id="cb61-13" title="13"><span class="st">    </span><span class="co">#         col = &quot;grey&quot;, lwd = 0.2)+</span></a>
-<a class="sourceLine" id="cb61-14" title="14"><span class="st">  </span><span class="co"># geom_text(data = data_res_summary,</span></a>
-<a class="sourceLine" id="cb61-15" title="15"><span class="st">  </span><span class="co">#           aes(x_median, y_median,</span></a>
-<a class="sourceLine" id="cb61-16" title="16"><span class="st">  </span><span class="co">#               label = tID),</span></a>
-<a class="sourceLine" id="cb61-17" title="17"><span class="st">  </span><span class="co">#           # size = 10, shape = 7,</span></a>
-<a class="sourceLine" id="cb61-18" title="18"><span class="st">  </span><span class="co">#           # stroke = ,</span></a>
-<a class="sourceLine" id="cb61-19" title="19"><span class="st">  </span><span class="co">#           nudge_x = 100,</span></a>
-<a class="sourceLine" id="cb61-20" title="20"><span class="st">  </span><span class="co">#           fontface = &quot;bold&quot;,</span></a>
-<a class="sourceLine" id="cb61-21" title="21"><span class="st">  </span><span class="co">#           col = &quot;grey20&quot;,</span></a>
-<a class="sourceLine" id="cb61-22" title="22"><span class="st">  </span><span class="co">#           alpha = 1)+</span></a>
-<a class="sourceLine" id="cb61-23" title="23"><span class="st">  </span><span class="co"># geom_text(data = patch_summary_data, </span></a>
-<a class="sourceLine" id="cb61-24" title="24"><span class="st">  </span><span class="co">#           aes(x_median, y_median,</span></a>
-<a class="sourceLine" id="cb61-25" title="25"><span class="st">  </span><span class="co">#               label = patch),</span></a>
-<a class="sourceLine" id="cb61-26" title="26"><span class="st">  </span><span class="co">#           # size = 10, shape = 7,</span></a>
-<a class="sourceLine" id="cb61-27" title="27"><span class="st">  </span><span class="co">#           # stroke = ,</span></a>
-<a class="sourceLine" id="cb61-28" title="28"><span class="st">  </span><span class="co">#           nudge_x = -50,</span></a>
-<a class="sourceLine" id="cb61-29" title="29"><span class="st">  </span><span class="co">#           fontface = &quot;bold&quot;,</span></a>
-<a class="sourceLine" id="cb61-30" title="30"><span class="st">  </span><span class="co">#           col = pal[4],</span></a>
-<a class="sourceLine" id="cb61-31" title="31"><span class="st">  </span><span class="co">#           alpha = 1)+</span></a>
-<a class="sourceLine" id="cb61-32" title="32"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_recurse,</a>
-<a class="sourceLine" id="cb61-33" title="33">            <span class="kw">aes</span>(x, y,</a>
-<a class="sourceLine" id="cb61-34" title="34">                <span class="dt">col =</span> res_time <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb61-35" title="35">                <span class="dt">shape =</span> res_time <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb61-36" title="36">            <span class="dt">show.legend =</span> F,</a>
-<a class="sourceLine" id="cb61-37" title="37">            <span class="dt">size =</span> <span class="dv">2</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-38" title="38"><span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> patch_sf_data,</a>
-<a class="sourceLine" id="cb61-39" title="39">          <span class="dt">fill =</span> pal[<span class="dv">4</span>],</a>
-<a class="sourceLine" id="cb61-40" title="40">          <span class="dt">col =</span> pal[<span class="dv">4</span>],</a>
-<a class="sourceLine" id="cb61-41" title="41">          <span class="dt">alpha =</span> <span class="fl">0.3</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-42" title="42"><span class="st">  </span><span class="co"># geom_segment(data = patch_summary_data,</span></a>
-<a class="sourceLine" id="cb61-43" title="43"><span class="st">  </span><span class="co">#           aes(x = x_end, y = y_end,</span></a>
-<a class="sourceLine" id="cb61-44" title="44"><span class="st">  </span><span class="co">#               xend = shift(x_start, type = &quot;lag&quot;),</span></a>
-<a class="sourceLine" id="cb61-45" title="45"><span class="st">  </span><span class="co">#               yend = shift(y_start, type = &quot;lag&quot;)),</span></a>
-<a class="sourceLine" id="cb61-46" title="46"><span class="st">  </span><span class="co">#           col = pal[4], lty = 1,</span></a>
-<a class="sourceLine" id="cb61-47" title="47"><span class="st">  </span><span class="co">#           lwd = 0.5)+</span></a>
-<a class="sourceLine" id="cb61-48" title="48"><span class="st">  </span><span class="co"># geom_point(data = patch_summary_data,</span></a>
-<a class="sourceLine" id="cb61-49" title="49"><span class="st">  </span><span class="co">#            aes(x_median, y_median),</span></a>
-<a class="sourceLine" id="cb61-50" title="50"><span class="st">  </span><span class="co">#            size = 5,</span></a>
-<a class="sourceLine" id="cb61-51" title="51"><span class="st">  </span><span class="co">#            stroke = 1,</span></a>
-<a class="sourceLine" id="cb61-52" title="52"><span class="st">  </span><span class="co">#            col = pal[4],</span></a>
-<a class="sourceLine" id="cb61-53" title="53"><span class="st">  </span><span class="co">#            shape = 1,</span></a>
-<a class="sourceLine" id="cb61-54" title="54"><span class="st">  </span><span class="co">#            show.legend = F)+</span></a>
-<a class="sourceLine" id="cb61-55" title="55"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;grey40&quot;</span>, pal[<span class="dv">3</span>]))<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-56" title="56"><span class="st">  </span><span class="kw">scale_shape_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">19</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-57" title="57"><span class="st">  </span><span class="kw">scale_fill_distiller</span>(<span class="dt">palette =</span> <span class="st">&quot;RdPu&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-58" title="58"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;tl&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-59" title="59"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-60" title="60"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb61-61" title="61">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb61-62" title="62"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>,</a>
-<a class="sourceLine" id="cb61-63" title="63">           <span class="dt">expand =</span> F,</a>
-<a class="sourceLine" id="cb61-64" title="64">           <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">5901700</span>, <span class="dv">5903150</span>),</a>
-<a class="sourceLine" id="cb61-65" title="65">           <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">649300</span>, <span class="dv">650700</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="processing-calibration-data.html#cb45-1"></a><span class="co"># read griend</span></span>
+<span id="cb45-2"><a href="processing-calibration-data.html#cb45-2"></a>griend &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_read</span>(<span class="st">&quot;data/griend_polygon/griend_polygon.shp&quot;</span>)</span></code></pre></div>
+<p>We prepare a plot of the residence patches.</p>
 </div>
 </div>
 <div id="compare-patch-metrics" class="section level2">
 <h2><span class="header-section-number">6.7</span> Compare patch metrics</h2>
 <div id="compare-known-patches" class="section level3">
 <h3><span class="header-section-number">6.7.1</span> Compare known patches</h3>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" title="1"><span class="co"># get known patch summary</span></a>
-<a class="sourceLine" id="cb62-2" title="2">data_res &lt;-<span class="st"> </span>data_unproc[stringi<span class="op">::</span><span class="kw">stri_detect</span>(tID, <span class="dt">regex =</span> <span class="st">&quot;(WP)&quot;</span>), ]</a>
-<a class="sourceLine" id="cb62-3" title="3"></a>
-<a class="sourceLine" id="cb62-4" title="4"><span class="co"># get waypoint summary</span></a>
-<a class="sourceLine" id="cb62-5" title="5">patch_summary_real &lt;-<span class="st"> </span>data_res[, <span class="kw">list</span>(<span class="dt">nfixes_real =</span> .N,</a>
-<a class="sourceLine" id="cb62-6" title="6">                                      <span class="dt">x_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(x), <span class="dt">digits =</span> <span class="dv">-2</span>),</a>
-<a class="sourceLine" id="cb62-7" title="7">                                      <span class="dt">y_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(y), <span class="dt">digits =</span> <span class="dv">-2</span>)), </a>
-<a class="sourceLine" id="cb62-8" title="8">                               by =<span class="st"> &quot;tID&quot;</span>]</a>
-<a class="sourceLine" id="cb62-9" title="9"></a>
-<a class="sourceLine" id="cb62-10" title="10"><span class="co"># add real duration</span></a>
-<a class="sourceLine" id="cb62-11" title="11">patch_summary_real[, duration_real <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">unlist</span>(wp_data)]</a>
-<a class="sourceLine" id="cb62-12" title="12"><span class="co"># round median coordinate for inferred patches</span></a>
-<a class="sourceLine" id="cb62-13" title="13">patch_summary_inferred &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb62-14" title="14"><span class="st">  </span>patch_summary_data[, </a>
-<a class="sourceLine" id="cb62-15" title="15">                     <span class="kw">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>, </a>
-<a class="sourceLine" id="cb62-16" title="16">                       <span class="st">&quot;nfixes&quot;</span>, <span class="st">&quot;duration&quot;</span>, <span class="st">&quot;patch&quot;</span>)</a>
-<a class="sourceLine" id="cb62-17" title="17">                     ][, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">x_median =</span> <span class="kw">round</span>(x_median, <span class="dt">digits =</span> <span class="dv">-2</span>),</a>
-<a class="sourceLine" id="cb62-18" title="18">                              <span class="dt">y_median =</span> <span class="kw">round</span>(y_median, <span class="dt">digits =</span> <span class="dv">-2</span>))]</a>
-<a class="sourceLine" id="cb62-19" title="19"></a>
-<a class="sourceLine" id="cb62-20" title="20"><span class="co"># join with respatch summary</span></a>
-<a class="sourceLine" id="cb62-21" title="21">patch_summary_compare &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb62-22" title="22"><span class="st">  </span><span class="kw">merge</span>(patch_summary_real,</a>
-<a class="sourceLine" id="cb62-23" title="23">        patch_summary_inferred, </a>
-<a class="sourceLine" id="cb62-24" title="24">        <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>),</a>
-<a class="sourceLine" id="cb62-25" title="25">        <span class="dt">all.x =</span> <span class="ot">TRUE</span>, <span class="dt">all.y =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb62-26" title="26"></a>
-<a class="sourceLine" id="cb62-27" title="27">patch_summary_compare[<span class="op">!</span><span class="kw">is.na</span>(tID)]</a>
-<a class="sourceLine" id="cb62-28" title="28"></a>
-<a class="sourceLine" id="cb62-29" title="29"><span class="co"># drop nas</span></a>
-<a class="sourceLine" id="cb62-30" title="30">patch_summary_compare &lt;-<span class="st"> </span><span class="kw">na.omit</span>(patch_summary_compare)</a>
-<a class="sourceLine" id="cb62-31" title="31"></a>
-<a class="sourceLine" id="cb62-32" title="32"><span class="co"># drop patch around WP080</span></a>
-<a class="sourceLine" id="cb62-33" title="33">patch_summary_compare &lt;-<span class="st"> </span>patch_summary_compare[tID <span class="op">!=</span><span class="st"> &quot;WP080&quot;</span>, ]</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="processing-calibration-data.html#cb46-1"></a><span class="co"># get known patch summary</span></span>
+<span id="cb46-2"><a href="processing-calibration-data.html#cb46-2"></a>data_res &lt;-<span class="st"> </span>data_unproc[stringi<span class="op">::</span><span class="kw">stri_detect</span>(tID, <span class="dt">regex =</span> <span class="st">&quot;(WP)&quot;</span>), ]</span>
+<span id="cb46-3"><a href="processing-calibration-data.html#cb46-3"></a></span>
+<span id="cb46-4"><a href="processing-calibration-data.html#cb46-4"></a><span class="co"># get waypoint summary</span></span>
+<span id="cb46-5"><a href="processing-calibration-data.html#cb46-5"></a>patch_summary_real &lt;-<span class="st"> </span>data_res[, <span class="kw">list</span>(<span class="dt">nfixes_real =</span> .N,</span>
+<span id="cb46-6"><a href="processing-calibration-data.html#cb46-6"></a>                                      <span class="dt">x_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(x), <span class="dt">digits =</span> <span class="dv">-2</span>),</span>
+<span id="cb46-7"><a href="processing-calibration-data.html#cb46-7"></a>                                      <span class="dt">y_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(y), <span class="dt">digits =</span> <span class="dv">-2</span>)), </span>
+<span id="cb46-8"><a href="processing-calibration-data.html#cb46-8"></a>                               by =<span class="st"> &quot;tID&quot;</span>]</span>
+<span id="cb46-9"><a href="processing-calibration-data.html#cb46-9"></a></span>
+<span id="cb46-10"><a href="processing-calibration-data.html#cb46-10"></a><span class="co"># add real duration</span></span>
+<span id="cb46-11"><a href="processing-calibration-data.html#cb46-11"></a>patch_summary_real[, duration_real <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">unlist</span>(wp_data)]</span>
+<span id="cb46-12"><a href="processing-calibration-data.html#cb46-12"></a><span class="co"># round median coordinate for inferred patches</span></span>
+<span id="cb46-13"><a href="processing-calibration-data.html#cb46-13"></a>patch_summary_inferred &lt;-<span class="st"> </span></span>
+<span id="cb46-14"><a href="processing-calibration-data.html#cb46-14"></a><span class="st">  </span>patch_summary_data[, </span>
+<span id="cb46-15"><a href="processing-calibration-data.html#cb46-15"></a>                     <span class="kw">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>, </span>
+<span id="cb46-16"><a href="processing-calibration-data.html#cb46-16"></a>                       <span class="st">&quot;nfixes&quot;</span>, <span class="st">&quot;duration&quot;</span>, <span class="st">&quot;patch&quot;</span>)</span>
+<span id="cb46-17"><a href="processing-calibration-data.html#cb46-17"></a>                     ][, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">x_median =</span> <span class="kw">round</span>(x_median, <span class="dt">digits =</span> <span class="dv">-2</span>),</span>
+<span id="cb46-18"><a href="processing-calibration-data.html#cb46-18"></a>                              <span class="dt">y_median =</span> <span class="kw">round</span>(y_median, <span class="dt">digits =</span> <span class="dv">-2</span>))]</span>
+<span id="cb46-19"><a href="processing-calibration-data.html#cb46-19"></a></span>
+<span id="cb46-20"><a href="processing-calibration-data.html#cb46-20"></a><span class="co"># join with respatch summary</span></span>
+<span id="cb46-21"><a href="processing-calibration-data.html#cb46-21"></a>patch_summary_compare &lt;-<span class="st"> </span></span>
+<span id="cb46-22"><a href="processing-calibration-data.html#cb46-22"></a><span class="st">  </span><span class="kw">merge</span>(patch_summary_real,</span>
+<span id="cb46-23"><a href="processing-calibration-data.html#cb46-23"></a>        patch_summary_inferred, </span>
+<span id="cb46-24"><a href="processing-calibration-data.html#cb46-24"></a>        <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>),</span>
+<span id="cb46-25"><a href="processing-calibration-data.html#cb46-25"></a>        <span class="dt">all.x =</span> <span class="ot">TRUE</span>, <span class="dt">all.y =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb46-26"><a href="processing-calibration-data.html#cb46-26"></a></span>
+<span id="cb46-27"><a href="processing-calibration-data.html#cb46-27"></a>patch_summary_compare[<span class="op">!</span><span class="kw">is.na</span>(tID)]</span>
+<span id="cb46-28"><a href="processing-calibration-data.html#cb46-28"></a></span>
+<span id="cb46-29"><a href="processing-calibration-data.html#cb46-29"></a><span class="co"># drop nas</span></span>
+<span id="cb46-30"><a href="processing-calibration-data.html#cb46-30"></a>patch_summary_compare &lt;-<span class="st"> </span><span class="kw">na.omit</span>(patch_summary_compare)</span>
+<span id="cb46-31"><a href="processing-calibration-data.html#cb46-31"></a></span>
+<span id="cb46-32"><a href="processing-calibration-data.html#cb46-32"></a><span class="co"># drop patch around WP080</span></span>
+<span id="cb46-33"><a href="processing-calibration-data.html#cb46-33"></a>patch_summary_compare &lt;-<span class="st"> </span>patch_summary_compare[tID <span class="op">!=</span><span class="st"> &quot;WP080&quot;</span>, ]</span></code></pre></div>
 <p>12 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.</p>
 </div>
 <div id="plot-durations-comparisons" class="section level3">
 <h3><span class="header-section-number">6.7.2</span> Plot durations comparisons</h3>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" title="1"><span class="co"># get linear model</span></a>
-<a class="sourceLine" id="cb63-2" title="2">model_duration &lt;-<span class="st"> </span><span class="kw">lm</span>(duration_real <span class="op">~</span><span class="st"> </span>duration,</a>
-<a class="sourceLine" id="cb63-3" title="3">                     <span class="dt">data =</span> patch_summary_compare)</a>
-<a class="sourceLine" id="cb63-4" title="4"></a>
-<a class="sourceLine" id="cb63-5" title="5"><span class="co"># get R2</span></a>
-<a class="sourceLine" id="cb63-6" title="6"><span class="kw">summary</span>(model_duration)</a></code></pre></div>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" title="1"><span class="co"># make figure comparing different methods</span></a>
-<a class="sourceLine" id="cb64-2" title="2">figure_patch_duration &lt;-</a>
-<a class="sourceLine" id="cb64-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> patch_summary_compare,</a>
-<a class="sourceLine" id="cb64-5" title="5">             <span class="kw">aes</span>(duration, </a>
-<a class="sourceLine" id="cb64-6" title="6">                 duration_real),</a>
-<a class="sourceLine" id="cb64-7" title="7">             <span class="dt">show.legend =</span> F,</a>
-<a class="sourceLine" id="cb64-8" title="8">            <span class="dt">size =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb64-9" title="9">            <span class="dt">stroke =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb64-10" title="10">            <span class="dt">shape =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb64-11" title="11">            <span class="dt">col =</span> pal[<span class="dv">2</span>])<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-12" title="12"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">data =</span> patch_summary_compare,</a>
-<a class="sourceLine" id="cb64-13" title="13">             <span class="kw">aes</span>(duration, </a>
-<a class="sourceLine" id="cb64-14" title="14">                 duration_real),</a>
-<a class="sourceLine" id="cb64-15" title="15">             <span class="dt">se =</span> F,</a>
-<a class="sourceLine" id="cb64-16" title="16">             <span class="dt">col =</span> pal[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb64-17" title="17">             <span class="dt">lwd =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb64-18" title="18">             <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb64-19" title="19">             <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-20" title="20"><span class="st">  </span><span class="kw">annotate</span>(<span class="dt">geom =</span> <span class="st">&quot;text&quot;</span>,</a>
-<a class="sourceLine" id="cb64-21" title="21">           <span class="dt">x =</span> <span class="dv">600</span>, <span class="dt">y =</span> <span class="dv">1020</span>,</a>
-<a class="sourceLine" id="cb64-22" title="22">           <span class="dt">size =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb64-23" title="23">           <span class="dt">label =</span> <span class="st">&quot;R^2 == 0.98&quot;</span>,</a>
-<a class="sourceLine" id="cb64-24" title="24">           <span class="dt">parse =</span> T)<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-25" title="25"><span class="st">  </span><span class="kw">scale_x_continuous</span>(</a>
-<a class="sourceLine" id="cb64-26" title="26">    <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb64-27" title="27">    <span class="dt">labels =</span> <span class="kw">as.integer</span>(<span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>) <span class="op">/</span><span class="st"> </span><span class="dv">60</span>)</a>
-<a class="sourceLine" id="cb64-28" title="28">    )<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-29" title="29"><span class="st">  </span><span class="kw">scale_y_continuous</span>(</a>
-<a class="sourceLine" id="cb64-30" title="30">    <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb64-31" title="31">    <span class="dt">labels =</span> <span class="kw">as.integer</span>(<span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">600</span>, <span class="dv">800</span>, <span class="dv">1000</span>) <span class="op">/</span><span class="st"> </span><span class="dv">60</span>)</a>
-<a class="sourceLine" id="cb64-32" title="32">  )<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-33" title="33"><span class="st">  </span><span class="kw">coord_cartesian</span>(<span class="dt">expand =</span> T,</a>
-<a class="sourceLine" id="cb64-34" title="34">  <span class="co">#             # xlim = c(400, 1050),</span></a>
-<a class="sourceLine" id="cb64-35" title="35">  <span class="co">#             ylim = c(250, 1050)</span></a>
-<a class="sourceLine" id="cb64-36" title="36">  )<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-37" title="37"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">slope =</span> <span class="dv">1</span>, <span class="dt">lty =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb64-38" title="38">              <span class="dt">col =</span> <span class="st">&quot;black&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-39" title="39"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-40" title="40"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.background =</span> <span class="kw">element_rect</span>(<span class="dt">fill =</span> <span class="st">&quot;white&quot;</span>),</a>
-<a class="sourceLine" id="cb64-41" title="41">        <span class="dt">panel.grid.minor =</span> <span class="kw">element_line</span>(<span class="dt">colour =</span> <span class="st">&quot;grey&quot;</span>))<span class="op">+</span></a>
-<a class="sourceLine" id="cb64-42" title="42"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;inferred duration (min)&quot;</span>,</a>
-<a class="sourceLine" id="cb64-43" title="43">       <span class="dt">y =</span> <span class="st">&quot;real duration (min)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="processing-calibration-data.html#cb47-1"></a><span class="co"># get linear model</span></span>
+<span id="cb47-2"><a href="processing-calibration-data.html#cb47-2"></a>model_duration &lt;-<span class="st"> </span><span class="kw">lm</span>(duration_real <span class="op">~</span><span class="st"> </span>duration,</span>
+<span id="cb47-3"><a href="processing-calibration-data.html#cb47-3"></a>                     <span class="dt">data =</span> patch_summary_compare)</span>
+<span id="cb47-4"><a href="processing-calibration-data.html#cb47-4"></a></span>
+<span id="cb47-5"><a href="processing-calibration-data.html#cb47-5"></a><span class="co"># get R2</span></span>
+<span id="cb47-6"><a href="processing-calibration-data.html#cb47-6"></a><span class="kw">summary</span>(model_duration)</span></code></pre></div>
 </div>
 <div id="join-patch-map-and-duration-comparison-figure" class="section level3">
 <h3><span class="header-section-number">6.7.3</span> Join patch map and duration comparison figure</h3>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" title="1"><span class="co"># wrap together</span></a>
-<a class="sourceLine" id="cb65-2" title="2">figure_res_patch &lt;-</a>
-<a class="sourceLine" id="cb65-3" title="3"><span class="kw">wrap_plots</span>(<span class="kw">list</span>(fig_basic_residence, figure_patch_duration),</a>
-<a class="sourceLine" id="cb65-4" title="4">           <span class="dt">ncol =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb65-5" title="5">           <span class="dt">design =</span> <span class="st">&quot;AA</span><span class="ch">\n</span><span class="st">AA</span><span class="ch">\n</span><span class="st">AA</span><span class="ch">\n</span><span class="st">AA</span><span class="ch">\n</span><span class="st">BB&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb65-6" title="6"><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;a&quot;</span>,</a>
-<a class="sourceLine" id="cb65-7" title="7">                <span class="dt">tag_prefix =</span> <span class="st">&quot;(&quot;</span>,</a>
-<a class="sourceLine" id="cb65-8" title="8">                <span class="dt">tag_suffix =</span> <span class="st">&quot;)&quot;</span>) <span class="op">&amp;</span></a>
-<a class="sourceLine" id="cb65-9" title="9"><span class="kw">theme</span>(<span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>))</a>
-<a class="sourceLine" id="cb65-10" title="10"></a>
-<a class="sourceLine" id="cb65-11" title="11"><span class="co"># save figure</span></a>
-<a class="sourceLine" id="cb65-12" title="12"><span class="kw">ggsave</span>(figure_res_patch,</a>
-<a class="sourceLine" id="cb65-13" title="13">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_calib_residence_patch.png&quot;</span>,</a>
-<a class="sourceLine" id="cb65-14" title="14">       <span class="dt">height =</span> <span class="dv">225</span>, <span class="dt">width =</span> <span class="dv">170</span>, <span class="dt">units =</span> <span class="st">&quot;mm&quot;</span>)</a></code></pre></div>
+<p><img src="figures/fig_calib_residence_patch.png" /></p>
 
 </div>
 </div>
