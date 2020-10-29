@@ -25,7 +25,9 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
+```
 
+```{r echo=FALSE}
 # plot data
 fig_data_raw <-
   ggplot(data)+
@@ -59,9 +61,7 @@ data <- atl_filter_bounds(data = data,
                           remove_inside = FALSE)
 ```
 
-Plot the result.
-
-```{r}
+```{r echo=FALSE}
 # plot data
 fig_data_bbox <-
   ggplot()+
@@ -136,7 +136,7 @@ speed_angle_thresholds <-
 
 ### Plot to see speeds
 
-```{r}
+```{r echo=FALSE}
 # plot filtered data
 fig_speed_outliers <-
   ggplot()+
@@ -157,6 +157,8 @@ fig_speed_outliers <-
 ggsave(fig_speed_outliers, filename = "figures/fig_speed_outlier.png",
        width = 170 / 25, height = 170 / 25)
 ```
+
+![](figures/fig_speed_outlier.png)
 
 ### Filter on speed
 
@@ -193,30 +195,7 @@ data <- atl_median_smooth(data = data,
                           moving_window = 5)
 ```
 
-```{r}
-# make figure
-# fig_smooth <-
-#   ggplot()+
-#   geom_path(data = data,
-#              aes(x, y),
-#             col = RColorBrewer::brewer.pal(4, "Set1")[4])+
-#   annotate(geom = "rect",
-#            xmin = c(650785, 650045),
-#            ymin = c(5904450, 5902700),
-#            xmax = c(652500, 650682),
-#            ymax = c(5906133, 5903080),
-#            fill = "grey90",
-#            alpha = 0.5,
-#            col = NA)+
-#     annotate(geom = "text",
-#            x = c(650785, 650045) + 400,
-#            y = c(5904450, 5902700) + 300,
-#            col = "black",
-#            label = c("d", "e"))+
-#   theme_void()+
-#   coord_sf(crs = 32631)+
-#   labs(colour = "track")
-
+```{r echo=FALSE}
 # make zoomed in figures
 fig_inset <- mapply(function(xl, yl) {
   ggplot()+
@@ -270,7 +249,7 @@ ggsave(fig_median_smooth,
 
 ### Plot pre-processing steps
 
-```{r}
+```{r echo=FALSE}
 # make combined walkthrough figure
 figure_walkthrough <-
 wrap_plots(
@@ -288,6 +267,7 @@ ggsave(figure_walkthrough,
        height = 130, width = 170, units = "mm")
 ```
 
+![](figures/fig_walkthrough.png)
 
 ## Making residence patches
 
@@ -346,7 +326,7 @@ data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 
 ### Plot residence time
 
-```{r}
+```{r echo=FALSE}
 fig_calib_residence <-
   ggplot()+
   geom_point(data = data_res, 
@@ -436,10 +416,9 @@ SIMPLIFY = FALSE)
 griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
 ```
 
+We prepare a plot of the residence patches.
 
-### Plot the outcome
-
-```{r}
+```{r echo=FALSE}
 # patch with residence points and all patches
 fig_basic_residence <-
   ggplot()+
@@ -561,7 +540,7 @@ summary(model_duration)
 ```
 
 
-```{r}
+```{r echo=FALSE}
 # make figure comparing different methods
 figure_patch_duration <-
   ggplot()+
@@ -609,7 +588,7 @@ figure_patch_duration <-
 
 ### Join patch map and duration comparison figure
 
-```{r}
+```{r echo=FALSE}
 # wrap together
 figure_res_patch <-
 wrap_plots(list(fig_basic_residence, figure_patch_duration),
@@ -625,3 +604,5 @@ ggsave(figure_res_patch,
        filename = "figures/fig_calib_residence_patch.png",
        height = 225, width = 170, units = "mm")
 ```
+
+![](figures/fig_calib_residence_patch.png)

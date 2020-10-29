@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Section 7 Processing Egyptian fruit bat tracks | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data</title>
   <meta name="description" content="Source code for a guide to pre-processing high-frequency tracking data." />
-  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Section 7 Processing Egyptian fruit bat tracks | A Rough Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Pratik R. Gupte and others" />
 
 
-<meta name="date" content="2020-10-28" />
+<meta name="date" content="2020-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,28 +50,30 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -129,52 +131,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Abstract</a></li>
-<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a><ul>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting started</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installing-atlastools"><i class="fa fa-check"></i><b>2.1</b> Installing <code>atlastools</code></a></li>
 <li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#simulating-movement-data"><i class="fa fa-check"></i><b>2.2</b> Simulating movement data</a></li>
 <li class="chapter" data-level="2.3" data-path="getting-started.html"><a href="getting-started.html#simualte-for-residence-patches"><i class="fa fa-check"></i><b>2.3</b> Simualte for residence patches</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a><ul>
+<li class="chapter" data-level="3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html"><i class="fa fa-check"></i><b>3</b> Reducing Large-Scale Positioning Error by Filtering Data</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>3.1</b> Prepare Libraries</a></li>
 <li class="chapter" data-level="3.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#introducing-errors-to-the-data"><i class="fa fa-check"></i><b>3.2</b> Introducing Errors to the Data</a></li>
-<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a><ul>
+<li class="chapter" data-level="3.3" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-by-spatial-bounds"><i class="fa fa-check"></i><b>3.3</b> Filtering by Spatial Bounds</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#a-note-on-filtering-by-bounds"><i class="fa fa-check"></i><b>3.3.1</b> A Note on Filtering by Bounds</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a><ul>
+<li class="chapter" data-level="3.4" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-unrealistic-movement"><i class="fa fa-check"></i><b>3.4</b> Filtering Unrealistic Movement</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-point-outliers-or-spikes"><i class="fa fa-check"></i><b>3.4.1</b> Filtering Point Outliers or Spikes</a></li>
 <li class="chapter" data-level="3.4.2" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#filtering-reflections-or-track-subsets"><i class="fa fa-check"></i><b>3.4.2</b> Filtering Reflections or Track Subsets</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a><ul>
+<li class="chapter" data-level="4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html"><i class="fa fa-check"></i><b>4</b> Reducing Small-Scale Positioning Error and Aggregating Data</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#preparing-libraries-and-data"><i class="fa fa-check"></i><b>4.1</b> Preparing Libraries and Data</a></li>
 <li class="chapter" data-level="4.2" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>4.2</b> Median Smoothing</a></li>
 <li class="chapter" data-level="4.3" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#thinning-data-by-aggregation"><i class="fa fa-check"></i><b>4.3</b> Thinning Data by Aggregation</a></li>
-<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a><ul>
+<li class="chapter" data-level="4.4" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#aggregation-before-reducing-positioning-errors"><i class="fa fa-check"></i><b>4.4</b> Aggregation Before Reducing Positioning Errors</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#comparing-median-aggregation-with-and-without-smoothing"><i class="fa fa-check"></i><b>4.4.1</b> Comparing median aggregation with and without smoothing</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a><ul>
-<li class="chapter" data-level="" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#prepare-libraries-1"><i class="fa fa-check"></i>Prepare libraries</a></li>
-<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a><ul>
+<li class="chapter" data-level="5" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html"><i class="fa fa-check"></i><b>5</b> Residence patches and their construction</a>
+<ul>
+<li class="chapter" data-level="" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i>Prepare libraries</a></li>
+<li class="chapter" data-level="5.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#an-example-with-simulated-data"><i class="fa fa-check"></i><b>5.1</b> An example with simulated data</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#read-data-and-classify"><i class="fa fa-check"></i><b>5.1.1</b> Read data and classify</a></li>
 <li class="chapter" data-level="5.1.2" data-path="residence-patches-and-their-construction.html"><a href="residence-patches-and-their-construction.html#plot-classified-residence-patches"><i class="fa fa-check"></i><b>5.1.2</b> Plot classified residence patches</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a><ul>
-<li class="chapter" data-level="6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-libraries-2"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html"><i class="fa fa-check"></i><b>6</b> Processing calibration data</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>6.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#preliminary-visualisation"><i class="fa fa-check"></i><b>6.2</b> Preliminary visualisation</a></li>
 <li class="chapter" data-level="6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>6.3</b> Filter by bounding box</a></li>
-<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a><ul>
+<li class="chapter" data-level="6.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>6.4</b> Filter trajectories</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>6.4.1</b> Handle time</a></li>
 <li class="chapter" data-level="6.4.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>6.4.2</b> Add speed and turning angle</a></li>
 <li class="chapter" data-level="6.4.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-95th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>6.4.3</b> Get 95th percentile of speed and angle</a></li>
 <li class="chapter" data-level="6.4.4" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-to-see-speeds"><i class="fa fa-check"></i><b>6.4.4</b> Plot to see speeds</a></li>
 <li class="chapter" data-level="6.4.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>6.4.5</b> Filter on speed</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a><ul>
+<li class="chapter" data-level="6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>6.5</b> Smoothing the trajectory</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-pre-processing-steps"><i class="fa fa-check"></i><b>6.5.1</b> Plot pre-processing steps</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a><ul>
+<li class="chapter" data-level="6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>6.6</b> Making residence patches</a>
+<ul>
 <li class="chapter" data-level="6.6.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>6.6.1</b> Prepare data</a></li>
 <li class="chapter" data-level="6.6.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#calculate-residence-time"><i class="fa fa-check"></i><b>6.6.2</b> Calculate residence time</a></li>
 <li class="chapter" data-level="6.6.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-residence-time"><i class="fa fa-check"></i><b>6.6.3</b> Plot residence time</a></li>
@@ -182,31 +196,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6.5" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>6.6.5</b> Get spatial and summary objects</a></li>
 <li class="chapter" data-level="6.6.6" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#get-waypoint-centroids"><i class="fa fa-check"></i><b>6.6.6</b> Get waypoint centroids</a></li>
 <li class="chapter" data-level="6.6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#read-griend"><i class="fa fa-check"></i><b>6.6.7</b> Read Griend</a></li>
-<li class="chapter" data-level="6.6.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-the-outcome"><i class="fa fa-check"></i><b>6.6.8</b> Plot the outcome</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a><ul>
+<li class="chapter" data-level="6.7" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>6.7</b> Compare patch metrics</a>
+<ul>
 <li class="chapter" data-level="6.7.1" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#compare-known-patches"><i class="fa fa-check"></i><b>6.7.1</b> Compare known patches</a></li>
 <li class="chapter" data-level="6.7.2" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#plot-durations-comparisons"><i class="fa fa-check"></i><b>6.7.2</b> Plot durations comparisons</a></li>
 <li class="chapter" data-level="6.7.3" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#join-patch-map-and-duration-comparison-figure"><i class="fa fa-check"></i><b>6.7.3</b> Join patch map and duration comparison figure</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>7</b> Processing Egyptian fruit bat tracks</a><ul>
-<li class="chapter" data-level="7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-libraries-3"><i class="fa fa-check"></i><b>7.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>7</b> Processing Egyptian fruit bat tracks</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="reducing-large-scale-positioning-error-by-filtering-data.html"><a href="reducing-large-scale-positioning-error-by-filtering-data.html#prepare-libraries"><i class="fa fa-check"></i><b>7.1</b> Prepare libraries</a></li>
 <li class="chapter" data-level="7.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#read-bat-data"><i class="fa fa-check"></i><b>7.2</b> Read bat data</a></li>
 <li class="chapter" data-level="7.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-bat-data"><i class="fa fa-check"></i><b>7.3</b> Sanity check: Plot bat data</a></li>
-<li class="chapter" data-level="7.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>7.4</b> Prepare data for filtering</a><ul>
+<li class="chapter" data-level="7.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>7.4</b> Prepare data for filtering</a>
+<ul>
 <li class="chapter" data-level="7.4.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-per-individual"><i class="fa fa-check"></i><b>7.4.1</b> Prepare data per individual</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-covariates"><i class="fa fa-check"></i><b>7.5</b> Filter by covariates</a><ul>
+<li class="chapter" data-level="7.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-covariates"><i class="fa fa-check"></i><b>7.5</b> Filter by covariates</a>
+<ul>
 <li class="chapter" data-level="7.5.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-filtered-data"><i class="fa fa-check"></i><b>7.5.1</b> Sanity check: Plot filtered data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>7.6</b> Filter by speed</a><ul>
+<li class="chapter" data-level="7.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>7.6</b> Filter by speed</a>
+<ul>
 <li class="chapter" data-level="7.6.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-speed-filtered-data"><i class="fa fa-check"></i><b>7.6.1</b> Sanity check: Plot speed filtered data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#median-smoothing-1"><i class="fa fa-check"></i><b>7.7</b> Median smoothing</a><ul>
+<li class="chapter" data-level="7.7" data-path="reducing-small-scale-positioning-error-and-aggregating-data.html"><a href="reducing-small-scale-positioning-error-and-aggregating-data.html#median-smoothing"><i class="fa fa-check"></i><b>7.7</b> Median smoothing</a>
+<ul>
 <li class="chapter" data-level="7.7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-smoothed-data"><i class="fa fa-check"></i><b>7.7.1</b> Sanity check: Plot smoothed data</a></li>
 </ul></li>
-<li class="chapter" data-level="7.8" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#making-residence-patches-1"><i class="fa fa-check"></i><b>7.8</b> Making residence patches</a><ul>
+<li class="chapter" data-level="7.8" data-path="processing-calibration-data.html"><a href="processing-calibration-data.html#making-residence-patches"><i class="fa fa-check"></i><b>7.8</b> Making residence patches</a>
+<ul>
 <li class="chapter" data-level="7.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>7.8.1</b> Calculating residence time</a></li>
 <li class="chapter" data-level="7.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-residence-time-time-series"><i class="fa fa-check"></i><b>7.8.2</b> Sanity check: Residence-time time-series</a></li>
 <li class="chapter" data-level="7.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>7.8.3</b> Constructing residence patches</a></li>
@@ -236,63 +256,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="processing-egyptian-fruit-bat-tracks" class="section level1">
 <h1><span class="header-section-number">Section 7</span> Processing Egyptian fruit bat tracks</h1>
 <p>We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (<em>Rousettus aegyptiacus</em>), and construct residence patches.</p>
-<div id="prepare-libraries-3" class="section level2">
+<div id="prepare-libraries" class="section level2">
 <h2><span class="header-section-number">7.1</span> Prepare libraries</h2>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" title="1"><span class="co"># load libs</span></a>
-<a class="sourceLine" id="cb66-2" title="2"><span class="kw">library</span>(data.table)</a>
-<a class="sourceLine" id="cb66-3" title="3"><span class="kw">library</span>(RSQLite)</a>
-<a class="sourceLine" id="cb66-4" title="4"><span class="kw">library</span>(atlastools)</a>
-<a class="sourceLine" id="cb66-5" title="5"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb66-6" title="6"><span class="kw">library</span>(patchwork)</a>
-<a class="sourceLine" id="cb66-7" title="7"></a>
-<a class="sourceLine" id="cb66-8" title="8"><span class="co"># prepare a palette</span></a>
-<a class="sourceLine" id="cb66-9" title="9">pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-1"></a><span class="co"># load libs</span></span>
+<span id="cb1-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-2"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb1-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-3"></a><span class="kw">library</span>(RSQLite)</span>
+<span id="cb1-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-4"></a><span class="kw">library</span>(atlastools)</span>
+<span id="cb1-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-5"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-6"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb1-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-7"></a></span>
+<span id="cb1-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-8"></a><span class="co"># prepare a palette</span></span>
+<span id="cb1-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb1-9"></a>pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
 </div>
 <div id="read-bat-data" class="section level2">
 <h2><span class="header-section-number">7.2</span> Read bat data</h2>
 <p>Read the bat data and convert to a csv file.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" title="1"><span class="co"># prepare the connection</span></a>
-<a class="sourceLine" id="cb67-2" title="2">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(<span class="dt">drv =</span> <span class="kw">SQLite</span>(), <span class="dt">dbname =</span> <span class="st">&quot;data/Three_example_bats.sql&quot;</span>)</a>
-<a class="sourceLine" id="cb67-3" title="3"></a>
-<a class="sourceLine" id="cb67-4" title="4"><span class="co"># list the tables</span></a>
-<a class="sourceLine" id="cb67-5" title="5">table_name &lt;-<span class="st"> </span><span class="kw">dbListTables</span>(con)</a>
-<a class="sourceLine" id="cb67-6" title="6"></a>
-<a class="sourceLine" id="cb67-7" title="7"><span class="co"># prepare to query all tables</span></a>
-<a class="sourceLine" id="cb67-8" title="8">query &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">&#39;select * from </span><span class="ch">\&quot;</span><span class="st">%s</span><span class="ch">\&quot;</span><span class="st">&#39;</span>, table_name)</a>
-<a class="sourceLine" id="cb67-9" title="9"></a>
-<a class="sourceLine" id="cb67-10" title="10"><span class="co"># query the database</span></a>
-<a class="sourceLine" id="cb67-11" title="11">data &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con, <span class="dt">statement =</span> query)</a>
-<a class="sourceLine" id="cb67-12" title="12"></a>
-<a class="sourceLine" id="cb67-13" title="13"><span class="co"># disconnect from database</span></a>
-<a class="sourceLine" id="cb67-14" title="14"><span class="kw">dbDisconnect</span>(con)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-1"></a><span class="co"># prepare the connection</span></span>
+<span id="cb2-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-2"></a>con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(<span class="dt">drv =</span> <span class="kw">SQLite</span>(), <span class="dt">dbname =</span> <span class="st">&quot;data/Three_example_bats.sql&quot;</span>)</span>
+<span id="cb2-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-3"></a></span>
+<span id="cb2-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-4"></a><span class="co"># list the tables</span></span>
+<span id="cb2-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-5"></a>table_name &lt;-<span class="st"> </span><span class="kw">dbListTables</span>(con)</span>
+<span id="cb2-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-6"></a></span>
+<span id="cb2-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-7"></a><span class="co"># prepare to query all tables</span></span>
+<span id="cb2-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-8"></a>query &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">&#39;select * from </span><span class="ch">\&quot;</span><span class="st">%s</span><span class="ch">\&quot;</span><span class="st">&#39;</span>, table_name)</span>
+<span id="cb2-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-9"></a></span>
+<span id="cb2-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-10"></a><span class="co"># query the database</span></span>
+<span id="cb2-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-11"></a>data &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(<span class="dt">conn =</span> con, <span class="dt">statement =</span> query)</span>
+<span id="cb2-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-12"></a></span>
+<span id="cb2-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-13"></a><span class="co"># disconnect from database</span></span>
+<span id="cb2-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb2-14"></a><span class="kw">dbDisconnect</span>(con)</span></code></pre></div>
 <p>Convert data to csv.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" title="1"><span class="co"># convert data to datatable</span></a>
-<a class="sourceLine" id="cb68-2" title="2"><span class="kw">setDT</span>(data)</a>
-<a class="sourceLine" id="cb68-3" title="3"></a>
-<a class="sourceLine" id="cb68-4" title="4"><span class="co"># write data for QGIS</span></a>
-<a class="sourceLine" id="cb68-5" title="5"><span class="kw">fwrite</span>(data, <span class="dt">file =</span> <span class="st">&quot;data/bat_data.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb3-1"></a><span class="co"># convert data to datatable</span></span>
+<span id="cb3-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb3-2"></a><span class="kw">setDT</span>(data)</span>
+<span id="cb3-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb3-3"></a></span>
+<span id="cb3-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb3-4"></a><span class="co"># write data for QGIS</span></span>
+<span id="cb3-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb3-5"></a><span class="kw">fwrite</span>(data, <span class="dt">file =</span> <span class="st">&quot;data/bat_data.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="sanity-check-plot-bat-data" class="section level2">
 <h2><span class="header-section-number">7.3</span> Sanity check: Plot bat data</h2>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" title="1"><span class="co"># plot bat data to examine for errors</span></a>
-<a class="sourceLine" id="cb69-2" title="2">fig_bat_raw &lt;-</a>
-<a class="sourceLine" id="cb69-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(data)<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-4" title="4"><span class="st">  </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(X, Y,</a>
-<a class="sourceLine" id="cb69-5" title="5">                <span class="dt">group =</span> TAG,</a>
-<a class="sourceLine" id="cb69-6" title="6">                <span class="dt">colour =</span> TAG),</a>
-<a class="sourceLine" id="cb69-7" title="7">            <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-8" title="8"><span class="st">  </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-9" title="9"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-10" title="10"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-11" title="11"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb69-12" title="12">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb69-13" title="13"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">2039</span>)</a></code></pre></div>
 <p>Save the raw data plot.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" title="1"><span class="co"># save to figures</span></a>
-<a class="sourceLine" id="cb70-2" title="2"><span class="kw">ggsave</span>(fig_bat_raw,</a>
-<a class="sourceLine" id="cb70-3" title="3">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_bat_raw.png&quot;</span>,</a>
-<a class="sourceLine" id="cb70-4" title="4">       <span class="dt">dpi =</span> <span class="dv">300</span>,</a>
-<a class="sourceLine" id="cb70-5" title="5">       <span class="dt">width =</span> <span class="dv">6</span>, <span class="dt">height =</span> <span class="dv">4</span>)</a></code></pre></div>
 <p>Show the plot.</p>
 <p><img src="figures/fig_bat_raw.png" /></p>
 </div>
@@ -300,14 +302,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">7.4</span> Prepare data for filtering</h2>
 <div id="prepare-data-per-individual" class="section level3">
 <h3><span class="header-section-number">7.4.1</span> Prepare data per individual</h3>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" title="1"><span class="co"># split bat data by tag</span></a>
-<a class="sourceLine" id="cb71-2" title="2"><span class="co"># first make a copy using the data.table function copy</span></a>
-<a class="sourceLine" id="cb71-3" title="3"><span class="co"># this prevents the orignal data from being modified by atlastools</span></a>
-<a class="sourceLine" id="cb71-4" title="4"><span class="co"># functions which DO MODIFY BY REFERENCE!</span></a>
-<a class="sourceLine" id="cb71-5" title="5">data_split &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</a>
-<a class="sourceLine" id="cb71-6" title="6"></a>
-<a class="sourceLine" id="cb71-7" title="7"><span class="co"># now split</span></a>
-<a class="sourceLine" id="cb71-8" title="8">data_split &lt;-<span class="st"> </span><span class="kw">split</span>(data_split, data<span class="op">$</span>TAG)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-1"></a><span class="co"># split bat data by tag</span></span>
+<span id="cb4-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-2"></a><span class="co"># first make a copy using the data.table function copy</span></span>
+<span id="cb4-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-3"></a><span class="co"># this prevents the orignal data from being modified by atlastools</span></span>
+<span id="cb4-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-4"></a><span class="co"># functions which DO MODIFY BY REFERENCE!</span></span>
+<span id="cb4-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-5"></a>data_split &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb4-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-6"></a></span>
+<span id="cb4-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-7"></a><span class="co"># now split</span></span>
+<span id="cb4-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb4-8"></a>data_split &lt;-<span class="st"> </span><span class="kw">split</span>(data_split, data<span class="op">$</span>TAG)</span></code></pre></div>
 </div>
 </div>
 <div id="filter-by-covariates" class="section level2">
@@ -315,65 +317,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>No natural bounds suggest themselves, and we proceed to filter by covariates, since point outliers are obviously visible.</p>
 <p>We use filter out positions with <code>SD &gt; 20</code> and positions calculated using only 3 base stations.</p>
 <p>We use the function <code>atl_filter_covariates</code>.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" title="1"><span class="co"># get SD.</span></a>
-<a class="sourceLine" id="cb72-2" title="2"><span class="co"># since the data are data.tables, no assignment is necessary</span></a>
-<a class="sourceLine" id="cb72-3" title="3"><span class="kw">invisible</span>(</a>
-<a class="sourceLine" id="cb72-4" title="4">  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb72-5" title="5">    dt[, SD <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sqrt</span>(VARX <span class="op">+</span><span class="st"> </span>VARY <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>COVXY))]</a>
-<a class="sourceLine" id="cb72-6" title="6">  })</a>
-<a class="sourceLine" id="cb72-7" title="7">)</a>
-<a class="sourceLine" id="cb72-8" title="8"></a>
-<a class="sourceLine" id="cb72-9" title="9"><span class="co"># filter for SD &lt;= 20</span></a>
-<a class="sourceLine" id="cb72-10" title="10"><span class="co"># here, reassignment is necessary as rows are being removed</span></a>
-<a class="sourceLine" id="cb72-11" title="11"><span class="co"># the atl_filter_covariates function could have been used here</span></a>
-<a class="sourceLine" id="cb72-12" title="12">data_split &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb72-13" title="13">  dt &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(</a>
-<a class="sourceLine" id="cb72-14" title="14">    <span class="dt">data =</span> dt,</a>
-<a class="sourceLine" id="cb72-15" title="15">    <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;SD &lt;= 20&quot;</span>,</a>
-<a class="sourceLine" id="cb72-16" title="16">                <span class="st">&quot;NBS &gt; 3&quot;</span>)</a>
-<a class="sourceLine" id="cb72-17" title="17">  )</a>
-<a class="sourceLine" id="cb72-18" title="18">})</a>
-<a class="sourceLine" id="cb72-19" title="19"></a>
-<a class="sourceLine" id="cb72-20" title="20"><span class="co"># check whether the filter has worked</span></a>
-<a class="sourceLine" id="cb72-21" title="21"><span class="kw">invisible</span>(</a>
-<a class="sourceLine" id="cb72-22" title="22">  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb72-23" title="23">    assertthat<span class="op">::</span><span class="kw">assert_that</span>(<span class="kw">min</span>(dt<span class="op">$</span>SD) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>,</a>
-<a class="sourceLine" id="cb72-24" title="24">                            <span class="dt">msg =</span> <span class="st">&quot;some SDs above 20 remain&quot;</span>)</a>
-<a class="sourceLine" id="cb72-25" title="25">    assertthat<span class="op">::</span><span class="kw">assert_that</span>(<span class="kw">min</span>(dt<span class="op">$</span>NBS) <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb72-26" title="26">                            <span class="dt">msg =</span> <span class="st">&quot;some NBS below 3 remain&quot;</span>)</a>
-<a class="sourceLine" id="cb72-27" title="27">  })</a>
-<a class="sourceLine" id="cb72-28" title="28">)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-1"></a><span class="co"># get SD.</span></span>
+<span id="cb5-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-2"></a><span class="co"># since the data are data.tables, no assignment is necessary</span></span>
+<span id="cb5-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-3"></a><span class="kw">invisible</span>(</span>
+<span id="cb5-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-4"></a>  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb5-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-5"></a>    dt[, SD <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sqrt</span>(VARX <span class="op">+</span><span class="st"> </span>VARY <span class="op">+</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>COVXY))]</span>
+<span id="cb5-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-6"></a>  })</span>
+<span id="cb5-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-7"></a>)</span>
+<span id="cb5-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-8"></a></span>
+<span id="cb5-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-9"></a><span class="co"># filter for SD &lt;= 20</span></span>
+<span id="cb5-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-10"></a><span class="co"># here, reassignment is necessary as rows are being removed</span></span>
+<span id="cb5-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-11"></a><span class="co"># the atl_filter_covariates function could have been used here</span></span>
+<span id="cb5-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-12"></a>data_split &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb5-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-13"></a>  dt &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(</span>
+<span id="cb5-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-14"></a>    <span class="dt">data =</span> dt,</span>
+<span id="cb5-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-15"></a>    <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;SD &lt;= 20&quot;</span>,</span>
+<span id="cb5-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-16"></a>                <span class="st">&quot;NBS &gt; 3&quot;</span>)</span>
+<span id="cb5-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-17"></a>  )</span>
+<span id="cb5-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-18"></a>})</span>
+<span id="cb5-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-19"></a></span>
+<span id="cb5-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-20"></a><span class="co"># check whether the filter has worked</span></span>
+<span id="cb5-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-21"></a><span class="kw">invisible</span>(</span>
+<span id="cb5-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-22"></a>  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb5-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-23"></a>    assertthat<span class="op">::</span><span class="kw">assert_that</span>(<span class="kw">min</span>(dt<span class="op">$</span>SD) <span class="op">&lt;=</span><span class="st"> </span><span class="dv">20</span>,</span>
+<span id="cb5-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-24"></a>                            <span class="dt">msg =</span> <span class="st">&quot;some SDs above 20 remain&quot;</span>)</span>
+<span id="cb5-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-25"></a>    assertthat<span class="op">::</span><span class="kw">assert_that</span>(<span class="kw">min</span>(dt<span class="op">$</span>NBS) <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>,</span>
+<span id="cb5-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-26"></a>                            <span class="dt">msg =</span> <span class="st">&quot;some NBS below 3 remain&quot;</span>)</span>
+<span id="cb5-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-27"></a>  })</span>
+<span id="cb5-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb5-28"></a>)</span></code></pre></div>
 <div id="sanity-check-plot-filtered-data" class="section level3">
 <h3><span class="header-section-number">7.5.1</span> Sanity check: Plot filtered data</h3>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" title="1"><span class="co"># bind all individuals together</span></a>
-<a class="sourceLine" id="cb73-2" title="2">data_split &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_split)</a></code></pre></div>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" title="1"><span class="co"># now plot over raw data</span></a>
-<a class="sourceLine" id="cb74-2" title="2">fig_bat_filter_cov &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb74-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data[<span class="op">!</span>data_split, </a>
-<a class="sourceLine" id="cb74-5" title="5">                         <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;TAG&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;TIME&quot;</span>)],</a>
-<a class="sourceLine" id="cb74-6" title="6">             <span class="kw">aes</span>(X, Y),</a>
-<a class="sourceLine" id="cb74-7" title="7">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb74-8" title="8">             <span class="dt">shape =</span> <span class="dv">4</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-9" title="9"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_split,</a>
-<a class="sourceLine" id="cb74-10" title="10">             <span class="kw">aes</span>(X, Y,</a>
-<a class="sourceLine" id="cb74-11" title="11">                 <span class="dt">col =</span> TAG),</a>
-<a class="sourceLine" id="cb74-12" title="12">             <span class="dt">size =</span> <span class="fl">0.3</span>,</a>
-<a class="sourceLine" id="cb74-13" title="13">             <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-14" title="14"><span class="st">  </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-15" title="15"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-16" title="16"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-17" title="17"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb74-18" title="18">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb74-19" title="19"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">2039</span>,</a>
-<a class="sourceLine" id="cb74-20" title="20">           <span class="dt">xlim =</span> <span class="kw">range</span>(data_split<span class="op">$</span>X),</a>
-<a class="sourceLine" id="cb74-21" title="21">           <span class="dt">ylim =</span> <span class="kw">range</span>(data_split<span class="op">$</span>Y))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb6-1"></a><span class="co"># bind all individuals together</span></span>
+<span id="cb6-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb6-2"></a>data_split &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_split)</span></code></pre></div>
 <p>Save the filtered data plot.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" title="1"><span class="co"># save to figures</span></a>
-<a class="sourceLine" id="cb75-2" title="2"><span class="kw">ggsave</span>(fig_bat_filter_cov,</a>
-<a class="sourceLine" id="cb75-3" title="3">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_bat_filter_cov.png&quot;</span>,</a>
-<a class="sourceLine" id="cb75-4" title="4">       <span class="dt">dpi =</span> <span class="dv">300</span>,</a>
-<a class="sourceLine" id="cb75-5" title="5">       <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">height =</span> <span class="dv">6</span>)</a></code></pre></div>
 <p>Show the plot.</p>
 <p><img src="figures/fig_bat_filter_cov.png" /></p>
 </div>
@@ -382,202 +358,134 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">7.6</span> Filter by speed</h2>
 <p>Some point outliers remain, and should be removed using a speed filter.</p>
 <p>First we calculate speeds.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" title="1"><span class="co"># calculate speed on split data once more</span></a>
-<a class="sourceLine" id="cb76-2" title="2">data_split &lt;-<span class="st"> </span><span class="kw">split</span>(data_split, data_split<span class="op">$</span>TAG)</a>
-<a class="sourceLine" id="cb76-3" title="3"></a>
-<a class="sourceLine" id="cb76-4" title="4"><span class="co"># get speeds as with SD, no reassignment required for columns</span></a>
-<a class="sourceLine" id="cb76-5" title="5"><span class="kw">invisible</span>(</a>
-<a class="sourceLine" id="cb76-6" title="6">  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb76-7" title="7">    </a>
-<a class="sourceLine" id="cb76-8" title="8">    <span class="co"># first process time to seconds</span></a>
-<a class="sourceLine" id="cb76-9" title="9">    <span class="co"># assign to a new column</span></a>
-<a class="sourceLine" id="cb76-10" title="10">    dt[, time <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">floor</span>(TIME <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>)]</a>
-<a class="sourceLine" id="cb76-11" title="11">    </a>
-<a class="sourceLine" id="cb76-12" title="12">    dt[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(dt, </a>
-<a class="sourceLine" id="cb76-13" title="13">                                       <span class="dt">x =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Y&quot;</span>, </a>
-<a class="sourceLine" id="cb76-14" title="14">                                       <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb76-15" title="15">                                       <span class="dt">type =</span> <span class="st">&quot;in&quot;</span>),</a>
-<a class="sourceLine" id="cb76-16" title="16">              <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(dt, </a>
-<a class="sourceLine" id="cb76-17" title="17">                                       <span class="dt">x =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Y&quot;</span>, </a>
-<a class="sourceLine" id="cb76-18" title="18">                                       <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb76-19" title="19">                                       <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</a>
-<a class="sourceLine" id="cb76-20" title="20">  })</a>
-<a class="sourceLine" id="cb76-21" title="21">)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-1"></a><span class="co"># calculate speed on split data once more</span></span>
+<span id="cb7-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-2"></a>data_split &lt;-<span class="st"> </span><span class="kw">split</span>(data_split, data_split<span class="op">$</span>TAG)</span>
+<span id="cb7-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-3"></a></span>
+<span id="cb7-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-4"></a><span class="co"># get speeds as with SD, no reassignment required for columns</span></span>
+<span id="cb7-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-5"></a><span class="kw">invisible</span>(</span>
+<span id="cb7-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-6"></a>  <span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb7-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-7"></a>    </span>
+<span id="cb7-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-8"></a>    <span class="co"># first process time to seconds</span></span>
+<span id="cb7-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-9"></a>    <span class="co"># assign to a new column</span></span>
+<span id="cb7-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-10"></a>    dt[, time <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">floor</span>(TIME <span class="op">/</span><span class="st"> </span><span class="dv">1000</span>)]</span>
+<span id="cb7-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-11"></a>    </span>
+<span id="cb7-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-12"></a>    dt[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(dt, </span>
+<span id="cb7-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-13"></a>                                       <span class="dt">x =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Y&quot;</span>, </span>
+<span id="cb7-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-14"></a>                                       <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb7-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-15"></a>                                       <span class="dt">type =</span> <span class="st">&quot;in&quot;</span>),</span>
+<span id="cb7-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-16"></a>              <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(dt, </span>
+<span id="cb7-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-17"></a>                                       <span class="dt">x =</span> <span class="st">&quot;X&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Y&quot;</span>, </span>
+<span id="cb7-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-18"></a>                                       <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb7-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-19"></a>                                       <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>))]</span>
+<span id="cb7-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-20"></a>  })</span>
+<span id="cb7-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb7-21"></a>)</span></code></pre></div>
 <p>Now filter for speeds &gt; 20 m/s (around 70 km/h).</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" title="1"><span class="co"># filter speeds</span></a>
-<a class="sourceLine" id="cb77-2" title="2"><span class="co"># reassignment is required here</span></a>
-<a class="sourceLine" id="cb77-3" title="3">data_split &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb77-4" title="4">  dt &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dt, <span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;speed_in&quot;</span>, <span class="st">&quot;speed_out&quot;</span>))</a>
-<a class="sourceLine" id="cb77-5" title="5">  </a>
-<a class="sourceLine" id="cb77-6" title="6">  dt &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(<span class="dt">data =</span> dt,</a>
-<a class="sourceLine" id="cb77-7" title="7">                              <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;speed_in &lt;= 20&quot;</span>,</a>
-<a class="sourceLine" id="cb77-8" title="8">                                          <span class="st">&quot;speed_out &lt;= 20&quot;</span>))</a>
-<a class="sourceLine" id="cb77-9" title="9">})</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-1"></a><span class="co"># filter speeds</span></span>
+<span id="cb8-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-2"></a><span class="co"># reassignment is required here</span></span>
+<span id="cb8-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-3"></a>data_split &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb8-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-4"></a>  dt &lt;-<span class="st"> </span><span class="kw">na.omit</span>(dt, <span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;speed_in&quot;</span>, <span class="st">&quot;speed_out&quot;</span>))</span>
+<span id="cb8-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-5"></a>  </span>
+<span id="cb8-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-6"></a>  dt &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(<span class="dt">data =</span> dt,</span>
+<span id="cb8-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-7"></a>                              <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;speed_in &lt;= 20&quot;</span>,</span>
+<span id="cb8-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-8"></a>                                          <span class="st">&quot;speed_out &lt;= 20&quot;</span>))</span>
+<span id="cb8-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb8-9"></a>})</span></code></pre></div>
 <div id="sanity-check-plot-speed-filtered-data" class="section level3">
 <h3><span class="header-section-number">7.6.1</span> Sanity check: Plot speed filtered data</h3>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" title="1"><span class="co"># bind all individuals together</span></a>
-<a class="sourceLine" id="cb78-2" title="2">data_split &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_split)</a></code></pre></div>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" title="1"><span class="co"># now plot over raw data</span></a>
-<a class="sourceLine" id="cb79-2" title="2">fig_bat_filter_speed &lt;-</a>
-<a class="sourceLine" id="cb79-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data[<span class="op">!</span>data_split, </a>
-<a class="sourceLine" id="cb79-5" title="5">                         <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;TAG&quot;</span>, <span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;TIME&quot;</span>)],</a>
-<a class="sourceLine" id="cb79-6" title="6">             <span class="kw">aes</span>(X, Y),</a>
-<a class="sourceLine" id="cb79-7" title="7">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb79-8" title="8">             <span class="dt">shape =</span> <span class="dv">4</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-9" title="9"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_split,</a>
-<a class="sourceLine" id="cb79-10" title="10">             <span class="kw">aes</span>(X, Y,</a>
-<a class="sourceLine" id="cb79-11" title="11">                 <span class="dt">col =</span> TAG),</a>
-<a class="sourceLine" id="cb79-12" title="12">             <span class="dt">size =</span> <span class="fl">0.3</span>,</a>
-<a class="sourceLine" id="cb79-13" title="13">             <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-14" title="14"><span class="st">  </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-15" title="15"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-16" title="16"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-17" title="17"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb79-18" title="18">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb79-19" title="19"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">2039</span>,</a>
-<a class="sourceLine" id="cb79-20" title="20">           <span class="dt">xlim =</span> <span class="kw">range</span>(data_split<span class="op">$</span>X),</a>
-<a class="sourceLine" id="cb79-21" title="21">           <span class="dt">ylim =</span> <span class="kw">range</span>(data_split<span class="op">$</span>Y))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb9-1"></a><span class="co"># bind all individuals together</span></span>
+<span id="cb9-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb9-2"></a>data_split &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_split)</span></code></pre></div>
 <p>Save the speed filtered data plot.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" title="1"><span class="co"># save to figures</span></a>
-<a class="sourceLine" id="cb80-2" title="2"><span class="kw">ggsave</span>(fig_bat_filter_speed,</a>
-<a class="sourceLine" id="cb80-3" title="3">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_bat_filter_speed.png&quot;</span>,</a>
-<a class="sourceLine" id="cb80-4" title="4">       <span class="dt">dpi =</span> <span class="dv">300</span>,</a>
-<a class="sourceLine" id="cb80-5" title="5">       <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">height =</span> <span class="dv">6</span>)</a></code></pre></div>
 <p>Show the plot.</p>
 <p><img src="figures/fig_bat_filter_speed.png" /></p>
 </div>
 </div>
-<div id="median-smoothing-1" class="section level2">
+<div id="median-smoothing" class="section level2">
 <h2><span class="header-section-number">7.7</span> Median smoothing</h2>
 <p>Apply a 5 point median smooth to the data.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" title="1"><span class="co"># since the function modifies in place, we shall make a copy</span></a>
-<a class="sourceLine" id="cb81-2" title="2">data_smooth &lt;-<span class="st"> </span><span class="kw">copy</span>(data_split)</a>
-<a class="sourceLine" id="cb81-3" title="3"></a>
-<a class="sourceLine" id="cb81-4" title="4"><span class="co"># split the data again</span></a>
-<a class="sourceLine" id="cb81-5" title="5">data_smooth &lt;-<span class="st"> </span><span class="kw">split</span>(data_smooth, data_smooth<span class="op">$</span>TAG)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb10-1"></a><span class="co"># since the function modifies in place, we shall make a copy</span></span>
+<span id="cb10-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb10-2"></a>data_smooth &lt;-<span class="st"> </span><span class="kw">copy</span>(data_split)</span>
+<span id="cb10-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb10-3"></a></span>
+<span id="cb10-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb10-4"></a><span class="co"># split the data again</span></span>
+<span id="cb10-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb10-5"></a>data_smooth &lt;-<span class="st"> </span><span class="kw">split</span>(data_smooth, data_smooth<span class="op">$</span>TAG)</span></code></pre></div>
 <p>Remember, <strong><code>atl_median_smooth</code> MODIFIES IN PLACE</strong>.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" title="1"><span class="co"># apply the median smooth to each list element</span></a>
-<a class="sourceLine" id="cb82-2" title="2"><span class="co"># no reassignment is required as THE FUNCTION MODIFIES IN PLACE!</span></a>
-<a class="sourceLine" id="cb82-3" title="3"><span class="kw">invisible</span>(</a>
-<a class="sourceLine" id="cb82-4" title="4">  <span class="co"># the function arguments to atl_median_smooth</span></a>
-<a class="sourceLine" id="cb82-5" title="5">  <span class="co"># can be passed directly in lapply</span></a>
-<a class="sourceLine" id="cb82-6" title="6">  <span class="kw">lapply</span>(data_smooth, atl_median_smooth,</a>
-<a class="sourceLine" id="cb82-7" title="7">         <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>, <span class="dt">moving_window =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb82-8" title="8">)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-1"></a><span class="co"># apply the median smooth to each list element</span></span>
+<span id="cb11-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-2"></a><span class="co"># no reassignment is required as THE FUNCTION MODIFIES IN PLACE!</span></span>
+<span id="cb11-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-3"></a><span class="kw">invisible</span>(</span>
+<span id="cb11-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-4"></a>  <span class="co"># the function arguments to atl_median_smooth</span></span>
+<span id="cb11-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-5"></a>  <span class="co"># can be passed directly in lapply</span></span>
+<span id="cb11-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-6"></a>  <span class="kw">lapply</span>(data_smooth, atl_median_smooth,</span>
+<span id="cb11-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-7"></a>         <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>, <span class="dt">moving_window =</span> <span class="dv">5</span>)</span>
+<span id="cb11-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb11-8"></a>)</span></code></pre></div>
 <div id="sanity-check-plot-smoothed-data" class="section level3">
 <h3><span class="header-section-number">7.7.1</span> Sanity check: Plot smoothed data</h3>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" title="1"><span class="co"># recombine split up data that has been smoothed</span></a>
-<a class="sourceLine" id="cb83-2" title="2">data_smooth &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_smooth)</a></code></pre></div>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" title="1"><span class="co"># plot the raw, filtered, and smoothed data</span></a>
-<a class="sourceLine" id="cb84-2" title="2">fig_bat_smooth &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb84-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-4" title="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> data_split,</a>
-<a class="sourceLine" id="cb84-5" title="5">             <span class="kw">aes</span>(X, Y),</a>
-<a class="sourceLine" id="cb84-6" title="6">             <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>,</a>
-<a class="sourceLine" id="cb84-7" title="7">             <span class="dt">shape =</span> <span class="dv">4</span>,</a>
-<a class="sourceLine" id="cb84-8" title="8">             <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-9" title="9"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_smooth,</a>
-<a class="sourceLine" id="cb84-10" title="10">            <span class="kw">aes</span>(X, Y,</a>
-<a class="sourceLine" id="cb84-11" title="11">                <span class="dt">col =</span> TAG),</a>
-<a class="sourceLine" id="cb84-12" title="12">            <span class="dt">lwd =</span> <span class="fl">0.3</span>,</a>
-<a class="sourceLine" id="cb84-13" title="13">            <span class="dt">show.legend =</span> <span class="ot">FALSE</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-14" title="14"><span class="st">  </span><span class="kw">scale_colour_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-15" title="15"><span class="st">  </span>ggspatial<span class="op">::</span><span class="kw">annotation_scale</span>(<span class="dt">location =</span> <span class="st">&quot;br&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-16" title="16"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-17" title="17"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text =</span> <span class="kw">element_blank</span>(),</a>
-<a class="sourceLine" id="cb84-18" title="18">        <span class="dt">axis.title =</span> <span class="kw">element_blank</span>())<span class="op">+</span></a>
-<a class="sourceLine" id="cb84-19" title="19"><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">2039</span>,</a>
-<a class="sourceLine" id="cb84-20" title="20">           <span class="dt">xlim =</span> <span class="kw">range</span>(data_smooth<span class="op">$</span>X),</a>
-<a class="sourceLine" id="cb84-21" title="21">           <span class="dt">ylim =</span> <span class="kw">range</span>(data_smooth<span class="op">$</span>Y))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb12-1"></a><span class="co"># recombine split up data that has been smoothed</span></span>
+<span id="cb12-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb12-2"></a>data_smooth &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_smooth)</span></code></pre></div>
 <p>Save the smoothed data plot.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" title="1"><span class="co"># save to figures</span></a>
-<a class="sourceLine" id="cb85-2" title="2"><span class="kw">ggsave</span>(fig_bat_smooth,</a>
-<a class="sourceLine" id="cb85-3" title="3">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_bat_smooth.png&quot;</span>,</a>
-<a class="sourceLine" id="cb85-4" title="4">       <span class="dt">dpi =</span> <span class="dv">300</span>,</a>
-<a class="sourceLine" id="cb85-5" title="5">       <span class="dt">width =</span> <span class="dv">4</span>, <span class="dt">height =</span> <span class="dv">6</span>)</a></code></pre></div>
 <p>Show the plot.</p>
 <p><img src="figures/fig_bat_smooth.png" /></p>
 </div>
 </div>
-<div id="making-residence-patches-1" class="section level2">
+<div id="making-residence-patches" class="section level2">
 <h2><span class="header-section-number">7.8</span> Making residence patches</h2>
 <div id="calculating-residence-time" class="section level3">
 <h3><span class="header-section-number">7.8.1</span> Calculating residence time</h3>
 <p>First, the data is put through the <code>recurse</code> package to get residence time.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" title="1"><span class="co"># load recurse</span></a>
-<a class="sourceLine" id="cb86-2" title="2"><span class="kw">library</span>(recurse)</a>
-<a class="sourceLine" id="cb86-3" title="3"></a>
-<a class="sourceLine" id="cb86-4" title="4"><span class="co"># split the data</span></a>
-<a class="sourceLine" id="cb86-5" title="5">data_smooth &lt;-<span class="st"> </span><span class="kw">split</span>(data_smooth, data_smooth<span class="op">$</span>TAG)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb13-1"></a><span class="co"># load recurse</span></span>
+<span id="cb13-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb13-2"></a><span class="kw">library</span>(recurse)</span>
+<span id="cb13-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb13-3"></a></span>
+<span id="cb13-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb13-4"></a><span class="co"># split the data</span></span>
+<span id="cb13-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb13-5"></a>data_smooth &lt;-<span class="st"> </span><span class="kw">split</span>(data_smooth, data_smooth<span class="op">$</span>TAG)</span></code></pre></div>
 <p>Get residence time. Since bats may revisit the same features, we want to prevent confusion between frequent revisits and prolonged residence.</p>
 <p>For this, we stop summing residence times within Z metres of a location if the animal exited the area for one hour or more.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" title="1"><span class="co"># get residence times</span></a>
-<a class="sourceLine" id="cb87-2" title="2"></a>
-<a class="sourceLine" id="cb87-3" title="3">data_residence &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_smooth, <span class="cf">function</span>(dt) {</a>
-<a class="sourceLine" id="cb87-4" title="4">  <span class="co"># do basic recurse</span></a>
-<a class="sourceLine" id="cb87-5" title="5">  dt_recurse &lt;-<span class="st"> </span><span class="kw">getRecursions</span>(</a>
-<a class="sourceLine" id="cb87-6" title="6">    <span class="dt">x =</span> dt[, <span class="kw">c</span>(<span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;TAG&quot;</span>)],</a>
-<a class="sourceLine" id="cb87-7" title="7">    <span class="dt">radius =</span> <span class="dv">50</span>,</a>
-<a class="sourceLine" id="cb87-8" title="8">    <span class="dt">timeunits =</span> <span class="st">&quot;mins&quot;</span></a>
-<a class="sourceLine" id="cb87-9" title="9">  )</a>
-<a class="sourceLine" id="cb87-10" title="10">  </a>
-<a class="sourceLine" id="cb87-11" title="11">  <span class="co"># get revisit stats</span></a>
-<a class="sourceLine" id="cb87-12" title="12">  dt_recurse &lt;-<span class="st"> </span><span class="kw">setDT</span>(</a>
-<a class="sourceLine" id="cb87-13" title="13">    dt_recurse[[<span class="st">&quot;revisitStats&quot;</span>]]</a>
-<a class="sourceLine" id="cb87-14" title="14">  )</a>
-<a class="sourceLine" id="cb87-15" title="15">  </a>
-<a class="sourceLine" id="cb87-16" title="16">  <span class="co"># count long absences from the area</span></a>
-<a class="sourceLine" id="cb87-17" title="17">  dt_recurse[, timeSinceLastVisit <span class="op">:</span><span class="er">=</span></a>
-<a class="sourceLine" id="cb87-18" title="18"><span class="st">          </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(timeSinceLastVisit), <span class="op">-</span><span class="ot">Inf</span>, timeSinceLastVisit)]</a>
-<a class="sourceLine" id="cb87-19" title="19">  dt_recurse[, longAbsenceCounter <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">cumsum</span>(timeSinceLastVisit <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>),</a>
-<a class="sourceLine" id="cb87-20" title="20">             by =<span class="st"> </span>.(coordIdx)</a>
-<a class="sourceLine" id="cb87-21" title="21">             ]</a>
-<a class="sourceLine" id="cb87-22" title="22">  <span class="co"># get data before the first long absence of 60 mins</span></a>
-<a class="sourceLine" id="cb87-23" title="23">  dt_recurse &lt;-<span class="st"> </span>dt_recurse[longAbsenceCounter <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>, ]</a>
-<a class="sourceLine" id="cb87-24" title="24">  </a>
-<a class="sourceLine" id="cb87-25" title="25">  dt_recurse &lt;-<span class="st"> </span>dt_recurse[, <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb87-26" title="26">    <span class="dt">resTime =</span> <span class="kw">sum</span>(timeInside),</a>
-<a class="sourceLine" id="cb87-27" title="27">    <span class="dt">fpt =</span> <span class="kw">first</span>(timeInside),</a>
-<a class="sourceLine" id="cb87-28" title="28">    <span class="dt">revisits =</span> <span class="kw">max</span>(visitIdx)</a>
-<a class="sourceLine" id="cb87-29" title="29">  ),</a>
-<a class="sourceLine" id="cb87-30" title="30">  by =<span class="st"> </span>.(coordIdx, x, y)</a>
-<a class="sourceLine" id="cb87-31" title="31">  ]</a>
-<a class="sourceLine" id="cb87-32" title="32">  </a>
-<a class="sourceLine" id="cb87-33" title="33">  <span class="co"># prepare and merge existing data with recursion data</span></a>
-<a class="sourceLine" id="cb87-34" title="34">  dt[, coordIdx <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">seq</span>(<span class="kw">nrow</span>(dt))]</a>
-<a class="sourceLine" id="cb87-35" title="35">  </a>
-<a class="sourceLine" id="cb87-36" title="36">  dt &lt;-<span class="st"> </span><span class="kw">merge</span>(dt, </a>
-<a class="sourceLine" id="cb87-37" title="37">              dt_recurse[, <span class="kw">c</span>(<span class="st">&quot;coordIdx&quot;</span>, <span class="st">&quot;resTime&quot;</span>)], </a>
-<a class="sourceLine" id="cb87-38" title="38">              <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;coordIdx&quot;</span>))</a>
-<a class="sourceLine" id="cb87-39" title="39">  </a>
-<a class="sourceLine" id="cb87-40" title="40">  <span class="kw">setorderv</span>(dt, <span class="st">&quot;time&quot;</span>)</a>
-<a class="sourceLine" id="cb87-41" title="41">})</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-1"></a><span class="co"># get residence times</span></span>
+<span id="cb14-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-2"></a></span>
+<span id="cb14-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-3"></a>data_residence &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_smooth, <span class="cf">function</span>(dt) {</span>
+<span id="cb14-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-4"></a>  <span class="co"># do basic recurse</span></span>
+<span id="cb14-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-5"></a>  dt_recurse &lt;-<span class="st"> </span><span class="kw">getRecursions</span>(</span>
+<span id="cb14-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-6"></a>    <span class="dt">x =</span> dt[, <span class="kw">c</span>(<span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;TAG&quot;</span>)],</span>
+<span id="cb14-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-7"></a>    <span class="dt">radius =</span> <span class="dv">50</span>,</span>
+<span id="cb14-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-8"></a>    <span class="dt">timeunits =</span> <span class="st">&quot;mins&quot;</span></span>
+<span id="cb14-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-9"></a>  )</span>
+<span id="cb14-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-10"></a>  </span>
+<span id="cb14-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-11"></a>  <span class="co"># get revisit stats</span></span>
+<span id="cb14-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-12"></a>  dt_recurse &lt;-<span class="st"> </span><span class="kw">setDT</span>(</span>
+<span id="cb14-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-13"></a>    dt_recurse[[<span class="st">&quot;revisitStats&quot;</span>]]</span>
+<span id="cb14-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-14"></a>  )</span>
+<span id="cb14-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-15"></a>  </span>
+<span id="cb14-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-16"></a>  <span class="co"># count long absences from the area</span></span>
+<span id="cb14-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-17"></a>  dt_recurse[, timeSinceLastVisit <span class="op">:</span><span class="er">=</span></span>
+<span id="cb14-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-18"></a><span class="st">          </span><span class="kw">ifelse</span>(<span class="kw">is.na</span>(timeSinceLastVisit), <span class="op">-</span><span class="ot">Inf</span>, timeSinceLastVisit)]</span>
+<span id="cb14-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-19"></a>  dt_recurse[, longAbsenceCounter <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">cumsum</span>(timeSinceLastVisit <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>),</span>
+<span id="cb14-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-20"></a>             by =<span class="st"> </span>.(coordIdx)</span>
+<span id="cb14-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-21"></a>             ]</span>
+<span id="cb14-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-22"></a>  <span class="co"># get data before the first long absence of 60 mins</span></span>
+<span id="cb14-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-23"></a>  dt_recurse &lt;-<span class="st"> </span>dt_recurse[longAbsenceCounter <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>, ]</span>
+<span id="cb14-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-24"></a>  </span>
+<span id="cb14-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-25"></a>  dt_recurse &lt;-<span class="st"> </span>dt_recurse[, <span class="kw">list</span>(</span>
+<span id="cb14-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-26"></a>    <span class="dt">resTime =</span> <span class="kw">sum</span>(timeInside),</span>
+<span id="cb14-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-27"></a>    <span class="dt">fpt =</span> <span class="kw">first</span>(timeInside),</span>
+<span id="cb14-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-28"></a>    <span class="dt">revisits =</span> <span class="kw">max</span>(visitIdx)</span>
+<span id="cb14-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-29"></a>  ),</span>
+<span id="cb14-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-30"></a>  by =<span class="st"> </span>.(coordIdx, x, y)</span>
+<span id="cb14-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-31"></a>  ]</span>
+<span id="cb14-32"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-32"></a>  </span>
+<span id="cb14-33"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-33"></a>  <span class="co"># prepare and merge existing data with recursion data</span></span>
+<span id="cb14-34"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-34"></a>  dt[, coordIdx <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">seq</span>(<span class="kw">nrow</span>(dt))]</span>
+<span id="cb14-35"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-35"></a>  </span>
+<span id="cb14-36"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-36"></a>  dt &lt;-<span class="st"> </span><span class="kw">merge</span>(dt, </span>
+<span id="cb14-37"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-37"></a>              dt_recurse[, <span class="kw">c</span>(<span class="st">&quot;coordIdx&quot;</span>, <span class="st">&quot;resTime&quot;</span>)], </span>
+<span id="cb14-38"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-38"></a>              <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;coordIdx&quot;</span>))</span>
+<span id="cb14-39"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-39"></a>  </span>
+<span id="cb14-40"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-40"></a>  <span class="kw">setorderv</span>(dt, <span class="st">&quot;time&quot;</span>)</span>
+<span id="cb14-41"><a href="processing-egyptian-fruit-bat-tracks.html#cb14-41"></a>})</span></code></pre></div>
 </div>
 <div id="sanity-check-residence-time-time-series" class="section level3">
 <h3><span class="header-section-number">7.8.2</span> Sanity check: Residence-time time-series</h3>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" title="1"><span class="co"># bind the list</span></a>
-<a class="sourceLine" id="cb88-2" title="2">data_residence &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_residence)</a>
-<a class="sourceLine" id="cb88-3" title="3"></a>
-<a class="sourceLine" id="cb88-4" title="4"><span class="co"># get time as human readable</span></a>
-<a class="sourceLine" id="cb88-5" title="5">data_residence[, ts <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.POSIXct</span>(time, <span class="dt">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)]</a></code></pre></div>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" title="1">fig_bat_res_timeseries &lt;-</a>
-<a class="sourceLine" id="cb89-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb89-3" title="3"><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> data_residence,</a>
-<a class="sourceLine" id="cb89-4" title="4">            <span class="kw">aes</span>(ts, resTime,</a>
-<a class="sourceLine" id="cb89-5" title="5">                <span class="dt">colour =</span> TAG),</a>
-<a class="sourceLine" id="cb89-6" title="6">            <span class="dt">show.legend =</span> F)<span class="op">+</span></a>
-<a class="sourceLine" id="cb89-7" title="7"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">&quot;Dark2&quot;</span>)<span class="op">+</span></a>
-<a class="sourceLine" id="cb89-8" title="8"><span class="st">  </span><span class="kw">scale_x_datetime</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb89-9" title="9"><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>()<span class="op">+</span></a>
-<a class="sourceLine" id="cb89-10" title="10"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb89-11" title="11">       <span class="dt">y =</span> <span class="st">&quot;residence time (mins)&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb15-1"></a><span class="co"># bind the list</span></span>
+<span id="cb15-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb15-2"></a>data_residence &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_residence)</span>
+<span id="cb15-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb15-3"></a></span>
+<span id="cb15-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb15-4"></a><span class="co"># get time as human readable</span></span>
+<span id="cb15-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb15-5"></a>data_residence[, ts <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.POSIXct</span>(time, <span class="dt">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)]</span></code></pre></div>
 <p>Save the speed filtered data plot.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" title="1"><span class="co"># save to figures</span></a>
-<a class="sourceLine" id="cb90-2" title="2"><span class="kw">ggsave</span>(fig_bat_res_timeseries,</a>
-<a class="sourceLine" id="cb90-3" title="3">       <span class="dt">filename =</span> <span class="st">&quot;figures/fig_bat_res_timeseries.png&quot;</span>,</a>
-<a class="sourceLine" id="cb90-4" title="4">       <span class="dt">dpi =</span> <span class="dv">300</span>,</a>
-<a class="sourceLine" id="cb90-5" title="5">       <span class="dt">width =</span> <span class="dv">6</span>, <span class="dt">height =</span> <span class="dv">3</span>)</a></code></pre></div>
 <p>Show the plot.</p>
 <p><img src="figures/fig_bat_res_timeseries.png" /></p>
 </div>
@@ -586,59 +494,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Split the data and construct residence patches.</p>
 <p>Some preparation is required. First, the function requires columns <code>x</code>, <code>y</code>,
 <code>time</code>, and <code>id</code>.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" title="1"><span class="co"># add an id column</span></a>
-<a class="sourceLine" id="cb91-2" title="2">data_residence[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">id =</span> TAG,</a>
-<a class="sourceLine" id="cb91-3" title="3">                      <span class="dt">x =</span> X, <span class="dt">y =</span> Y)]</a>
-<a class="sourceLine" id="cb91-4" title="4"></a>
-<a class="sourceLine" id="cb91-5" title="5"><span class="co"># filter for residence time &gt; 5 minutes</span></a>
-<a class="sourceLine" id="cb91-6" title="6">data_residence &lt;-<span class="st"> </span>data_residence[resTime <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>, ]</a>
-<a class="sourceLine" id="cb91-7" title="7"></a>
-<a class="sourceLine" id="cb91-8" title="8"><span class="co"># split the data</span></a>
-<a class="sourceLine" id="cb91-9" title="9">data_residence &lt;-<span class="st"> </span><span class="kw">split</span>(data_residence, data_residence<span class="op">$</span>TAG)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-1"></a><span class="co"># add an id column</span></span>
+<span id="cb16-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-2"></a>data_residence[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(<span class="dt">id =</span> TAG,</span>
+<span id="cb16-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-3"></a>                      <span class="dt">x =</span> X, <span class="dt">y =</span> Y)]</span>
+<span id="cb16-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-4"></a></span>
+<span id="cb16-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-5"></a><span class="co"># filter for residence time &gt; 5 minutes</span></span>
+<span id="cb16-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-6"></a>data_residence &lt;-<span class="st"> </span>data_residence[resTime <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>, ]</span>
+<span id="cb16-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-7"></a></span>
+<span id="cb16-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-8"></a><span class="co"># split the data</span></span>
+<span id="cb16-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb16-9"></a>data_residence &lt;-<span class="st"> </span><span class="kw">split</span>(data_residence, data_residence<span class="op">$</span>TAG)</span></code></pre></div>
 <p>Now segment-cluster into residence patches.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" title="1"><span class="co"># segment into residence patches</span></a>
-<a class="sourceLine" id="cb92-2" title="2">data_patches &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_residence, atl_res_patch,</a>
-<a class="sourceLine" id="cb92-3" title="3">                       <span class="dt">buffer_radius =</span> <span class="dv">25</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb17-1"></a><span class="co"># segment into residence patches</span></span>
+<span id="cb17-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb17-2"></a>data_patches &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_residence, atl_res_patch,</span>
+<span id="cb17-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb17-3"></a>                       <span class="dt">buffer_radius =</span> <span class="dv">25</span>)</span></code></pre></div>
 </div>
 <div id="getting-residence-patch-data" class="section level3">
 <h3><span class="header-section-number">7.8.4</span> Getting residence patch data</h3>
 <p>We get the residence patch data as spatial <code>sf-MULTIPOLYGON</code> objects.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" title="1"><span class="co"># get data spatials</span></a>
-<a class="sourceLine" id="cb93-2" title="2">data_spatials &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_patches, atl_patch_summary,</a>
-<a class="sourceLine" id="cb93-3" title="3">                        <span class="dt">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</a>
-<a class="sourceLine" id="cb93-4" title="4">                        <span class="dt">buffer_radius =</span> <span class="dv">25</span>)</a>
-<a class="sourceLine" id="cb93-5" title="5"></a>
-<a class="sourceLine" id="cb93-6" title="6"><span class="co"># bind list</span></a>
-<a class="sourceLine" id="cb93-7" title="7">data_spatials &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_spatials)</a>
-<a class="sourceLine" id="cb93-8" title="8"></a>
-<a class="sourceLine" id="cb93-9" title="9"><span class="co"># convert to sf</span></a>
-<a class="sourceLine" id="cb93-10" title="10"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb93-11" title="11">data_spatials &lt;-<span class="st"> </span><span class="kw">st_sf</span>(data_spatials, <span class="dt">sf_column_name =</span> <span class="st">&quot;polygons&quot;</span>)</a>
-<a class="sourceLine" id="cb93-12" title="12"></a>
-<a class="sourceLine" id="cb93-13" title="13"><span class="co"># assign a crs</span></a>
-<a class="sourceLine" id="cb93-14" title="14"><span class="kw">st_crs</span>(data_spatials) &lt;-<span class="st"> </span><span class="kw">st_crs</span>(<span class="dv">2039</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-1"></a><span class="co"># get data spatials</span></span>
+<span id="cb18-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-2"></a>data_spatials &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_patches, atl_patch_summary,</span>
+<span id="cb18-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-3"></a>                        <span class="dt">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
+<span id="cb18-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-4"></a>                        <span class="dt">buffer_radius =</span> <span class="dv">25</span>)</span>
+<span id="cb18-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-5"></a></span>
+<span id="cb18-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-6"></a><span class="co"># bind list</span></span>
+<span id="cb18-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-7"></a>data_spatials &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(data_spatials)</span>
+<span id="cb18-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-8"></a></span>
+<span id="cb18-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-9"></a><span class="co"># convert to sf</span></span>
+<span id="cb18-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-10"></a><span class="kw">library</span>(sf)</span>
+<span id="cb18-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-11"></a>data_spatials &lt;-<span class="st"> </span><span class="kw">st_sf</span>(data_spatials, <span class="dt">sf_column_name =</span> <span class="st">&quot;polygons&quot;</span>)</span>
+<span id="cb18-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-12"></a></span>
+<span id="cb18-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-13"></a><span class="co"># assign a crs</span></span>
+<span id="cb18-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb18-14"></a><span class="kw">st_crs</span>(data_spatials) &lt;-<span class="st"> </span><span class="kw">st_crs</span>(<span class="dv">2039</span>)</span></code></pre></div>
 </div>
 <div id="write-patch-spatial-representations" class="section level3">
 <h3><span class="header-section-number">7.8.5</span> Write patch spatial representations</h3>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" title="1"><span class="kw">st_write</span>(data_spatials,</a>
-<a class="sourceLine" id="cb94-2" title="2">         <span class="dt">dsn =</span> <span class="st">&quot;data/data_bat_residence_patches.gpkg&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb19-1"></a><span class="kw">st_write</span>(data_spatials,</span>
+<span id="cb19-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb19-2"></a>         <span class="dt">dsn =</span> <span class="st">&quot;data/data_bat_residence_patches.gpkg&quot;</span>)</span></code></pre></div>
 <p>Write cleaned bat data.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" title="1">data_clean &lt;-<span class="st"> </span><span class="kw">fwrite</span>(<span class="kw">rbindlist</span>(data_smooth),</a>
-<a class="sourceLine" id="cb95-2" title="2">                     <span class="dt">file =</span> <span class="st">&quot;data/data_bat_smooth.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb20-1"></a>data_clean &lt;-<span class="st"> </span><span class="kw">fwrite</span>(<span class="kw">rbindlist</span>(data_smooth),</span>
+<span id="cb20-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb20-2"></a>                     <span class="dt">file =</span> <span class="st">&quot;data/data_bat_smooth.csv&quot;</span>)</span></code></pre></div>
 <p>Write patch summary.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" title="1"><span class="co"># get summary</span></a>
-<a class="sourceLine" id="cb96-2" title="2">patch_summary &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_patches, atl_patch_summary)</a>
-<a class="sourceLine" id="cb96-3" title="3"></a>
-<a class="sourceLine" id="cb96-4" title="4"><span class="co"># bind summary</span></a>
-<a class="sourceLine" id="cb96-5" title="5">patch_summary &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(patch_summary)</a>
-<a class="sourceLine" id="cb96-6" title="6"></a>
-<a class="sourceLine" id="cb96-7" title="7"><span class="co"># write</span></a>
-<a class="sourceLine" id="cb96-8" title="8"><span class="kw">fwrite</span>(patch_summary,</a>
-<a class="sourceLine" id="cb96-9" title="9">       <span class="st">&quot;data/data_bat_patch_summary.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-1"></a><span class="co"># get summary</span></span>
+<span id="cb21-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-2"></a>patch_summary &lt;-<span class="st"> </span><span class="kw">lapply</span>(data_patches, atl_patch_summary)</span>
+<span id="cb21-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-3"></a></span>
+<span id="cb21-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-4"></a><span class="co"># bind summary</span></span>
+<span id="cb21-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-5"></a>patch_summary &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(patch_summary)</span>
+<span id="cb21-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-6"></a></span>
+<span id="cb21-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-7"></a><span class="co"># write</span></span>
+<span id="cb21-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-8"></a><span class="kw">fwrite</span>(patch_summary,</span>
+<span id="cb21-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb21-9"></a>       <span class="st">&quot;data/data_bat_patch_summary.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="processed-bat-patches" class="section level2">
 <h2><span class="header-section-number">7.9</span> Processed bat patches</h2>
+<p>This figure made in QGIS.</p>
 <p><img src="figures/fig_bat_patches.png" /></p>
 
 </div>
@@ -690,20 +599,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

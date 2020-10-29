@@ -1,7 +1,9 @@
 ---
-output: html_document
-editor_options: 
+editor_options:
   chunk_output_type: console
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 # Processing Egyptian fruit bat tracks
@@ -55,7 +57,7 @@ fwrite(data, file = "data/bat_data.csv")
 
 ## Sanity check: Plot bat data
 
-```{r}
+```{r echo=FALSE}
 # plot bat data to examine for errors
 fig_bat_raw <-
   ggplot(data)+
@@ -73,7 +75,7 @@ fig_bat_raw <-
 
 Save the raw data plot.
 
-```{r}
+```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_raw,
        filename = "figures/fig_bat_raw.png",
@@ -146,7 +148,7 @@ invisible(
 data_split <- rbindlist(data_split)
 ```
 
-```{r}
+```{r echo=FALSE}
 # now plot over raw data
 fig_bat_filter_cov <- 
   ggplot()+
@@ -172,7 +174,7 @@ fig_bat_filter_cov <-
 
 Save the filtered data plot.
 
-```{r}
+```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_cov,
        filename = "figures/fig_bat_filter_cov.png",
@@ -235,7 +237,7 @@ data_split <- lapply(data_split, function(dt) {
 data_split <- rbindlist(data_split)
 ```
 
-```{r}
+```{r echo=FALSE}
 # now plot over raw data
 fig_bat_filter_speed <-
   ggplot()+
@@ -261,7 +263,7 @@ fig_bat_filter_speed <-
 
 Save the speed filtered data plot.
 
-```{r}
+```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_speed,
        filename = "figures/fig_bat_filter_speed.png",
@@ -305,7 +307,7 @@ invisible(
 data_smooth <- rbindlist(data_smooth)
 ```
 
-```{r}
+```{r echo=FALSE}
 # plot the raw, filtered, and smoothed data
 fig_bat_smooth <- 
   ggplot()+
@@ -331,7 +333,7 @@ fig_bat_smooth <-
 
 Save the smoothed data plot.
 
-```{r}
+```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_smooth,
        filename = "figures/fig_bat_smooth.png",
@@ -415,7 +417,7 @@ data_residence <- rbindlist(data_residence)
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
-```{r}
+```{r echo=FALSE}
 fig_bat_res_timeseries <-
   ggplot()+
   geom_path(data = data_residence,
@@ -431,7 +433,7 @@ fig_bat_res_timeseries <-
 
 Save the speed filtered data plot.
 
-```{r}
+```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_res_timeseries,
        filename = "figures/fig_bat_res_timeseries.png",
@@ -521,5 +523,7 @@ fwrite(patch_summary,
 
 
 ## Processed bat patches
+
+This figure made in QGIS.
 
 ![](figures/fig_bat_patches.png)
