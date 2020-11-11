@@ -4,15 +4,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Reducing Small-Scale Positioning Error and Aggregating Data
-
-Once large-scale positioning errors have been removed using filters on bounds or on unrealistic movement, small-scale positioning errors may remain. Why is this the case?
-
-The simple reason is that high-frequency tracking has a large component of error relative to the real movement of an individual, and the error / movement ratio increases with the frequency of tracking. [@noonan2019] has a better explanation, which users are strongly recommended to read.
-
-The effect of these small-scale errors for high-frequency data is to cause overestimations of straight-line displacement (distance between two positions) and speed. If users were to apply a very strict speed filter, many of these positions would be lost. This loss of information would certainly reduce the sampling frequency, which would lead to better estimates of total distance and mean speed. However, while _total_ distance and _mean_ speed estimates would improve, the instantaneous distance and speed estimates would remain biased, which will most likely lead to erroneous inferences from the data.
-
-However, users can turn the high-frequency of their data against itself by applying a simple smooth. The median smooth is recommended because it is robust to outliers, and is very well understood.
+# Reducing Small-Scale Error and Aggregating Data
 
 ## Preparing Libraries and Data
 
@@ -165,25 +157,26 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 
 ```{r echo=FALSE}
 ### plot figures
-fig_agg_data <- 
+fig_agg_data <-
   lapply(list_of_agg, function(df) {
     ggplot(df)+
+      geom_path(data = data,
+                aes(x, y),
+                col = "grey20",
+                size = 0.2)+
       geom_point(data = data_agg,
                  aes(x, y),
                  size = 0.2,
                  col = pal[3])+
       geom_path(aes(x,y), 
                 col = pal[1])+
-      geom_point(aes(x,y, 
-                     size = SD,
-                     fill = SD,
+      geom_point(aes(x,y,
                      group = interval),
-                 shape = 21,
-                 alpha = 0.8,
+                 shape = 19,
+                 col = pal[4],
+                 size = 2,
+                 alpha = 0.6,
                  show.legend = F)+
-      scale_fill_distiller(palette = "Purples", direction = 1,
-                           values = c(-0.25, 1))+
-      scale_size(range = c(2, 4))+
       ggthemes::theme_few()+
       theme(axis.text = element_blank(),
             axis.title = element_blank(),
