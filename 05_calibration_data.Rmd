@@ -145,6 +145,10 @@ fig_speed_outliers <-
                  col = speed_in < 25.6),
              size = 0.3, alpha = 0.5,
              show.legend = F)+
+  annotate(geom = "rect",
+           xmin = 650785, xmax = 653250,
+           ymin = 5904450, ymax = 5906133,
+           fill = NA, col = "black")+
   scale_color_manual(values = c("grey", pal[3]))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
@@ -426,30 +430,8 @@ fig_basic_residence <-
   geom_point(data = data_res_summary, 
              aes(x_median, y_median),
              size = 10, shape = 7,
-             # stroke = ,
              col = "grey20",
              alpha = 1)+
-    # geom_path(data = data_recurse,
-    #          aes(x, y),
-    #         col = "grey", lwd = 0.2)+
-  # geom_text(data = data_res_summary,
-  #           aes(x_median, y_median,
-  #               label = tID),
-  #           # size = 10, shape = 7,
-  #           # stroke = ,
-  #           nudge_x = 100,
-  #           fontface = "bold",
-  #           col = "grey20",
-  #           alpha = 1)+
-  # geom_text(data = patch_summary_data, 
-  #           aes(x_median, y_median,
-  #               label = patch),
-  #           # size = 10, shape = 7,
-  #           # stroke = ,
-  #           nudge_x = -50,
-  #           fontface = "bold",
-  #           col = pal[4],
-  #           alpha = 1)+
   geom_point(data = data_recurse,
             aes(x, y,
                 col = res_time > 5,
@@ -460,19 +442,6 @@ fig_basic_residence <-
           fill = pal[4],
           col = pal[4],
           alpha = 0.3)+
-  # geom_segment(data = patch_summary_data,
-  #           aes(x = x_end, y = y_end,
-  #               xend = shift(x_start, type = "lag"),
-  #               yend = shift(y_start, type = "lag")),
-  #           col = pal[4], lty = 1,
-  #           lwd = 0.5)+
-  # geom_point(data = patch_summary_data,
-  #            aes(x_median, y_median),
-  #            size = 5,
-  #            stroke = 1,
-  #            col = pal[4],
-  #            shape = 1,
-  #            show.legend = F)+
   scale_colour_manual(values = c("grey40", pal[3]))+
   scale_shape_manual(values = c(1, 19))+
   scale_fill_distiller(palette = "RdPu")+
@@ -502,6 +471,7 @@ patch_summary_real <- data_res[, list(nfixes_real = .N,
 
 # add real duration
 patch_summary_real[, duration_real := unlist(wp_data)]
+
 # round median coordinate for inferred patches
 patch_summary_inferred <- 
   patch_summary_data[, 
@@ -548,15 +518,12 @@ figure_patch_duration <-
              aes(duration, 
                  duration_real),
              show.legend = F,
-            size = 3,
-            stroke = 2,
-            shape = 1,
-            col = pal[2])+
+            size = 2, col = "grey")+
   geom_smooth(data = patch_summary_compare,
              aes(duration, 
                  duration_real),
              se = F,
-             col = pal[1],
+             col = "grey20",
              lwd = 1,
              method = "lm",
              show.legend = F)+
@@ -566,12 +533,12 @@ figure_patch_duration <-
            label = "R^2 == 0.98",
            parse = T)+
   scale_x_continuous(
-    breaks = c(400, 600, 800, 1000),
-    labels = as.integer(c(400, 600, 800, 1000) / 60)
+    breaks = 60 * seq(3, 18, 2),
+    labels = seq(3, 18, 2)
     )+
   scale_y_continuous(
-    breaks = c(400, 600, 800, 1000),
-    labels = as.integer(c(400, 600, 800, 1000) / 60)
+    breaks = 60 * seq(5, 20, 2),
+    labels = seq(5, 20, 2)
   )+
   coord_cartesian(expand = T,
   #             # xlim = c(400, 1050),
@@ -580,8 +547,6 @@ figure_patch_duration <-
   geom_abline(slope = 1, lty = 2,
               col = "black")+
   ggthemes::theme_few()+
-  theme(panel.background = element_rect(fill = "white"),
-        panel.grid.minor = element_line(colour = "grey"))+
   labs(x = "inferred duration (min)",
        y = "real duration (min)")
 ```
@@ -591,18 +556,17 @@ figure_patch_duration <-
 ```{r echo=FALSE}
 # wrap together
 figure_res_patch <-
-wrap_plots(list(fig_basic_residence, figure_patch_duration),
-           ncol = 1,
-           design = "AA\nAA\nAA\nAA\nBB")+
+  wrap_plots(list(fig_basic_residence, figure_patch_duration),
+             design = "AA\nAA\nB#")+
   plot_annotation(tag_levels = "a",
-                tag_prefix = "(",
-                tag_suffix = ")") &
-theme(plot.tag = element_text(face = "bold"))
+                  tag_prefix = "(",
+                  tag_suffix = ")") &
+  theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(figure_res_patch,
        filename = "figures/fig_calib_residence_patch.png",
-       height = 225, width = 170, units = "mm")
+       height = 225, width = 150, units = "mm")
 ```
 
 ![](figures/fig_calib_residence_patch.png)

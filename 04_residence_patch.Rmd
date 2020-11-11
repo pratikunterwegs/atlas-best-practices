@@ -29,8 +29,11 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 # read patch data
 data <- fread("data/data_for_res_patch.csv")
 
-# filter
-data <- data[y < 21, ]
+# an id is required
+data[, id := "test"]
+
+# flip lengthwise
+setnames(data, old = c("x", "y"), new = c("y", "x"))
 
 # do recurse
 data_recurse <- getRecursions(data[, list(x, y, time, id)],
@@ -51,12 +54,18 @@ fig_res_a <-
   #           lwd = 0.2,
   #           col = "grey20")+
   geom_path(data = data,
-             aes(x, y, 
+             aes(x, y,
                  group = NA,
                  col = residence_time > 0.04),
              show.legend = F,
              alpha = 1)+
-  coord_equal(ylim = c(NA, 20))+
+  # geom_point(data = data,
+  #            aes(x, y,
+  #                col = residence_time),
+  #            size = 0.7,
+  #            show.legend = F,
+  #            alpha = 1)+
+  coord_equal()+
   scale_colour_manual(values = c("grey", pal[3]))+
   # scale_shape_manual(values = c(, 1))+
   ggthemes::theme_few()+
@@ -68,10 +77,10 @@ We construct residence patches from data where residence time is > 0.15.
 
 ```{r}
 # make residence patch
-patch <- atl_res_patch(data[residence_time > 0.04, ], 
+patch <- atl_res_patch(data[residence_time > 0.05, ], 
                        buffer_radius = 0.1, 
                        lim_spat_indep = 1, 
-                       lim_time_indep = 30)
+                       lim_time_indep = 5)
 
 
 
@@ -93,21 +102,21 @@ fig_res_b <-
   ggplot()+
   geom_path(data = data,
             aes(x, y),
-            col = "grey20",
-            lwd = 0.2)+
+            col = "black",
+            lwd = 0.3)+
   scale_colour_manual(values = c("grey", pal[3]))+
   geom_sf(data = patch_sf,
           aes(fill = patch),
           colour = "grey20",
-          alpha = 0.7,
+          alpha = 0.5,
           lwd = 0.2,
           show.legend = FALSE)+
   geom_path(data = patch_summary,
-            aes(x_median + 3, y_median),
+            aes(x_median + 2, y_median),
             col = "grey0",
             size = 0.5)+
   geom_point(data = patch_summary,
-             aes(x_median + 3,
+             aes(x_median + 2,
                  y_median,
                  fill = patch),
              col = "grey20",
@@ -116,7 +125,7 @@ fig_res_b <-
              shape = 21,
              show.legend = F)+
   scale_fill_distiller(palette = "Paired")+
-  coord_sf(ylim = c(1, 20))+
+  coord_sf()+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank())
