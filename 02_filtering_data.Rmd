@@ -62,7 +62,7 @@ data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 
 Save the data to which errors have been added.
 
-```{r}
+```{r eval=FALSE}
 fwrite(data_copy, file = "data/data_errors.csv")
 ```
 
@@ -217,7 +217,7 @@ This is also more general than identifying the limits of implausibility for each
 ```{r}
 # get 90 and 95 percentile of speed and turning angle
 sapply(data_copy[, c("in_speed", "angle")], function(z) {
-  quantile(z, probs = c(0.9, 0.95), na.rm = TRUE)
+  quantile(z, probs = c(0.1, 0.9, 0.95), na.rm = TRUE)
 })
 ```
 
@@ -226,7 +226,7 @@ Finally, we shall remove positions whose incoming and outgoing speeds are both g
 ```{r}
 # filter the copy by the 95th percentile
 data_filtered <- atl_filter_covariates(data_copy,
-    filters = c("(in_speed < 0.024 & out_speed < 0.024) | angle < 40"))
+    filters = c("(in_speed < 0.025 & out_speed < 0.025) | angle < 35"))
 ```
 
 We prepare the data for plotting.
