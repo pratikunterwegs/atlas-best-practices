@@ -145,6 +145,10 @@ fig_speed_outliers <-
                  col = speed_in < 25.6),
              size = 0.3, alpha = 0.5,
              show.legend = F)+
+  annotate(geom = "rect",
+           xmin = 650785, xmax = 653250,
+           ymin = 5904450, ymax = 5906133,
+           fill = NA, col = "black")+
   scale_color_manual(values = c("grey", pal[3]))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
