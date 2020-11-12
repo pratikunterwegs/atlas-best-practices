@@ -542,7 +542,7 @@ figure_patch_duration <-
              aes(duration, 
                  duration_real),
              se = F,
-             col = pal[4],
+             col = pal[1],
              method = "lm",
              show.legend = F)+
   annotate(geom = "text",
