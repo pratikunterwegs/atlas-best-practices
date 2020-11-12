@@ -334,12 +334,6 @@ Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
 ```{r}
 # load recurse
 library(recurse)
-data_recurse <- data[, list(x, y, time, TAG)]
-
-# thin the data
-data_recurse <- atl_thin_data(data = data_recurse,
-                              interval = 30, id_columns = "TAG",
-                              method = "resample")
 ```
 
 
@@ -352,14 +346,8 @@ An indicator of individual residence at or near a position can be useful when at
 In this dataset, residence positions are marked in the `tID` column as beginning with `WP`. These can be extracted and converted into residence patches.
 
 ```{r}
-# make a data copy
-data_unproc <- copy(data)
-```
-
-
-```{r}
 # get 4 column data
-data_recurse <- data_recurse[, list(x, y, time, TAG)]
+data_recurse <- data_thin[, list(x, y, time, TAG)]
 
 # get recurse data for a 10m radius
 recurse_stats <- getRecursions(data_recurse,
@@ -385,35 +373,6 @@ library(stringi)
 data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 ```
 
-
-### Plot residence time
-
-```{r echo=FALSE}
-fig_calib_residence <-
-  ggplot()+
-  geom_point(data = data_res, 
-             aes(x, y),
-             size = 5, shape = 2,
-             alpha = 0.1)+
-  geom_point(data = data_recurse,
-             aes(x, y, 
-                 col = res_time > 5,
-                 size = res_time > 5),
-             shape = 19, alpha = 0.4,
-             show.legend = F)+
-  geom_path(data = data_recurse,
-             aes(x, y),
-            col = "grey", lwd = 0.2)+
-  scale_colour_manual(values = c("grey40", pal[3]))+
-  scale_size_manual(values = c(0.5, 2))+
-  ggspatial::annotation_scale(location = "br")+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  coord_sf(crs = 32631)
-```
-
-
 ### Run residence patch method
 
 ```{r}
@@ -435,14 +394,16 @@ patch_res_known <- atl_res_patch(data_recurse_subset,
 
 ```{r}
 # for the known and unkniwn patches
-patch_sf_data <- atl_patch_summary(patch_res_known, which_data = "spatial",
+patch_sf_data <- atl_patch_summary(patch_res_known, 
+                                   which_data = "spatial",
                                    buffer_radius = 20)
 
 # assign crs
 sf::st_crs(patch_sf_data) <- 32631
 
 # get summary data
-patch_summary_data <- atl_patch_summary(patch_res_known, which_data = "summary")
+patch_summary_data <- atl_patch_summary(patch_res_known, 
+                                        which_data = "summary")
 ```
 
 ### Get waypoint centroids
@@ -500,13 +461,13 @@ fig_basic_residence <-
           fill = pal[4],
           col = pal[4],
           alpha = 0.3)+
-  scale_colour_manual(values = c("grey40", pal[3]))+
-  scale_shape_manual(values = c(1, 19))+
-  scale_fill_distiller(palette = "RdPu")+
+  scale_colour_manual(values = c("grey50", pal[3]))+
+  scale_shape_manual(values = c(4, 19))+
   ggspatial::annotation_scale(location = "tl")+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
+        axis.title = element_blank(),
+        panel.background = element_rect(fill = "aliceblue"))+
   coord_sf(crs = 32631,
            expand = F,
            ylim = c(5901700, 5903150),
@@ -581,8 +542,7 @@ figure_patch_duration <-
              aes(duration, 
                  duration_real),
              se = F,
-             col = "grey20",
-             lwd = 1,
+             col = pal[4],
              method = "lm",
              show.legend = F)+
   annotate(geom = "text",
