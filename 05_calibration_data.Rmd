@@ -194,61 +194,115 @@ data[, angle := atl_turning_angle(data = data)]
 data_unproc <- copy(data)
 
 # now apply the smooth
-data <- atl_median_smooth(data = data,
-                          x = "x", y = "y", time = "time",
-                          moving_window = 5)
+atl_median_smooth(data = data,
+                  x = "x", y = "y", time = "time",
+                  moving_window = 5)
 ```
+
+### Plot smoothed data
+
+```{r}
+# make zoomed in figures
+fig_smooth <-
+  ggplot()+
+  geom_point(data = data_raw[!data_unproc, on = c("x", "y")],
+             aes(x, y),
+             col = "grey",
+             shape = 4,
+             size = 0.4)+
+  # smoothed data
+  geom_path(data = data_unproc,
+             aes(x, y),
+             col = pal[3]) +
+  geom_point(data = data_unproc,
+             aes(x, y),
+             col = pal[3],
+             shape = 19,
+             alpha = 0.5) +
+  coord_cartesian(
+    xlim = c(650785, 653250),
+    ylim = c(5904450, 5906133), 
+    expand = F
+  )+
+  ggthemes::theme_few()+
+  theme(axis.title = element_blank(),
+        axis.text = element_blank())+
+  ggspatial::annotation_scale(location = "br")
+
+ggsave(fig_smooth,
+       filename = "figures/fig_calib_median_smooth.png",
+       width = 90 / 25, height = 90 / 25)
+```
+
+
+## Thinning the data
+
+```{r}
+# save a copy
+data_unproc <- copy(data)
+
+# remove columns we don't need
+data <- data[, setdiff(colnames(data), 
+                       c("tID", "Timestamp", "id", "TIME", "UTCtime")), 
+             with = FALSE]
+
+# thin to a 30s interval
+data_thin <- atl_thin_data(data = data,
+                           interval = 30,
+                           method = "aggregate",
+                           id_columns = "TAG")
+```
+
+### Plot thinned data
 
 ```{r echo=FALSE}
 # make zoomed in figures
-fig_inset <- mapply(function(xl, yl) {
+fig_smooth_thin <-
   ggplot()+
-    geom_point(data = data_raw[!data_unproc, on = c("x", "y")],
-               aes(x, y),
-               col = "grey",
-               shape = 4,
-               size = 0.4)+
-    geom_point(data = data_unproc,
-               aes(x, y),
-               col = pal[3],
-               shape = 19, 
-               alpha = 0.5)+
-    geom_path(data = data,
-              aes(x, y),
-              col = RColorBrewer::brewer.pal(4, "Set1")[4])+
-    ggthemes::theme_few()+
-    theme(axis.title = element_blank(),
-          axis.text = element_blank())+
-    ggspatial::annotation_scale(location = "br")+
-    coord_cartesian(
-             xlim = xl,
-             ylim = yl, expand = F
-             )+
-    labs(colour = "track")
-}, list(xl1 = c(650785, 653250),
-        xl2 = c(650045, 650682)),
-   list(yl1 = c(5904450, 5906133),
-        yl2 = c(5902700, 5903080)),
-SIMPLIFY = FALSE)
+  geom_errorbar(data = data_thin,
+                aes(x, y,
+                    ymin = y - VARY,
+                    ymax = y + VARY),
+                col = pal[4],
+                alpha = 0.2,
+                lwd = 0.1)+
+  geom_errorbarh(data = data_thin,
+                 aes(x, y,
+                     xmin = x - VARX,
+                     xmax = x + VARX),
+                 col = pal[4],
+                 alpha = 0.2,
+                 lwd = 0.1)+
+  geom_point(data = data_raw[!data_unproc, on = c("x", "y")],
+             aes(x, y),
+             col = "grey",
+             shape = 4,
+             size = 0.4)+
+  geom_point(data = data_unproc,
+             aes(x, y),
+             col = pal[3],
+             shape = 19,
+             alpha = 0.5) +
+  geom_point(data = data_thin,
+             aes(x, y),
+             col = pal[4],
+             shape = 1)+
+  geom_path(data = data_thin,
+            aes(x, y),
+            col = pal[4], size = 0.2)+
+  coord_cartesian(
+    xlim = c(650785, 653250),
+    ylim = c(5904450, 5906133), 
+    expand = F
+  )+
+  ggthemes::theme_few()+
+  theme(axis.title = element_blank(),
+        axis.text = element_blank())+
+  ggspatial::annotation_scale(location = "br")
 
-# # add global figure to second inset
-# fig_inset[[2]] <- fig_inset[[2]] +
-#   annotation_custom(grob = ggplotGrob(fig_smooth),
-#                     xmin = 649990,
-#                     xmax = 650045 + (650682 - 650045)/2,
-#                     ymin = 5903080 - (5903080 - 5902700)/2.5,
-#                     ymax = 5903080
-#                     )
-  
-fig_median_smooth <- fig_inset[[1]]
-  # wrap_plots(fig_inset)+
-  # plot_annotation(tag_levels = "a",
-  #                 tag_prefix = "(",
-  #                 tag_suffix = ")")
-# save figure
-ggsave(fig_median_smooth,
-       filename = "figures/fig_calib_median_smooth.png",
-       width = 90 / 25, height = 90 / 25)
+ggsave(fig_smooth_thin,
+       filename = "figures/fig_calib_smooth_thin.png",
+       width = 90 / 25, height = 90 / 25, dpi = 300)
 ```
 
 ### Plot pre-processing steps
@@ -258,8 +312,8 @@ ggsave(fig_median_smooth,
 figure_walkthrough <-
 wrap_plots(
   list(
-    fig_data_bbox, fig_speed_outliers, fig_median_smooth),
-  design = "AB\nAC")+
+    fig_speed_outliers, fig_smooth_thin),
+  design = "A\nB")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")")&
@@ -268,12 +322,28 @@ wrap_plots(
 # save combined figure
 ggsave(figure_walkthrough,
        filename = "figures/fig_walkthrough.png",
-       height = 130, width = 170, units = "mm")
+       height = 170, width = 90, units = "mm")
 ```
 
 ![](figures/fig_walkthrough.png)
 
-## Making residence patches
+### Calculate residence time
+
+Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
+
+```{r}
+# load recurse
+library(recurse)
+data_recurse <- data[, list(x, y, time, TAG)]
+
+# thin the data
+data_recurse <- atl_thin_data(data = data_recurse,
+                              interval = 30, id_columns = "TAG",
+                              method = "resample")
+```
+
+
+## Residence patches
 
 ### Prepare data
 
@@ -286,20 +356,8 @@ In this dataset, residence positions are marked in the `tID` column as beginning
 data_unproc <- copy(data)
 ```
 
-### Calculate residence time
-
-Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
 
 ```{r}
-# load recurse
-library(recurse)
-data_recurse <- data_unproc[, list(x, y, time, TAG, UTCtime)]
-
-# thin the data
-data_recurse <- atl_thin_data(data = data_recurse,
-                              interval = 30, id_columns = "TAG",
-                              method = "resample")
-
 # get 4 column data
 data_recurse <- data_recurse[, list(x, y, time, TAG)]
 
