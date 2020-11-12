@@ -445,7 +445,7 @@ We prepare a plot of the residence patches.
 # patch with residence points and all patches
 fig_basic_residence <-
   ggplot()+
-  geom_sf(data = griend)+
+  geom_sf(data = griend, fill = "antiquewhite")+
   geom_point(data = data_res_summary, 
              aes(x_median, y_median),
              size = 10, shape = 7,
