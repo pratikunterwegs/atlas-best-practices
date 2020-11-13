@@ -259,34 +259,33 @@ data_thin <- atl_thin_data(data = data,
 # make zoomed in figures
 fig_smooth_thin <-
   ggplot()+
-  geom_errorbar(data = data_thin,
-                aes(x, y,
-                    ymin = y - VARY,
-                    ymax = y + VARY),
-                col = pal[4],
-                alpha = 0.2,
-                lwd = 0.1)+
-  geom_errorbarh(data = data_thin,
-                 aes(x, y,
-                     xmin = x - VARX,
-                     xmax = x + VARX),
-                 col = pal[4],
-                 alpha = 0.2,
-                 lwd = 0.1)+
   geom_point(data = data_raw[!data_unproc, on = c("x", "y")],
              aes(x, y),
              col = "grey",
              shape = 4,
              size = 0.4)+
+  geom_errorbar(data = data_thin,
+                aes(x, y,
+                    ymin = y - SD,
+                    ymax = y + SD),
+                col = pal[4],
+                alpha = 0.5)+
+  geom_errorbarh(data = data_thin,
+                 aes(x, y,
+                     xmin = x - SD,
+                     xmax = x + SD),
+                 col = pal[4],
+                 alpha = 0.5)+
   geom_point(data = data_unproc,
              aes(x, y),
+             size = 0.4,
              col = pal[3],
-             shape = 19,
-             alpha = 0.5) +
-  geom_point(data = data_thin,
-             aes(x, y),
-             col = pal[4],
-             shape = 1)+
+             shape = 16) +
+  # geom_point(data = data_thin,
+  #            aes(x, y),
+  #            col = pal[4],
+  #            alpha = 0.5,
+  #            shape = 0, show.legend = F)+
   geom_path(data = data_thin,
             aes(x, y),
             col = pal[4], size = 0.2)+
