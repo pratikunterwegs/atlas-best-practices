@@ -183,6 +183,24 @@
   number = {1550}
 }
 
+@article{calabrese2016,
+  title = {Ctmm: An r Package for Analyzing Animal Relocation Data as a Continuous-Time Stochastic Process},
+  shorttitle = {Ctmm},
+  author = {Calabrese, Justin M. and Fleming, Chris H. and Gurarie, Eliezer},
+  year = {2016},
+  volume = {7},
+  pages = {1124--1132},
+  issn = {2041-210X},
+  doi = {10.1111/2041-210X.12559},
+  abstract = {Movement ecology has developed rapidly over the past decade, driven by advances in tracking technology that have largely removed data limitations. Development of rigorous analytical tools has lagged behind empirical progress, and as a result, relocation data sets have been underutilized. Discrete-time correlated random walk models (CRW) have long served as the foundation for analyzing relocation data. Unfortunately, CRWs confound the sampling and movement processes. CRW parameter estimates thus depend sensitively on the sampling schedule, which makes it difficult to draw sampling-independent inferences about the underlying movement process. Furthermore, CRWs cannot accommodate the multiscale autocorrelations that typify modern, finely sampled relocation data sets. Recent developments in modelling movement as a continuous-time stochastic process (CTSP) solve these problems, but the mathematical difficulty of using CTSPs has limited their adoption in ecology. To remove this roadblock, we introduce the ctmm package for the R statistical computing environment. ctmm implements all of the CTSPs currently in use in the ecological literature and couples them with powerful statistical methods for autocorrelated data adapted from geostatistics and signal processing, including variograms, periodograms and non-Markovian maximum likelihood estimation. ctmm is built around a standard workflow that begins with visual diagnostics, proceeds to candidate model identification, and then to maximum likelihood fitting and AIC-based model selection. Once an accurate CTSP for the data has been fitted and selected, analyses that require such a model, such as quantifying home range areas via autocorrelated kernel density estimation or estimating occurrence distributions via time-series Kriging, can then be performed. We use a case study with African buffalo to demonstrate the capabilities of ctmm and highlight the steps of a typical CTSP movement analysis workflow.},
+  copyright = {\textcopyright{} 2016 The Authors. Methods in Ecology and Evolution \textcopyright{} 2016 British Ecological Society},
+  file = {C\:\\Users\\p284074\\Zotero\\storage\\FHLEIN6M\\Calabrese et al. - 2016 - ctmm an r package for analyzing animal relocation.pdf;C\:\\Users\\p284074\\Zotero\\storage\\M55QB2BW\\2041-210X.html},
+  journal = {Methods in Ecology and Evolution},
+  keywords = {autocorrelated kernel density estimation,home range estimation,non-Markovian maximum likelihood,periodogram analysis,tracking data,variogram analysis},
+  language = {en},
+  number = {9}
+}
+
 @article{calenge2009,
   title = {The Concept of Animals' Trajectories from a Data Analysis Perspective},
   author = {Calenge, Cl{\'e}ment and Dray, St{\'e}phane and {Royer-Carenzi}, Manuela},
@@ -372,6 +390,20 @@
   number = {5}
 }
 
+@article{fleming2020,
+  title = {A Comprehensive Framework for Handling Location Error in Animal Tracking Data*},
+  author = {Fleming, C. H. and {Drescher-Lehman}, J. and Noonan, M. J. and Akre, T. S. B. and Brown, D. J. and Cochrane, M. M. and Dejid, N. and DeNicola, V. and DePerno, C. S. and Dunlop, J. N. and Gould, N. P. and Hollins, J. and Ishii, H. and Kaneko, Y. and Kays, R. and Killen, S. S. and Koeck, B. and Lambertucci, S. A. and LaPoint, S. D. and Medici, E. P. and Meyburg, B.-U. and Miller, T. A. and Moen, R. A. and Mueller, T. and Pfeiffer, T. and Pike, K. N. and Roulin, A. and Safi, K. and S{\'e}chaud, R. and Scharf, A. K. and Shephard, J. M. and Stabach, J. A. and Stein, K. and Tonra, C. M. and Yamazaki, K. and Fagan, W. F. and Calabrese, J. M.},
+  year = {2020},
+  month = jun,
+  pages = {2020.06.12.130195},
+  doi = {10.1101/2020.06.12.130195},
+  abstract = {{$<$}h3{$>$}Abstract{$<$}/h3{$>$} {$<$}p{$>$}Animal tracking data are being collected more frequently, in greater detail, and on smaller taxa than ever before. These data hold the promise to increase the relevance of animal movement for understanding ecological processes, but this potential will only be fully realized if their accompanying location error is properly addressed. Historically, coarsely-sampled movement data have proved invaluable for understanding large scale processes (e.g., home range, habitat selection, etc.), but modern fine-scale data promise to unlock far more ecological information. While location error can often be ignored in coarsely sampled data, fine-scale data require much more care, and tools to do this have been lacking. Current approaches to dealing with location error largely fall into two categories\textemdash either discarding the least accurate location estimates prior to analysis or simultaneously fitting movement and error parameters in a hidden-state model. Unfortunately, both of these approaches have serious flaws. Here, we provide a general framework to account for location error in the analysis of animal tracking data, so that their potential can be unlocked. We apply our error-model-selection framework to 190 GPS, cellular, and acoustic devices representing 27 models from 14 manufacturers. Collectively, these devices are used to track a wide range of animal species comprising birds, fish, reptiles, and mammals of different sizes and with different behaviors, in urban, suburban, and wild settings. Then, using empirical data on tracked individuals from multiple species, we provide an overview of modern, error-informed movement analyses, including continuous-time path reconstruction, home-range distribution, home-range overlap, speed and distance estimation. Adding to these techniques, we introduce new error-informed estimators for outlier detection and autocorrelation visualization. We furthermore demonstrate how error-informed analyses on calibrated tracking data can be necessary to ensure that estimates are accurate and insensitive to location error, and allow researchers to use all of their data. Because error-induced biases depend on so many factors\textemdash sampling schedule, movement characteristics, tracking device, habitat, etc.\textemdash differential bias can easily confound biological inference and lead researchers to draw false conclusions.{$<$}/p{$>$}},
+  copyright = {\textcopyright{} 2020, Posted by Cold Spring Harbor Laboratory. This pre-print is available under a Creative Commons License (Attribution-NonCommercial-NoDerivs 4.0 International), CC BY-NC-ND 4.0, as described at http://creativecommons.org/licenses/by-nc-nd/4.0/},
+  file = {C\:\\Users\\p284074\\Zotero\\storage\\C8SABUNJ\\Fleming et al. - 2020 - A comprehensive framework for handling location er.pdf;C\:\\Users\\p284074\\Zotero\\storage\\GSPAFE23\\Fleming et al. - 2020 - A comprehensive framework for handling location er.html},
+  journal = {bioRxiv},
+  language = {en}
+}
+
 @article{frair2004,
   title = {Removing {{GPS}} Collar Bias in Habitat Selection Studies},
   author = {Frair, Jacqueline L. and Nielsen, Scott E. and Merrill, Evelyn H. and Lele, Subhash R. and Boyce, Mark S. and Munro, Robin H. M. and Stenhouse, Gordon B. and Beyer, Hawthorne L.},
@@ -475,6 +507,24 @@
   howpublished = {Zenodo},
   keywords = {ATLAS,movement ecology,R},
   language = {en}
+}
+
+@article{gurarie2009,
+  title = {A Novel Method for Identifying Behavioural Changes in Animal Movement Data},
+  author = {Gurarie, Eliezer and Andrews, Russel D. and Laidre, Kristin L.},
+  year = {2009},
+  volume = {12},
+  pages = {395--408},
+  issn = {1461-0248},
+  doi = {10.1111/j.1461-0248.2009.01293.x},
+  abstract = {A goal of animal movement analysis is to reveal behavioural mechanisms by which organisms utilize complex and variable environments. Statistical analysis of movement data is complicated by the fact that the data are multidimensional, autocorrelated and often marked by error and irregular measurement intervals or gappiness. Furthermore, movement data reflect behaviours that are themselves heterogeneous. Here, we model movement data as a subsampling of a continuous stochastic processes, and introduce the behavioural change point analysis (BCPA), a likelihood-based method that allows for the identification of significant structural changes. The BCPA is robust to gappiness and measurement error, computationally efficient, easy to implement and reveals structure that is otherwise difficult to discern. We apply the analysis to a GPS movement track of a northern fur seal (Callorhinus ursinus), revealing an unexpectedly complex diurnal behavioural profile, and demonstrate its robustness to the greater errors associated with the ARGOS tracking system. By informing empirical interpretation of movement data, we suggest that the BCPA can eventually motivate the development of mechanistic behavioural models.},
+  annotation = {\_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1461-0248.2009.01293.x},
+  copyright = {\textcopyright{} 2009 Blackwell Publishing Ltd/CNRS},
+  file = {C\:\\Users\\p284074\\Zotero\\storage\\L6Y75CW3\\Gurarie et al. - 2009 - A novel method for identifying behavioural changes.pdf;C\:\\Users\\p284074\\Zotero\\storage\\CIRVKGZ7\\j.1461-0248.2009.01293.html},
+  journal = {Ecology Letters},
+  keywords = {ARGOS data,behavioural heterogeneity,continuous autoregressive model,gappy time series,GPS data,movement ecology,structural shifts},
+  language = {en},
+  number = {5}
 }
 
 @article{gurarie2016,
@@ -652,6 +702,24 @@
   number = {3}
 }
 
+@article{johnson2008,
+  title = {Continuous-{{Time Correlated Random Walk Model}} for {{Animal}} TELemetry {{Data}}},
+  author = {Johnson, Devin S. and London, Joshua M. and Lea, Mary-Anne and Durban, John W.},
+  year = {2008},
+  volume = {89},
+  pages = {1208--1215},
+  issn = {1939-9170},
+  doi = {10.1890/07-1032.1},
+  abstract = {We propose a continuous-time version of the correlated random walk model for animal telemetry data. The continuous-time formulation allows data that have been nonuniformly collected over time to be modeled without subsampling, interpolation, or aggregation to obtain a set of locations uniformly spaced in time. The model is derived from a continuous-time Ornstein-Uhlenbeck velocity process that is integrated to form a location process. The continuous-time model was placed into a state\textendash space framework to allow parameter estimation and location predictions from observed animal locations. Two previously unpublished marine mammal telemetry data sets were analyzed to illustrate use of the model, by-products available from the analysis, and different modifications which are possible. A harbor seal data set was analyzed with a model that incorporates the proportion of each hour spent on land. Also, a northern fur seal pup data set was analyzed with a random drift component to account for directed travel and ocean currents.},
+  annotation = {\_eprint: https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/07-1032.1},
+  copyright = {\textcopyright{} 2008 by the Ecological Society of America},
+  file = {C\:\\Users\\p284074\\Zotero\\storage\\UC4YHD3U\\Johnson et al. - 2008 - Continuous-Time Correlated Random Walk Model for A.pdf;C\:\\Users\\p284074\\Zotero\\storage\\S2ECK5TX\\07-1032.html},
+  journal = {Ecology},
+  keywords = {Argos location,Callorhinus ursinus,correlated random walk,harbor seal,integrated stochastic process,kalman filter,marine mammals,northern fur seal,Phoca vitulina,satellite telemetry,state–space model},
+  language = {en},
+  number = {5}
+}
+
 @article{jonsen2003,
   title = {Meta-{{Analysis}} of {{Animal Movement Using State}}-{{Space Models}}},
   author = {Jonsen, Ian D. and Myers, Ransom A. and Flemming, Joanna Mills},
@@ -666,6 +734,24 @@
   file = {C\:\\Users\\p284074\\Zotero\\storage\\WAALSJR7\\Jonsen et al. - 2003 - Meta-Analysis of Animal Movement Using State-Space.pdf;C\:\\Users\\p284074\\Zotero\\storage\\UF3KWUS6\\02-0670.html},
   journal = {Ecology},
   keywords = {analysis of tracking data,animal movement,Bayesian models,behavior,dispersal,hierarchical,MCMC (Markov chain Monte Carlo) methods,measurement error,meta-analysis of animal movement,migration,process noise,state-space models,WinBUGs analysis},
+  language = {en},
+  number = {11}
+}
+
+@article{jonsen2005,
+  title = {Robust {{State}}\textendash{{Space Modeling}} of {{Animal Movement Data}}},
+  author = {Jonsen, Ian D. and Flemming, Joanna Mills and Myers, Ransom A.},
+  year = {2005},
+  volume = {86},
+  pages = {2874--2880},
+  issn = {1939-9170},
+  doi = {10.1890/04-1852},
+  abstract = {Remotely sensed tracking data collected on animal movement is vastly underutilized due to a lack of statistical tools for appropriate analysis. Features of such data that make analysis particularly challenging include the presence of estimation errors that are non-Gaussian and vary in time, observations that occur irregularly in time, and complexity in the underlying behavioral processes. We develop a state\textendash space framework that simultaneously deals with these features and demonstrate our method by analyzing three seal pathway data sets. We show how known information regarding error distributions can be used to improve inference of the underlying process(es) and demonstrate that our framework provides a powerful and flexible method for fitting different behavioral models to tracking data.},
+  annotation = {\_eprint: https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/04-1852},
+  copyright = {\textcopyright{} 2005 by the Ecological Society of America},
+  file = {C\:\\Users\\p284074\\Zotero\\storage\\5R4NQVG7\\Jonsen et al. - 2005 - Robust State–Space Modeling of Animal Movement Dat.pdf;C\:\\Users\\p284074\\Zotero\\storage\\ETQGYS33\\04-1852.html},
+  journal = {Ecology},
+  keywords = {Argos satellite telemetry,Bayesian,behavior,dispersal,foraging,migration,random walks,switching models,uncertainty,WinBUGS},
   language = {en},
   number = {11}
 }
