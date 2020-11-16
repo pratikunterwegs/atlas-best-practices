@@ -4,19 +4,21 @@ editor_options:
 output:
   pdf_document: default
   html_document: default
+  bibliography: references.bib
 ---
 
 # Processing Egyptian fruit bat tracks
 
-We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (_Rousettus aegyptiacus_), and construct residence patches.
+We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (*Rousettus aegyptiacus*), and construct residence patches.
 
 ## Prepare libraries
+
+Install the required `R` libraries that are available on CRAN.
 
 ```{r}
 # load libs
 library(data.table)
 library(RSQLite)
-library(atlastools)
 library(ggplot2)
 library(patchwork)
 
@@ -24,13 +26,27 @@ library(patchwork)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
+## Install `atlastools` from Github.
+
+`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
+It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
+
+```{r install_atlastools}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+```
+
 ## Read bat data
 
-Read the bat data and convert to a csv file.
+Read the bat data from an `SQLite` database local file and convert to a plain text csv file.
+This data can be found in the "data" folder.
 
 ```{r read_bat_data}
 # prepare the connection
-con <- dbConnect(drv = SQLite(), dbname = "data/Three_example_bats.sql")
+con <- dbConnect(drv = SQLite(), 
+                 dbname = "data/Three_example_bats.sql")
 
 # list the tables
 table_name <- dbListTables(con)
@@ -45,7 +61,7 @@ data <- dbGetQuery(conn = con, statement = query)
 dbDisconnect(con)
 ```
 
-Convert data to csv.
+Convert data to csv, and save a local copy in the folder "data".
 
 ```{r}
 # convert data to datatable
@@ -55,7 +71,11 @@ setDT(data)
 fwrite(data, file = "data/bat_data.csv")
 ```
 
-## Sanity check: Plot bat data
+## A First Visual Inspection
+
+Plot the bat data as a sanity check, and inspect it visually for errors (Figure 1).
+The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the `Rmarkdown` file "06_bat_data.Rmd".
+The saved plot is shown below as Figure 1.
 
 ```{r echo=FALSE}
 # plot bat data to examine for errors
@@ -73,8 +93,6 @@ fig_bat_raw <-
   coord_sf(crs = 2039)
 ```
 
-Save the raw data plot.
-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_raw,
@@ -83,11 +101,15 @@ ggsave(fig_bat_raw,
        width = 6, height = 4)
 ```
 
-Show the plot.
-
-![](figures/fig_bat_raw.png)
+![Movement data from three Egyptian fruit bats tracked using the ATLAS system (*Rousettus aegyptiacus*; [@toledo2020; @shohami2020]).
+The bats were tracked in the Hula Valley, Israel (33.1$^{\circ}$N, 35.6$^{\circ}$E), and we use three nights of tracking (5\textsuperscript{th}, 6\textsuperscript{th}, and 7\textsuperscript{th} May, 2018), for our demonstration, with an average of 13,370 positions (SD = 2,173; range = 11,195 -- 15,542; interval = 8 seconds) per individual.
+After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary](figures/fig_bat_raw.png)
 
 ## Prepare data for filtering
+
+Here we apply a series of simple filters.
+It is always safer to deal with one individual at a time, so we split the data.table
+into a list of data.tables to avoid mixups among individuals.
 
 ### Prepare data per individual
 
@@ -99,16 +121,17 @@ Show the plot.
 data_split <- copy(data)
 
 # now split
-data_split <- split(data_split, data$TAG)
+data_split <- split(data_split, by = "TAG")
 ```
 
 ## Filter by covariates
 
-No natural bounds suggest themselves, and we proceed to filter by covariates, since point outliers are obviously visible.
+No natural bounds suggest themselves, so instead we proceed to filter by covariates, since point outliers are obviously visible.
 
-We use filter out positions with `SD > 20` and positions calculated using only 3 base stations.
+We use filter out positions with `SD > 20` and positions calculated using only 3 base stations, using the function `atl_filter_covariates`.
 
-We use the function `atl_filter_covariates`.
+
+First we calculate the variable `SD`.
 
 ```{r}
 # get SD.
@@ -118,32 +141,32 @@ invisible(
     dt[, SD := sqrt(VARX + VARY + (2 * COVXY))]
   })
 )
+```
 
+Then we pass the filters to `atl_filter_covariates`.
+We apply the filter to each individual's data using an `lapply`.
+
+```{r}
 # filter for SD <= 20
 # here, reassignment is necessary as rows are being removed
 # the atl_filter_covariates function could have been used here
 data_split <- lapply(data_split, function(dt) {
+  
   dt <- atl_filter_covariates(
     data = dt,
     filters = c("SD <= 20",
                 "NBS > 3")
+    
   )
 })
-
-# check whether the filter has worked
-invisible(
-  lapply(data_split, function(dt) {
-    assertthat::assert_that(min(dt$SD) <= 20,
-                            msg = "some SDs above 20 remain")
-    assertthat::assert_that(min(dt$NBS) > 3,
-                            msg = "some NBS below 3 remain")
-  })
-)
 ```
 
 ### Sanity check: Plot filtered data
 
-```{r}
+We plot the data to check whether the filtering has improved the data (Figure 2).
+The plot code is once again hidden in this rendering, but is available in the source code file.
+
+```{r echo=FALSE}
 # bind all individuals together
 data_split <- rbindlist(data_split)
 ```
@@ -172,8 +195,6 @@ fig_bat_filter_cov <-
            ylim = range(data_split$Y))
 ```
 
-Save the filtered data plot.
-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_cov,
@@ -182,20 +203,21 @@ ggsave(fig_bat_filter_cov,
        width = 4, height = 6)
 ```
 
-Show the plot.
-
-![](figures/fig_bat_filter_cov.png)
+![Bat data filtered for large location errors, removing observations with standard deviation $>$ 20. Grey crosses show data that were removed. Since the number of base stations used in the location process is a good indicator of error [@weiser2016], we also removed observations calculated using fewer than four base stations. Both steps used the function \texttt{atl\_filter\_covariates}.
+This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.](figures/fig_bat_filter_cov.png)
 
 ## Filter by speed
 
-Some point outliers remain, and should be removed using a speed filter.
+Some point outliers remain (Figure 2), and could be removed using a speed filter.
 
-First we calculate speeds.
+First we calculate speeds, using `atl_get_speed`. We must assign the speed output to a new column in the data.table, which has a special syntax which modifies in place, and is shown below. This syntax is a feature of the `data.table` package, not strictly of `atlastools` [@dowle2020].
 
-```{r}
+```{r echo=FALSE}
 # calculate speed on split data once more
 data_split <- split(data_split, data_split$TAG)
+```
 
+```{r}
 # get speeds as with SD, no reassignment required for columns
 invisible(
   lapply(data_split, function(dt) {
@@ -216,7 +238,7 @@ invisible(
 )
 ```
 
-Now filter for speeds > 20 m/s (around 70 km/h).
+Now filter for speeds > 20 m/s (around 70 km/h), passing the predicate (a statement return TRUE or FALSE) to `atl_filter_covariates`. First, we remove positions which have `NA` for their `speed_in` (the first position) and their `speed_out` (last position).
 
 ```{r}
 # filter speeds
@@ -232,7 +254,9 @@ data_split <- lapply(data_split, function(dt) {
 
 ### Sanity check: Plot speed filtered data
 
-```{r}
+The speed filtered data is now inspected for errors (Figure 3). The plot code is once again hidden.
+
+```{r echo=FALSE}
 # bind all individuals together
 data_split <- rbindlist(data_split)
 ```
@@ -261,8 +285,6 @@ fig_bat_filter_speed <-
            ylim = range(data_split$Y))
 ```
 
-Save the speed filtered data plot.
-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_speed,
@@ -271,38 +293,42 @@ ggsave(fig_bat_filter_speed,
        width = 4, height = 6)
 ```
 
-Show the plot.
-
-![](figures/fig_bat_filter_speed.png)
+![Bat data with unrealistic speeds removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using `atl_get_speed`, and filtered out positions with speeds > 20 m/s using `atl_filter_covariates`, leaving 10,337 positions per individual on average (98% from the previous step).](figures/fig_bat_filter_speed.png)
 
 ## Median smoothing
 
-Apply a 5 point median smooth to the data.
+The quality of this data (Figure 3) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
+
+Since the median smoothing function `atl_median_smooth` modifies in place, we first make a copy of the data, using `data.table`'s `copy` function.
+No reassignment is required, in this case. The `lapply` function allows arguments to `atl_median_smooth` to be passed within `lapply` itself.
+
+In this case, the same moving window $K$ is applied to all individuals, but modifying this code to use the multivariate version `Map` allows different $K$ to be used for different individuals. This is a programming matter, and is not covered here further.
 
 ```{r}
 # since the function modifies in place, we shall make a copy
 data_smooth <- copy(data_split)
 
 # split the data again
-data_smooth <- split(data_smooth, data_smooth$TAG)
+data_smooth <- split(data_smooth, by = "TAG")
 ```
-
-Remember, **`atl_median_smooth` MODIFIES IN PLACE**.
 
 ```{r}
 # apply the median smooth to each list element
 # no reassignment is required as THE FUNCTION MODIFIES IN PLACE!
 invisible(
+  
   # the function arguments to atl_median_smooth
   # can be passed directly in lapply
-  lapply(data_smooth, atl_median_smooth,
+  
+  lapply(X = data_smooth, 
+         FUN = atl_median_smooth,
          time = "time", moving_window = 5)
 )
 ```
 
 ### Sanity check: Plot smoothed data
 
-```{r}
+```{r echo=FALSE}
 # recombine split up data that has been smoothed
 data_smooth <- rbindlist(data_smooth)
 ```
@@ -331,8 +357,6 @@ fig_bat_smooth <-
            ylim = range(data_smooth$Y))
 ```
 
-Save the smoothed data plot.
-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_smooth,
@@ -341,15 +365,13 @@ ggsave(fig_bat_smooth,
        width = 4, height = 6)
 ```
 
-Show the plot.
-
-![](figures/fig_bat_smooth.png)
+![Bat data after applying a median smooth with a moving window $K$ = 5. Grey crosses show data prior to smoothing. The smoothing step did not discard any data.](figures/fig_bat_smooth.png)
 
 ## Making residence patches
 
 ### Calculating residence time
 
-First, the data is put through the `recurse` package to get residence time.
+First, the data is put through the `recurse` package to get residence time [@bracis2018].
 
 ```{r}
 # load recurse
@@ -359,9 +381,14 @@ library(recurse)
 data_smooth <- split(data_smooth, data_smooth$TAG)
 ```
 
-Get residence time. Since bats may revisit the same features, we want to prevent confusion between frequent revisits and prolonged residence.
+We calculated residence time, but since bats may revisit the same features, we want to prevent confusion between frequent revisits and prolonged residence.
 
-For this, we stop summing residence times within Z metres of a location if the animal exited the area for one hour or more.
+For this, we stop summing residence times within $Z$ metres of a location if the animal exited the area for one hour or more. The value of $Z$ (radius, in `recurse` parameter terms) was chosen as 50m.
+
+
+This step is relatively complicated and is only required for individuals which frequently return to the same location, or pass over the same areas repeatedly, and for which revisits (cumulative time spent) may be confused for residence time in a single visit.
+
+While a simpler implementation using total residence time divided by the number of revisits is also possible, this does assume that each revisit had the same residence time.
 
 ```{r}
 # get residence times
@@ -407,7 +434,7 @@ data_residence <- lapply(data_smooth, function(dt) {
 })
 ```
 
-### Sanity check: Residence-time time-series
+We bind the data together and assign a human readable timestamp column.
 
 ```{r}
 # bind the list
@@ -417,7 +444,8 @@ data_residence <- rbindlist(data_residence)
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
+# not shown or mentioned
 fig_bat_res_timeseries <-
   ggplot()+
   geom_path(data = data_residence,
@@ -431,9 +459,8 @@ fig_bat_res_timeseries <-
        y = "residence time (mins)")
 ```
 
-Save the speed filtered data plot.
-
 ```{r echo=FALSE}
+# not shown or mentioned
 # save to figures
 ggsave(fig_bat_res_timeseries,
        filename = "figures/fig_bat_res_timeseries.png",
@@ -441,16 +468,11 @@ ggsave(fig_bat_res_timeseries,
        width = 6, height = 3)
 ```
 
-Show the plot.
-
-![](figures/fig_bat_res_timeseries.png)
-
 ### Constructing residence patches
 
-Split the data and construct residence patches.
-
 Some preparation is required. First, the function requires columns `x`, `y`,
-`time`, and `id`.
+`time`, and `id`, which we assign using the `data.table` syntax.
+Then we subset the data to only work with positions where the individual had a residence time of more than 5 minutes.
 
 ```{r}
 # add an id column
@@ -464,7 +486,7 @@ data_residence <- data_residence[resTime > 5, ]
 data_residence <- split(data_residence, data_residence$TAG)
 ```
 
-Now segment-cluster into residence patches.
+We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes), and `min_fixes = 3`). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts).
 
 ```{r}
 # segment into residence patches
@@ -474,7 +496,9 @@ data_patches <- lapply(data_residence, atl_res_patch,
 
 ### Getting residence patch data
 
-We get the residence patch data as spatial `sf-MULTIPOLYGON` objects.
+We extract the residence patch data as spatial `sf-MULTIPOLYGON` objects.
+These are returned as a list and must be converted into a single `sf` object.
+These objects and the raw movement data are shown in Figure 5.
 
 ```{r}
 # get data spatials
@@ -521,9 +545,8 @@ fwrite(patch_summary,
        "data/data_bat_patch_summary.csv")
 ```
 
-
-## Processed bat patches
-
-This figure made in QGIS.
-
-![](figures/fig_bat_patches.png)
+![A visual examination of plots of the bats' residence patches and linear approximations of paths between them showed that though all three bats roosted at the same site, they used distinct areas of the study site over the three nights **(a)**.
+Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.
+However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources **(b, c)**.
+When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar **(c)**.
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](figures/fig_bat_patches.png)
