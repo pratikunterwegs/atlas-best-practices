@@ -1,4 +1,4 @@
-## ----install_package-------------------------------------------------------------------------------------------------------------------------------
+## ----install_package--------------------------------------------------
 # use either devtools or remotes to install
 install.packages("devtools")
 
@@ -6,7 +6,7 @@ install.packages("devtools")
 devtools::install_github("pratikunterwegs/atlastools")
 
 
-## ----prep_libs_01_02-------------------------------------------------------------------------------------------------------------------------------
+## ----prep_libs_01_02--------------------------------------------------
 # load smoove and datatable
 library(smoove)
 library(data.table)
@@ -16,13 +16,13 @@ library(scales)
 source("R/helper_functions.R")
 
 
-## ----save_data-------------------------------------------------------------------------------------------------------------------------------------
+## ----save_data--------------------------------------------------------
 data <- do_smoove_data()
 # save simulated data
 fwrite(data, "data/data_sim.csv")
 
 
-## --------------------------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 # do smoove data using a RACVM for three different rotational speed
 data_thermals <- Map(function(rot_speed, patch) {
  dt <- smoove::simulateRACVM(dt = 0.1, Tmax = 50, omega = rot_speed, v0 = 0.1) 
@@ -42,7 +42,7 @@ data_thermals <- Map(function(df, lim1, lim2, t1, t2) {
 data_thermals <- rbindlist(data_thermals)
 
 
-## --------------------------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 # get limits
 starts <- data_thermals[, lapply(.SD, first), by = "patch"]
 ends <- data_thermals[, lapply(.SD, last), by = "patch"]
@@ -77,7 +77,7 @@ transits <- Map(function(df){
 transits <- rbindlist(transits)
 
 
-## --------------------------------------------------------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 # bind transits to thermals
 data_move <- merge(data_thermals, transits, on = "time", all = T)
 setorder(data_move, time)
