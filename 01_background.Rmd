@@ -22,7 +22,7 @@ Releases of the package from Github can be found on Zenodo: (https://doi.org/10.
 
 The code chunk below shows how to install `atlastools`.
 
-```{r install_package, eval=FALSE}
+```{r install_package}
 # use either devtools or remotes to install
 install.packages("devtools")
 
@@ -36,7 +36,7 @@ Here, we simulate some movement data using the `smoove` `R` package from [@gurar
 
 First, we load `smoove` and `data.table`, as well as some helper functions that make use of them to simulate data for use.
 
-```{r prep_libs_01_02, eval=FALSE}
+```{r prep_libs_01_02}
 # load smoove and datatable
 library(smoove)
 library(data.table)
