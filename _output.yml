@@ -1,14 +1,5 @@
-bookdown::gitbook:
-  css: style.css
-  config:
-    toc:
-      collapse: section
-      before: null
-      after: null
-    sharing: no
 bookdown::pdf_document2:
   keep_tex: true
-  documentclass: scrartcl
   fontsize: 10pt
   toc-depth: 1
   papersize: a4

@@ -117,7 +117,7 @@ It is possible to pass one of the bounds as `NA`, in which case, only the other 
 `atl_filter_bounds` was initially designed to remove positions _inside_ a specific range, hence the argument `remove_inside`.
 The default value of the argument is `FALSE`, and `atl_filter_bounds` is thus a bounding box filter.
 
-```{r remove_outside_bbox, eval=FALSE}
+```{r remove_outside_bbox}
 # remove positions outside a bounding box
 # NB: set remove_inside to FALSE
 data_inside_bbox <- atl_filter_bounds(data = data_copy,
@@ -197,7 +197,7 @@ The first step is to determine how spikes should be identified. The non-movement
 In this case we shall calculate only two metrics, speed and turning angle.
 These are conveniently implemented in `atlastools` using the functions `atl_get_speed` and `atl_turning_angle`.
 
-```{r example_remove_outliers, eval=FALSE}
+```{r example_remove_outliers}
 # get speed and turning angle
 data_copy[, `:=`(in_speed = atl_get_speed(data_copy,
                                           type = "in"),

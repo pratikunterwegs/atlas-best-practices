@@ -1,42 +1,12 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-
-# Getting started
-
-This section covers:
-
-1. Installing the `R` package `atlastools`,
-
-2. Simulating some realistic looking movement data using the `R` package `smoove` from [@gurarie2017], and
-
-3. Introducing positioning errors into the simulated movement data.
-
-## Installing `atlastools`
-
-This paper refers extensively to the `R` package `atlastools` (Gupte 2020), which can be installed from [Github](https://github.com/pratikunterwegs/atlastools). 
-
-Releases of the package from Github can be found on Zenodo: (https://doi.org/10.5281/zenodo.4033155) 
-
-The code chunk below shows how to install `atlastools`.
-
-```{r install_package, eval=FALSE}
+## ----install_package--------------------------------------------------
 # use either devtools or remotes to install
 install.packages("devtools")
 
 # installation using devtools
 devtools::install_github("pratikunterwegs/atlastools")
-```
 
-## Simulating movement data
 
-Here, we simulate some movement data using the `smoove` `R` package from [@gurarie2017].
-
-First, we load `smoove` and `data.table`, as well as some helper functions that make use of them to simulate data for use.
-
-```{r prep_libs_01_02, eval=FALSE}
+## ----prep_libs_01_02--------------------------------------------------
 # load smoove and datatable
 library(smoove)
 library(data.table)
@@ -44,21 +14,15 @@ library(scales)
 
 # source helper functions
 source("R/helper_functions.R")
-```
 
-```{r save_data}
+
+## ----save_data--------------------------------------------------------
 data <- do_smoove_data()
 # save simulated data
 fwrite(data, "data/data_sim.csv")
-```
 
-## Simualte for residence patches
 
-Here we construct a movement track with two clear modes, one representing putative thermalling behaviour (animal moves in circles over a small area), and one representing transit between thermals (animal moves in a relatively straight line between areas).
-
-### Simulate thermalling
-
-```{r}
+## ---------------------------------------------------------------------
 # do smoove data using a RACVM for three different rotational speed
 data_thermals <- Map(function(rot_speed, patch) {
  dt <- smoove::simulateRACVM(dt = 0.1, Tmax = 50, omega = rot_speed, v0 = 0.1) 
@@ -76,11 +40,9 @@ data_thermals <- Map(function(df, lim1, lim2, t1, t2) {
 
 # get thermals data
 data_thermals <- rbindlist(data_thermals)
-```
 
-### Simulate movement between patches
 
-```{r}
+## ---------------------------------------------------------------------
 # get limits
 starts <- data_thermals[, lapply(.SD, first), by = "patch"]
 ends <- data_thermals[, lapply(.SD, last), by = "patch"]
@@ -113,14 +75,13 @@ transits <- Map(function(df){
 
 # bind
 transits <- rbindlist(transits)
-```
 
-```{r}
+
+## ---------------------------------------------------------------------
 # bind transits to thermals
 data_move <- merge(data_thermals, transits, on = "time", all = T)
 setorder(data_move, time)
 
 # save data
 fwrite(data_move, "data/data_for_res_patch.csv")
-```
 
