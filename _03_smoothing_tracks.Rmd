@@ -62,6 +62,8 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
 
 We save the 11 point smoothed data.
 
+![](figures/fig_04_median_smooth.png)
+
 ```{r}
 fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
 ```
@@ -115,7 +117,7 @@ figure_median_smooth <-
         axis.title = element_blank())
 
 # save figure
-ggsave(figure_median_smooth, filename = "figures/fig_median_smooth.png",
+ggsave(figure_median_smooth, filename = "figures/fig_04_median_smooth.png",
        width = 170, height = 170 / 3, units = "mm")
 ```
 
@@ -270,11 +272,11 @@ fig_aggregate <-
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_aggregate_errors.png",
+       filename = "figures/fig_05_thinning.png",
        width = 170, height = 85, units = "mm")
 ```
 
-![](figures/fig_aggregate_errors.png)
+![](figures/fig_05_thinning.png)
 
 Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
 **(a, b)** Movement tracks with a canonical interval of 1s aggregated over intervals of **(a)** 10 and **(b)** 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.

@@ -164,7 +164,7 @@ plot_figure <-
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
-ggsave(plot_figure, filename = "figures/fig_raw_bounds.png", 
+ggsave(plot_figure, filename = "figures/fig_02_bounds.png", 
        width = 170, height = 170, units = "mm")
 ```
 
@@ -304,7 +304,7 @@ The difficulty in implementing a reasonable algorithm for dealing with this kind
 # attempt to remove reflections
 data_no_reflection <- atl_remove_reflections(data_filtered,
                           point_angle_cutoff = 10,
-                          reflection_speed_cutoff = 0.024)
+                          reflection_speed_cutoff = 0.025)
 # get reflections
 reflection <- data_filtered[!data_no_reflection,
                                          on = c("x", "y")]
@@ -323,9 +323,8 @@ fig_reflection <-
   geom_point(data = reflection,
              aes(x, y),
              alpha = 0.5,
-             col = "grey40",
-             fill = "grey",
-             shape = 21)+
+             col = "grey50",
+             shape = 16)+
   geom_point(data = data_no_reflection,
              aes(x, y),
              alpha = 0.5,
@@ -350,11 +349,11 @@ plot_figure <- wrap_plots(list(fig_outlier_remove,
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
-ggsave(plot_figure, filename = "figures/fig_correct_tracks.png", 
+ggsave(plot_figure, filename = "figures/fig_03_filter_speed.png", 
        width = 170, height = 170, units = "mm")
 ```
 
-![](figures/fig_correct_tracks.png)
+![](figures/fig_03_filter_speed.png)
 
 Reducing large-scale positioning error in a movement track. **(a)** Positioning error may affect single observations resulting in point outliers or 'spikes' (red points), but it may also affect continuous susbets of a track, which we call a `prolonged spike' (purple triangles). While the former may be targeted by filtering on appropriate covariates such as speed and turning angle using the `atlastools` function `atl_filter_covariates`, the latter cannot be effectively corrected by targeting each coordinate pair in isolation.
 **(b)** The `atlastools` function `atl_remove_reflections` to identify prolonged spikes (red triangles) in tracking data is an illustrative example of targeting positioning errors that affect track subsets. While this method returns the canonical track without the prolonged spike (blue points) in this example, users are cautioned to frequently check this and similar semi-supervised algorithms' results.

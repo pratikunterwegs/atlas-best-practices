@@ -61,16 +61,8 @@ fig_res_a <-
              show.legend = F,
              alpha = 0.2,
              col = "grey20")+
-  
-  # geom_point(data = data,
-  #            aes(x, y,
-  #                col = residence_time),
-  #            size = 0.7,
-  #            show.legend = F,
-  #            alpha = 1)+
   coord_equal()+
   scale_colour_manual(values = c("grey", pal[3]))+
-  # scale_shape_manual(values = c(, 1))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank())
@@ -184,8 +176,8 @@ fig_residence <-
 
 # save the figure
 ggsave(fig_residence,
-       filename = "figures/fig_residence.png",
+       filename = "figures/fig_06_residence.png",
        height = 170 / 25, width = 170 / 25)
 ```
 
-![](figures/fig_residence.png)
+![](figures/fig_06_residence.png)
