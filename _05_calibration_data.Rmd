@@ -318,16 +318,6 @@ wrap_plots(
 
 ![](figures/fig_walkthrough.png)
 
-### Calculate residence time
-
-Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
-
-```{r}
-# load recurse
-library(recurse)
-```
-
-
 ## Residence patches
 
 ### Prepare data
@@ -338,23 +328,10 @@ In this dataset, residence positions are marked in the `tID` column as beginning
 
 ```{r}
 # get 4 column data
-data_recurse <- data_thin[, list(x, y, time, TAG)]
-
-# get recurse data for a 10m radius
-recurse_stats <- getRecursions(data_recurse,
-                               radius = 50, timeunits = "mins")
-
-# assign to recurse data
-data_recurse[, res_time := recurse_stats$residenceTime]
+data_for_patch <- data_thin[, list(x, y, time, TAG)]
 
 # save recurse data
-fwrite(data_recurse, file = "data/data_calib_recurse.csv")
-```
-
-Read in the data.
-
-```{r}
-data_recurse <- fread("data/data_calib_recurse.csv")
+fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
 ```
 
 Subset waypoint data.
@@ -368,10 +345,10 @@ data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 
 ```{r}
 # assign id as tag
-data_recurse[, id := as.character(TAG)]
+data_for_patch[, id := as.character(TAG)]
 
 # on known residence points
-patch_res_known <- atl_res_patch(data_recurse, 
+patch_res_known <- atl_res_patch(data_for_patch, 
                                 buffer_radius = 5,
                                 lim_spat_indep = 50,
                                 lim_time_indep = 5,
@@ -431,7 +408,7 @@ We prepare a plot of the residence patches.
 
 ```{r echo=FALSE}
 # patch with residence points and all patches
-# fig_basic_residence <-
+fig_basic_residence <-
   ggplot()+
   geom_sf(data = griend, fill = "antiquewhite")+
   geom_point(data = data_res_summary, 
@@ -440,12 +417,12 @@ We prepare a plot of the residence patches.
              stroke = 1,
              col = pal[4],
              alpha = 1)+
-  geom_path(data = data_recurse,
+  geom_path(data = data_for_patch,
             aes(x, y),
             show.legend = F,
             size = 0.3,
             col = "grey")+
-  geom_point(data = data_recurse,
+  geom_point(data = data_for_patch,
             aes(x, y),
             show.legend = F,
             shape = 1, col = "grey50")+
@@ -505,13 +482,6 @@ patch_summary_compare <- na.omit(patch_summary_compare)
 
 # drop patch around WP080
 patch_summary_compare <- patch_summary_compare[tID != "WP080", ]
-
-# compare real and inferred duration
-patch_summary_compare[, duration_diff := (duration - duration_real) / duration_real]
-
-# get mean and sd of duration difference
-patch_summary_compare[, .(mean_diff = mean(duration_diff),
-                          sd_diff = sd(duration_diff))]
 ```
 
 12 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.
