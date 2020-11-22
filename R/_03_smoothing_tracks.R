@@ -1,4 +1,4 @@
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # prep libs
 library(data.table)
 library(atlastools)
@@ -9,7 +9,7 @@ library(patchwork)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 
-## ----read_sim_data_2--------------------------------------------------
+## ----read_sim_data_2----------------------------------------------------------
 # read in the data and set the window size variable
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, window_size := NA]
@@ -19,7 +19,7 @@ data_errors <- fread("data/data_no_reflection.csv")
 data_errors[, window_size := 0]
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # smooth the data over four K values
 list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
   
@@ -35,11 +35,11 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
 })
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # bind list after offset
 data_plot <- mapply(function(df, offset) {
   df[, x := x + offset]
@@ -49,7 +49,7 @@ SIMPLIFY = F)
 data_plot <- rbindlist(data_plot)
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # prepare data to plot
 # make list of data to plot
 figure_median_smooth <-
@@ -84,13 +84,13 @@ figure_median_smooth <-
         axis.title = element_blank())
 
 # save figure
-ggsave(figure_median_smooth, filename = "figures/fig_median_smooth.png",
+ggsave(figure_median_smooth, filename = "figures/fig_04_median_smooth.png",
        width = 170, height = 170 / 3, units = "mm")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # choose the 11 point median smooth data
-data_agg <- copy(list_of_smooths[[3]])
+data_agg <- fread("data/data_smooth.csv")
 
 # get list of aggregated data
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
@@ -118,7 +118,7 @@ speed_agg_smooth <-
 speed_agg_smooth <- rbindlist(speed_agg_smooth)
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 ### plot figures
 fig_agg_data <-
   lapply(list_of_agg, function(df) {
@@ -148,7 +148,7 @@ fig_agg_data <-
   })
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # read data with errors
 data_errors <- fread("data/data_errors.csv")
   
@@ -166,12 +166,12 @@ list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
 data[, speed := atl_get_speed(data)]
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # now plot distribution of speed
 data_agg <- rbindlist(list_of_agg)
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # show boxplot of speed
 fig_agg_speed <-
   ggplot(data_agg)+
@@ -207,7 +207,7 @@ fig_agg_speed <-
        y = "speed")
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # make combined figure
 fig_aggregate <-
   wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
@@ -219,6 +219,6 @@ fig_aggregate <-
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_aggregate_errors.png",
+       filename = "figures/fig_05_thinning.png",
        width = 170, height = 85, units = "mm")
 

@@ -1,4 +1,4 @@
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # to handle movement data
 library(data.table)
 library(atlastools)
@@ -8,46 +8,46 @@ library(ggplot2)
 library(patchwork)
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # source helper functions
 source("R/helper_functions.R")
 
 
-## ----read_sim_data----------------------------------------------------
+## ----read_sim_data------------------------------------------------------------
 # read in the data
 data <- fread("data/data_sim.csv")[5000:10000, ]
 
 
-## ----add_outlier------------------------------------------------------
-# make a copy
-data_copy <- copy(data)
+## ----add_outlier, eval=FALSE--------------------------------------------------
+## # make a copy
+## data_copy <- copy(data)
+## 
+## # add a prolonged spike or reflection to 300 positions
+## data_copy[500:800, `:=`(x = x + 0.25,
+##                         y = y + 0.25)]
+## 
+## # add normal error
+## data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
+##                  y = do_add_error(y, std_dev = 0.005))]
+## 
+## # add 100 outliers
+## data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 
-# add a prolonged spike or reflection to 300 positions
-data_copy[500:800, `:=`(x = x + 0.25,
-                        y = y + 0.25)]
 
-# add normal error
-data_copy[, `:=`(x = do_add_error(x, std_dev = 0.01),
-                 y = do_add_error(y, std_dev = 0.005))]
-
-# add 100 outliers
-data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
-
-
-## ----eval=FALSE-------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 ## fwrite(data_copy, file = "data/data_errors.csv")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data_copy <- fread("data/data_errors.csv")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # define a four colour palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # make figure of canonical data with added errors
 figure_raw <-
   ggplot()+
@@ -67,7 +67,7 @@ figure_raw <-
   labs(colour = NULL)
 
 
-## ----remove_outside_bbox----------------------------------------------
+## ----remove_outside_bbox------------------------------------------------------
 # remove positions outside a bounding box
 # NB: set remove_inside to FALSE
 data_inside_bbox <- atl_filter_bounds(data = data_copy,
@@ -75,7 +75,7 @@ data_inside_bbox <- atl_filter_bounds(data = data_copy,
                                       remove_inside = FALSE)
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # plot data inside and outside bbox
 fig_filter_bounds <-
   ggplot()+
@@ -109,11 +109,11 @@ plot_figure <-
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
-ggsave(plot_figure, filename = "figures/fig_raw_bounds.png", 
+ggsave(plot_figure, filename = "figures/fig_02_bounds.png", 
        width = 170, height = 170, units = "mm")
 
 
-## ----example_remove_outliers------------------------------------------
+## ----example_remove_outliers--------------------------------------------------
 # get speed and turning angle
 data_copy[, `:=`(in_speed = atl_get_speed(data_copy,
                                           type = "in"),
@@ -122,20 +122,20 @@ data_copy[, `:=`(in_speed = atl_get_speed(data_copy,
                  angle = atl_turning_angle(data_copy))]
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # get 90 and 95 percentile of speed and turning angle
 sapply(data_copy[, c("in_speed", "angle")], function(z) {
   quantile(z, probs = c(0.1, 0.9, 0.95), na.rm = TRUE)
 })
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # filter the copy by the 95th percentile
 data_filtered <- atl_filter_covariates(data_copy,
     filters = c("(in_speed < 0.025 & out_speed < 0.025) | angle < 35"))
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # data plot
 fig_outlier_remove <-
   ggplot()+
@@ -145,7 +145,7 @@ fig_outlier_remove <-
             lwd = 0.2)+
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
-             size = 0.2,
+             size = 0.5,
              shape = 2, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
@@ -153,7 +153,8 @@ fig_outlier_remove <-
                  col = (in_speed >= 0.03 & out_speed >= 0.03),
                  shape = (in_speed >= 0.03 & out_speed >= 0.03)),
              show.legend = F,
-             alpha = 0.5)+
+             alpha = 1,
+             size = 0.5)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
@@ -167,18 +168,18 @@ fig_outlier_remove <-
   theme(plot.background = element_rect(fill = NA))
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # attempt to remove reflections
 data_no_reflection <- atl_remove_reflections(data_filtered,
                           point_angle_cutoff = 10,
-                          reflection_speed_cutoff = 0.024)
+                          reflection_speed_cutoff = 0.025)
 # get reflections
 reflection <- data_filtered[!data_no_reflection,
                                          on = c("x", "y")]
 reflection <- na.omit(reflection)
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # get plots
 fig_reflection <-
   ggplot()+
@@ -190,12 +191,13 @@ fig_reflection <-
   geom_point(data = reflection,
              aes(x, y),
              alpha = 0.5,
-             col = "grey40",
-             fill = "grey",
-             shape = 21)+
+             col = "grey",
+             size = 0.5,
+             shape = 16)+
   geom_point(data = data_no_reflection,
              aes(x, y),
-             alpha = 0.5,
+             # alpha = 0.5,
+             size = 0.5,
              colour = pal[3],
              shape = 16,
              show.legend = F)+
@@ -217,10 +219,10 @@ plot_figure <- wrap_plots(list(fig_outlier_remove,
                   tag_suffix = ")") &
   theme(plot.tag = element_text(face = "bold"))
 
-ggsave(plot_figure, filename = "figures/fig_correct_tracks.png", 
+ggsave(plot_figure, filename = "figures/fig_03_filter_speed.png", 
        width = 170, height = 170, units = "mm")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 fwrite(data_no_reflection, file = "data/data_no_reflection.csv")
 
