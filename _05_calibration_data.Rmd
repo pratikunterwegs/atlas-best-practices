@@ -148,7 +148,12 @@ fig_speed_outliers <-
   annotate(geom = "rect",
            xmin = 650785, xmax = 653250,
            ymin = 5904450, ymax = 5906133,
-           fill = NA, col = "black")+
+           fill = NA, col = "grey20")+
+  annotate(geom = "rect",
+           ymin = 5901650, ymax = 5903100,
+           xmin = 650000, xmax = 650600,
+           fill = NA, col = "grey20"
+           )+
   scale_color_manual(values = c("grey", pal[3]))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
@@ -211,10 +216,10 @@ fig_smooth <-
              shape = 4,
              size = 0.4)+
   # smoothed data
-  geom_path(data = data_unproc,
+  geom_path(data = data,
              aes(x, y),
              col = pal[3]) +
-  geom_point(data = data_unproc,
+  geom_point(data = data,
              aes(x, y),
              col = pal[3],
              shape = 19,
@@ -264,31 +269,18 @@ fig_smooth_thin <-
              col = "grey",
              shape = 4,
              size = 0.4)+
-  geom_errorbar(data = data_thin,
-                aes(x, y,
-                    ymin = y - SD,
-                    ymax = y + SD),
-                col = pal[4],
-                alpha = 0.5)+
-  geom_errorbarh(data = data_thin,
-                 aes(x, y,
-                     xmin = x - SD,
-                     xmax = x + SD),
-                 col = pal[4],
-                 alpha = 0.5)+
+  
+  geom_point(data = data_thin,
+             aes(x, y, size = count),
+             col = pal[4],
+             alpha = 0.8,
+             shape = 0, show.legend = F)+
   geom_point(data = data_unproc,
              aes(x, y),
-             size = 0.4,
+             alpha = 0.6,
              col = pal[3],
              shape = 16) +
-  # geom_point(data = data_thin,
-  #            aes(x, y),
-  #            col = pal[4],
-  #            alpha = 0.5,
-  #            shape = 0, show.legend = F)+
-  geom_path(data = data_thin,
-            aes(x, y),
-            col = pal[4], size = 0.2)+
+  scale_size(range = c(2, 6))+
   coord_cartesian(
     xlim = c(650785, 653250),
     ylim = c(5904450, 5906133), 
@@ -318,23 +310,13 @@ wrap_plots(
                   tag_suffix = ")")&
   theme(plot.tag = element_text(face = "bold"))
 
-# save combined figure
-ggsave(figure_walkthrough,
-       filename = "figures/fig_walkthrough.png",
-       height = 170, width = 90, units = "mm")
+# # save combined figure
+# ggsave(figure_walkthrough,
+#        filename = "figures/fig_walkthrough.png",
+#        height = 170, width = 90, units = "mm")
 ```
 
 ![](figures/fig_walkthrough.png)
-
-### Calculate residence time
-
-Subset for boating segments: 2020-08-24 11:13:00 -- 2020-08-24 12:36:11.
-
-```{r}
-# load recurse
-library(recurse)
-```
-
 
 ## Residence patches
 
@@ -342,27 +324,26 @@ library(recurse)
 
 An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time (see Bracis et al. 2018).
 
-In this dataset, residence positions are marked in the `tID` column as beginning with `WP`. These can be extracted and converted into residence patches.
+### Calculate residence time
+
+```{r}
+# load recurse
+library(recurse)
+```
 
 ```{r}
 # get 4 column data
-data_recurse <- data_thin[, list(x, y, time, TAG)]
+data_for_patch <- data_thin[, list(x, y, time, TAG)]
 
 # get recurse data for a 10m radius
-recurse_stats <- getRecursions(data_recurse,
+recurse_stats <- getRecursions(data_for_patch,
                                radius = 50, timeunits = "mins")
 
 # assign to recurse data
-data_recurse[, res_time := recurse_stats$residenceTime]
+data_for_patch[, res_time := recurse_stats$residenceTime]
 
 # save recurse data
-fwrite(data_recurse, file = "data/data_calib_recurse.csv")
-```
-
-Read in the data.
-
-```{r}
-data_recurse <- fread("data/data_calib_recurse.csv")
+fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
 ```
 
 Subset waypoint data.
@@ -374,17 +355,16 @@ data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 
 ### Run residence patch method
 
+We subset data with a residence time > 5 minutes.
+
 ```{r}
 # assign id as tag
-data_recurse[, id := as.character(TAG)]
-
-# subset on 5 minute residence time
-data_recurse_subset <- data_recurse[res_time >= 5, ]
+data_for_patch[, id := as.character(TAG)]
 
 # on known residence points
-patch_res_known <- atl_res_patch(data_recurse_subset, 
-                                buffer_radius = 10,
-                                lim_spat_indep = 100,
+patch_res_known <- atl_res_patch(data_for_patch[res_time >= 5, ], 
+                                buffer_radius = 5,
+                                lim_spat_indep = 50,
                                 lim_time_indep = 5,
                                 min_fixes = 3)
 ```
@@ -448,17 +428,21 @@ fig_basic_residence <-
   geom_point(data = data_res_summary, 
              aes(x_median, y_median),
              size = 10, shape = 7,
-             col = "grey20",
+             stroke = 1,
+             col = pal[4],
              alpha = 1)+
-  geom_point(data = data_recurse,
-            aes(x, y,
-                col = res_time > 5,
-                shape = res_time > 5),
+  geom_path(data = data_for_patch,
+            aes(x, y),
             show.legend = F,
-            size = 2)+
-  geom_sf(data = patch_sf_data,
-          fill = pal[4],
-          col = pal[4],
+            size = 0.3,
+            col = "grey")+
+  geom_point(data = data_for_patch,
+            aes(x, y),
+            show.legend = F,
+            shape = 1, col = "grey50")+
+  geom_sf(data = patch_sf_data[patch_sf_data$duration >= 5 * 60, ],
+          fill = pal[3],
+          col = pal[3],
           alpha = 0.3)+
   scale_colour_manual(values = c("grey50", pal[3]))+
   scale_shape_manual(values = c(4, 19))+
@@ -469,8 +453,8 @@ fig_basic_residence <-
         panel.background = element_rect(fill = "aliceblue"))+
   coord_sf(crs = 32631,
            expand = F,
-           ylim = c(5901700, 5903150),
-           xlim = c(649300, 650700))
+           ylim = c(5901650, 5903100),
+           xlim = c(650000, 650600))
 ```
 
 ## Compare patch metrics
@@ -525,6 +509,14 @@ model_duration <- lm(duration_real ~ duration,
 
 # get R2
 summary(model_duration)
+
+# write to file
+writeLines(
+  text = capture.output(
+    summary(model_duration)
+  ),
+  con = "data/model_output_residence_patch.txt"
+)
 ```
 
 
@@ -542,13 +534,14 @@ figure_patch_duration <-
                  duration_real),
              se = F,
              col = pal[1],
+             lwd = 0.5,
              method = "lm",
              show.legend = F)+
   annotate(geom = "text",
            x = 600, y = 1020,
            size = 5,
-           label = "R^2 == 0.98",
-           parse = T)+
+           label = "R^2 == 0.95",
+           parse = T, family = "Arial")+
   scale_x_continuous(
     breaks = 60 * seq(3, 18, 2),
     labels = seq(3, 18, 2)
@@ -557,7 +550,8 @@ figure_patch_duration <-
     breaks = 60 * seq(5, 20, 2),
     labels = seq(5, 20, 2)
   )+
-  coord_cartesian(expand = T,
+  coord_fixed(expand = T,
+              ratio = 1.115
   #             # xlim = c(400, 1050),
   #             ylim = c(250, 1050)
   )+
@@ -568,13 +562,16 @@ figure_patch_duration <-
        y = "real duration (min)")
 ```
 
-### Join patch map and duration comparison figure
+## Make Figure 07
 
 ```{r echo=FALSE}
 # wrap together
 figure_res_patch <-
-  wrap_plots(list(fig_basic_residence, figure_patch_duration),
-             design = "AA\nAA\nB#")+
+  wrap_plots(list(fig_speed_outliers,
+                  fig_smooth_thin,
+                  fig_basic_residence),
+             design = "AC\nAC\nBC\nBC"
+             )+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")") &
@@ -582,8 +579,8 @@ figure_res_patch <-
 
 # save figure
 ggsave(figure_res_patch,
-       filename = "figures/fig_calib_residence_patch.png",
-       height = 225, width = 150, units = "mm")
+       filename = "figures/fig_07_calib_residence_patch.png",
+       height = 170, width = 170, units = "mm")
 ```
 
 ![](figures/fig_calib_residence_patch.png)
