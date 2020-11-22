@@ -44,7 +44,7 @@ data <- fread("data/data_sim.csv")[5000:10000, ]
 
 We add outliers at random to the data to demonstrate their removal.
 
-```{r add_outlier}
+```{r add_outlier, eval=FALSE}
 # make a copy
 data_copy <- copy(data)
 
@@ -241,7 +241,7 @@ fig_outlier_remove <-
             lwd = 0.2)+
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
-             size = 0.2,
+             size = 0.5,
              shape = 2, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
@@ -249,7 +249,8 @@ fig_outlier_remove <-
                  col = (in_speed >= 0.03 & out_speed >= 0.03),
                  shape = (in_speed >= 0.03 & out_speed >= 0.03)),
              show.legend = F,
-             alpha = 0.5)+
+             alpha = 1,
+             size = 0.5)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
@@ -323,11 +324,13 @@ fig_reflection <-
   geom_point(data = reflection,
              aes(x, y),
              alpha = 0.5,
-             col = "grey50",
+             col = "grey",
+             size = 0.5,
              shape = 16)+
   geom_point(data = data_no_reflection,
              aes(x, y),
-             alpha = 0.5,
+             # alpha = 0.5,
+             size = 0.5,
              colour = pal[3],
              shape = 16,
              show.legend = F)+
