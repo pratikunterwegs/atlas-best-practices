@@ -129,7 +129,7 @@ Here, we demonstrate thinning by aggregation on data that has been median smooth
 
 ```{r}
 # choose the 11 point median smooth data
-data_agg <- copy(list_of_smooths[[3]])
+data_agg <- fread("data/data_smooth.csv")
 
 # get list of aggregated data
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
