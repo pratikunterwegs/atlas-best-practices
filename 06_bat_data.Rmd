@@ -13,7 +13,7 @@ We show the pre-processing pipeline at work on the tracks of three Egyptian frui
 
 ## Prepare libraries
 
-Install the required `R` libraries that are available on CRAN.
+Install the required `R` libraries that are required from CRAN if not already installed.
 
 ```{r}
 # load libs
