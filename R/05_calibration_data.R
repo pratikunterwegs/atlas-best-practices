@@ -1,14 +1,4 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-
-# Processing calibration data
-
-## Prepare libraries
-
-```{r}
+## -----------------------------------------------------------------------------
 # load libs
 library(data.table)
 library(atlastools)
@@ -17,51 +7,46 @@ library(patchwork)
 
 # prepare a palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
-```
 
-## Preliminary visualisation
 
-```{r}
+## -----------------------------------------------------------------------------
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
-```
 
-```{r echo=FALSE}
+
+## ----echo=FALSE---------------------------------------------------------------
 # plot data
 fig_data_raw <-
   ggplot(data)+
   geom_path(aes(x, y),
-             col = "grey", alpha = 0.5, size = 0.3)+
+             col = "grey", alpha = 1, size = 0.2)+
   geom_point(aes(x, y),
-             col = pal[3], alpha = 0.2, size = 2)+
-  ggthemes::theme_map()+
+             col = "grey", alpha = 0.2, size = 0.2)+
+  ggthemes::theme_few()+
+  theme(axis.title = element_blank(),
+        axis.text = element_blank())+
   coord_sf(crs = 32631)
 
 # save figure
 ggsave(fig_data_raw, filename = "figures/fig_calibration_raw.png",
        width = 185 / 25)
-```
 
-## Filter by bounding box
 
-Save an unprocessed copy.
-
-```{r}
+## -----------------------------------------------------------------------------
+# make a copy using the data.table copy function
 data_unproc <- copy(data)
-```
 
-Filter by a bounding box.
 
-```{r}
+## -----------------------------------------------------------------------------
 # remove inside must be set to falses
 data <- atl_filter_bounds(data = data, 
                           x = "x", y = "y", 
                           x_range = c(645000, max(data$x)), 
                           remove_inside = FALSE)
-```
 
-```{r echo=FALSE}
+
+## ----echo=FALSE---------------------------------------------------------------
 # plot data
 fig_data_bbox <-
   ggplot()+
@@ -71,10 +56,10 @@ fig_data_bbox <-
   geom_point(data = data_raw,
              aes(x, y,
                  col = x > 645000),
-             alpha = ifelse(data_raw$x > 645000, 0.5, 1),
+             alpha = ifelse(data_raw$x > 645000, 1, 1),
              size = ifelse(data_raw$x > 645000, 0.3, 2),
              show.legend = F)+
-  scale_colour_manual(values = c("grey", pal[3]))+
+  scale_colour_manual(values = c("black", pal[3]))+
   geom_vline(xintercept = 645000,
              col = "grey", lty = 2)+
   ggspatial::annotation_scale(location = "br")+
@@ -86,34 +71,14 @@ fig_data_bbox <-
 # save result
 ggsave(fig_data_bbox, filename = "figures/fig_calib_bbox.png",
        width = 185 / 25)
-```
 
-## Filter trajectories
 
-### Handle time
-
-Time in ATLAS tracking is counted in milliseconds and is represented by a 64-bit integer (type `long`), which is not natively supported in R; it will instead be converted to a `numeric`, or `double`.
-
-This is not what is intended, but it works. The `bit64` package can help handle 64-bit integers if you want to keep to intended type.
-
-A further issue is that 64-bit integers (whether represented as `bit64` or `double`) do not yield meaninful results when you try to convert them to a date-time object, such as of the class `POSIXct`.
-
-This is because `as.POSIXct` fails when trying to work with 64-bit integers (it cannot interpret this type), and returns a date many thousands of years in the future (approx. 52,000 CE) if the time column is converted to `numeric`.
-
-There are two possible solutions. The parsimonious one is to convert the 64-bit number to a 32-bit short integer (dividing by 1000), or to use the `nanotime` package. 
-
-The conversion method loses an imperceptible amount of precision. The `nanotime` requires installing another package. The first method is shown here. 
-
-In the spirit of not destroying data, we create a second lower-case column called `time`.
-
-```{r}
+## -----------------------------------------------------------------------------
 # divide by 1000, convert to integer, then convert to POSIXct
 data[, time := as.integer(TIME / 1000)]
-```
 
-### Add speed and turning angle
 
-```{r}
+## -----------------------------------------------------------------------------
 # add incoming and outgoing speed
 data[, `:=` (speed_in = atl_get_speed(data, 
                                       x = "x", 
@@ -123,20 +88,16 @@ data[, `:=` (speed_in = atl_get_speed(data,
 
 # add turning angle
 data[, angle := atl_turning_angle(data = data)]
-```
 
-### Get 95th percentile of speed and angle
 
-```{r}
+## -----------------------------------------------------------------------------
 # use sapply
 speed_angle_thresholds <- 
   sapply(data[, list(speed_in, speed_out, angle)], 
        quantile, probs = 0.9, na.rm = T)
-```
 
-### Plot to see speeds
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # plot filtered data
 fig_speed_outliers <-
   ggplot()+
@@ -165,15 +126,9 @@ fig_speed_outliers <-
 # save
 ggsave(fig_speed_outliers, filename = "figures/fig_speed_outlier.png",
        width = 170 / 25, height = 170 / 25)
-```
 
-![](figures/fig_speed_outlier.png)
 
-### Filter on speed
-
-Here we use a speed threshold of 15 m/s, the fastest known boat speed.
-
-```{r}
+## -----------------------------------------------------------------------------
 # make a copy
 data_unproc <- copy(data)
 
@@ -190,11 +145,9 @@ data[, `:=` (speed_in = atl_get_speed(data,
 
 # add turning angle
 data[, angle := atl_turning_angle(data = data)]
-```
 
-## Smoothing the trajectory
 
-```{r}
+## -----------------------------------------------------------------------------
 # apply a 5 point median smooth, first make a copy
 data_unproc <- copy(data)
 
@@ -202,11 +155,9 @@ data_unproc <- copy(data)
 atl_median_smooth(data = data,
                   x = "x", y = "y", time = "time",
                   moving_window = 5)
-```
 
-### Plot smoothed data
 
-```{r}
+## ---- echo=FALSE--------------------------------------------------------------
 # make zoomed in figures
 fig_smooth <-
   ggplot()+
@@ -215,10 +166,6 @@ fig_smooth <-
              col = "grey",
              shape = 4,
              size = 0.4)+
-  # smoothed data
-  geom_path(data = data,
-             aes(x, y),
-             col = pal[3]) +
   geom_point(data = data,
              aes(x, y),
              col = pal[3],
@@ -237,12 +184,9 @@ fig_smooth <-
 ggsave(fig_smooth,
        filename = "figures/fig_calib_median_smooth.png",
        width = 90 / 25, height = 90 / 25)
-```
 
 
-## Thinning the data
-
-```{r}
+## -----------------------------------------------------------------------------
 # save a copy
 data_unproc <- copy(data)
 
@@ -256,11 +200,9 @@ data_thin <- atl_thin_data(data = data,
                            interval = 30,
                            method = "aggregate",
                            id_columns = "TAG")
-```
 
-### Plot thinned data
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # make zoomed in figures
 fig_smooth_thin <-
   ggplot()+
@@ -294,44 +236,64 @@ fig_smooth_thin <-
 ggsave(fig_smooth_thin,
        filename = "figures/fig_calib_smooth_thin.png",
        width = 90 / 25, height = 90 / 25, dpi = 300)
-```
 
-### Plot pre-processing steps
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # make combined walkthrough figure
 figure_walkthrough <-
 wrap_plots(
   list(
     fig_speed_outliers, fig_smooth_thin),
-  design = "A\nB")+
+  design = "AB")+
   plot_annotation(tag_levels = "a",
                   tag_prefix = "(",
                   tag_suffix = ")")&
   theme(plot.tag = element_text(face = "bold"))
 
 # # save combined figure
-# ggsave(figure_walkthrough,
-#        filename = "figures/fig_walkthrough.png",
-#        height = 170, width = 90, units = "mm")
-```
+ggsave(figure_walkthrough,
+       filename = "figures/fig_walkthrough.png",
+       height = 90, width = 170, units = "mm")
 
-![](figures/fig_walkthrough.png)
 
-## Residence patches
+## -----------------------------------------------------------------------------
+library(stringi)
+data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 
-### Prepare data
 
-An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time (see Bracis et al. 2018).
+## -----------------------------------------------------------------------------
+# get centroid
+data_res_summary <- data_res[, list(x_median = round(median(x), digits = -2),
+                                    y_median = round(median(y), digits = -2)),
+                                    t_median = median(time)),
+                             by = "tID"]
 
-### Calculate residence time
+# now get times 10 mins before and after
+data_res_summary[, `:=`(t_min = t_median - (10 * 60),
+                        t_max = t_median + (10 * 60))]
 
-```{r}
+# make a list of positions 10min before and after
+wp_data <- mapply(function(l, u, mx, my) {
+  tmp_data <- data_unproc[inrange(time, l, u)]
+  tmp_data[, distance := sqrt((mx - x)^2 + (my - y)^2)]
+  
+  # keep within 50
+  tmp_data <- tmp_data[distance <= 50, ]
+  
+  # get duration
+  return(diff(range(tmp_data$time)))
+  
+}, data_res_summary$t_min, data_res_summary$t_max,
+   data_res_summary$x_median, data_res_summary$y_median,
+SIMPLIFY = TRUE)
+
+
+## -----------------------------------------------------------------------------
 # load recurse
 library(recurse)
-```
 
-```{r}
+
+## -----------------------------------------------------------------------------
 # get 4 column data
 data_for_patch <- data_thin[, list(x, y, time, TAG)]
 
@@ -344,20 +306,9 @@ data_for_patch[, res_time := recurse_stats$residenceTime]
 
 # save recurse data
 fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
-```
 
-Subset waypoint data.
 
-```{r}
-library(stringi)
-data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
-```
-
-### Run residence patch method
-
-We subset data with a residence time > 5 minutes.
-
-```{r}
+## -----------------------------------------------------------------------------
 # assign id as tag
 data_for_patch[, id := as.character(TAG)]
 
@@ -367,11 +318,9 @@ patch_res_known <- atl_res_patch(data_for_patch[res_time >= 5, ],
                                 lim_spat_indep = 50,
                                 lim_time_indep = 5,
                                 min_fixes = 3)
-```
 
-### Get spatial and summary objects
 
-```{r}
+## -----------------------------------------------------------------------------
 # for the known and unkniwn patches
 patch_sf_data <- atl_patch_summary(patch_res_known, 
                                    which_data = "spatial",
@@ -383,44 +332,14 @@ sf::st_crs(patch_sf_data) <- 32631
 # get summary data
 patch_summary_data <- atl_patch_summary(patch_res_known, 
                                         which_data = "summary")
-```
 
-### Get waypoint centroids
 
-```{r}
-# get centroid
-data_res_summary <- data_res[, list(x_median = median(x),
-                                    y_median = median(y),
-                                    t_median = median(time)),
-                             by = "tID"]
-
-# now get times 10 mins before and after
-data_res_summary[, `:=`(t_min = t_median - (10 * 60),
-                        t_max = t_median + (10 * 60))]
-
-# make a list of positions 10min before and after
-wp_data <- mapply(function(l, u, mx, my) {
-  tmp_data <- data_unproc[inrange(time, l, u)]
-  tmp_data[, distance := sqrt((mx - x)^2 + (my - y)^2)]
-  # keep within 50
-  tmp_data <- tmp_data[distance <= 50, ]
-  # get duration
-  return(diff(range(tmp_data$time)))
-}, data_res_summary$t_min, data_res_summary$t_max,
-   data_res_summary$x_median, data_res_summary$y_median,
-SIMPLIFY = FALSE)
-```
-
-### Read Griend
-
-```{r}
+## -----------------------------------------------------------------------------
 # read griend
 griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
-```
 
-We prepare a plot of the residence patches.
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # patch with residence points and all patches
 fig_basic_residence <-
   ggplot()+
@@ -455,13 +374,9 @@ fig_basic_residence <-
            expand = F,
            ylim = c(5901650, 5903100),
            xlim = c(650000, 650600))
-```
 
-## Compare patch metrics
 
-### Compare known patches
-
-```{r}
+## -----------------------------------------------------------------------------
 # get known patch summary
 data_res <- data_unproc[stringi::stri_detect(tID, regex = "(WP)"), ]
 
@@ -472,7 +387,7 @@ patch_summary_real <- data_res[, list(nfixes_real = .N,
                                by = "tID"]
 
 # add real duration
-patch_summary_real[, duration_real := unlist(wp_data)]
+patch_summary_real[, duration_real := wp_data]
 
 # round median coordinate for inferred patches
 patch_summary_inferred <- 
@@ -489,20 +404,14 @@ patch_summary_compare <-
         on = c("x_median", "y_median"),
         all.x = TRUE, all.y = TRUE)
 
-patch_summary_compare[!is.na(tID)]
-
 # drop nas
 patch_summary_compare <- na.omit(patch_summary_compare)
 
 # drop patch around WP080
 patch_summary_compare <- patch_summary_compare[tID != "WP080", ]
-```
 
-12 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.
 
-### Plot durations comparisons
-
-```{r}
+## -----------------------------------------------------------------------------
 # get linear model
 model_duration <- lm(duration_real ~ duration,
                      data = patch_summary_compare)
@@ -517,12 +426,11 @@ writeLines(
   ),
   con = "data/model_output_residence_patch.txt"
 )
-```
 
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # make figure comparing different methods
-figure_patch_duration <-
+figure_lm_duration <-
   ggplot()+
   geom_point(data = patch_summary_compare,
              aes(duration, 
@@ -540,7 +448,7 @@ figure_patch_duration <-
   annotate(geom = "text",
            x = 600, y = 1020,
            size = 5,
-           label = "R^2 == 0.95",
+           label = "R^2 == 0.908",
            parse = T, family = "Arial")+
   scale_x_continuous(
     breaks = 60 * seq(3, 18, 2),
@@ -560,11 +468,12 @@ figure_patch_duration <-
   ggthemes::theme_few()+
   labs(x = "inferred duration (min)",
        y = "real duration (min)")
-```
 
-## Make Figure 07
+ggsave(figure_lm_duration, filename = "figures/fig_calib_lm_duration.png",
+       width = 80 / 25, height = 80 / 25)
 
-```{r echo=FALSE}
+
+## ----echo=FALSE---------------------------------------------------------------
 # wrap together
 figure_res_patch <-
   wrap_plots(list(fig_speed_outliers,
@@ -581,6 +490,4 @@ figure_res_patch <-
 ggsave(figure_res_patch,
        filename = "figures/fig_07_calib_residence_patch.png",
        height = 170, width = 170, units = "mm")
-```
 
-![](figures/fig_calib_residence_patch.png)

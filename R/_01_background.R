@@ -1,4 +1,4 @@
-## ----install_package--------------------------------------------------
+## ----install_package----------------------------------------------------------
 # use either devtools or remotes to install
 install.packages("devtools")
 
@@ -6,7 +6,7 @@ install.packages("devtools")
 devtools::install_github("pratikunterwegs/atlastools")
 
 
-## ----prep_libs_01_02--------------------------------------------------
+## ----prep_libs_01_02----------------------------------------------------------
 # load smoove and datatable
 library(smoove)
 library(data.table)
@@ -16,33 +16,37 @@ library(scales)
 source("R/helper_functions.R")
 
 
-## ----save_data--------------------------------------------------------
+## ----save_data----------------------------------------------------------------
 data <- do_smoove_data()
 # save simulated data
 fwrite(data, "data/data_sim.csv")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
+# set a seed
+set.seed(0)
+
 # do smoove data using a RACVM for three different rotational speed
 data_thermals <- Map(function(rot_speed, patch) {
  dt <- smoove::simulateRACVM(dt = 0.1, Tmax = 50, omega = rot_speed, v0 = 0.1) 
  dt <- as.data.table(dt$XY)
  dt[, patch := patch]
+ dt[, time := seq(.N)]
 }, c(7, 7, 7), sprintf('patch_%i', seq(3)))
 
 # rescale x and y
-data_thermals <- Map(function(df, lim1, lim2, t1, t2) {
+data_thermals <- Map(function(df, lim1, lim2, offset) {
   df[, x := x + lim1]
   df[, y := y + lim2]
-  df[, time := seq(t1, t2)]
+  df[, time := time + offset]
 }, data_thermals, c(1, 5, 9), c(0, 2.5, 5),
-   c(100, 800, 1500), c(600, 1300, 2000))
+   c(100, 800, 1500))
 
 # get thermals data
 data_thermals <- rbindlist(data_thermals)
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # get limits
 starts <- data_thermals[, lapply(.SD, first), by = "patch"]
 ends <- data_thermals[, lapply(.SD, last), by = "patch"]
@@ -50,36 +54,53 @@ ends <- data_thermals[, lapply(.SD, last), by = "patch"]
 # bind
 gaps <- rbind(starts, ends)
 setorder(gaps, "time")
+gaps[, event := rep(c("start", "end"), 3)]
 
-# get transition phases
-# THIS IS HARDCODED BECAUSE THERE DOESN'T APPEAR TO BE A BETTER WAY
-# FOR THE SAME TIME
-transit_1 <- gaps[c(2, 3), ]
-transit_2 <- gaps[c(4, 5), ]
+# cast
+gaps <- dcast(gaps, patch ~ event, value.var = c("x", "y", "time"))
 
-# simulate movement
-transits <- Map(function(df){
-  time_lim <- as.vector(df$time)
-  
-  track <- as.data.table(approx(df$x, df$y, n = 10))
-  
-  # add some error
-  track[, `:=`(y = do_add_error(y, 0.01))]
-  
-  track[, `:=`(time = seq(time_lim[1], time_lim[2], length.out = 10),
-               patch = "transit")]
-  
-  return(track)
-  
-}, list(transit_1, transit_2))
+# make a trajectory section
+transit <- data.table(
+  x1 = shift(gaps$x_end),
+  x2 = gaps$x_start,
+  y1 = shift(gaps$y_end),
+  y2 = gaps$y_start,
+  t1 = shift(gaps$time_end),
+  t2 = gaps$time_start,
+  transit = sprintf("transit_%i", seq(nrow(gaps))),
+  pseudo_time = seq(nrow(gaps))
+)
 
-# bind
-transits <- rbindlist(transits)
+# nafill
+transit[, c("x1", "y1", "t1") := 
+          lapply(list(x1, y1, t1), nafill, fill = 0)]
+
+# interpolate
+transit[, d := Map(function(x1, x2, y1, y2) {
+  as.data.table(approx(x = c(x1, x2), 
+                       y = c(y1, y2), 
+                       n = 20))
+  }, x1, x2, y1, y2)]
+
+# add errors
+transit[, d := Map(function(df) {
+  df[, lapply(.SD, do_add_error, std_dev = 0.05)]
+}, d)]
+
+# get transit data
+transit_data <- Map(function(df, t1, t2) {
+  df <- copy(df)
+  df[, time := seq(t1, t2, length.out = nrow(df))]
+}, transit$d, transit$t1, transit$t2)
+
+# merge with thermals
+transit_data <- rbindlist(transit_data)
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # bind transits to thermals
-data_move <- merge(data_thermals, transits, on = "time", all = T)
+data_move <- merge(data_thermals, transit_data, 
+                   on = "time", all = T)
 setorder(data_move, time)
 
 # save data

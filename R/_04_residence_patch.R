@@ -1,4 +1,4 @@
-## ----prep_libs_02_01--------------------------------------------------
+## ----prep_libs_02_01----------------------------------------------------------
 library(data.table)
 library(atlastools)
 library(ggplot2)
@@ -11,7 +11,7 @@ library(recurse)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # read patch data
 data <- fread("data/data_for_res_patch.csv")
 
@@ -29,37 +29,32 @@ data_recurse <- getRecursions(data[, list(x, y, time, id)],
 data[, residence_time := data_recurse$residenceTime]
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # restime by position
 fig_res_a <-
   ggplot()+
-  # geom_path(data = data,
-  #           aes(x, y),
-  #           lwd = 0.2,
-  #           col = "grey20")+
   geom_path(data = data,
+            aes(x, y),
+            lwd = 0.2,
+            col = "grey")+
+  geom_point(data = data,
              aes(x, y,
-                 group = NA,
-                 col = residence_time > 0.04),
+                 group = NA
+                 ),
+             size = 0.3,
              show.legend = F,
-             alpha = 1)+
-  # geom_point(data = data,
-  #            aes(x, y,
-  #                col = residence_time),
-  #            size = 0.7,
-  #            show.legend = F,
-  #            alpha = 1)+
+             alpha = 0.2,
+             col = "grey20")+
   coord_equal()+
   scale_colour_manual(values = c("grey", pal[3]))+
-  # scale_shape_manual(values = c(, 1))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank())
 
 
-## ---------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # make residence patch
-patch <- atl_res_patch(data[residence_time > 0.05, ], 
+patch <- atl_res_patch(data, 
                        buffer_radius = 0.1, 
                        lim_spat_indep = 1, 
                        lim_time_indep = 5)
@@ -76,21 +71,27 @@ patch_summary <- atl_patch_summary(patch_data = patch,
                                    which_data = "summary")
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 # plot_patches <-
 fig_res_b <-
   ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-            col = "black",
-            lwd = 0.3)+
-  scale_colour_manual(values = c("grey", pal[3]))+
   geom_sf(data = patch_sf,
           aes(fill = patch),
           colour = "grey20",
           alpha = 0.5,
           lwd = 0.2,
           show.legend = FALSE)+
+  geom_path(data = data,
+            aes(x, y),
+            lwd = 0.2,
+            col = "grey20")+
+  geom_point(data = data,
+            aes(x, y),
+            size = 0.4,
+            col = "grey20",
+            alpha = 0.2)+
+  scale_colour_manual(values = c("grey", pal[3]))+
+  
   geom_path(data = patch_summary,
             aes(x_median + 2, y_median),
             col = "grey0",
@@ -116,7 +117,7 @@ fig_res_c <-
   geom_rect(data = patch_summary,
             aes(xmin = time_start,
                 xmax = time_end,
-                ymin = 0.0, ymax = 0.175,
+                ymin = 0.0, ymax = 0.2,
                 fill = (patch)),
             col = "grey",
             lwd = 0.1,
@@ -125,7 +126,8 @@ fig_res_c <-
   geom_path(data = data,
             aes(time, residence_time,
                 group = NA),
-            lwd = 0.2,
+            lwd = 0.4,
+            col = "grey20",
             show.legend = F)+
   geom_hline(yintercept = 0.04,
              col = "grey20",
@@ -141,7 +143,7 @@ fig_res_c <-
        y = "res. time")
 
 
-## ----echo=FALSE-------------------------------------------------------
+## ----echo=FALSE---------------------------------------------------------------
 fig_residence <-
   wrap_plots(list(fig_res_a, fig_res_c, fig_res_b),
            design = "ACC\nBCC")+
@@ -152,6 +154,6 @@ fig_residence <-
 
 # save the figure
 ggsave(fig_residence,
-       filename = "figures/fig_residence.png",
+       filename = "figures/fig_06_residence.png",
        height = 170 / 25, width = 170 / 25)
 

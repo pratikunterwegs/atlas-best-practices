@@ -9,7 +9,7 @@ author:
     - Allert Bijleveld
 date: "`r Sys.Date()`"
 output: bookdown::pdf_document2
-documentclass: article
+documentclass: scrartcl
 toc-depth: 2
 secnumdepth: 2
 geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
