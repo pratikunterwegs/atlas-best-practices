@@ -6,7 +6,7 @@ author:
     - Christine E. Beardsworth
     - Orr Spiegel
     - Emmanuel Lourie
-    - Allert Bijleveld
+    - Allert I. Bijleveld
 date: "`r Sys.Date()`"
 output: bookdown::pdf_document2
 documentclass: scrartcl
