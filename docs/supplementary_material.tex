@@ -37,7 +37,7 @@
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
   pdftitle={Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data},
-  pdfauthor={Pratik R. Gupte; Christine E. Beardsworth; Orr Spiegel; Emmanuel Lourie; Allert Bijleveld},
+  pdfauthor={Pratik R. Gupte; Christine E. Beardsworth; Orr Spiegel; Emmanuel Lourie; Allert I. Bijleveld},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -123,7 +123,7 @@
   {\par}
 
 \title{Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data}
-\author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Allert Bijleveld}
+\author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Allert I. Bijleveld}
 \date{2020-11-23}
 
 \begin{document}
@@ -170,7 +170,11 @@ We then visualise the raw data.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{figures/fig_calibration_raw.png}
+\caption{The raw data from a calibration exercise conducted around the island of Griend in the Dutch Wadden Sea. A handheld WATLAS tag was used to examine how ATLAS data compared to GPS tracks, and we use the WATLAS data here to demonstrate the basics of the pre-processing pipeline, as well as validate the residence patch method. It is immediately clear from the figure that the track shows location errors, both in the form of point outliers as well as small-scale errors around the true location.}
+\end{figure}
 
 \hypertarget{filter-by-bounding-box}{%
 \subsection{Filter by bounding box}\label{filter-by-bounding-box}}
@@ -198,6 +202,12 @@ We then plot the result of filtering, with the excluded point in black, and the 
                           \DataTypeTok{remove\_inside =} \OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{figure}
+\centering
+\includegraphics{figures/fig_calib_bbox.png}
+\caption{Removal of a point outlier using the function \texttt{atl\_filter\_bounds}. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate \textless{} 645,000 in the UTM 31N system. Positions that are retained are shown in green.}
+\end{figure}
 
 \hypertarget{filter-trajectories}{%
 \subsection{Filter trajectories}\label{filter-trajectories}}
@@ -282,7 +292,11 @@ We then plot the data with the extreme speeds shown in grey, and the positions r
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{figures/fig_speed_outlier.png}
+\caption{Improving data quality by filtering out positions that would require unrealistic movement. We removed positions with speeds \(\geq\) 15 m/s, which is the fastest possible speed in this calibration data, part of which was collected in a moving boat around Griend. Grey positions are removed, while green positions are retained. Rectangles indicate areas expanded for visualisation in following figures.}
+\end{figure}
 
 \hypertarget{smoothing-the-trajectory}{%
 \subsection{Smoothing the trajectory}\label{smoothing-the-trajectory}}
@@ -303,7 +317,11 @@ We create a copy of the data before applying the smooth so that we can compare t
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{figures/fig_calib_median_smooth.png}
+\caption{Reducing small-scale location error using a median smooth with a moving window \(K\) = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Figure 3.}
+\end{figure}
 
 \hypertarget{thinning-the-data}{%
 \subsection{Thinning the data}\label{thinning-the-data}}
@@ -329,7 +347,11 @@ Following this, we plot the median smooth and thinning by aggregation.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{figures/fig_calib_smooth_thin.png}
+\caption{Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Figure 4, while the raw data are shown in grey.}
+\end{figure}
 
 \hypertarget{residence-patches}{%
 \subsection{Residence patches}\label{residence-patches}}
@@ -469,6 +491,12 @@ We read in the island's shapefile to plot it as a background for the residence p
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
+\includegraphics{figures/fig_calib_residence.png}
+\caption{Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25\(^{\circ}\)N, 5.25\(^{\circ}\)E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these).}
+\end{figure}
+
 \hypertarget{compare-patch-metrics}{%
 \subsection{Compare patch metrics}\label{compare-patch-metrics}}
 
@@ -538,7 +566,24 @@ We run a simple linear model.
 \end{Highlighting}
 \end{Shaded}
 
+\begin{figure}
+\centering
 \includegraphics{figures/fig_calib_lm_duration.png}
+\caption{The inferred duration of residence patches corresponds very closely to the real duration (grey circles, red line shows linear model fit), with an underestimation of the true duration of around 2\%. The dashed black line represents \(y = x\) for reference.}
+\end{figure}
+
+\hypertarget{linear-model-summary}{%
+\subsubsection{Linear model summary}\label{linear-model-summary}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}
+  \KeywordTok{readLines}\NormalTok{(}
+    \DataTypeTok{con =} \StringTok{"data/model\_output\_residence\_patch.txt"}
+\NormalTok{  ), }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{processing-egyptian-fruit-bat-tracks}{%
 \section{Processing Egyptian fruit bat tracks}\label{processing-egyptian-fruit-bat-tracks}}
