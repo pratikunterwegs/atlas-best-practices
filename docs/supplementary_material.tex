@@ -111,8 +111,10 @@
 % use nice fonts if available else use boring defaults
 
 \usepackage{lineno}
-\setmainfont{Times New Roman}
-\setsansfont{Arial}
+
+\IfFontExistsTF{Times New Roman}{\setmainfont[]{Times New Roman}}{} 
+\IfFontExistsTF{Arial}{\setsansfont[]{Arial}}{}
+\IfFontExistsTF{Fira Code}{\setmonofont{Fira Code}}
 
 \linenumbers
 \newlength{\cslhangindent}
@@ -579,9 +581,28 @@ We run a simple linear model.
 \begin{Highlighting}[]
 \KeywordTok{cat}\NormalTok{(}
   \KeywordTok{readLines}\NormalTok{(}
-    \DataTypeTok{con =} \StringTok{"data/model\_output\_residence\_patch.txt"}
+    \DataTypeTok{con =} \StringTok{"data/model\_output\_residence\_patch.txt"}\NormalTok{,}
+    \DataTypeTok{encoding =} \StringTok{"UTF{-}8"}
 \NormalTok{  ), }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}
 \NormalTok{)}
+\CommentTok{\#> }
+\CommentTok{\#> Call:}
+\CommentTok{\#> lm(formula = duration\_real \textasciitilde{} duration, data = patch\_summary\_compare)}
+\CommentTok{\#> }
+\CommentTok{\#> Residuals:}
+\CommentTok{\#>      Min       1Q   Median       3Q      Max }
+\CommentTok{\#> {-}103.237  {-}19.277   {-}2.917    7.003   93.431 }
+\CommentTok{\#> }
+\CommentTok{\#> Coefficients:}
+\CommentTok{\#>              Estimate Std. Error t value Pr(>|t|)    }
+\CommentTok{\#> (Intercept) 101.42061   47.66936   2.128   0.0493 *  }
+\CommentTok{\#> duration      1.02108    0.07876  12.965 6.66e{-}10 ***}
+\CommentTok{\#> {-}{-}{-}}
+\CommentTok{\#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1}
+\CommentTok{\#> }
+\CommentTok{\#> Residual standard error: 50.35 on 16 degrees of freedom}
+\CommentTok{\#> Multiple R{-}squared:  0.9131,	Adjusted R{-}squared:  0.9077 }
+\CommentTok{\#> F{-}statistic: 168.1 on 1 and 16 DF,  p{-}value: 6.655e{-}10}
 \end{Highlighting}
 \end{Shaded}
 
