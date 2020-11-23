@@ -1,46 +1,39 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[
-]{scrartcl}
+\documentclass[]{scrartcl}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
   \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
-% Use upquote if available, for straight quotes in verbatim environments
+% use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
 \hypersetup{
-  pdftitle={Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data},
-  pdfauthor={Pratik R. Gupte; Christine E. Beardsworth; Orr Spiegel; Emmanuel Lourie; Allert I. Bijleveld},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
+            pdftitle={Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data},
+            pdfauthor={Pratik R. Gupte; Christine E. Beardsworth; Orr Spiegel; Emmanuel Lourie; Allert I. Bijleveld},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
 \usepackage[left=4cm, right=3cm, top=2.5cm, bottom=2.5cm]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -81,15 +74,9 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
-\usepackage{graphicx}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -98,14 +85,25 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-% Set default figure placement to htbp
-\makeatletter
-\def\fps@figure{htbp}
-\makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{2}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
 
 \usepackage{fontspec}
 % use nice fonts if available else use boring defaults
@@ -117,12 +115,6 @@
 \IfFontExistsTF{Fira Code}{\setmonofont{Fira Code}}
 
 \linenumbers
-\newlength{\cslhangindent}
-\setlength{\cslhangindent}{1.5em}
-\newenvironment{cslreferences}%
-  {\setlength{\parindent}{0pt}%
-  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces}%
-  {\par}
 
 \title{Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data}
 \author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Allert I. Bijleveld}
@@ -147,14 +139,14 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# load libs}
+\CommentTok{# load libs}
 \KeywordTok{library}\NormalTok{(data.table)}
 \KeywordTok{library}\NormalTok{(atlastools)}
 \KeywordTok{library}\NormalTok{(ggplot2)}
 \KeywordTok{library}\NormalTok{(patchwork)}
 
-\CommentTok{\# prepare a palette}
-\NormalTok{pal <{-}}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{4}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
+\CommentTok{# prepare a palette}
+\NormalTok{pal <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{4}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -166,9 +158,9 @@ We then visualise the raw data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# read and plot example data}
-\NormalTok{data <{-}}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"data/atlas1060\_allTrials\_annotated.csv"}\NormalTok{)}
-\NormalTok{data\_raw <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# read and plot example data}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"data/atlas1060_allTrials_annotated.csv"}\NormalTok{)}
+\NormalTok{data_raw <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -185,8 +177,8 @@ We first save a copy of the data, so that we can plot the raw data with the clea
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# make a copy using the data.table copy function}
-\NormalTok{data\_unproc <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# make a copy using the data.table copy function}
+\NormalTok{data_unproc <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -197,11 +189,11 @@ We then plot the result of filtering, with the excluded point in black, and the 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# remove inside must be set to falses}
-\NormalTok{data <{-}}\StringTok{ }\KeywordTok{atl\_filter\_bounds}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data, }
+\CommentTok{# remove inside must be set to falses}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{atl_filter_bounds}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data, }
                           \DataTypeTok{x =} \StringTok{"x"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"y"}\NormalTok{, }
-                          \DataTypeTok{x\_range =} \KeywordTok{c}\NormalTok{(}\DecValTok{645000}\NormalTok{, }\KeywordTok{max}\NormalTok{(data}\OperatorTok{$}\NormalTok{x)), }
-                          \DataTypeTok{remove\_inside =} \OtherTok{FALSE}\NormalTok{)}
+                          \DataTypeTok{x_range =} \KeywordTok{c}\NormalTok{(}\DecValTok{645000}\NormalTok{, }\KeywordTok{max}\NormalTok{(data}\OperatorTok{$}\NormalTok{x)), }
+                          \DataTypeTok{remove_inside =} \OtherTok{FALSE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -233,7 +225,7 @@ In the spirit of not destroying data, we create a second lower-case column calle
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# divide by 1000, convert to integer, then convert to POSIXct}
+\CommentTok{# divide by 1000, convert to integer, then convert to POSIXct}
 \NormalTok{data[, time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.integer}\NormalTok{(TIME }\OperatorTok{/}\StringTok{ }\DecValTok{1000}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
@@ -243,15 +235,15 @@ In the spirit of not destroying data, we create a second lower-case column calle
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# add incoming and outgoing speed}
-\NormalTok{data[, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{ (}\DataTypeTok{speed\_in =} \KeywordTok{atl\_get\_speed}\NormalTok{(data, }
+\CommentTok{# add incoming and outgoing speed}
+\NormalTok{data[, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{ (}\DataTypeTok{speed_in =} \KeywordTok{atl_get_speed}\NormalTok{(data, }
                                       \DataTypeTok{x =} \StringTok{"x"}\NormalTok{, }
                                       \DataTypeTok{y =} \StringTok{"y"}\NormalTok{, }
                                       \DataTypeTok{time =} \StringTok{"time"}\NormalTok{),}
-             \DataTypeTok{speed\_out =} \KeywordTok{atl\_get\_speed}\NormalTok{(data, }\DataTypeTok{type =} \StringTok{"out"}\NormalTok{))]}
+             \DataTypeTok{speed_out =} \KeywordTok{atl_get_speed}\NormalTok{(data, }\DataTypeTok{type =} \StringTok{"out"}\NormalTok{))]}
 
-\CommentTok{\# add turning angle}
-\NormalTok{data[, angle }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{atl\_turning\_angle}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data)]}
+\CommentTok{# add turning angle}
+\NormalTok{data[, angle }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{atl_turning_angle}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -260,9 +252,9 @@ In the spirit of not destroying data, we create a second lower-case column calle
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# use sapply}
-\NormalTok{speed\_angle\_thresholds <{-}}\StringTok{ }
-\StringTok{  }\KeywordTok{sapply}\NormalTok{(data[, }\KeywordTok{list}\NormalTok{(speed\_in, speed\_out, angle)], }
+\CommentTok{# use sapply}
+\NormalTok{speed_angle_thresholds <-}\StringTok{ }
+\StringTok{  }\KeywordTok{sapply}\NormalTok{(data[, }\KeywordTok{list}\NormalTok{(speed_in, speed_out, angle)], }
 \NormalTok{       quantile, }\DataTypeTok{probs =} \FloatTok{0.9}\NormalTok{, }\DataTypeTok{na.rm =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
@@ -275,22 +267,22 @@ We then plot the data with the extreme speeds shown in grey, and the positions r
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# make a copy}
-\NormalTok{data\_unproc <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# make a copy}
+\NormalTok{data_unproc <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 
-\CommentTok{\# remove speed outliers}
-\NormalTok{data <{-}}\StringTok{ }\KeywordTok{atl\_filter\_covariates}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
-            \DataTypeTok{filters =} \KeywordTok{c}\NormalTok{(}\StringTok{"(speed\_in < 15 \& speed\_out < 15)"}\NormalTok{))}
+\CommentTok{# remove speed outliers}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{atl_filter_covariates}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
+            \DataTypeTok{filters =} \KeywordTok{c}\NormalTok{(}\StringTok{"(speed_in < 15 & speed_out < 15)"}\NormalTok{))}
 
-\CommentTok{\# recalculate speed and angle}
-\NormalTok{data[, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{ (}\DataTypeTok{speed\_in =} \KeywordTok{atl\_get\_speed}\NormalTok{(data, }
+\CommentTok{# recalculate speed and angle}
+\NormalTok{data[, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{ (}\DataTypeTok{speed_in =} \KeywordTok{atl_get_speed}\NormalTok{(data, }
                                       \DataTypeTok{x =} \StringTok{"x"}\NormalTok{, }
                                       \DataTypeTok{y =} \StringTok{"y"}\NormalTok{, }
                                       \DataTypeTok{time =} \StringTok{"time"}\NormalTok{),}
-             \DataTypeTok{speed\_out =} \KeywordTok{atl\_get\_speed}\NormalTok{(data, }\DataTypeTok{type =} \StringTok{"out"}\NormalTok{))]}
+             \DataTypeTok{speed_out =} \KeywordTok{atl_get_speed}\NormalTok{(data, }\DataTypeTok{type =} \StringTok{"out"}\NormalTok{))]}
 
-\CommentTok{\# add turning angle}
-\NormalTok{data[, angle }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{atl\_turning\_angle}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data)]}
+\CommentTok{# add turning angle}
+\NormalTok{data[, angle }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{atl_turning_angle}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -309,13 +301,13 @@ We create a copy of the data before applying the smooth so that we can compare t
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# apply a 5 point median smooth, first make a copy}
-\NormalTok{data\_unproc <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# apply a 5 point median smooth, first make a copy}
+\NormalTok{data_unproc <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 
-\CommentTok{\# now apply the smooth}
-\KeywordTok{atl\_median\_smooth}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
+\CommentTok{# now apply the smooth}
+\KeywordTok{atl_median_smooth}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
                   \DataTypeTok{x =} \StringTok{"x"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"y"}\NormalTok{, }\DataTypeTok{time =} \StringTok{"time"}\NormalTok{,}
-                  \DataTypeTok{moving\_window =} \DecValTok{5}\NormalTok{)}
+                  \DataTypeTok{moving_window =} \DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -333,19 +325,19 @@ Following this, we plot the median smooth and thinning by aggregation.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# save a copy}
-\NormalTok{data\_unproc <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# save a copy}
+\NormalTok{data_unproc <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 
-\CommentTok{\# remove columns we don\textquotesingle{}t need}
-\NormalTok{data <{-}}\StringTok{ }\NormalTok{data[, }\KeywordTok{setdiff}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(data), }
+\CommentTok{# remove columns we don't need}
+\NormalTok{data <-}\StringTok{ }\NormalTok{data[, }\KeywordTok{setdiff}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(data), }
                        \KeywordTok{c}\NormalTok{(}\StringTok{"tID"}\NormalTok{, }\StringTok{"Timestamp"}\NormalTok{, }\StringTok{"id"}\NormalTok{, }\StringTok{"TIME"}\NormalTok{, }\StringTok{"UTCtime"}\NormalTok{)), }
 \NormalTok{             with =}\StringTok{ }\OtherTok{FALSE}\NormalTok{]}
 
-\CommentTok{\# thin to a 30s interval}
-\NormalTok{data\_thin <{-}}\StringTok{ }\KeywordTok{atl\_thin\_data}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
+\CommentTok{# thin to a 30s interval}
+\NormalTok{data_thin <-}\StringTok{ }\KeywordTok{atl_thin_data}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ data,}
                            \DataTypeTok{interval =} \DecValTok{30}\NormalTok{,}
                            \DataTypeTok{method =} \StringTok{"aggregate"}\NormalTok{,}
-                           \DataTypeTok{id\_columns =} \StringTok{"TAG"}\NormalTok{)}
+                           \DataTypeTok{id_columns =} \StringTok{"TAG"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -366,7 +358,7 @@ We subset the annotated calibration data to select the waypoints and the positio
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(stringi)}
-\NormalTok{data\_res <{-}}\StringTok{ }\NormalTok{data\_unproc[}\KeywordTok{stri\_detect}\NormalTok{(tID, }\DataTypeTok{regex =} \StringTok{"(WP)"}\NormalTok{)]}
+\NormalTok{data_res <-}\StringTok{ }\NormalTok{data_unproc[}\KeywordTok{stri_detect}\NormalTok{(tID, }\DataTypeTok{regex =} \StringTok{"(WP)"}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -376,29 +368,29 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get centroid}
-\NormalTok{data\_res\_summary <{-}}\StringTok{ }\NormalTok{data\_res[, }\KeywordTok{list}\NormalTok{(}\DataTypeTok{x\_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(x), }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{),}
-                                    \DataTypeTok{y\_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(y), }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{)),}
-\NormalTok{                                    t\_median =}\StringTok{ }\KeywordTok{median}\NormalTok{(time)}\ErrorTok{)}\NormalTok{,}
+\CommentTok{# get centroid}
+\NormalTok{data_res_summary <-}\StringTok{ }\NormalTok{data_res[, }\KeywordTok{list}\NormalTok{(}\DataTypeTok{x_median =} \KeywordTok{median}\NormalTok{(x),}
+                                    \DataTypeTok{y_median =} \KeywordTok{median}\NormalTok{(y),}
+                                    \DataTypeTok{t_median =} \KeywordTok{median}\NormalTok{(time)),}
 \NormalTok{                             by =}\StringTok{ "tID"}\NormalTok{]}
 
-\CommentTok{\# now get times 10 mins before and after}
-\NormalTok{data\_res\_summary[, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{(}\DataTypeTok{t\_min =}\NormalTok{ t\_median }\OperatorTok{{-}}\StringTok{ }\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\DecValTok{60}\NormalTok{),}
-                        \DataTypeTok{t\_max =}\NormalTok{ t\_median }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\DecValTok{60}\NormalTok{))]}
+\CommentTok{# now get times 10 mins before and after}
+\NormalTok{data_res_summary[, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{(}\DataTypeTok{t_min =}\NormalTok{ t_median }\OperatorTok{-}\StringTok{ }\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\DecValTok{60}\NormalTok{),}
+                        \DataTypeTok{t_max =}\NormalTok{ t_median }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{10} \OperatorTok{*}\StringTok{ }\DecValTok{60}\NormalTok{))]}
 
-\CommentTok{\# make a list of positions 10min before and after}
-\NormalTok{wp\_data <{-}}\StringTok{ }\KeywordTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(l, u, mx, my) \{}
-\NormalTok{  tmp\_data <{-}}\StringTok{ }\NormalTok{data\_unproc[}\KeywordTok{inrange}\NormalTok{(time, l, u)]}
-\NormalTok{  tmp\_data[, distance }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((mx }\OperatorTok{{-}}\StringTok{ }\NormalTok{x)}\OperatorTok{\^{}}\DecValTok{2} \OperatorTok{+}\StringTok{ }\NormalTok{(my }\OperatorTok{{-}}\StringTok{ }\NormalTok{y)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)]}
+\CommentTok{# make a list of positions 10min before and after}
+\NormalTok{wp_data <-}\StringTok{ }\KeywordTok{mapply}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(l, u, mx, my) \{}
+\NormalTok{  tmp_data <-}\StringTok{ }\NormalTok{data_unproc[}\KeywordTok{inrange}\NormalTok{(time, l, u)]}
+\NormalTok{  tmp_data[, distance }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{sqrt}\NormalTok{((mx }\OperatorTok{-}\StringTok{ }\NormalTok{x)}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }\NormalTok{(my }\OperatorTok{-}\StringTok{ }\NormalTok{y)}\OperatorTok{^}\DecValTok{2}\NormalTok{)]}
   
-  \CommentTok{\# keep within 50}
-\NormalTok{  tmp\_data <{-}}\StringTok{ }\NormalTok{tmp\_data[distance }\OperatorTok{<=}\StringTok{ }\DecValTok{50}\NormalTok{, ]}
+  \CommentTok{# keep within 50}
+\NormalTok{  tmp_data <-}\StringTok{ }\NormalTok{tmp_data[distance }\OperatorTok{<=}\StringTok{ }\DecValTok{50}\NormalTok{, ]}
   
-  \CommentTok{\# get duration}
-  \KeywordTok{return}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{range}\NormalTok{(tmp\_data}\OperatorTok{$}\NormalTok{time)))}
+  \CommentTok{# get duration}
+  \KeywordTok{return}\NormalTok{(}\KeywordTok{diff}\NormalTok{(}\KeywordTok{range}\NormalTok{(tmp_data}\OperatorTok{$}\NormalTok{time)))}
   
-\NormalTok{\}, data\_res\_summary}\OperatorTok{$}\NormalTok{t\_min, data\_res\_summary}\OperatorTok{$}\NormalTok{t\_max,}
-\NormalTok{   data\_res\_summary}\OperatorTok{$}\NormalTok{x\_median, data\_res\_summary}\OperatorTok{$}\NormalTok{y\_median,}
+\NormalTok{\}, data_res_summary}\OperatorTok{$}\NormalTok{t_min, data_res_summary}\OperatorTok{$}\NormalTok{t_max,}
+\NormalTok{   data_res_summary}\OperatorTok{$}\NormalTok{x_median, data_res_summary}\OperatorTok{$}\NormalTok{y_median,}
 \DataTypeTok{SIMPLIFY =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -417,25 +409,25 @@ We save this data to file for later use.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# load recurse}
+\CommentTok{# load recurse}
 \KeywordTok{library}\NormalTok{(recurse)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get 4 column data}
-\NormalTok{data\_for\_patch <{-}}\StringTok{ }\NormalTok{data\_thin[, }\KeywordTok{list}\NormalTok{(x, y, time, TAG)]}
+\CommentTok{# get 4 column data}
+\NormalTok{data_for_patch <-}\StringTok{ }\NormalTok{data_thin[, }\KeywordTok{list}\NormalTok{(x, y, time, TAG)]}
 
-\CommentTok{\# get recurse data for a 10m radius}
-\NormalTok{recurse\_stats <{-}}\StringTok{ }\KeywordTok{getRecursions}\NormalTok{(data\_for\_patch,}
+\CommentTok{# get recurse data for a 10m radius}
+\NormalTok{recurse_stats <-}\StringTok{ }\KeywordTok{getRecursions}\NormalTok{(data_for_patch,}
                                \DataTypeTok{radius =} \DecValTok{50}\NormalTok{, }\DataTypeTok{timeunits =} \StringTok{"mins"}\NormalTok{)}
 
-\CommentTok{\# assign to recurse data}
-\NormalTok{data\_for\_patch[, res\_time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{recurse\_stats}\OperatorTok{$}\NormalTok{residenceTime]}
+\CommentTok{# assign to recurse data}
+\NormalTok{data_for_patch[, res_time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{recurse_stats}\OperatorTok{$}\NormalTok{residenceTime]}
 
-\CommentTok{\# save recurse data}
-\KeywordTok{fwrite}\NormalTok{(data\_for\_patch, }\DataTypeTok{file =} \StringTok{"data/data\_calib\_for\_patch.csv"}\NormalTok{)}
+\CommentTok{# save recurse data}
+\KeywordTok{fwrite}\NormalTok{(data_for_patch, }\DataTypeTok{file =} \StringTok{"data/data_calib_for_patch.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -447,15 +439,15 @@ From this subset, we construct residence patches using the parameters: \texttt{b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# assign id as tag}
-\NormalTok{data\_for\_patch[, id }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.character}\NormalTok{(TAG)]}
+\CommentTok{# assign id as tag}
+\NormalTok{data_for_patch[, id }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.character}\NormalTok{(TAG)]}
 
-\CommentTok{\# on known residence points}
-\NormalTok{patch\_res\_known <{-}}\StringTok{ }\KeywordTok{atl\_res\_patch}\NormalTok{(data\_for\_patch[res\_time }\OperatorTok{>=}\StringTok{ }\DecValTok{5}\NormalTok{, ], }
-                                \DataTypeTok{buffer\_radius =} \DecValTok{5}\NormalTok{,}
-                                \DataTypeTok{lim\_spat\_indep =} \DecValTok{50}\NormalTok{,}
-                                \DataTypeTok{lim\_time\_indep =} \DecValTok{5}\NormalTok{,}
-                                \DataTypeTok{min\_fixes =} \DecValTok{3}\NormalTok{)}
+\CommentTok{# on known residence points}
+\NormalTok{patch_res_known <-}\StringTok{ }\KeywordTok{atl_res_patch}\NormalTok{(data_for_patch[res_time }\OperatorTok{>=}\StringTok{ }\DecValTok{5}\NormalTok{, ], }
+                                \DataTypeTok{buffer_radius =} \DecValTok{5}\NormalTok{,}
+                                \DataTypeTok{lim_spat_indep =} \DecValTok{50}\NormalTok{,}
+                                \DataTypeTok{lim_time_indep =} \DecValTok{5}\NormalTok{,}
+                                \DataTypeTok{min_fixes =} \DecValTok{3}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -467,17 +459,17 @@ We use a buffer radius here of 20 metres for the spatial buffer, despite using a
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# for the known and unkniwn patches}
-\NormalTok{patch\_sf\_data <{-}}\StringTok{ }\KeywordTok{atl\_patch\_summary}\NormalTok{(patch\_res\_known, }
-                                   \DataTypeTok{which\_data =} \StringTok{"spatial"}\NormalTok{,}
-                                   \DataTypeTok{buffer\_radius =} \DecValTok{20}\NormalTok{)}
+\CommentTok{# for the known and unkniwn patches}
+\NormalTok{patch_sf_data <-}\StringTok{ }\KeywordTok{atl_patch_summary}\NormalTok{(patch_res_known, }
+                                   \DataTypeTok{which_data =} \StringTok{"spatial"}\NormalTok{,}
+                                   \DataTypeTok{buffer_radius =} \DecValTok{20}\NormalTok{)}
 
-\CommentTok{\# assign crs}
-\NormalTok{sf}\OperatorTok{::}\KeywordTok{st\_crs}\NormalTok{(patch\_sf\_data) <{-}}\StringTok{ }\DecValTok{32631}
+\CommentTok{# assign crs}
+\NormalTok{sf}\OperatorTok{::}\KeywordTok{st_crs}\NormalTok{(patch_sf_data) <-}\StringTok{ }\DecValTok{32631}
 
-\CommentTok{\# get summary data}
-\NormalTok{patch\_summary\_data <{-}}\StringTok{ }\KeywordTok{atl\_patch\_summary}\NormalTok{(patch\_res\_known, }
-                                        \DataTypeTok{which\_data =} \StringTok{"summary"}\NormalTok{)}
+\CommentTok{# get summary data}
+\NormalTok{patch_summary_data <-}\StringTok{ }\KeywordTok{atl_patch_summary}\NormalTok{(patch_res_known, }
+                                        \DataTypeTok{which_data =} \StringTok{"summary"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -488,8 +480,9 @@ We read in the island's shapefile to plot it as a background for the residence p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# read griend}
-\NormalTok{griend <{-}}\StringTok{ }\NormalTok{sf}\OperatorTok{::}\KeywordTok{st\_read}\NormalTok{(}\StringTok{"data/griend\_polygon/griend\_polygon.shp"}\NormalTok{)}
+\CommentTok{# read griend and hut}
+\NormalTok{griend <-}\StringTok{ }\NormalTok{sf}\OperatorTok{::}\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/griend_polygon/griend_polygon.shp"}\NormalTok{)}
+\NormalTok{hut <-}\StringTok{ }\NormalTok{sf}\OperatorTok{::}\KeywordTok{st_read}\NormalTok{(}\StringTok{"data/griend_hut.gpkg"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -507,38 +500,38 @@ We filter this data to exclude one exceedingly long outlier of about an hour (WP
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get known patch summary}
-\NormalTok{data\_res <{-}}\StringTok{ }\NormalTok{data\_unproc[stringi}\OperatorTok{::}\KeywordTok{stri\_detect}\NormalTok{(tID, }\DataTypeTok{regex =} \StringTok{"(WP)"}\NormalTok{), ]}
+\CommentTok{# get known patch summary}
+\NormalTok{data_res <-}\StringTok{ }\NormalTok{data_unproc[stringi}\OperatorTok{::}\KeywordTok{stri_detect}\NormalTok{(tID, }\DataTypeTok{regex =} \StringTok{"(WP)"}\NormalTok{), ]}
 
-\CommentTok{\# get waypoint summary}
-\NormalTok{patch\_summary\_real <{-}}\StringTok{ }\NormalTok{data\_res[, }\KeywordTok{list}\NormalTok{(}\DataTypeTok{nfixes\_real =}\NormalTok{ .N,}
-                                      \DataTypeTok{x\_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(x), }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{),}
-                                      \DataTypeTok{y\_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(y), }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{)), }
+\CommentTok{# get waypoint summary}
+\NormalTok{patch_summary_real <-}\StringTok{ }\NormalTok{data_res[, }\KeywordTok{list}\NormalTok{(}\DataTypeTok{nfixes_real =}\NormalTok{ .N,}
+                                      \DataTypeTok{x_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(x), }\DataTypeTok{digits =} \DecValTok{-2}\NormalTok{),}
+                                      \DataTypeTok{y_median =} \KeywordTok{round}\NormalTok{(}\KeywordTok{median}\NormalTok{(y), }\DataTypeTok{digits =} \DecValTok{-2}\NormalTok{)), }
 \NormalTok{                               by =}\StringTok{ "tID"}\NormalTok{]}
 
-\CommentTok{\# add real duration}
-\NormalTok{patch\_summary\_real[, duration\_real }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{wp\_data]}
+\CommentTok{# add real duration}
+\NormalTok{patch_summary_real[, duration_real }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\NormalTok{wp_data]}
 
-\CommentTok{\# round median coordinate for inferred patches}
-\NormalTok{patch\_summary\_inferred <{-}}\StringTok{ }
-\StringTok{  }\NormalTok{patch\_summary\_data[, }
-                     \KeywordTok{c}\NormalTok{(}\StringTok{"x\_median"}\NormalTok{, }\StringTok{"y\_median"}\NormalTok{, }
+\CommentTok{# round median coordinate for inferred patches}
+\NormalTok{patch_summary_inferred <-}\StringTok{ }
+\StringTok{  }\NormalTok{patch_summary_data[, }
+                     \KeywordTok{c}\NormalTok{(}\StringTok{"x_median"}\NormalTok{, }\StringTok{"y_median"}\NormalTok{, }
                        \StringTok{"nfixes"}\NormalTok{, }\StringTok{"duration"}\NormalTok{, }\StringTok{"patch"}\NormalTok{)}
-\NormalTok{                     ][, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{(}\DataTypeTok{x\_median =} \KeywordTok{round}\NormalTok{(x\_median, }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{),}
-                              \DataTypeTok{y\_median =} \KeywordTok{round}\NormalTok{(y\_median, }\DataTypeTok{digits =} \DecValTok{{-}2}\NormalTok{))]}
+\NormalTok{                     ][, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{(}\DataTypeTok{x_median =} \KeywordTok{round}\NormalTok{(x_median, }\DataTypeTok{digits =} \DecValTok{-2}\NormalTok{),}
+                              \DataTypeTok{y_median =} \KeywordTok{round}\NormalTok{(y_median, }\DataTypeTok{digits =} \DecValTok{-2}\NormalTok{))]}
 
-\CommentTok{\# join with respatch summary}
-\NormalTok{patch\_summary\_compare <{-}}\StringTok{ }
-\StringTok{  }\KeywordTok{merge}\NormalTok{(patch\_summary\_real,}
-\NormalTok{        patch\_summary\_inferred, }
-        \DataTypeTok{on =} \KeywordTok{c}\NormalTok{(}\StringTok{"x\_median"}\NormalTok{, }\StringTok{"y\_median"}\NormalTok{),}
+\CommentTok{# join with respatch summary}
+\NormalTok{patch_summary_compare <-}\StringTok{ }
+\StringTok{  }\KeywordTok{merge}\NormalTok{(patch_summary_real,}
+\NormalTok{        patch_summary_inferred, }
+        \DataTypeTok{on =} \KeywordTok{c}\NormalTok{(}\StringTok{"x_median"}\NormalTok{, }\StringTok{"y_median"}\NormalTok{),}
         \DataTypeTok{all.x =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{all.y =} \OtherTok{TRUE}\NormalTok{)}
 
-\CommentTok{\# drop nas}
-\NormalTok{patch\_summary\_compare <{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(patch\_summary\_compare)}
+\CommentTok{# drop nas}
+\NormalTok{patch_summary_compare <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(patch_summary_compare)}
 
-\CommentTok{\# drop patch around WP080}
-\NormalTok{patch\_summary\_compare <{-}}\StringTok{ }\NormalTok{patch\_summary\_compare[tID }\OperatorTok{!=}\StringTok{ "WP080"}\NormalTok{, ]}
+\CommentTok{# drop patch around WP080}
+\NormalTok{patch_summary_compare <-}\StringTok{ }\NormalTok{patch_summary_compare[tID }\OperatorTok{!=}\StringTok{ "WP080"}\NormalTok{, ]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -551,19 +544,19 @@ We run a simple linear model.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get linear model}
-\NormalTok{model\_duration <{-}}\StringTok{ }\KeywordTok{lm}\NormalTok{(duration\_real }\OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{duration,}
-                     \DataTypeTok{data =}\NormalTok{ patch\_summary\_compare)}
+\CommentTok{# get linear model}
+\NormalTok{model_duration <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(duration_real }\OperatorTok{~}\StringTok{ }\NormalTok{duration,}
+                     \DataTypeTok{data =}\NormalTok{ patch_summary_compare)}
 
-\CommentTok{\# get R2}
-\KeywordTok{summary}\NormalTok{(model\_duration)}
+\CommentTok{# get R2}
+\KeywordTok{summary}\NormalTok{(model_duration)}
 
-\CommentTok{\# write to file}
+\CommentTok{# write to file}
 \KeywordTok{writeLines}\NormalTok{(}
   \DataTypeTok{text =} \KeywordTok{capture.output}\NormalTok{(}
-    \KeywordTok{summary}\NormalTok{(model\_duration)}
+    \KeywordTok{summary}\NormalTok{(model_duration)}
 \NormalTok{  ),}
-  \DataTypeTok{con =} \StringTok{"data/model\_output\_residence\_patch.txt"}
+  \DataTypeTok{con =} \StringTok{"data/model_output_residence_patch.txt"}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -581,28 +574,28 @@ We run a simple linear model.
 \begin{Highlighting}[]
 \KeywordTok{cat}\NormalTok{(}
   \KeywordTok{readLines}\NormalTok{(}
-    \DataTypeTok{con =} \StringTok{"data/model\_output\_residence\_patch.txt"}\NormalTok{,}
-    \DataTypeTok{encoding =} \StringTok{"UTF{-}8"}
+    \DataTypeTok{con =} \StringTok{"data/model_output_residence_patch.txt"}\NormalTok{,}
+    \DataTypeTok{encoding =} \StringTok{"UTF-8"}
 \NormalTok{  ), }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}
 \NormalTok{)}
-\CommentTok{\#> }
-\CommentTok{\#> Call:}
-\CommentTok{\#> lm(formula = duration\_real \textasciitilde{} duration, data = patch\_summary\_compare)}
-\CommentTok{\#> }
-\CommentTok{\#> Residuals:}
-\CommentTok{\#>      Min       1Q   Median       3Q      Max }
-\CommentTok{\#> {-}103.237  {-}19.277   {-}2.917    7.003   93.431 }
-\CommentTok{\#> }
-\CommentTok{\#> Coefficients:}
-\CommentTok{\#>              Estimate Std. Error t value Pr(>|t|)    }
-\CommentTok{\#> (Intercept) 101.42061   47.66936   2.128   0.0493 *  }
-\CommentTok{\#> duration      1.02108    0.07876  12.965 6.66e{-}10 ***}
-\CommentTok{\#> {-}{-}{-}}
-\CommentTok{\#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1}
-\CommentTok{\#> }
-\CommentTok{\#> Residual standard error: 50.35 on 16 degrees of freedom}
-\CommentTok{\#> Multiple R{-}squared:  0.9131,	Adjusted R{-}squared:  0.9077 }
-\CommentTok{\#> F{-}statistic: 168.1 on 1 and 16 DF,  p{-}value: 6.655e{-}10}
+\CommentTok{#> }
+\CommentTok{#> Call:}
+\CommentTok{#> lm(formula = duration_real ~ duration, data = patch_summary_compare)}
+\CommentTok{#> }
+\CommentTok{#> Residuals:}
+\CommentTok{#>      Min       1Q   Median       3Q      Max }
+\CommentTok{#> -103.237  -19.277   -2.917    7.003   93.431 }
+\CommentTok{#> }
+\CommentTok{#> Coefficients:}
+\CommentTok{#>              Estimate Std. Error t value Pr(>|t|)    }
+\CommentTok{#> (Intercept) 101.42061   47.66936   2.128   0.0493 *  }
+\CommentTok{#> duration      1.02108    0.07876  12.965 6.66e-10 ***}
+\CommentTok{#> ---}
+\CommentTok{#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1}
+\CommentTok{#> }
+\CommentTok{#> Residual standard error: 50.35 on 16 degrees of freedom}
+\CommentTok{#> Multiple R-squared:  0.9131, Adjusted R-squared:  0.9077 }
+\CommentTok{#> F-statistic: 168.1 on 1 and 16 DF,  p-value: 6.655e-10}
 \end{Highlighting}
 \end{Shaded}
 
@@ -611,21 +604,21 @@ We run a simple linear model.
 
 We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (\emph{Rousettus aegyptiacus}), and construct residence patches.
 
-\hypertarget{prepare-libraries}{%
-\subsection{Prepare libraries}\label{prepare-libraries}}
+\hypertarget{prepare-libraries-1}{%
+\subsection{Prepare libraries}\label{prepare-libraries-1}}
 
 Install the required \texttt{R} libraries that are required from CRAN if not already installed.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# load libs}
+\CommentTok{# load libs}
 \KeywordTok{library}\NormalTok{(data.table)}
 \KeywordTok{library}\NormalTok{(RSQLite)}
 \KeywordTok{library}\NormalTok{(ggplot2)}
 \KeywordTok{library}\NormalTok{(patchwork)}
 
-\CommentTok{\# prepare a palette}
-\NormalTok{pal <{-}}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{4}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
+\CommentTok{# prepare a palette}
+\NormalTok{pal <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{4}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -639,8 +632,8 @@ It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the
 \begin{Highlighting}[]
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
 
-\CommentTok{\# installation using remotes}
-\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install\_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
+\CommentTok{# installation using remotes}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -652,20 +645,20 @@ This data can be found in the ``data'' folder.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# prepare the connection}
-\NormalTok{con <{-}}\StringTok{ }\KeywordTok{dbConnect}\NormalTok{(}\DataTypeTok{drv =} \KeywordTok{SQLite}\NormalTok{(), }
-                 \DataTypeTok{dbname =} \StringTok{"data/Three\_example\_bats.sql"}\NormalTok{)}
+\CommentTok{# prepare the connection}
+\NormalTok{con <-}\StringTok{ }\KeywordTok{dbConnect}\NormalTok{(}\DataTypeTok{drv =} \KeywordTok{SQLite}\NormalTok{(), }
+                 \DataTypeTok{dbname =} \StringTok{"data/Three_example_bats.sql"}\NormalTok{)}
 
-\CommentTok{\# list the tables}
-\NormalTok{table\_name <{-}}\StringTok{ }\KeywordTok{dbListTables}\NormalTok{(con)}
+\CommentTok{# list the tables}
+\NormalTok{table_name <-}\StringTok{ }\KeywordTok{dbListTables}\NormalTok{(con)}
 
-\CommentTok{\# prepare to query all tables}
-\NormalTok{query <{-}}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}\StringTok{\textquotesingle{}select * from }\CharTok{\textbackslash{}"}\StringTok{\%s}\CharTok{\textbackslash{}"}\StringTok{\textquotesingle{}}\NormalTok{, table\_name)}
+\CommentTok{# prepare to query all tables}
+\NormalTok{query <-}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}\StringTok{'select * from }\CharTok{\textbackslash{}"}\StringTok{%s}\CharTok{\textbackslash{}"}\StringTok{'}\NormalTok{, table_name)}
 
-\CommentTok{\# query the database}
-\NormalTok{data <{-}}\StringTok{ }\KeywordTok{dbGetQuery}\NormalTok{(}\DataTypeTok{conn =}\NormalTok{ con, }\DataTypeTok{statement =}\NormalTok{ query)}
+\CommentTok{# query the database}
+\NormalTok{data <-}\StringTok{ }\KeywordTok{dbGetQuery}\NormalTok{(}\DataTypeTok{conn =}\NormalTok{ con, }\DataTypeTok{statement =}\NormalTok{ query)}
 
-\CommentTok{\# disconnect from database}
+\CommentTok{# disconnect from database}
 \KeywordTok{dbDisconnect}\NormalTok{(con)}
 \end{Highlighting}
 \end{Shaded}
@@ -674,11 +667,11 @@ Convert data to csv, and save a local copy in the folder ``data''.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# convert data to datatable}
+\CommentTok{# convert data to datatable}
 \KeywordTok{setDT}\NormalTok{(data)}
 
-\CommentTok{\# write data for QGIS}
-\KeywordTok{fwrite}\NormalTok{(data, }\DataTypeTok{file =} \StringTok{"data/bat\_data.csv"}\NormalTok{)}
+\CommentTok{# write data for QGIS}
+\KeywordTok{fwrite}\NormalTok{(data, }\DataTypeTok{file =} \StringTok{"data/bat_data.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -709,14 +702,14 @@ into a list of data.tables to avoid mixups among individuals.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# split bat data by tag}
-\CommentTok{\# first make a copy using the data.table function copy}
-\CommentTok{\# this prevents the orignal data from being modified by atlastools}
-\CommentTok{\# functions which DO MODIFY BY REFERENCE!}
-\NormalTok{data\_split <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\CommentTok{# split bat data by tag}
+\CommentTok{# first make a copy using the data.table function copy}
+\CommentTok{# this prevents the orignal data from being modified by atlastools}
+\CommentTok{# functions which DO MODIFY BY REFERENCE!}
+\NormalTok{data_split <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
 
-\CommentTok{\# now split}
-\NormalTok{data\_split <{-}}\StringTok{ }\KeywordTok{split}\NormalTok{(data\_split, }\DataTypeTok{by =} \StringTok{"TAG"}\NormalTok{)}
+\CommentTok{# now split}
+\NormalTok{data_split <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data_split, }\DataTypeTok{by =} \StringTok{"TAG"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -731,10 +724,10 @@ First we calculate the variable \texttt{SD}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get SD.}
-\CommentTok{\# since the data are data.tables, no assignment is necessary}
+\CommentTok{# get SD.}
+\CommentTok{# since the data are data.tables, no assignment is necessary}
 \KeywordTok{invisible}\NormalTok{(}
-  \KeywordTok{lapply}\NormalTok{(data\_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
+  \KeywordTok{lapply}\NormalTok{(data_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
 \NormalTok{    dt[, SD }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(VARX }\OperatorTok{+}\StringTok{ }\NormalTok{VARY }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{COVXY))]}
 \NormalTok{  \})}
 \NormalTok{)}
@@ -746,12 +739,12 @@ We apply the filter to each individual's data using an \texttt{lapply}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# filter for SD <= 20}
-\CommentTok{\# here, reassignment is necessary as rows are being removed}
-\CommentTok{\# the atl\_filter\_covariates function could have been used here}
-\NormalTok{data\_split <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
+\CommentTok{# filter for SD <= 20}
+\CommentTok{# here, reassignment is necessary as rows are being removed}
+\CommentTok{# the atl_filter_covariates function could have been used here}
+\NormalTok{data_split <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
   
-\NormalTok{  dt <{-}}\StringTok{ }\KeywordTok{atl\_filter\_covariates}\NormalTok{(}
+\NormalTok{  dt <-}\StringTok{ }\KeywordTok{atl_filter_covariates}\NormalTok{(}
     \DataTypeTok{data =}\NormalTok{ dt,}
     \DataTypeTok{filters =} \KeywordTok{c}\NormalTok{(}\StringTok{"SD <= 20"}\NormalTok{,}
                 \StringTok{"NBS > 3"}\NormalTok{)}
@@ -783,19 +776,19 @@ First we calculate speeds, using \texttt{atl\_get\_speed}. We must assign the sp
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get speeds as with SD, no reassignment required for columns}
+\CommentTok{# get speeds as with SD, no reassignment required for columns}
 \KeywordTok{invisible}\NormalTok{(}
-  \KeywordTok{lapply}\NormalTok{(data\_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
+  \KeywordTok{lapply}\NormalTok{(data_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
     
-    \CommentTok{\# first process time to seconds}
-    \CommentTok{\# assign to a new column}
+    \CommentTok{# first process time to seconds}
+    \CommentTok{# assign to a new column}
 \NormalTok{    dt[, time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{floor}\NormalTok{(TIME }\OperatorTok{/}\StringTok{ }\DecValTok{1000}\NormalTok{)]}
     
-\NormalTok{    dt[, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{(}\DataTypeTok{speed\_in =} \KeywordTok{atl\_get\_speed}\NormalTok{(dt, }
+\NormalTok{    dt[, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{(}\DataTypeTok{speed_in =} \KeywordTok{atl_get_speed}\NormalTok{(dt, }
                                        \DataTypeTok{x =} \StringTok{"X"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Y"}\NormalTok{, }
                                        \DataTypeTok{time =} \StringTok{"time"}\NormalTok{,}
                                        \DataTypeTok{type =} \StringTok{"in"}\NormalTok{),}
-              \DataTypeTok{speed\_out =} \KeywordTok{atl\_get\_speed}\NormalTok{(dt, }
+              \DataTypeTok{speed_out =} \KeywordTok{atl_get_speed}\NormalTok{(dt, }
                                        \DataTypeTok{x =} \StringTok{"X"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Y"}\NormalTok{, }
                                        \DataTypeTok{time =} \StringTok{"time"}\NormalTok{,}
                                        \DataTypeTok{type =} \StringTok{"out"}\NormalTok{))]}
@@ -808,14 +801,14 @@ Now filter for speeds \textgreater{} 20 m/s (around 70 km/h), passing the predic
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# filter speeds}
-\CommentTok{\# reassignment is required here}
-\NormalTok{data\_split <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
-\NormalTok{  dt <{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(dt, }\DataTypeTok{cols =} \KeywordTok{c}\NormalTok{(}\StringTok{"speed\_in"}\NormalTok{, }\StringTok{"speed\_out"}\NormalTok{))}
+\CommentTok{# filter speeds}
+\CommentTok{# reassignment is required here}
+\NormalTok{data_split <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_split, }\ControlFlowTok{function}\NormalTok{(dt) \{}
+\NormalTok{  dt <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(dt, }\DataTypeTok{cols =} \KeywordTok{c}\NormalTok{(}\StringTok{"speed_in"}\NormalTok{, }\StringTok{"speed_out"}\NormalTok{))}
   
-\NormalTok{  dt <{-}}\StringTok{ }\KeywordTok{atl\_filter\_covariates}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ dt,}
-                              \DataTypeTok{filters =} \KeywordTok{c}\NormalTok{(}\StringTok{"speed\_in <= 20"}\NormalTok{,}
-                                          \StringTok{"speed\_out <= 20"}\NormalTok{))}
+\NormalTok{  dt <-}\StringTok{ }\KeywordTok{atl_filter_covariates}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ dt,}
+                              \DataTypeTok{filters =} \KeywordTok{c}\NormalTok{(}\StringTok{"speed_in <= 20"}\NormalTok{,}
+                                          \StringTok{"speed_out <= 20"}\NormalTok{))}
 \NormalTok{\})}
 \end{Highlighting}
 \end{Shaded}
@@ -843,26 +836,26 @@ In this case, the same moving window \(K\) is applied to all individuals, but mo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# since the function modifies in place, we shall make a copy}
-\NormalTok{data\_smooth <{-}}\StringTok{ }\KeywordTok{copy}\NormalTok{(data\_split)}
+\CommentTok{# since the function modifies in place, we shall make a copy}
+\NormalTok{data_smooth <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data_split)}
 
-\CommentTok{\# split the data again}
-\NormalTok{data\_smooth <{-}}\StringTok{ }\KeywordTok{split}\NormalTok{(data\_smooth, }\DataTypeTok{by =} \StringTok{"TAG"}\NormalTok{)}
+\CommentTok{# split the data again}
+\NormalTok{data_smooth <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data_smooth, }\DataTypeTok{by =} \StringTok{"TAG"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# apply the median smooth to each list element}
-\CommentTok{\# no reassignment is required as THE FUNCTION MODIFIES IN PLACE!}
+\CommentTok{# apply the median smooth to each list element}
+\CommentTok{# no reassignment is required as THE FUNCTION MODIFIES IN PLACE!}
 \KeywordTok{invisible}\NormalTok{(}
   
-  \CommentTok{\# the function arguments to atl\_median\_smooth}
-  \CommentTok{\# can be passed directly in lapply}
+  \CommentTok{# the function arguments to atl_median_smooth}
+  \CommentTok{# can be passed directly in lapply}
   
-  \KeywordTok{lapply}\NormalTok{(}\DataTypeTok{X =}\NormalTok{ data\_smooth, }
-         \DataTypeTok{FUN =}\NormalTok{ atl\_median\_smooth,}
-         \DataTypeTok{time =} \StringTok{"time"}\NormalTok{, }\DataTypeTok{moving\_window =} \DecValTok{5}\NormalTok{)}
+  \KeywordTok{lapply}\NormalTok{(}\DataTypeTok{X =}\NormalTok{ data_smooth, }
+         \DataTypeTok{FUN =}\NormalTok{ atl_median_smooth,}
+         \DataTypeTok{time =} \StringTok{"time"}\NormalTok{, }\DataTypeTok{moving_window =} \DecValTok{5}\NormalTok{)}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -886,11 +879,11 @@ First, the data is put through the \texttt{recurse} package to get residence tim
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# load recurse}
+\CommentTok{# load recurse}
 \KeywordTok{library}\NormalTok{(recurse)}
 
-\CommentTok{\# split the data}
-\NormalTok{data\_smooth <{-}}\StringTok{ }\KeywordTok{split}\NormalTok{(data\_smooth, data\_smooth}\OperatorTok{$}\NormalTok{TAG)}
+\CommentTok{# split the data}
+\NormalTok{data_smooth <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data_smooth, data_smooth}\OperatorTok{$}\NormalTok{TAG)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -904,31 +897,31 @@ While a simpler implementation using total residence time divided by the number 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get residence times}
+\CommentTok{# get residence times}
 
-\NormalTok{data\_residence <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_smooth, }\ControlFlowTok{function}\NormalTok{(dt) \{}
-  \CommentTok{\# do basic recurse}
-\NormalTok{  dt\_recurse <{-}}\StringTok{ }\KeywordTok{getRecursions}\NormalTok{(}
+\NormalTok{data_residence <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_smooth, }\ControlFlowTok{function}\NormalTok{(dt) \{}
+  \CommentTok{# do basic recurse}
+\NormalTok{  dt_recurse <-}\StringTok{ }\KeywordTok{getRecursions}\NormalTok{(}
     \DataTypeTok{x =}\NormalTok{ dt[, }\KeywordTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"Y"}\NormalTok{, }\StringTok{"time"}\NormalTok{, }\StringTok{"TAG"}\NormalTok{)],}
     \DataTypeTok{radius =} \DecValTok{50}\NormalTok{,}
     \DataTypeTok{timeunits =} \StringTok{"mins"}
 \NormalTok{  )}
   
-  \CommentTok{\# get revisit stats}
-\NormalTok{  dt\_recurse <{-}}\StringTok{ }\KeywordTok{setDT}\NormalTok{(}
-\NormalTok{    dt\_recurse[[}\StringTok{"revisitStats"}\NormalTok{]]}
+  \CommentTok{# get revisit stats}
+\NormalTok{  dt_recurse <-}\StringTok{ }\KeywordTok{setDT}\NormalTok{(}
+\NormalTok{    dt_recurse[[}\StringTok{"revisitStats"}\NormalTok{]]}
 \NormalTok{  )}
   
-  \CommentTok{\# count long absences from the area}
-\NormalTok{  dt\_recurse[, timeSinceLastVisit }\OperatorTok{:}\ErrorTok{=}
-\StringTok{          }\KeywordTok{ifelse}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(timeSinceLastVisit), }\OperatorTok{{-}}\OtherTok{Inf}\NormalTok{, timeSinceLastVisit)]}
-\NormalTok{  dt\_recurse[, longAbsenceCounter }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(timeSinceLastVisit }\OperatorTok{>}\StringTok{ }\DecValTok{60}\NormalTok{),}
+  \CommentTok{# count long absences from the area}
+\NormalTok{  dt_recurse[, timeSinceLastVisit }\OperatorTok{:}\ErrorTok{=}
+\StringTok{          }\KeywordTok{ifelse}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(timeSinceLastVisit), }\OperatorTok{-}\OtherTok{Inf}\NormalTok{, timeSinceLastVisit)]}
+\NormalTok{  dt_recurse[, longAbsenceCounter }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(timeSinceLastVisit }\OperatorTok{>}\StringTok{ }\DecValTok{60}\NormalTok{),}
 \NormalTok{             by =}\StringTok{ }\NormalTok{.(coordIdx)}
 \NormalTok{             ]}
-  \CommentTok{\# get data before the first long absence of 60 mins}
-\NormalTok{  dt\_recurse <{-}}\StringTok{ }\NormalTok{dt\_recurse[longAbsenceCounter }\OperatorTok{<}\StringTok{ }\DecValTok{1}\NormalTok{, ]}
+  \CommentTok{# get data before the first long absence of 60 mins}
+\NormalTok{  dt_recurse <-}\StringTok{ }\NormalTok{dt_recurse[longAbsenceCounter }\OperatorTok{<}\StringTok{ }\DecValTok{1}\NormalTok{, ]}
   
-\NormalTok{  dt\_recurse <{-}}\StringTok{ }\NormalTok{dt\_recurse[, }\KeywordTok{list}\NormalTok{(}
+\NormalTok{  dt_recurse <-}\StringTok{ }\NormalTok{dt_recurse[, }\KeywordTok{list}\NormalTok{(}
     \DataTypeTok{resTime =} \KeywordTok{sum}\NormalTok{(timeInside),}
     \DataTypeTok{fpt =} \KeywordTok{first}\NormalTok{(timeInside),}
     \DataTypeTok{revisits =} \KeywordTok{max}\NormalTok{(visitIdx)}
@@ -936,11 +929,11 @@ While a simpler implementation using total residence time divided by the number 
 \NormalTok{  by =}\StringTok{ }\NormalTok{.(coordIdx, x, y)}
 \NormalTok{  ]}
   
-  \CommentTok{\# prepare and merge existing data with recursion data}
+  \CommentTok{# prepare and merge existing data with recursion data}
 \NormalTok{  dt[, coordIdx }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(dt))]}
   
-\NormalTok{  dt <{-}}\StringTok{ }\KeywordTok{merge}\NormalTok{(dt, }
-\NormalTok{              dt\_recurse[, }\KeywordTok{c}\NormalTok{(}\StringTok{"coordIdx"}\NormalTok{, }\StringTok{"resTime"}\NormalTok{)], }
+\NormalTok{  dt <-}\StringTok{ }\KeywordTok{merge}\NormalTok{(dt, }
+\NormalTok{              dt_recurse[, }\KeywordTok{c}\NormalTok{(}\StringTok{"coordIdx"}\NormalTok{, }\StringTok{"resTime"}\NormalTok{)], }
               \DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"coordIdx"}\NormalTok{))}
   
   \KeywordTok{setorderv}\NormalTok{(dt, }\StringTok{"time"}\NormalTok{)}
@@ -952,11 +945,11 @@ We bind the data together and assign a human readable timestamp column.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# bind the list}
-\NormalTok{data\_residence <{-}}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data\_residence)}
+\CommentTok{# bind the list}
+\NormalTok{data_residence <-}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data_residence)}
 
-\CommentTok{\# get time as human readable}
-\NormalTok{data\_residence[, ts }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.POSIXct}\NormalTok{(time, }\DataTypeTok{origin =} \StringTok{"1970{-}01{-}01"}\NormalTok{)]}
+\CommentTok{# get time as human readable}
+\NormalTok{data_residence[, ts }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.POSIXct}\NormalTok{(time, }\DataTypeTok{origin =} \StringTok{"1970-01-01"}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -969,15 +962,15 @@ Then we subset the data to only work with positions where the individual had a r
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# add an id column}
-\NormalTok{data\_residence[, }\StringTok{\textasciigrave{}}\DataTypeTok{:=}\StringTok{\textasciigrave{}}\NormalTok{(}\DataTypeTok{id =}\NormalTok{ TAG,}
+\CommentTok{# add an id column}
+\NormalTok{data_residence[, }\StringTok{`}\DataTypeTok{:=}\StringTok{`}\NormalTok{(}\DataTypeTok{id =}\NormalTok{ TAG,}
                       \DataTypeTok{x =}\NormalTok{ X, }\DataTypeTok{y =}\NormalTok{ Y)]}
 
-\CommentTok{\# filter for residence time > 5 minutes}
-\NormalTok{data\_residence <{-}}\StringTok{ }\NormalTok{data\_residence[resTime }\OperatorTok{>}\StringTok{ }\DecValTok{5}\NormalTok{, ]}
+\CommentTok{# filter for residence time > 5 minutes}
+\NormalTok{data_residence <-}\StringTok{ }\NormalTok{data_residence[resTime }\OperatorTok{>}\StringTok{ }\DecValTok{5}\NormalTok{, ]}
 
-\CommentTok{\# split the data}
-\NormalTok{data\_residence <{-}}\StringTok{ }\KeywordTok{split}\NormalTok{(data\_residence, data\_residence}\OperatorTok{$}\NormalTok{TAG)}
+\CommentTok{# split the data}
+\NormalTok{data_residence <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data_residence, data_residence}\OperatorTok{$}\NormalTok{TAG)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -985,9 +978,9 @@ We apply the residence patch method, using the default argument values (\texttt{
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# segment into residence patches}
-\NormalTok{data\_patches <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_residence, atl\_res\_patch,}
-                       \DataTypeTok{buffer\_radius =} \DecValTok{25}\NormalTok{)}
+\CommentTok{# segment into residence patches}
+\NormalTok{data_patches <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_residence, atl_res_patch,}
+                       \DataTypeTok{buffer_radius =} \DecValTok{25}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1000,20 +993,20 @@ These objects and the raw movement data are shown in Figure 5.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get data spatials}
-\NormalTok{data\_spatials <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_patches, atl\_patch\_summary,}
-                        \DataTypeTok{which\_data =} \StringTok{"spatial"}\NormalTok{,}
-                        \DataTypeTok{buffer\_radius =} \DecValTok{25}\NormalTok{)}
+\CommentTok{# get data spatials}
+\NormalTok{data_spatials <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_patches, atl_patch_summary,}
+                        \DataTypeTok{which_data =} \StringTok{"spatial"}\NormalTok{,}
+                        \DataTypeTok{buffer_radius =} \DecValTok{25}\NormalTok{)}
 
-\CommentTok{\# bind list}
-\NormalTok{data\_spatials <{-}}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data\_spatials)}
+\CommentTok{# bind list}
+\NormalTok{data_spatials <-}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(data_spatials)}
 
-\CommentTok{\# convert to sf}
+\CommentTok{# convert to sf}
 \KeywordTok{library}\NormalTok{(sf)}
-\NormalTok{data\_spatials <{-}}\StringTok{ }\KeywordTok{st\_sf}\NormalTok{(data\_spatials, }\DataTypeTok{sf\_column\_name =} \StringTok{"polygons"}\NormalTok{)}
+\NormalTok{data_spatials <-}\StringTok{ }\KeywordTok{st_sf}\NormalTok{(data_spatials, }\DataTypeTok{sf_column_name =} \StringTok{"polygons"}\NormalTok{)}
 
-\CommentTok{\# assign a crs}
-\KeywordTok{st\_crs}\NormalTok{(data\_spatials) <{-}}\StringTok{ }\KeywordTok{st\_crs}\NormalTok{(}\DecValTok{2039}\NormalTok{)}
+\CommentTok{# assign a crs}
+\KeywordTok{st_crs}\NormalTok{(data_spatials) <-}\StringTok{ }\KeywordTok{st_crs}\NormalTok{(}\DecValTok{2039}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1022,8 +1015,8 @@ These objects and the raw movement data are shown in Figure 5.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{st\_write}\NormalTok{(data\_spatials,}
-         \DataTypeTok{dsn =} \StringTok{"data/data\_bat\_residence\_patches.gpkg"}\NormalTok{)}
+\KeywordTok{st_write}\NormalTok{(data_spatials,}
+         \DataTypeTok{dsn =} \StringTok{"data/data_bat_residence_patches.gpkg"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1031,8 +1024,8 @@ Write cleaned bat data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{data\_clean <{-}}\StringTok{ }\KeywordTok{fwrite}\NormalTok{(}\KeywordTok{rbindlist}\NormalTok{(data\_smooth),}
-                     \DataTypeTok{file =} \StringTok{"data/data\_bat\_smooth.csv"}\NormalTok{)}
+\NormalTok{data_clean <-}\StringTok{ }\KeywordTok{fwrite}\NormalTok{(}\KeywordTok{rbindlist}\NormalTok{(data_smooth),}
+                     \DataTypeTok{file =} \StringTok{"data/data_bat_smooth.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1040,15 +1033,15 @@ Write patch summary.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# get summary}
-\NormalTok{patch\_summary <{-}}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data\_patches, atl\_patch\_summary)}
+\CommentTok{# get summary}
+\NormalTok{patch_summary <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(data_patches, atl_patch_summary)}
 
-\CommentTok{\# bind summary}
-\NormalTok{patch\_summary <{-}}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(patch\_summary)}
+\CommentTok{# bind summary}
+\NormalTok{patch_summary <-}\StringTok{ }\KeywordTok{rbindlist}\NormalTok{(patch_summary)}
 
-\CommentTok{\# write}
-\KeywordTok{fwrite}\NormalTok{(patch\_summary,}
-       \StringTok{"data/data\_bat\_patch\_summary.csv"}\NormalTok{)}
+\CommentTok{# write}
+\KeywordTok{fwrite}\NormalTok{(patch_summary,}
+       \StringTok{"data/data_bat_patch_summary.csv"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1066,7 +1059,6 @@ Constructing residence patches for multiple individuals over multiple activity p
 \section{References}\label{references}}
 
 \hypertarget{refs}{}
-\begin{cslreferences}
 \leavevmode\hypertarget{ref-barraquand2008}{}%
 Barraquand, Frédéric, and Simon Benhamou. 2008. ``Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.'' \emph{Ecology} 89 (12): 3336--48. \url{https://doi.org/10.1890/08-0162.1}.
 
@@ -1093,6 +1085,5 @@ Toledo, Sivan, David Shohami, Ingo Schiffner, Emmanuel Lourie, Yotam Orchan, Yoa
 
 \leavevmode\hypertarget{ref-weiser2016}{}%
 Weiser, Adi Weller, Yotam Orchan, Ran Nathan, Motti Charter, Anthony J. Weiss, and Sivan Toledo. 2016. ``Characterizing the Accuracy of a Self-Synchronized Reverse-GPS Wildlife Localization System.'' In \emph{2016 15th ACM/IEEE International Conference on Information Processing in Sensor Networks (IPSN)}, 1--12. \url{https://doi.org/10.1109/IPSN.2016.7460662}.
-\end{cslreferences}
 
 \end{document}

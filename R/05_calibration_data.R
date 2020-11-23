@@ -263,8 +263,8 @@ data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 
 ## -----------------------------------------------------------------------------
 # get centroid
-data_res_summary <- data_res[, list(x_median = round(median(x), digits = -2),
-                                    y_median = round(median(y), digits = -2)),
+data_res_summary <- data_res[, list(x_median = median(x),
+                                    y_median = median(y),
                                     t_median = median(time)),
                              by = "tID"]
 
@@ -335,8 +335,9 @@ patch_summary_data <- atl_patch_summary(patch_res_known,
 
 
 ## -----------------------------------------------------------------------------
-# read griend
+# read griend and hut
 griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
+hut <- sf::st_read("data/griend_hut.gpkg")
 
 
 ## ----echo=FALSE---------------------------------------------------------------
@@ -350,6 +351,10 @@ fig_basic_residence <-
              stroke = 1,
              col = pal[4],
              alpha = 1)+
+  geom_sf(data = hut,
+          size = 10, shape = 7,
+          stroke = 1,
+          col = pal[1])+
   geom_path(data = data_for_patch,
             aes(x, y),
             show.legend = F,
@@ -374,6 +379,12 @@ fig_basic_residence <-
            expand = F,
            ylim = c(5901650, 5903100),
            xlim = c(650000, 650600))
+
+
+## ----echo=FALSE---------------------------------------------------------------
+ggsave(fig_basic_residence,
+       filename = "figures/fig_calib_residence.png",
+       height = 170, width = 80, units = "mm")
 
 
 ## -----------------------------------------------------------------------------
@@ -471,6 +482,15 @@ figure_lm_duration <-
 
 ggsave(figure_lm_duration, filename = "figures/fig_calib_lm_duration.png",
        width = 80 / 25, height = 80 / 25)
+
+
+## ---- eval=TRUE---------------------------------------------------------------
+cat(
+  readLines(
+    con = "data/model_output_residence_patch.txt",
+    encoding = "UTF-8"
+  ), sep = "\n"
+)
 
 
 ## ----echo=FALSE---------------------------------------------------------------
