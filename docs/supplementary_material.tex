@@ -1,7 +1,7 @@
 \PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
 \PassOptionsToPackage{hyphens}{url}
 %
-\documentclass[]{scrartcl}
+\documentclass[]{scrreprt}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -42,37 +42,37 @@
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
 % Add ',fontsize=\small' for more characters per line
 \newenvironment{Shaded}{}{}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{#1}
+\newcommand{\BaseNTok}[1]{#1}
 \newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{#1}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand{\DataTypeTok}[1]{#1}
+\newcommand{\DecValTok}[1]{#1}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\FloatTok}[1]{#1}
+\newcommand{\FunctionTok}[1]{#1}
 \newcommand{\ImportTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
 \newcommand{\NormalTok}[1]{#1}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\OperatorTok}[1]{#1}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{1.00,0.25,0.00}{#1}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\VariableTok}[1]{#1}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.00,0.50,0.50}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
 \usepackage{longtable,booktabs}
 % Fix footnotes in tables (requires footnote package)
 \IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
@@ -109,6 +109,7 @@
 % use nice fonts if available else use boring defaults
 
 \usepackage{lineno}
+\KOMAoption{fontsize}{10pt}
 
 \IfFontExistsTF{Times New Roman}{\setmainfont[]{Times New Roman}}{} 
 \IfFontExistsTF{Arial}{\setsansfont[]{Arial}}{}
@@ -124,16 +125,16 @@
 \maketitle
 
 {
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \tableofcontents
 }
 \hypertarget{processing-calibration-data}{%
-\section{Processing calibration data}\label{processing-calibration-data}}
+\chapter{Processing calibration data}\label{processing-calibration-data}}
 
 Here we show how the residence patch method (Barraquand and Benhamou \protect\hyperlink{ref-barraquand2008}{2008}; Bijleveld et al. \protect\hyperlink{ref-bijleveld2016}{2016}; Oudman et al. \protect\hyperlink{ref-oudman2018}{2018}) accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
 
 \hypertarget{prepare-libraries}{%
-\subsection{Prepare libraries}\label{prepare-libraries}}
+\section{Prepare libraries}\label{prepare-libraries}}
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
 
@@ -151,7 +152,7 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 \end{Shaded}
 
 \hypertarget{access-data-and-preliminary-visualisation}{%
-\subsection{Access data and preliminary visualisation}\label{access-data-and-preliminary-visualisation}}
+\section{Access data and preliminary visualisation}\label{access-data-and-preliminary-visualisation}}
 
 First we access the data from a local file using the \texttt{data.table} package (Dowle and Srinivasan \protect\hyperlink{ref-dowle2020}{2020}).
 We then visualise the raw data.
@@ -171,7 +172,7 @@ We then visualise the raw data.
 \end{figure}
 
 \hypertarget{filter-by-bounding-box}{%
-\subsection{Filter by bounding box}\label{filter-by-bounding-box}}
+\section{Filter by bounding box}\label{filter-by-bounding-box}}
 
 We first save a copy of the data, so that we can plot the raw data with the cleaned data plotted over it for comparison.
 
@@ -204,10 +205,10 @@ We then plot the result of filtering, with the excluded point in black, and the 
 \end{figure}
 
 \hypertarget{filter-trajectories}{%
-\subsection{Filter trajectories}\label{filter-trajectories}}
+\section{Filter trajectories}\label{filter-trajectories}}
 
 \hypertarget{handle-time}{%
-\subsubsection{Handle time}\label{handle-time}}
+\subsection{Handle time}\label{handle-time}}
 
 Time in ATLAS tracking is counted in milliseconds and is represented by a 64-bit integer (type \texttt{long}), which is not natively supported in R; it will instead be converted to a \texttt{numeric}, or \texttt{double}.
 
@@ -231,7 +232,7 @@ In the spirit of not destroying data, we create a second lower-case column calle
 \end{Shaded}
 
 \hypertarget{add-speed-and-turning-angle}{%
-\subsubsection{Add speed and turning angle}\label{add-speed-and-turning-angle}}
+\subsection{Add speed and turning angle}\label{add-speed-and-turning-angle}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -248,7 +249,7 @@ In the spirit of not destroying data, we create a second lower-case column calle
 \end{Shaded}
 
 \hypertarget{get-95th-percentile-of-speed-and-angle}{%
-\subsubsection{Get 95th percentile of speed and angle}\label{get-95th-percentile-of-speed-and-angle}}
+\subsection{Get 95th percentile of speed and angle}\label{get-95th-percentile-of-speed-and-angle}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -260,7 +261,7 @@ In the spirit of not destroying data, we create a second lower-case column calle
 \end{Shaded}
 
 \hypertarget{filter-on-speed}{%
-\subsubsection{Filter on speed}\label{filter-on-speed}}
+\subsection{Filter on speed}\label{filter-on-speed}}
 
 Here we use a speed threshold of 15 m/s, the fastest known boat speed.
 We then plot the data with the extreme speeds shown in grey, and the positions retained shown in green.
@@ -293,7 +294,7 @@ We then plot the data with the extreme speeds shown in grey, and the positions r
 \end{figure}
 
 \hypertarget{smoothing-the-trajectory}{%
-\subsection{Smoothing the trajectory}\label{smoothing-the-trajectory}}
+\section{Smoothing the trajectory}\label{smoothing-the-trajectory}}
 
 We then apply a median smooth over a moving window (\(K\) = 5).
 This function modifies in place, and does not need to be assigned to a new variable.
@@ -318,7 +319,7 @@ We create a copy of the data before applying the smooth so that we can compare t
 \end{figure}
 
 \hypertarget{thinning-the-data}{%
-\subsection{Thinning the data}\label{thinning-the-data}}
+\section{Thinning the data}\label{thinning-the-data}}
 
 Next we thin the data to demonstrate thinning by median smoothing.
 Following this, we plot the median smooth and thinning by aggregation.
@@ -348,10 +349,10 @@ Following this, we plot the median smooth and thinning by aggregation.
 \end{figure}
 
 \hypertarget{residence-patches}{%
-\subsection{Residence patches}\label{residence-patches}}
+\section{Residence patches}\label{residence-patches}}
 
 \hypertarget{get-waypoint-centroids}{%
-\subsubsection{Get waypoint centroids}\label{get-waypoint-centroids}}
+\subsection{Get waypoint centroids}\label{get-waypoint-centroids}}
 
 We subset the annotated calibration data to select the waypoints and the positions around them which are supposed to be the locations of known stops. Since each stop was supposed to be 5 minutes long, there are multiple points in each known stop.
 
@@ -396,12 +397,12 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 \end{Shaded}
 
 \hypertarget{prepare-data}{%
-\subsubsection{Prepare data}\label{prepare-data}}
+\subsection{Prepare data}\label{prepare-data}}
 
 An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time (Bracis, Bildstein, and Mueller \protect\hyperlink{ref-bracis2018}{2018}).
 
 \hypertarget{calculate-residence-time}{%
-\subsubsection{Calculate residence time}\label{calculate-residence-time}}
+\subsection{Calculate residence time}\label{calculate-residence-time}}
 
 First we calculate the residence time with a radius of 50 metres.
 For this, we need a dataframe with coordinates, the timestamp, and the animal id.
@@ -432,7 +433,7 @@ We save this data to file for later use.
 \end{Shaded}
 
 \hypertarget{run-residence-patch-method}{%
-\subsubsection{Run residence patch method}\label{run-residence-patch-method}}
+\subsection{Run residence patch method}\label{run-residence-patch-method}}
 
 We subset data with a residence time \textgreater{} 5 minutes in order to construct residence patches.
 From this subset, we construct residence patches using the parameters: \texttt{buffer\_radius} = 5 metres, \texttt{lim\_spat\_indep} = 50 metres, \texttt{lim\_time\_indep} = 5 minutes, and \texttt{min\_fixes} = 3.
@@ -452,7 +453,7 @@ From this subset, we construct residence patches using the parameters: \texttt{b
 \end{Shaded}
 
 \hypertarget{get-spatial-and-summary-objects}{%
-\subsubsection{Get spatial and summary objects}\label{get-spatial-and-summary-objects}}
+\subsection{Get spatial and summary objects}\label{get-spatial-and-summary-objects}}
 
 We get spatial and summary ouput of the residence patch method using the \texttt{atl\_patch\_summary} function using the options \texttt{which\_data} = ``spatial'' and \texttt{which\_data} = "summary.
 We use a buffer radius here of 20 metres for the spatial buffer, despite using a buffer radius of 5 metres earlier, simply because it is easier to visualise in the output figure.
@@ -474,7 +475,7 @@ We use a buffer radius here of 20 metres for the spatial buffer, despite using a
 \end{Shaded}
 
 \hypertarget{prepare-to-plot-data}{%
-\subsubsection{Prepare to plot data}\label{prepare-to-plot-data}}
+\subsection{Prepare to plot data}\label{prepare-to-plot-data}}
 
 We read in the island's shapefile to plot it as a background for the residence patch figure.
 
@@ -493,7 +494,7 @@ We read in the island's shapefile to plot it as a background for the residence p
 \end{figure}
 
 \hypertarget{compare-patch-metrics}{%
-\subsection{Compare patch metrics}\label{compare-patch-metrics}}
+\section{Compare patch metrics}\label{compare-patch-metrics}}
 
 We then merge the annoated, known stop data with the calculated patch duration.
 We filter this data to exclude one exceedingly long outlier of about an hour (WP080), which how
@@ -538,7 +539,7 @@ We filter this data to exclude one exceedingly long outlier of about an hour (WP
 7 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.
 
 \hypertarget{linear-model-durations}{%
-\subsubsection{Linear model durations}\label{linear-model-durations}}
+\subsection{Linear model durations}\label{linear-model-durations}}
 
 We run a simple linear model.
 
@@ -568,7 +569,7 @@ We run a simple linear model.
 \end{figure}
 
 \hypertarget{linear-model-summary}{%
-\subsubsection{Linear model summary}\label{linear-model-summary}}
+\subsection{Linear model summary}\label{linear-model-summary}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -600,12 +601,12 @@ We run a simple linear model.
 \end{Shaded}
 
 \hypertarget{processing-egyptian-fruit-bat-tracks}{%
-\section{Processing Egyptian fruit bat tracks}\label{processing-egyptian-fruit-bat-tracks}}
+\chapter{Processing Egyptian fruit bat tracks}\label{processing-egyptian-fruit-bat-tracks}}
 
 We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (\emph{Rousettus aegyptiacus}), and construct residence patches.
 
 \hypertarget{prepare-libraries-1}{%
-\subsection{Prepare libraries}\label{prepare-libraries-1}}
+\section{Prepare libraries}\label{prepare-libraries-1}}
 
 Install the required \texttt{R} libraries that are required from CRAN if not already installed.
 
@@ -623,7 +624,7 @@ Install the required \texttt{R} libraries that are required from CRAN if not alr
 \end{Shaded}
 
 \hypertarget{install-atlastools-from-github.}{%
-\subsection{\texorpdfstring{Install \texttt{atlastools} from Github.}{Install atlastools from Github.}}\label{install-atlastools-from-github.}}
+\section{\texorpdfstring{Install \texttt{atlastools} from Github.}{Install atlastools from Github.}}\label{install-atlastools-from-github.}}
 
 \texttt{atlastools} is available from Github and is archived on Zenodo (Gupte \protect\hyperlink{ref-gupte2020a}{2020}).
 It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the \texttt{remotes} function \texttt{install\_github}.
@@ -638,7 +639,7 @@ It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the
 \end{Shaded}
 
 \hypertarget{read-bat-data}{%
-\subsection{Read bat data}\label{read-bat-data}}
+\section{Read bat data}\label{read-bat-data}}
 
 Read the bat data from an \texttt{SQLite} database local file and convert to a plain text csv file.
 This data can be found in the ``data'' folder.
@@ -676,7 +677,7 @@ Convert data to csv, and save a local copy in the folder ``data''.
 \end{Shaded}
 
 \hypertarget{a-first-visual-inspection}{%
-\subsection{A First Visual Inspection}\label{a-first-visual-inspection}}
+\section{A First Visual Inspection}\label{a-first-visual-inspection}}
 
 Plot the bat data as a sanity check, and inspect it visually for errors (Figure 1).
 The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the \texttt{Rmarkdown} file ``06\_bat\_data.Rmd''.
@@ -691,14 +692,14 @@ After first plotting the individual tracks, we notice severe distortions, making
 \end{figure}
 
 \hypertarget{prepare-data-for-filtering}{%
-\subsection{Prepare data for filtering}\label{prepare-data-for-filtering}}
+\section{Prepare data for filtering}\label{prepare-data-for-filtering}}
 
 Here we apply a series of simple filters.
 It is always safer to deal with one individual at a time, so we split the data.table
 into a list of data.tables to avoid mixups among individuals.
 
 \hypertarget{prepare-data-per-individual}{%
-\subsubsection{Prepare data per individual}\label{prepare-data-per-individual}}
+\subsection{Prepare data per individual}\label{prepare-data-per-individual}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -714,7 +715,7 @@ into a list of data.tables to avoid mixups among individuals.
 \end{Shaded}
 
 \hypertarget{filter-by-covariates}{%
-\subsection{Filter by covariates}\label{filter-by-covariates}}
+\section{Filter by covariates}\label{filter-by-covariates}}
 
 No natural bounds suggest themselves, so instead we proceed to filter by covariates, since point outliers are obviously visible.
 
@@ -755,9 +756,9 @@ We apply the filter to each individual's data using an \texttt{lapply}.
 \end{Shaded}
 
 \hypertarget{sanity-check-plot-filtered-data}{%
-\subsubsection{Sanity check: Plot filtered data}\label{sanity-check-plot-filtered-data}}
+\subsection{Sanity check: Plot filtered data}\label{sanity-check-plot-filtered-data}}
 
-We plot the data to check whether the filtering has improved the data (Figure 2).
+We plot the data to check whether the filtering has improved the data (Figure 9).
 The plot code is once again hidden in this rendering, but is available in the source code file.
 
 \begin{figure}
@@ -768,7 +769,7 @@ This filtering reduced the data to an average of 10,447 positions per individual
 \end{figure}
 
 \hypertarget{filter-by-speed}{%
-\subsection{Filter by speed}\label{filter-by-speed}}
+\section{Filter by speed}\label{filter-by-speed}}
 
 Some point outliers remain (Figure 2), and could be removed using a speed filter.
 
@@ -814,9 +815,9 @@ Now filter for speeds \textgreater{} 20 m/s (around 70 km/h), passing the predic
 \end{Shaded}
 
 \hypertarget{sanity-check-plot-speed-filtered-data}{%
-\subsubsection{Sanity check: Plot speed filtered data}\label{sanity-check-plot-speed-filtered-data}}
+\subsection{Sanity check: Plot speed filtered data}\label{sanity-check-plot-speed-filtered-data}}
 
-The speed filtered data is now inspected for errors (Figure 3). The plot code is once again hidden.
+The speed filtered data is now inspected for errors (Figure 10). The plot code is once again hidden.
 
 \begin{figure}
 \centering
@@ -825,9 +826,9 @@ The speed filtered data is now inspected for errors (Figure 3). The plot code is
 \end{figure}
 
 \hypertarget{median-smoothing}{%
-\subsection{Median smoothing}\label{median-smoothing}}
+\section{Median smoothing}\label{median-smoothing}}
 
-The quality of this data (Figure 3) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
+The quality of this data (Figure 10) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
 
 Since the median smoothing function \texttt{atl\_median\_smooth} modifies in place, we first make a copy of the data, using \texttt{data.table}'s \texttt{copy} function.
 No reassignment is required, in this case. The \texttt{lapply} function allows arguments to \texttt{atl\_median\_smooth} to be passed within \texttt{lapply} itself.
@@ -861,7 +862,7 @@ In this case, the same moving window \(K\) is applied to all individuals, but mo
 \end{Shaded}
 
 \hypertarget{sanity-check-plot-smoothed-data}{%
-\subsubsection{Sanity check: Plot smoothed data}\label{sanity-check-plot-smoothed-data}}
+\subsection{Sanity check: Plot smoothed data}\label{sanity-check-plot-smoothed-data}}
 
 \begin{figure}
 \centering
@@ -870,10 +871,10 @@ In this case, the same moving window \(K\) is applied to all individuals, but mo
 \end{figure}
 
 \hypertarget{making-residence-patches}{%
-\subsection{Making residence patches}\label{making-residence-patches}}
+\section{Making residence patches}\label{making-residence-patches}}
 
 \hypertarget{calculating-residence-time}{%
-\subsubsection{Calculating residence time}\label{calculating-residence-time}}
+\subsection{Calculating residence time}\label{calculating-residence-time}}
 
 First, the data is put through the \texttt{recurse} package to get residence time (Bracis, Bildstein, and Mueller \protect\hyperlink{ref-bracis2018}{2018}).
 
@@ -954,7 +955,7 @@ We bind the data together and assign a human readable timestamp column.
 \end{Shaded}
 
 \hypertarget{constructing-residence-patches}{%
-\subsubsection{Constructing residence patches}\label{constructing-residence-patches}}
+\subsection{Constructing residence patches}\label{constructing-residence-patches}}
 
 Some preparation is required. First, the function requires columns \texttt{x}, \texttt{y},
 \texttt{time}, and \texttt{id}, which we assign using the \texttt{data.table} syntax.
@@ -985,11 +986,11 @@ We apply the residence patch method, using the default argument values (\texttt{
 \end{Shaded}
 
 \hypertarget{getting-residence-patch-data}{%
-\subsubsection{Getting residence patch data}\label{getting-residence-patch-data}}
+\subsection{Getting residence patch data}\label{getting-residence-patch-data}}
 
 We extract the residence patch data as spatial \texttt{sf-MULTIPOLYGON} objects.
 These are returned as a list and must be converted into a single \texttt{sf} object.
-These objects and the raw movement data are shown in Figure 5.
+These objects and the raw movement data are shown in Figure 12.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1011,7 +1012,7 @@ These objects and the raw movement data are shown in Figure 5.
 \end{Shaded}
 
 \hypertarget{write-patch-spatial-representations}{%
-\subsubsection{Write patch spatial representations}\label{write-patch-spatial-representations}}
+\subsection{Write patch spatial representations}\label{write-patch-spatial-representations}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1056,7 +1057,7 @@ Constructing residence patches for multiple individuals over multiple activity p
 \end{figure}
 
 \hypertarget{references}{%
-\section{References}\label{references}}
+\chapter{References}\label{references}}
 
 \hypertarget{refs}{}
 \leavevmode\hypertarget{ref-barraquand2008}{}%
