@@ -351,8 +351,8 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 
 ```{r}
 # get centroid
-data_res_summary <- data_res[, list(x_median = round(median(x), digits = -2),
-                                    y_median = round(median(y), digits = -2)),
+data_res_summary <- data_res[, list(x_median = median(x),
+                                    y_median = median(y),
                                     t_median = median(time)),
                              by = "tID"]
 
@@ -447,8 +447,9 @@ patch_summary_data <- atl_patch_summary(patch_res_known,
 We read in the island's shapefile to plot it as a background for the residence patch figure.
 
 ```{r}
-# read griend
+# read griend and hut
 griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
+hut <- sf::st_read("data/griend_hut.gpkg")
 ```
 
 ```{r echo=FALSE}
@@ -462,6 +463,10 @@ fig_basic_residence <-
              stroke = 1,
              col = pal[4],
              alpha = 1)+
+  geom_sf(data = hut,
+          size = 10, shape = 7,
+          stroke = 1,
+          col = pal[1])+
   geom_path(data = data_for_patch,
             aes(x, y),
             show.legend = F,
