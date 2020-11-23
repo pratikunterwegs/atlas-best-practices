@@ -3,7 +3,9 @@
 % use nice fonts if available else use boring defaults
 
 \usepackage{lineno}
-\setmainfont{Times New Roman}
-\setsansfont{Arial}
+
+\IfFontExistsTF{Times New Roman}{\setmainfont[]{Times New Roman}}{} 
+\IfFontExistsTF{Arial}{\setsansfont[]{Arial}}{}
+\IfFontExistsTF{Fira Code}{\setmonofont{Fira Code}}
 
 \linenumbers

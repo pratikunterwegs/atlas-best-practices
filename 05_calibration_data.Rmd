@@ -608,10 +608,11 @@ ggsave(figure_lm_duration, filename = "figures/fig_calib_lm_duration.png",
 
 ### Linear model summary
 
-```{r}
+```{r, eval=TRUE}
 cat(
   readLines(
-    con = "data/model_output_residence_patch.txt"
+    con = "data/model_output_residence_patch.txt",
+    encoding = "UTF-8"
   ), sep = "\n"
 )
 ```
