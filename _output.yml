@@ -4,7 +4,7 @@ bookdown::pdf_document2:
   toc-depth: 1
   papersize: a4
   latex_engine: xelatex
-  highlight: pygments
+  highlight: haddock
   includes:
     in_header: latex/preamble.tex
     # before_body: before-body.tex

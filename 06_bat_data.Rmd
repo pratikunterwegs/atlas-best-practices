@@ -163,7 +163,7 @@ data_split <- lapply(data_split, function(dt) {
 
 ### Sanity check: Plot filtered data
 
-We plot the data to check whether the filtering has improved the data (Figure 2).
+We plot the data to check whether the filtering has improved the data (Figure 9).
 The plot code is once again hidden in this rendering, but is available in the source code file.
 
 ```{r echo=FALSE}
@@ -254,7 +254,7 @@ data_split <- lapply(data_split, function(dt) {
 
 ### Sanity check: Plot speed filtered data
 
-The speed filtered data is now inspected for errors (Figure 3). The plot code is once again hidden.
+The speed filtered data is now inspected for errors (Figure 10). The plot code is once again hidden.
 
 ```{r echo=FALSE}
 # bind all individuals together
@@ -297,7 +297,7 @@ ggsave(fig_bat_filter_speed,
 
 ## Median smoothing
 
-The quality of this data (Figure 3) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
+The quality of this data (Figure 10) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
 
 Since the median smoothing function `atl_median_smooth` modifies in place, we first make a copy of the data, using `data.table`'s `copy` function.
 No reassignment is required, in this case. The `lapply` function allows arguments to `atl_median_smooth` to be passed within `lapply` itself.
@@ -498,7 +498,7 @@ data_patches <- lapply(data_residence, atl_res_patch,
 
 We extract the residence patch data as spatial `sf-MULTIPOLYGON` objects.
 These are returned as a list and must be converted into a single `sf` object.
-These objects and the raw movement data are shown in Figure 5.
+These objects and the raw movement data are shown in Figure 12.
 
 ```{r}
 # get data spatials
