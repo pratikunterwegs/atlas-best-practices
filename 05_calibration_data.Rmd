@@ -213,7 +213,7 @@ data[, angle := atl_turning_angle(data = data)]
 
 We then apply a median smooth over a moving window ($K$ = 5).
 This function modifies in place, and does not need to be assigned to a new variable.
-We create a copy of the data before applying the smooth so that we can compare the data before and after smoothin.
+We create a copy of the data before applying the smooth so that we can compare the data before and after smoothing.
 
 ```{r}
 # apply a 5 point median smooth, first make a copy
