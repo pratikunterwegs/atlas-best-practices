@@ -73,9 +73,9 @@ fwrite(data, file = "data/bat_data.csv")
 
 ## A First Visual Inspection
 
-Plot the bat data as a sanity check, and inspect it visually for errors (Figure 1).
+Plot the bat data as a sanity check, and inspect it visually for errors (Fig. 2.1).
 The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the `Rmarkdown` file "06_bat_data.Rmd".
-The saved plot is shown below as Figure 1.
+The saved plot is shown below as Fig. 2.1.
 
 ```{r echo=FALSE}
 # plot bat data to examine for errors
@@ -163,7 +163,7 @@ data_split <- lapply(data_split, function(dt) {
 
 ### Sanity check: Plot filtered data
 
-We plot the data to check whether the filtering has improved the data (Figure 9).
+We plot the data to check whether the filtering has improved the data (Fig. 2.2).
 The plot code is once again hidden in this rendering, but is available in the source code file.
 
 ```{r echo=FALSE}
@@ -208,7 +208,7 @@ This filtering reduced the data to an average of 10,447 positions per individual
 
 ## Filter by speed
 
-Some point outliers remain (Figure 2), and could be removed using a speed filter.
+Some point outliers remain, and could be removed using a speed filter.
 
 First we calculate speeds, using `atl_get_speed`. We must assign the speed output to a new column in the data.table, which has a special syntax which modifies in place, and is shown below. This syntax is a feature of the `data.table` package, not strictly of `atlastools` [@dowle2020].
 
@@ -254,7 +254,7 @@ data_split <- lapply(data_split, function(dt) {
 
 ### Sanity check: Plot speed filtered data
 
-The speed filtered data is now inspected for errors (Figure 10). The plot code is once again hidden.
+The speed filtered data is now inspected for errors (Fig. 2.3). The plot code is once again hidden.
 
 ```{r echo=FALSE}
 # bind all individuals together
@@ -297,7 +297,7 @@ ggsave(fig_bat_filter_speed,
 
 ## Median smoothing
 
-The quality of this data (Figure 10) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
+The quality of the data is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless (Fig. 2.4).
 
 Since the median smoothing function `atl_median_smooth` modifies in place, we first make a copy of the data, using `data.table`'s `copy` function.
 No reassignment is required, in this case. The `lapply` function allows arguments to `atl_median_smooth` to be passed within `lapply` itself.
@@ -498,7 +498,7 @@ data_patches <- lapply(data_residence, atl_res_patch,
 
 We extract the residence patch data as spatial `sf-MULTIPOLYGON` objects.
 These are returned as a list and must be converted into a single `sf` object.
-These objects and the raw movement data are shown in Figure 12.
+These objects and the raw movement data are shown in Fig. 2.5.
 
 ```{r}
 # get data spatials

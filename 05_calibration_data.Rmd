@@ -4,9 +4,20 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Processing calibration data
+# Validating the Residence Patch Method with Calibration Data
 
 Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @oudman2018] accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
+
+## Outline of Cleaning Steps
+
+We began by visualising the data to check for location errors, and found a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2; main text Fig. 7.a).
+This outlier was removed by filtering data by the X coordinate bounds using the function `atl_filter\_bounds`; X coordinate bounds $\leq$ 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
+We then calculated the incoming and outgoing speed, as well as the turning angle at each position using the functions `atl_get_speed` and `atl_turning_angle` respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
+We used the function `atl_filter_covariates` to remove positions with incoming and outgoing speeds $\geq$ the speed threshold of 15 m/s (n = 13,491, 26.5%; remaining positions = 37,324, 73.5%; Fig. 1.3; main text Fig. 7.b).
+This speed threshold was chosen as 5 m/s faster than the known boat speed, 10 m/s.
+Finally, we targeted small-scale location errors by applying a median smooth with a moving window size $K$ = 5 using the function `atl_median_smooth` (Fig. 1.4; main text Fig. 7.c).
+Smoothing did not reduce the number of positions.
+We thinned the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
 ## Prepare libraries
 
@@ -213,7 +224,7 @@ data[, angle := atl_turning_angle(data = data)]
 
 We then apply a median smooth over a moving window ($K$ = 5).
 This function modifies in place, and does not need to be assigned to a new variable.
-We create a copy of the data before applying the smooth so that we can compare the data before and after smoothin.
+We create a copy of the data before applying the smooth so that we can compare the data before and after smoothing.
 
 ```{r}
 # apply a 5 point median smooth, first make a copy
@@ -254,7 +265,7 @@ ggsave(fig_smooth,
        width = 90 / 25, height = 90 / 25)
 ```
 
-![Reducing small-scale location error using a median smooth with a moving window $K$ = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Figure 3.](figures/fig_calib_median_smooth.png)
+![Reducing small-scale location error using a median smooth with a moving window $K$ = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Fig. 1.3.](figures/fig_calib_median_smooth.png)
 
 ## Thinning the data
 
@@ -332,7 +343,7 @@ ggsave(figure_walkthrough,
        height = 90, width = 170, units = "mm")
 ```
 
-![Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Figure 4, while the raw data are shown in grey. The area shown is the upper rectangle in Figure 3.](figures/fig_calib_smooth_thin.png)
+![Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Fig. 1.4, while the raw data are shown in grey. The area shown is the upper rectangle in Fig. 1.3.](figures/fig_calib_smooth_thin.png)
 
 ## Residence patches
 
@@ -499,7 +510,7 @@ ggsave(fig_basic_residence,
        height = 170, width = 80, units = "mm")
 ```
 
-![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these). The area shown is the lower rectangle in Figure 3.](figures/fig_calib_residence.png)
+![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
 
 ## Compare patch metrics
 

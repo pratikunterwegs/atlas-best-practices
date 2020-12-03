@@ -119,7 +119,7 @@
 
 \title{Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data}
 \author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Allert I. Bijleveld}
-\date{2020-11-23}
+\date{2020-12-03}
 
 \begin{document}
 \maketitle
@@ -128,10 +128,22 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{processing-calibration-data}{%
-\chapter{Processing calibration data}\label{processing-calibration-data}}
+\hypertarget{validating-the-residence-patch-method-with-calibration-data}{%
+\chapter{Validating the Residence Patch Method with Calibration Data}\label{validating-the-residence-patch-method-with-calibration-data}}
 
 Here we show how the residence patch method (Barraquand and Benhamou \protect\hyperlink{ref-barraquand2008}{2008}; Bijleveld et al. \protect\hyperlink{ref-bijleveld2016}{2016}; Oudman et al. \protect\hyperlink{ref-oudman2018}{2018}) accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
+
+\hypertarget{outline-of-cleaning-steps}{%
+\section{Outline of Cleaning Steps}\label{outline-of-cleaning-steps}}
+
+We began by visualising the data to check for location errors, and found a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2; main text Fig. 7.a).
+This outlier was removed by filtering data by the X coordinate bounds using the function \texttt{atl\_filter\textbackslash{}\_bounds}; X coordinate bounds \(\leq\) 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
+We then calculated the incoming and outgoing speed, as well as the turning angle at each position using the functions \texttt{atl\_get\_speed} and \texttt{atl\_turning\_angle} respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
+We used the function \texttt{atl\_filter\_covariates} to remove positions with incoming and outgoing speeds \(\geq\) the speed threshold of 15 m/s (n = 13,491, 26.5\%; remaining positions = 37,324, 73.5\%; Fig. 1.3; main text Fig. 7.b).
+This speed threshold was chosen as 5 m/s faster than the known boat speed, 10 m/s.
+Finally, we targeted small-scale location errors by applying a median smooth with a moving window size \(K\) = 5 using the function \texttt{atl\_median\_smooth} (Fig. 1.4; main text Fig. 7.c).
+Smoothing did not reduce the number of positions.
+We thinned the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
 \hypertarget{prepare-libraries}{%
 \section{Prepare libraries}\label{prepare-libraries}}
@@ -298,7 +310,7 @@ We then plot the data with the extreme speeds shown in grey, and the positions r
 
 We then apply a median smooth over a moving window (\(K\) = 5).
 This function modifies in place, and does not need to be assigned to a new variable.
-We create a copy of the data before applying the smooth so that we can compare the data before and after smoothin.
+We create a copy of the data before applying the smooth so that we can compare the data before and after smoothing.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -315,7 +327,7 @@ We create a copy of the data before applying the smooth so that we can compare t
 \begin{figure}
 \centering
 \includegraphics{figures/fig_calib_median_smooth.png}
-\caption{Reducing small-scale location error using a median smooth with a moving window \(K\) = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Figure 3.}
+\caption{Reducing small-scale location error using a median smooth with a moving window \(K\) = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Fig. 1.3.}
 \end{figure}
 
 \hypertarget{thinning-the-data}{%
@@ -345,7 +357,7 @@ Following this, we plot the median smooth and thinning by aggregation.
 \begin{figure}
 \centering
 \includegraphics{figures/fig_calib_smooth_thin.png}
-\caption{Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Figure 4, while the raw data are shown in grey. The area shown is the upper rectangle in Figure 3.}
+\caption{Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Fig. 1.4, while the raw data are shown in grey. The area shown is the upper rectangle in Fig. 1.3.}
 \end{figure}
 
 \hypertarget{residence-patches}{%
@@ -490,7 +502,7 @@ We read in the island's shapefile to plot it as a background for the residence p
 \begin{figure}
 \centering
 \includegraphics{figures/fig_calib_residence.png}
-\caption{Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25\(^{\circ}\)N, 5.25\(^{\circ}\)E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these). The area shown is the lower rectangle in Figure 3.}
+\caption{Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25\(^{\circ}\)N, 5.25\(^{\circ}\)E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.}
 \end{figure}
 
 \hypertarget{compare-patch-metrics}{%
@@ -679,9 +691,9 @@ Convert data to csv, and save a local copy in the folder ``data''.
 \hypertarget{a-first-visual-inspection}{%
 \section{A First Visual Inspection}\label{a-first-visual-inspection}}
 
-Plot the bat data as a sanity check, and inspect it visually for errors (Figure 1).
+Plot the bat data as a sanity check, and inspect it visually for errors (Fig. 2.1).
 The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the \texttt{Rmarkdown} file ``06\_bat\_data.Rmd''.
-The saved plot is shown below as Figure 1.
+The saved plot is shown below as Fig. 2.1.
 
 \begin{figure}
 \centering
@@ -758,7 +770,7 @@ We apply the filter to each individual's data using an \texttt{lapply}.
 \hypertarget{sanity-check-plot-filtered-data}{%
 \subsection{Sanity check: Plot filtered data}\label{sanity-check-plot-filtered-data}}
 
-We plot the data to check whether the filtering has improved the data (Figure 9).
+We plot the data to check whether the filtering has improved the data (Fig. 2.2).
 The plot code is once again hidden in this rendering, but is available in the source code file.
 
 \begin{figure}
@@ -771,7 +783,7 @@ This filtering reduced the data to an average of 10,447 positions per individual
 \hypertarget{filter-by-speed}{%
 \section{Filter by speed}\label{filter-by-speed}}
 
-Some point outliers remain (Figure 2), and could be removed using a speed filter.
+Some point outliers remain, and could be removed using a speed filter.
 
 First we calculate speeds, using \texttt{atl\_get\_speed}. We must assign the speed output to a new column in the data.table, which has a special syntax which modifies in place, and is shown below. This syntax is a feature of the \texttt{data.table} package, not strictly of \texttt{atlastools} (Dowle and Srinivasan \protect\hyperlink{ref-dowle2020}{2020}).
 
@@ -817,7 +829,7 @@ Now filter for speeds \textgreater{} 20 m/s (around 70 km/h), passing the predic
 \hypertarget{sanity-check-plot-speed-filtered-data}{%
 \subsection{Sanity check: Plot speed filtered data}\label{sanity-check-plot-speed-filtered-data}}
 
-The speed filtered data is now inspected for errors (Figure 10). The plot code is once again hidden.
+The speed filtered data is now inspected for errors (Fig. 2.3). The plot code is once again hidden.
 
 \begin{figure}
 \centering
@@ -828,7 +840,7 @@ The speed filtered data is now inspected for errors (Figure 10). The plot code i
 \hypertarget{median-smoothing}{%
 \section{Median smoothing}\label{median-smoothing}}
 
-The quality of this data (Figure 10) is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless.
+The quality of the data is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless (Fig. 2.4).
 
 Since the median smoothing function \texttt{atl\_median\_smooth} modifies in place, we first make a copy of the data, using \texttt{data.table}'s \texttt{copy} function.
 No reassignment is required, in this case. The \texttt{lapply} function allows arguments to \texttt{atl\_median\_smooth} to be passed within \texttt{lapply} itself.
@@ -990,7 +1002,7 @@ We apply the residence patch method, using the default argument values (\texttt{
 
 We extract the residence patch data as spatial \texttt{sf-MULTIPOLYGON} objects.
 These are returned as a list and must be converted into a single \texttt{sf} object.
-These objects and the raw movement data are shown in Figure 12.
+These objects and the raw movement data are shown in Fig. 2.5.
 
 \begin{Shaded}
 \begin{Highlighting}[]
