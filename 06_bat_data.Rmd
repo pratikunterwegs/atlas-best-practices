@@ -7,7 +7,7 @@ output:
   bibliography: references.bib
 ---
 
-# Processing Egyptian fruit bat tracks
+# Processing Egyptian Fruit Bat Tracks
 
 We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (*Rousettus aegyptiacus*), and construct residence patches.
 
