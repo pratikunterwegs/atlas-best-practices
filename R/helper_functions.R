@@ -1,4 +1,8 @@
+#### Functions to simulate and add errors to movement data ####
 
+# functions are not documented and are not intended for general use
+
+# a function to use smoove to simulate movement data
 do_smoove_data <- function(t_max = 100, dt = dt) {
   # define parameters
   nu <- 2
@@ -37,20 +41,4 @@ do_add_outliers <- function(data, p_data = 0.1, std_dev = 0.05) {
                                   }),
             .SDcols = c("x", "y")]
   return(tmp_data)
-}
-
-# function for extracting and tallying landscape values
-do_count_landcover <- function(land, track) {
-  land_values <- raster::extract(land, track[, c("x", "y")])
-  land_values <- data.table::as.data.table(table(land_values))
-  land_values[, p_land := N / sum(N)]
-  return(land_values)
-}
-
-# a function to scale the landscape
-do_scale_landscape <- function(land_, scale_factor) {
-  bounds <- c(0, 1, 0, 1)
-  bounds <- bounds * scale_factor
-  raster::extent(land_) <- bounds
-  return(land_)
 }
