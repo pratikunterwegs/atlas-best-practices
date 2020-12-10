@@ -25,10 +25,10 @@ Writes cleaned data to `data/data_no_reflections.csv`.
 
 - 05_calibration_data.R: Code for Figure 7 in the main text subsection _Validating the Residence Patch Method_. 
 Shows a fully worked out example of pre-processing ATLAS data, as well as the linear model validating the residence patch method.
-Also used in Supplementary Material 01 (<`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`>) section _Validating the Residence Patch Method with Calibration Data_.
+Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Validating the Residence Patch Method with Calibration Data_.
 
 - 06_bat_data.R: Shows a fully worked out example of pre-processing ATLAS tracking data from fruit bats in the Hula Valley, Israel, which forms the main text section _Worked out Example on Animal Tracking Data_.
-Also used in Supplementary Material 01 (<`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`>) section _Processing Egyptian Fruit Bat Tracks_.
+Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Processing Egyptian Fruit Bat Tracks_.
 
 - helper_functions.R: Script with helpful functions to simulate errors in data.
 
@@ -50,7 +50,7 @@ This is used solely as a background for Figure 8 in the main text.
 
 ## Supplementary Material
 
-Supplementary Material 01 is rendered into the `docs/` folder as <`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`>, where `DATE` is the date of rendering.
+Supplementary Material 01 is rendered into the `docs/` folder as `docs/ms_atlas_preproc_supplementary_material_DATE.pdf`, where `DATE` is the date of rendering.
 The rendering code using the `R` package `bookdown` is run from the shell script `render_books.sh`.
 The `TEX` version is retained as `supplementary_material.tex`.
 
@@ -78,10 +78,10 @@ The `data/` folder contains the following main datasets.
 ### Empirical Movement Data
 
 1. `atlas1060_allTrials_annotated.csv`: A hand held calibration ATLAS track collected in August 2020 in the Dutch Wadden Sea.
-Used to make Figure 7 in the main text subsection _Validating the Residence Patch Method_, and in Supplementary Material 01 (<`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`>), section _Validating the Residence Patch Method with Calibration Data_.
+Used to make Figure 7 in the main text subsection _Validating the Residence Patch Method_, and in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`), section _Validating the Residence Patch Method with Calibration Data_.
 
 2. `Three_example_bats.sql`: Tracks from three Egyptian fruit bats (_Rousettus aegyptiacus_)from the Hula Valley, Israel.
-Used to make Figure 8 in the main text section _Worked out Example on Animal Tracking Data_, and for the Supplementary Material 01 (<`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`>) section _Processing Egyptian Fruit Bat Tracks_.
+Used to make Figure 8 in the main text section _Worked out Example on Animal Tracking Data_, and for the Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Processing Egyptian Fruit Bat Tracks_.
 
 3. `bat_data.csv`: The above data saved as a `csv` file.
 
@@ -105,4 +105,4 @@ All other data are processed forms of the simulated or empirical movement data a
 
 ## Other Directories
 
-Other directories such as `figures/` or `_bookdown_files` are self-explanatory.
+Other directories such as `figures/` or `_bookdown_files/` are self-explanatory.
