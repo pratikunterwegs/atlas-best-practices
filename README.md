@@ -1,5 +1,9 @@
 # Source Code and Supplementary Material for: _A Guide to Pre-processing High-throughput Animal Tracking Data_
 
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4314810.svg)](https://doi.org/10.5281/zenodo.4314810)
+
+
 This is source code for a manuscript that sets out a pipeline for pre-processing data from ATLAS systems, but which can be applied to any high-throughput tracking data.
 
 ## Source Code
@@ -106,3 +110,12 @@ All other data are processed forms of the simulated or empirical movement data a
 ## Other Directories
 
 Other directories such as `figures/` or `_bookdown_files/` are self-explanatory.
+
+## `atlastools` Status
+
+<!-- badges: start -->
+  [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4033155.svg)](https://doi.org/10.5281/zenodo.4033155) 
+  [![R build status](https://github.com/pratikunterwegs/atlastools/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlastools/actions)
+  [![codecov.io](https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master)](https://codecov.io/github/pratikunterwegs/atlastools/branch/master)
+<!-- badges: end -->
