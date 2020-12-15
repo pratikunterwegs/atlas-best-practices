@@ -1,11 +1,13 @@
 --- 
 knit: "bookdown::render_book"
-title: "Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data"
+title: "Supplementary Material for _A Guide to Pre-processing High-Frequency Animal Tracking Data_"
 author:
     - Pratik R. Gupte
     - Christine E. Beardsworth
     - Orr Spiegel
     - Emmanuel Lourie
+    - Sivan Toledo
+    - Ran Nathan
     - Allert I. Bijleveld
 date: "`r Sys.Date()`"
 output: bookdown::pdf_document2
@@ -16,5 +18,5 @@ geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
 bibliography: [references.bib]
 link-citations: yes
 github-repo: pratikunterwegs/atlas-best-practices
-description: "Supplementary Material for: A Rough Guide to Pre-processing High-Frequency Animal Tracking Data"
+description: "Supplementary Material for _A Guide to Pre-processing High-Frequency Animal Tracking Data_"
 ---
