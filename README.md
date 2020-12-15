@@ -1,7 +1,7 @@
 # Source Code and Supplementary Material for: _A Guide to Pre-processing High-throughput Animal Tracking Data_
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4314810.svg)](https://doi.org/10.5281/zenodo.4314810)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287462.svg)](https://doi.org/10.5281/zenodo.4287462)
 
 
 This is source code for a manuscript that sets out a pipeline for pre-processing data from ATLAS systems, but which can be applied to any high-throughput tracking data.
