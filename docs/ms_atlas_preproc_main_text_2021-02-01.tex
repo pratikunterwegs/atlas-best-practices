@@ -1,5 +1,6 @@
-\documentclass[10pt,paper=a4]{scrartcl}
-\usepackage{tgtermes}
+\documentclass[10pt,paper=a4,headings=standardclasses
+]{scrartcl}
+\usepackage{mathpazo}
 \usepackage{helvet}
 \usepackage{amsmath}
 \usepackage[total={6.75in, 9.5in}]{geometry}
@@ -75,30 +76,34 @@
 % \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
 % \let\endchangemargin=\endlist
 
+\title{A Guide to Pre-Processing High-Throughput Animal Tracking Data}
+\date{}
+\author{Pratik Rajan Gupte\textsuperscript{1, 2} \and 
+Christine E. Beardsworth\textsuperscript{2} \and
+Orr Spiegel\textsuperscript{3} \and
+Emmanuel Lourie\textsuperscript{4} \and
+Sivan Toledo\textsuperscript{5} \and
+Ran Nathan\textsuperscript{4} \and
+Allert I. Bijleveld\textsuperscript{2}}
+
 % document begins here
 \begin{document}
-\vspace*{0.35in}
+% \vspace*{0.35in}
 
 % title goes here:
-\begin{flushleft}
-{\Large
-{\sffamily \textbf\newline{A Guide to Pre-Processing High-Throughput Animal Tracking Data}}
-}
-\newline
+% {\Large
+% {\sffamily \textbf\newline{A Guide to Pre-Processing High-Throughput Animal Tracking Data}}
+% }
+\maketitle
+
+% \newline
 % authors go here:
-\\
-Pratik Rajan Gupte\textsuperscript{1, 2},
-Christine E. Beardsworth\textsuperscript{2},
-Orr Spiegel\textsuperscript{3},
-Emmanuel Lourie\textsuperscript{4},
-Sivan Toledo\textsuperscript{5},
-Ran Nathan\textsuperscript{4},
-Allert I. Bijleveld\textsuperscript{2}
+
+\begin{flushleft}
 % Author 4\textsuperscript{x},
 % Author 5\textsuperscript{x},
 % Author 6\textsuperscript{x},
 % Author 7\textsuperscript{x}
-\\
 \bigskip
 \textbf{1} Groningen Institute for Evolutionary Life Sciences, University of Groningen, The Netherlands.
 \\
@@ -752,8 +757,8 @@ The authors declare that they have no competing interests.
 \subsection{Acknowledgements}
 
 PRG would like to thank Pedro M. Santos Neves for introducing PRG to \texttt{R} package development, for help with setting up \texttt{atlastools}, and for help with archiving it on Zenodo; 
-A. Ramesh and F.J. Weissing for discussions on error propagation;
-J.R.L. Gismann and E. Gobbens for feedback that improved the manuscript; 
+Aparajitha Ramesh and Franjo Weissing for discussions on error propagation;
+Geert Aarts, Jacob RL Gismann, Evy Gobbens for feedback that improved the manuscript; 
 members of the Modelling Adaptive Response Mechanisms Group (Weissing Lab), and the Theoretical Biology department at the University of Groningen for helpful discussions on \texttt{atlastools} and the manuscript.
 All authors thank the attendees of ATLAS workshops held in May and June 2020 at the Hebrew University of Jerusalem for helpful comments on the pipeline and \texttt{atlastools}.
 
