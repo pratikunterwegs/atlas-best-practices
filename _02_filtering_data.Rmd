@@ -82,31 +82,31 @@ We make a figure of the canonical data (grey line) along with the artificially a
 
 ```{r echo=FALSE}
 # make figure of canonical data with added errors
-figure_raw <-
-  ggplot()+
-  geom_point(data = data_copy,
-            aes(x, y),
-            col = "grey",
-            alpha = 1,
-            shape = 4,
-            size = 0.2)+
-  geom_path(data = data,
-            aes(x, y),
-            col = "grey20",
-            alpha = 1)+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank(),
-        plot.title = element_text(
-          face = "bold",
-          margin = margin(t = 30, b = -30),
-          hjust = 0.1
-        ))+
-  coord_equal()+
-  labs(colour = NULL)+
-  labs(
-    title = "(a)"
-  )
+# figure_raw <-
+#   ggplot()+
+#   geom_point(data = data_copy,
+#             aes(x, y),
+#             col = "grey",
+#             alpha = 1,
+#             shape = 4,
+#             size = 0.2)+
+#   geom_path(data = data,
+#             aes(x, y),
+#             col = "grey20",
+#             alpha = 1)+
+#   ggthemes::theme_few()+
+#   theme(axis.text = element_blank(),
+#         axis.title = element_blank(),
+#         plot.title = element_text(
+#           face = "bold",
+#           margin = margin(t = 30, b = -30),
+#           hjust = 0.1
+#         ))+
+#   coord_equal()+
+#   labs(colour = NULL)+
+#   labs(
+#     title = "(a)"
+#   )
 ```
 
 ## Filtering by Spatial Bounds
@@ -171,15 +171,8 @@ fig_filter_bounds <-
   theme(plot.background = element_rect(fill = NA))+
   coord_equal(expand = T)+
   labs(
-    title = "(b)"
+    title = "(a)"
   )
-
-# wrap plots
-plot_figure <-
-  wrap_plots(list(figure_raw, fig_filter_bounds))
-
-ggsave(plot_figure, filename = "figures/fig_02_bounds.png", 
-       width = 170, height = 150, units = "mm")
 ```
 
 ![](figures/fig_raw_bounds.png)
@@ -255,7 +248,8 @@ fig_outlier_remove <-
             lwd = 0.2)+
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
-             # size = 0.5,
+             size = 0.5,
+             alpha = 0.6,
              shape = 4, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
@@ -272,13 +266,21 @@ fig_outlier_remove <-
   scale_color_manual(values = c(pal[3], pal[1]))+
   scale_shape_manual(values = c(1, 4))+
   scale_size_manual(
-    values = c(0.5, 2)
+    values = c(0.2, 2)
   )+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.1
+        ))+
   coord_equal()+
-  theme(plot.background = element_rect(fill = NA))
+  theme(plot.background = element_rect(fill = NA))+
+  labs(
+    title = "(b)"
+  )
 ```
 
 ### Filtering Reflections or Track Subsets
@@ -330,10 +332,17 @@ reflection <- na.omit(reflection)
 ```
 
 ```{r echo=FALSE}
+# wrap plot
+figure_01 =
+  wrap_plots(
+    fig_filter_bounds,
+    fig_outlier_remove
+  )
+
 # save figure
-ggsave(fig_outlier_remove, 
-       filename = "figures/fig_03_filter_speed.png", 
-       width = 80, height = 150, units = "mm")
+ggsave(figure_01, 
+       filename = "figures/fig_02_filtering_data.png", 
+       width = 170, height = 150, units = "mm")
 ```
 
 ![](figures/fig_03_filter_speed.png)
