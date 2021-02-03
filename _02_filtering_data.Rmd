@@ -88,6 +88,7 @@ figure_raw <-
             aes(x, y),
             col = "grey",
             alpha = 1,
+            shape = 4,
             size = 0.2)+
   geom_path(data = data,
             aes(x, y),
@@ -95,9 +96,17 @@ figure_raw <-
             alpha = 1)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.1
+        ))+
   coord_equal()+
-  labs(colour = NULL)
+  labs(colour = NULL)+
+  labs(
+    title = "(a)"
+  )
 ```
 
 ## Filtering by Spatial Bounds
@@ -142,7 +151,8 @@ fig_filter_bounds <-
                               on = c("x", "y")],
              aes(x, y),
              col = "grey",
-             alpha = 0.5, size = 0.2)+
+             shape = 4,
+             size = 0.2)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
@@ -152,20 +162,24 @@ fig_filter_bounds <-
              lty = 2)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.1
+        ))+
   theme(plot.background = element_rect(fill = NA))+
-  coord_equal(expand = T)
+  coord_equal(expand = T)+
+  labs(
+    title = "(b)"
+  )
 
 # wrap plots
 plot_figure <-
-  wrap_plots(list(figure_raw, fig_filter_bounds)) +
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
+  wrap_plots(list(figure_raw, fig_filter_bounds))
 
 ggsave(plot_figure, filename = "figures/fig_02_bounds.png", 
-       width = 170, height = 170, units = "mm")
+       width = 170, height = 150, units = "mm")
 ```
 
 ![](figures/fig_raw_bounds.png)
