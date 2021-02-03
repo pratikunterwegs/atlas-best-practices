@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # remove old tex files and pdfs
-rm docs/*.pdf
-rm docs/*.tex
+cd docs
+rm *.pdf
+rm *.tex
+
+cd ..
 
 cp figures/fig_0*.png atlas-manuscript/figures
 
