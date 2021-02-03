@@ -4,6 +4,8 @@
 rm docs/*.pdf
 rm docs/*.tex
 
+cp figures/fig_0*.png atlas-manuscript/figures
+
 Rscript --slave -e 'bookdown::render_book("index.rmd", "bookdown::pdf_document2")'
 
 # to render source files
