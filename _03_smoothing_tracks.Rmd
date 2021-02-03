@@ -117,7 +117,8 @@ figure_median_smooth <-
         axis.title = element_blank())
 
 # save figure
-ggsave(figure_median_smooth, filename = "figures/fig_04_median_smooth.png",
+ggsave(figure_median_smooth, 
+       filename = "figures/fig_03_median_smooth.png",
        width = 170, height = 170 / 3, units = "mm")
 ```
 
