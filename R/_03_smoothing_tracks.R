@@ -57,7 +57,7 @@ figure_median_smooth <-
   geom_point(data = data_errors,
              aes(x, y),
              col = pal[3],
-             size = 0.2, alpha = 0.5)+
+             size = 0.2)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
@@ -77,14 +77,15 @@ figure_median_smooth <-
            y = 0.82,
            label = sprintf("(%s)", letters[seq(5)]),
            fontface = "bold")+
-  scale_colour_distiller(palette = "BuPu", direction = 1,
+  scale_colour_distiller(palette = "Blues", direction = 1,
                          values = c(-0.5, 1))+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank())
 
 # save figure
-ggsave(figure_median_smooth, filename = "figures/fig_04_median_smooth.png",
+ggsave(figure_median_smooth, 
+       filename = "figures/fig_03_median_smooth.png",
        width = 170, height = 170 / 3, units = "mm")
 
 
@@ -121,31 +122,40 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ## ----echo=FALSE---------------------------------------------------------------
 ### plot figures
 fig_agg_data <-
-  lapply(list_of_agg, function(df) {
+  Map(function(df, title) {
     ggplot(df)+
-      geom_path(data = data,
-                aes(x, y),
-                col = "grey20",
-                size = 0.2)+
+      # geom_path(data = data,
+      #           aes(x, y),
+      #           col = "grey20",
+      #           size = 0.2)+
       geom_point(data = data_agg,
                  aes(x, y),
-                 size = 0.2,
+                 size = 0.3,
                  col = pal[3])+
       geom_path(aes(x,y), 
-                col = pal[1])+
+                col = pal[4])+
       geom_point(aes(x,y,
                      group = interval),
-                 shape = 19,
+                 shape = 0,
                  col = pal[4],
-                 size = 2,
-                 alpha = 0.6,
+                 alpha = 1,
                  show.legend = F)+
       ggthemes::theme_few()+
       theme(axis.text = element_blank(),
             axis.title = element_blank(),
-            panel.background = element_rect(fill = "white"))+
-      coord_cartesian(ylim = c(0.6, NA))
-  })
+            plot.title = element_text(
+              face = "bold",
+              margin = margin(t = 30, b = -30),
+              hjust = 0.8
+            ))+
+      coord_cartesian(ylim = c(0.6, NA))+
+      labs(
+        title = sprintf("(%s)", title)
+      )
+  },
+  list_of_agg, 
+  c(NA, NA, "a", "b")
+  )
 
 
 ## -----------------------------------------------------------------------------
@@ -202,23 +212,29 @@ fig_agg_speed <-
   scale_y_log10(label = scales::comma,
                 limits = c(NA, 1.005))+
   ggthemes::theme_few()+
-  theme(axis.text.y = element_blank())+
+  theme(
+    axis.text.y = element_blank(),
+    axis.text = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.8
+        ))+
   labs(x = "interval (s)",
-       y = "speed")
+       y = "speed",
+       title = "(c)")
 
 
 ## ----echo=FALSE---------------------------------------------------------------
 # make combined figure
 fig_aggregate <-
-  wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
-             design = "AABBC")+
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
+  wrap_plots(
+    append(fig_agg_data[3:4], list(fig_agg_speed)),
+             design = "AABBC")
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_05_thinning.png",
+       filename = "figures/fig_04_thinning.png",
        width = 170, height = 85, units = "mm")
 

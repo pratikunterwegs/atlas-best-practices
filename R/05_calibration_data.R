@@ -508,6 +508,6 @@ figure_res_patch <-
 
 # save figure
 ggsave(figure_res_patch,
-       filename = "figures/fig_07_calib_residence_patch.png",
+       filename = "figures/fig_06_calib_residence_patch.png",
        height = 170, width = 170, units = "mm")
 

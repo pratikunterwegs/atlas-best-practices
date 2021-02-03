@@ -31,25 +31,25 @@ data[, residence_time := data_recurse$residenceTime]
 
 ## ----echo=FALSE---------------------------------------------------------------
 # restime by position
-fig_res_a <-
-  ggplot()+
-  geom_path(data = data,
-            aes(x, y),
-            lwd = 0.2,
-            col = "grey")+
-  geom_point(data = data,
-             aes(x, y,
-                 group = NA
-                 ),
-             size = 0.3,
-             show.legend = F,
-             alpha = 0.2,
-             col = "grey20")+
-  coord_equal()+
-  scale_colour_manual(values = c("grey", pal[3]))+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())
+# fig_res_a <-
+#   ggplot()+
+#   geom_path(data = data,
+#             aes(x, y),
+#             lwd = 0.2,
+#             col = "grey")+
+#   geom_point(data = data,
+#              aes(x, y,
+#                  group = NA
+#                  ),
+#              size = 0.3,
+#              show.legend = F,
+#              alpha = 0.2,
+#              col = "grey20")+
+#   coord_equal()+
+#   scale_colour_manual(values = c("grey", pal[3]))+
+#   ggthemes::theme_few()+
+#   theme(axis.text = element_blank(),
+#         axis.title = element_blank())
 
 
 ## -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ patch_summary <- atl_patch_summary(patch_data = patch,
 
 ## ----echo=FALSE---------------------------------------------------------------
 # plot_patches <-
-fig_res_b <-
+fig_res_patches <-
   ggplot()+
   geom_sf(data = patch_sf,
           aes(fill = patch),
@@ -106,13 +106,24 @@ fig_res_b <-
              shape = 21,
              show.legend = F)+
   scale_fill_distiller(palette = "Paired")+
-  coord_sf()+
+  coord_sf(
+    xlim = c(-3, NA)
+  )+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())
+        axis.title = element_blank(),
+        plot.title = element_text(
+              face = "bold",
+              margin = margin(t = 30, b = -30),
+              hjust = 0.925
+            )
+  )+
+  labs(
+    title = "(a)"
+  )
 
 # res time by time
-fig_res_c <-
+fig_res_inset <-
   ggplot()+
   geom_rect(data = patch_summary,
             aes(xmin = time_start,
@@ -136,24 +147,31 @@ fig_res_c <-
   scale_fill_distiller(palette = "Paired", direction = -1)+
   scale_colour_manual(values = c("grey20", "darkgreen"))+
   ggthemes::theme_few()+
-  theme(axis.text = element_blank())+
-  coord_fixed(expand = F,
-              ratio = 10000)+
+  theme(axis.text = element_blank(),
+        plot.title = element_text(
+              face = "bold"
+            ))+
+  coord_cartesian(expand = F)+
   labs(x = "time",
-       y = "res. time")
+       y = "res. time",
+       title = "(b)")
 
 
 ## ----echo=FALSE---------------------------------------------------------------
-fig_residence <-
-  wrap_plots(list(fig_res_a, fig_res_c, fig_res_b),
-           design = "ACC\nBCC")+
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
+fig_residence_patch = 
+  fig_res_patches +
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_res_inset
+    ),
+    xmin = -3.5,
+    xmax = 4,
+    ymin = 6,
+    ymax = 12.25
+  )
 
 # save the figure
-ggsave(fig_residence,
-       filename = "figures/fig_06_residence.png",
-       height = 170 / 25, width = 170 / 25)
+ggsave(fig_residence_patch,
+       filename = "figures/fig_05_residence.png",
+       height = 170, width = 150, units = "mm")
 

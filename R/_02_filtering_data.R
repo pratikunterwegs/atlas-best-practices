@@ -49,22 +49,31 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 
 ## ----echo=FALSE---------------------------------------------------------------
 # make figure of canonical data with added errors
-figure_raw <-
-  ggplot()+
-  geom_point(data = data_copy,
-            aes(x, y),
-            col = "grey",
-            alpha = 1,
-            size = 0.2)+
-  geom_path(data = data,
-            aes(x, y),
-            col = "grey20",
-            alpha = 1)+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  coord_equal()+
-  labs(colour = NULL)
+# figure_raw <-
+#   ggplot()+
+#   geom_point(data = data_copy,
+#             aes(x, y),
+#             col = "grey",
+#             alpha = 1,
+#             shape = 4,
+#             size = 0.2)+
+#   geom_path(data = data,
+#             aes(x, y),
+#             col = "grey20",
+#             alpha = 1)+
+#   ggthemes::theme_few()+
+#   theme(axis.text = element_blank(),
+#         axis.title = element_blank(),
+#         plot.title = element_text(
+#           face = "bold",
+#           margin = margin(t = 30, b = -30),
+#           hjust = 0.1
+#         ))+
+#   coord_equal()+
+#   labs(colour = NULL)+
+#   labs(
+#     title = "(a)"
+#   )
 
 
 ## ----remove_outside_bbox------------------------------------------------------
@@ -87,7 +96,8 @@ fig_filter_bounds <-
                               on = c("x", "y")],
              aes(x, y),
              col = "grey",
-             alpha = 0.5, size = 0.2)+
+             shape = 4,
+             size = 0.2)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
@@ -97,20 +107,17 @@ fig_filter_bounds <-
              lty = 2)+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.1
+        ))+
   theme(plot.background = element_rect(fill = NA))+
-  coord_equal(expand = T)
-
-# wrap plots
-plot_figure <-
-  wrap_plots(list(figure_raw, fig_filter_bounds)) +
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
-
-ggsave(plot_figure, filename = "figures/fig_02_bounds.png", 
-       width = 170, height = 170, units = "mm")
+  coord_equal(expand = T)+
+  labs(
+    title = "(a)"
+  )
 
 
 ## ----example_remove_outliers--------------------------------------------------
@@ -146,26 +153,38 @@ fig_outlier_remove <-
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
              size = 0.5,
-             shape = 2, col = pal[4])+
+             alpha = 0.6,
+             shape = 4, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
              aes(x, y, 
                  col = (in_speed >= 0.03 & out_speed >= 0.03),
-                 shape = (in_speed >= 0.03 & out_speed >= 0.03)),
+                 shape = (in_speed >= 0.03 & out_speed >= 0.03),
+                 size = (in_speed >= 0.03 & out_speed >= 0.03)),
              show.legend = F,
-             alpha = 1,
-             size = 0.5)+
+             alpha = 1)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
             alpha = 1)+
+  scale_color_manual(values = c(pal[3], pal[1]))+
+  scale_shape_manual(values = c(1, 4))+
+  scale_size_manual(
+    values = c(0.2, 2)
+  )+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  scale_color_manual(values = c(pal[3], "black"))+
-  scale_shape_manual(values = c(16, 21))+
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.1
+        ))+
   coord_equal()+
-  theme(plot.background = element_rect(fill = NA))
+  theme(plot.background = element_rect(fill = NA))+
+  labs(
+    title = "(b)"
+  )
 
 
 ## -----------------------------------------------------------------------------
@@ -180,47 +199,17 @@ reflection <- na.omit(reflection)
 
 
 ## ----echo=FALSE---------------------------------------------------------------
-# get plots
-fig_reflection <-
-  ggplot()+
-    geom_path(data = reflection,
-             aes(x, y),
-             alpha = 1,
-             col = "grey",
-             lwd = 0.2)+
-  geom_point(data = reflection,
-             aes(x, y),
-             alpha = 0.5,
-             col = "grey",
-             size = 0.5,
-             shape = 16)+
-  geom_point(data = data_no_reflection,
-             aes(x, y),
-             # alpha = 0.5,
-             size = 0.5,
-             colour = pal[3],
-             shape = 16,
-             show.legend = F)+
-  geom_path(data = data,
-            aes(x, y),
-            col = "grey20",
-            alpha = 1)+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  coord_equal()+
-  theme(plot.background = element_rect(fill = NA))
+# wrap plot
+figure_01 =
+  wrap_plots(
+    fig_filter_bounds,
+    fig_outlier_remove
+  )
 
-# wrap figures
-plot_figure <- wrap_plots(list(fig_outlier_remove, 
-                               fig_reflection)) +
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
-
-ggsave(plot_figure, filename = "figures/fig_03_filter_speed.png", 
-       width = 170, height = 170, units = "mm")
+# save figure
+ggsave(figure_01, 
+       filename = "figures/fig_02_filtering_data.png", 
+       width = 170, height = 150, units = "mm")
 
 
 ## -----------------------------------------------------------------------------
