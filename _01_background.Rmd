@@ -64,19 +64,21 @@ set.seed(0)
 
 # do smoove data using a RACVM for three different rotational speed
 data_thermals <- Map(function(rot_speed, patch) {
- dt <- smoove::simulateRACVM(dt = 0.1, Tmax = 50, omega = rot_speed, v0 = 0.1) 
- dt <- as.data.table(dt$XY)
- dt[, patch := patch]
- dt[, time := seq(.N)]
-}, c(7, 7, 7), sprintf('patch_%i', seq(3)))
+  dt <- smoove::simulateRACVM(dt = 0.1, Tmax = 50, omega = rot_speed, v0 = 0.1)
+  dt <- as.data.table(dt$XY)
+  dt[, patch := patch]
+  dt[, time := seq(.N)]
+}, c(7, 7, 7), sprintf("patch_%i", seq(3)))
 
 # rescale x and y
-data_thermals <- Map(function(df, lim1, lim2, offset) {
-  df[, x := x + lim1]
-  df[, y := y + lim2]
-  df[, time := time + offset]
-}, data_thermals, c(1, 5, 9), c(0, 2.5, 5),
-   c(100, 800, 1500))
+data_thermals <- Map(
+  function(df, lim1, lim2, offset) {
+    df[, x := x + lim1]
+    df[, y := y + lim2]
+    df[, time := time + offset]
+  }, data_thermals, c(1, 5, 9), c(0, 2.5, 5),
+  c(100, 800, 1500)
+)
 
 # get thermals data
 data_thermals <- rbindlist(data_thermals)
@@ -110,15 +112,17 @@ transit <- data.table(
 )
 
 # nafill
-transit[, c("x1", "y1", "t1") := 
-          lapply(list(x1, y1, t1), nafill, fill = 0)]
+transit[, c("x1", "y1", "t1") :=
+  lapply(list(x1, y1, t1), nafill, fill = 0)]
 
 # interpolate
 transit[, d := Map(function(x1, x2, y1, y2) {
-  as.data.table(approx(x = c(x1, x2), 
-                       y = c(y1, y2), 
-                       n = 20))
-  }, x1, x2, y1, y2)]
+  as.data.table(approx(
+    x = c(x1, x2),
+    y = c(y1, y2),
+    n = 20
+  ))
+}, x1, x2, y1, y2)]
 
 # add errors
 transit[, d := Map(function(df) {
@@ -137,8 +141,9 @@ transit_data <- rbindlist(transit_data)
 
 ```{r}
 # bind transits to thermals
-data_move <- merge(data_thermals, transit_data, 
-                   on = "time", all = T)
+data_move <- merge(data_thermals, transit_data,
+  on = "time", all = T
+)
 setorder(data_move, time)
 
 # save data
