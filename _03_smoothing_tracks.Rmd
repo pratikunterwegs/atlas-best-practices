@@ -282,7 +282,8 @@ fig_agg_speed <-
 ```{r echo=FALSE}
 # make combined figure
 fig_aggregate <-
-  wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
+  wrap_plots(
+    append(fig_agg_data[3:4], list(fig_agg_speed)),
              design = "AABBC")
 
 # save figure
