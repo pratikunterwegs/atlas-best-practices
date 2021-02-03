@@ -22,15 +22,16 @@ data_errors[, window_size := 0]
 ## -----------------------------------------------------------------------------
 # smooth the data over four K values
 list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
-  
   data_copy <- copy(data_errors)
-  
-  data_copy <- atl_median_smooth(data = data_copy,
-                    x = "x", 
-                    y = "y",
-                    time = "time",
-                    moving_window = K)
-  
+
+  data_copy <- atl_median_smooth(
+    data = data_copy,
+    x = "x",
+    y = "y",
+    time = "time",
+    moving_window = K
+  )
+
   data_copy[, window_size := K]
 })
 
@@ -44,7 +45,8 @@ fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
 data_plot <- mapply(function(df, offset) {
   df[, x := x + offset]
 }, list_of_smooths, seq(0.4, 1.25, length.out = 4),
-SIMPLIFY = F)
+SIMPLIFY = F
+)
 
 data_plot <- rbindlist(data_plot)
 
@@ -53,40 +55,56 @@ data_plot <- rbindlist(data_plot)
 # prepare data to plot
 # make list of data to plot
 figure_median_smooth <-
-  ggplot()+
-  geom_point(data = data_errors,
-             aes(x, y),
-             col = pal[3],
-             size = 0.2)+
-  geom_path(data = data,
-            aes(x, y),
-            col = "grey20",
-            lwd = 0.5)+          
-  geom_path(data = data_plot,
-            aes(x, y,
-                col = window_size,
-                group = window_size),
-            show.legend = F,
-            lwd = 0.5)+
-  coord_equal(expand = F,
-              ylim = c(0.6, 0.85),
-              xlim = c(NA, 2.3),
-              ratio = 1.75)+
-  annotate(geom = "text",
-           x = c(0.75, seq(1.1, 2, length.out = 4)),
-           y = 0.82,
-           label = sprintf("(%s)", letters[seq(5)]),
-           fontface = "bold")+
-  scale_colour_distiller(palette = "Blues", direction = 1,
-                         values = c(-0.5, 1))+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())
+  ggplot() +
+  geom_point(
+    data = data_errors,
+    aes(x, y),
+    col = pal[3],
+    size = 0.2
+  ) +
+  geom_path(
+    data = data,
+    aes(x, y),
+    col = "grey20",
+    lwd = 0.5
+  ) +
+  geom_path(
+    data = data_plot,
+    aes(x, y,
+      col = window_size,
+      group = window_size
+    ),
+    show.legend = F,
+    lwd = 0.5
+  ) +
+  coord_equal(
+    expand = F,
+    ylim = c(0.6, 0.85),
+    xlim = c(NA, 2.3),
+    ratio = 1.75
+  ) +
+  annotate(
+    geom = "text",
+    x = c(0.75, seq(1.1, 2, length.out = 4)),
+    y = 0.82,
+    label = sprintf("(%s)", letters[seq(5)]),
+    fontface = "bold"
+  ) +
+  scale_colour_distiller(
+    palette = "Blues", direction = 1,
+    values = c(-0.5, 1)
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank()
+  )
 
 # save figure
-ggsave(figure_median_smooth, 
-       filename = "figures/fig_03_median_smooth.png",
-       width = 170, height = 170 / 3, units = "mm")
+ggsave(figure_median_smooth,
+  filename = "figures/fig_03_median_smooth.png",
+  width = 170, height = 170 / 3, units = "mm"
+)
 
 
 ## -----------------------------------------------------------------------------
@@ -95,24 +113,27 @@ data_agg <- fread("data/data_smooth.csv")
 
 # get list of aggregated data
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
-  
-  data_return <- atl_thin_data(data = data_agg,
-                            interval = z,
-                            method = "aggregate")
-  
+  data_return <- atl_thin_data(
+    data = data_agg,
+    interval = z,
+    method = "aggregate"
+  )
+
   data_return[, interval := z]
-  
+
   return(data_return)
 })
 
 # get mean speed estimate and sd
-speed_agg_smooth <- 
+speed_agg_smooth <-
   lapply(list_of_agg, function(df) {
     na.omit(df)
     df[, speed := atl_get_speed(df)]
-    df[, list(median = median(speed, na.rm = T),
-              sd = sd(speed, na.rm = T),
-              interval = first(interval))]
+    df[, list(
+      median = median(speed, na.rm = T),
+      sd = sd(speed, na.rm = T),
+      interval = first(interval)
+    )]
   })
 
 # bind
@@ -122,51 +143,61 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ## ----echo=FALSE---------------------------------------------------------------
 ### plot figures
 fig_agg_data <-
-  Map(function(df, title) {
-    ggplot(df)+
-      # geom_path(data = data,
-      #           aes(x, y),
-      #           col = "grey20",
-      #           size = 0.2)+
-      geom_point(data = data_agg,
-                 aes(x, y),
-                 size = 0.3,
-                 col = pal[3])+
-      geom_path(aes(x,y), 
-                col = pal[4])+
-      geom_point(aes(x,y,
-                     group = interval),
-                 shape = 0,
-                 col = pal[4],
-                 alpha = 1,
-                 show.legend = F)+
-      ggthemes::theme_few()+
-      theme(axis.text = element_blank(),
-            axis.title = element_blank(),
-            plot.title = element_text(
-              face = "bold",
-              margin = margin(t = 30, b = -30),
-              hjust = 0.8
-            ))+
-      coord_cartesian(ylim = c(0.6, NA))+
-      labs(
-        title = sprintf("(%s)", title)
-      )
-  },
-  list_of_agg, 
-  c(NA, NA, "a", "b")
+  Map(
+    function(df, title) {
+      ggplot(df) +
+        # geom_path(data = data,
+        #           aes(x, y),
+        #           col = "grey20",
+        #           size = 0.2)+
+        geom_point(
+          data = data_agg,
+          aes(x, y),
+          size = 0.3,
+          col = pal[3]
+        ) +
+        geom_path(aes(x, y),
+          col = pal[4]
+        ) +
+        geom_point(aes(x, y,
+          group = interval
+        ),
+        shape = 0,
+        col = pal[4],
+        alpha = 1,
+        show.legend = F
+        ) +
+        ggthemes::theme_few() +
+        theme(
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          plot.title = element_text(
+            face = "bold",
+            margin = margin(t = 30, b = -30),
+            hjust = 0.8
+          )
+        ) +
+        coord_cartesian(ylim = c(0.6, NA)) +
+        labs(
+          title = sprintf("(%s)", title)
+        )
+    },
+    list_of_agg,
+    c(NA, NA, "a", "b")
   )
 
 
 ## -----------------------------------------------------------------------------
 # read data with errors
 data_errors <- fread("data/data_errors.csv")
-  
+
 # aggregate before correction
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
-  data_return <- atl_thin_data(data = data_errors,
-                            interval = z,
-                            method = "aggregate")
+  data_return <- atl_thin_data(
+    data = data_errors,
+    interval = z,
+    method = "aggregate"
+  )
   data_return[, interval := z]
   data_return[, speed := atl_get_speed(data_return)]
   return(data_return)
@@ -184,46 +215,64 @@ data_agg <- rbindlist(list_of_agg)
 ## ----echo=FALSE---------------------------------------------------------------
 # show boxplot of speed
 fig_agg_speed <-
-  ggplot(data_agg)+
-  geom_hline(yintercept =
-               1 + quantile(data$speed, na.rm = T,
-                        probs = c(0.5, 0.95)),
-             lty = c(1, 2))+
-  geom_errorbar(data = speed_agg_smooth,
-                aes(x = factor(interval),
-                    ymin = 1 + median - sd,
-                    ymax = 1 + median + sd),
-                width = 0.2,
-                position = position_nudge(x = 0.25)) +
-  geom_point(data = speed_agg_smooth,
-             aes(x = factor(interval),
-                 y = 1 + median),
-             shape = 21,
-             size = 3,
-             fill = pal[3],
-             position = position_nudge(x = 0.25)) +
+  ggplot(data_agg) +
+  geom_hline(
+    yintercept =
+      1 + quantile(data$speed,
+        na.rm = T,
+        probs = c(0.5, 0.95)
+      ),
+    lty = c(1, 2)
+  ) +
+  geom_errorbar(
+    data = speed_agg_smooth,
+    aes(
+      x = factor(interval),
+      ymin = 1 + median - sd,
+      ymax = 1 + median + sd
+    ),
+    width = 0.2,
+    position = position_nudge(x = 0.25)
+  ) +
+  geom_point(
+    data = speed_agg_smooth,
+    aes(
+      x = factor(interval),
+      y = 1 + median
+    ),
+    shape = 21,
+    size = 3,
+    fill = pal[3],
+    position = position_nudge(x = 0.25)
+  ) +
   geom_boxplot(aes(factor(interval), 1 + speed),
-               position = position_nudge(x = -0.25,),
-               fill = "grey",
-               alpha = 0.5,
-               show.legend = F, 
-               width = 0.25, 
-               outlier.size = 0.2)+
-  scale_y_log10(label = scales::comma,
-                limits = c(NA, 1.005))+
-  ggthemes::theme_few()+
+    position = position_nudge(x = -0.25, ),
+    fill = "grey",
+    alpha = 0.5,
+    show.legend = F,
+    width = 0.25,
+    outlier.size = 0.2
+  ) +
+  scale_y_log10(
+    label = scales::comma,
+    limits = c(NA, 1.005)
+  ) +
+  ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
     axis.text = element_blank(),
-        axis.title = element_blank(),
-        plot.title = element_text(
-          face = "bold",
-          margin = margin(t = 30, b = -30),
-          hjust = 0.8
-        ))+
-  labs(x = "interval (s)",
-       y = "speed",
-       title = "(c)")
+    axis.title = element_blank(),
+    plot.title = element_text(
+      face = "bold",
+      margin = margin(t = 30, b = -30),
+      hjust = 0.8
+    )
+  ) +
+  labs(
+    x = "interval (s)",
+    y = "speed",
+    title = "(c)"
+  )
 
 
 ## ----echo=FALSE---------------------------------------------------------------
@@ -231,10 +280,12 @@ fig_agg_speed <-
 fig_aggregate <-
   wrap_plots(
     append(fig_agg_data[3:4], list(fig_agg_speed)),
-             design = "AABBC")
+    design = "AABBC"
+  )
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_04_thinning.png",
-       width = 170, height = 85, units = "mm")
+  filename = "figures/fig_04_thinning.png",
+  width = 170, height = 85, units = "mm"
+)
 
