@@ -162,22 +162,21 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 fig_agg_data <-
   lapply(list_of_agg, function(df) {
     ggplot(df)+
-      geom_path(data = data,
-                aes(x, y),
-                col = "grey20",
-                size = 0.2)+
-      geom_point(data = data_agg,
+      # geom_path(data = data,
+      #           aes(x, y),
+      #           col = "grey20",
+      #           size = 0.2)+
+      geom_path(data = data_agg,
                  aes(x, y),
-                 size = 0.2,
-                 col = pal[3])+
+                 size = 0.3,
+                 col = pal[2])+
       geom_path(aes(x,y), 
-                col = pal[1])+
+                col = pal[4])+
       geom_point(aes(x,y,
                      group = interval),
-                 shape = 19,
+                 shape = 0,
                  col = pal[4],
-                 size = 2,
-                 alpha = 0.6,
+                 alpha = 1,
                  show.legend = F)+
       ggthemes::theme_few()+
       theme(axis.text = element_blank(),
@@ -243,7 +242,7 @@ fig_agg_speed <-
                  y = 1 + median),
              shape = 21,
              size = 3,
-             fill = pal[3],
+             fill = pal[2],
              position = position_nudge(x = 0.25)) +
   geom_boxplot(aes(factor(interval), 1 + speed),
                position = position_nudge(x = -0.25,),
@@ -262,7 +261,7 @@ fig_agg_speed <-
 
 ```{r echo=FALSE}
 # make combined figure
-fig_aggregate <-
+# fig_aggregate <-
   wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
              design = "AABBC")+
   plot_annotation(tag_levels = "a",
