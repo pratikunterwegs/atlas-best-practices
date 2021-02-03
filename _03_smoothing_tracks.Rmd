@@ -161,16 +161,16 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ```{r echo=FALSE}
 ### plot figures
 fig_agg_data <-
-  lapply(list_of_agg, function(df) {
+  Map(function(df, title) {
     ggplot(df)+
       # geom_path(data = data,
       #           aes(x, y),
       #           col = "grey20",
       #           size = 0.2)+
-      geom_path(data = data_agg,
+      geom_point(data = data_agg,
                  aes(x, y),
                  size = 0.3,
-                 col = pal[2])+
+                 col = pal[3])+
       geom_path(aes(x,y), 
                 col = pal[4])+
       geom_point(aes(x,y,
@@ -182,9 +182,19 @@ fig_agg_data <-
       ggthemes::theme_few()+
       theme(axis.text = element_blank(),
             axis.title = element_blank(),
-            panel.background = element_rect(fill = "white"))+
-      coord_cartesian(ylim = c(0.6, NA))
-  })
+            plot.title = element_text(
+              face = "bold",
+              margin = margin(t = 30, b = -30),
+              hjust = 0.8
+            ))+
+      coord_cartesian(ylim = c(0.6, NA))+
+      labs(
+        title = sprintf("(%s)", title)
+      )
+  },
+  list_of_agg, 
+  c(NA, NA, "a", "b")
+  )
 ```
 
 
@@ -243,7 +253,7 @@ fig_agg_speed <-
                  y = 1 + median),
              shape = 21,
              size = 3,
-             fill = pal[2],
+             fill = pal[3],
              position = position_nudge(x = 0.25)) +
   geom_boxplot(aes(factor(interval), 1 + speed),
                position = position_nudge(x = -0.25,),
@@ -255,24 +265,29 @@ fig_agg_speed <-
   scale_y_log10(label = scales::comma,
                 limits = c(NA, 1.005))+
   ggthemes::theme_few()+
-  theme(axis.text.y = element_blank())+
+  theme(
+    axis.text.y = element_blank(),
+    axis.text = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_text(
+          face = "bold",
+          margin = margin(t = 30, b = -30),
+          hjust = 0.8
+        ))+
   labs(x = "interval (s)",
-       y = "speed")
+       y = "speed",
+       title = "(c)")
 ```
 
 ```{r echo=FALSE}
 # make combined figure
-# fig_aggregate <-
+fig_aggregate <-
   wrap_plots(append(fig_agg_data[3:4], list(fig_agg_speed)),
-             design = "AABBC")+
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
+             design = "AABBC")
 
 # save figure
 ggsave(fig_aggregate,
-       filename = "figures/fig_05_thinning.png",
+       filename = "figures/fig_04_thinning.png",
        width = 170, height = 85, units = "mm")
 ```
 
