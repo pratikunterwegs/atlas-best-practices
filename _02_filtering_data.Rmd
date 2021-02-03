@@ -255,25 +255,28 @@ fig_outlier_remove <-
             lwd = 0.2)+
   geom_point(data = data_copy[500:800, ],
              aes(x, y),
-             size = 0.5,
-             shape = 2, col = pal[4])+
+             # size = 0.5,
+             shape = 4, col = pal[4])+
   geom_point(data = data_copy[!data_copy[500:800, ],
                               on = c("x", "y")],
              aes(x, y, 
                  col = (in_speed >= 0.03 & out_speed >= 0.03),
-                 shape = (in_speed >= 0.03 & out_speed >= 0.03)),
+                 shape = (in_speed >= 0.03 & out_speed >= 0.03),
+                 size = (in_speed >= 0.03 & out_speed >= 0.03)),
              show.legend = F,
-             alpha = 1,
-             size = 0.5)+
+             alpha = 1)+
   geom_path(data = data,
             aes(x, y),
             col = "grey20",
             alpha = 1)+
+  scale_color_manual(values = c(pal[3], pal[1]))+
+  scale_shape_manual(values = c(1, 4))+
+  scale_size_manual(
+    values = c(0.5, 2)
+  )+
   ggthemes::theme_few()+
   theme(axis.text = element_blank(),
         axis.title = element_blank())+
-  scale_color_manual(values = c(pal[3], "black"))+
-  scale_shape_manual(values = c(16, 21))+
   coord_equal()+
   theme(plot.background = element_rect(fill = NA))
 ```
@@ -327,47 +330,10 @@ reflection <- na.omit(reflection)
 ```
 
 ```{r echo=FALSE}
-# get plots
-fig_reflection <-
-  ggplot()+
-    geom_path(data = reflection,
-             aes(x, y),
-             alpha = 1,
-             col = "grey",
-             lwd = 0.2)+
-  geom_point(data = reflection,
-             aes(x, y),
-             alpha = 0.5,
-             col = "grey",
-             size = 0.5,
-             shape = 16)+
-  geom_point(data = data_no_reflection,
-             aes(x, y),
-             # alpha = 0.5,
-             size = 0.5,
-             colour = pal[3],
-             shape = 16,
-             show.legend = F)+
-  geom_path(data = data,
-            aes(x, y),
-            col = "grey20",
-            alpha = 1)+
-  ggthemes::theme_few()+
-  theme(axis.text = element_blank(),
-        axis.title = element_blank())+
-  coord_equal()+
-  theme(plot.background = element_rect(fill = NA))
-
-# wrap figures
-plot_figure <- wrap_plots(list(fig_outlier_remove, 
-                               fig_reflection)) +
-  plot_annotation(tag_levels = "a",
-                  tag_prefix = "(",
-                  tag_suffix = ")") &
-  theme(plot.tag = element_text(face = "bold"))
-
-ggsave(plot_figure, filename = "figures/fig_03_filter_speed.png", 
-       width = 170, height = 170, units = "mm")
+# save figure
+ggsave(fig_outlier_remove, 
+       filename = "figures/fig_03_filter_speed.png", 
+       width = 80, height = 150, units = "mm")
 ```
 
 ![](figures/fig_03_filter_speed.png)
