@@ -246,19 +246,18 @@ Users may follow the pipeline in full, or implement the module most suitable for
 \begin{enumerate}
     
     \item Users should visualise their data to check for evident location errors \citep{slingsby2016}.
-    \item Users can install \texttt{atlastools} using the \texttt{install\_github} function from the \texttt{R} package \texttt{remotes}.
-    The package can be installed using the \texttt{R} command
+    \item Users can install \texttt{atlastools} using the \texttt{install\_github} function from the \texttt{R} package \texttt{remotes}:
     
     \texttt{remotes::install\_github("pratikunterwegs/atlastools")}.
     
-    Package functions are prefixed `\texttt{atl\_}', and rely heavily on the \texttt{data.table} package (Dowle and Srinivasan 2020).
+    Package functions are prefixed `\texttt{atl\_}', and are based on the \texttt{data.table} package (Dowle and Srinivasan 2020).
     Certain functions modify the input data "in place", and users must work on a copy of their data to preserve both the original and cleaned data (details in the Supplementary Material).
-    Since ATLAS systems typically cover an area of a few hundred square kilometres, \texttt{atlastools} assumes a coordinate system in metres, and users must convert their geographic coordinates to metres.
-    \item Users with a specific area or time of interest can use simple spatio-temporal range filters to select positions (see \textsc{Spatio-Temporal Filtering}).
-    \item Next, users should reduce gross location errors by removing unreliable positions which may be identified by an error measure, or by the plausibility of associated movement metrics (see \textsc{Filtering to Reduce Location Errors}).
+    Since high-throughput tracking systems typically cover an area of a few hundred square kilometres, \texttt{atlastools} users must convert their geographic coordinates to metres as this is assumed by all functions.
+    \item Users can use simple spatio-temporal range filters to select positions within a certain time or area (see \textsc{Spatio-Temporal Filtering}).
+    \item Next, users should reduce gross location errors by removing unreliable positions which may be identified by a system-specific error measure, or by the plausibility of associated movement metrics (see \textsc{Filtering to Reduce Location Errors}).
     \item Users should then reduce small-scale location errors by applying a median smooth (see \textsc{Smoothing and Thinning Data}).
-    \item Users who need uniformly thinned data can then thin by either aggregating or resampling (see \textsc{Smoothing and Thinning Data}).
-    At this stage, the data are ready for a number of popular statistical treatments such as Hidden Markov Model-based classification \citep{michelot2016}.
+    \item Users who need uniformly thinned data can either aggregate or resample it (see \textsc{Smoothing and Thinning Data}).
+    At this stage, the data are ready for a number of popular statistical treatments such as Hidden Markov Model-based classification \citep{michelot2016,langrock2012}.
     \item Finally, users wishing to study prolonged animal residence in an area can classify their data into residence patches based on the movement ecology of their study system, after filtering out non-stationary positions (see \textsc{Synthesising Movement Tracks into Residence Patches}).
     % Residence patches are spatio-temporally independent clusters of positions that represent prolonged residence of a tracked individual in an area, and which can indicate aspects of space use such resource exploitation \citep{barraquand2008, bijleveld2016, oudman2018}.
     
