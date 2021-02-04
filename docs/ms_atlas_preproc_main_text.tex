@@ -394,7 +394,7 @@ Some species can realistically achieve speeds $\geq S$ in fast transit segments 
 To avoid removing real, fast transit segments while still excluding spikes we suggest combining the speed filter with a filter on the turning angles of each position \citep[see][]{calenge2009}.
 This combined filter assumes that positions in high-throughput tracking with both high speeds and large turning angles are likely to be due to location errors, since most species are unable to turn sharply at high speed.
 Users can then retain only those positions whose incoming and outgoing speeds are both $< S$ which or satisfy the condition $\theta < A$, where $\theta$ is the turning angle, and $A$ is the turning angle threshold.
-The removal of spikes is implemented using the \texttt{atl\_filter\_covariates} function (Listing 4).
+The removal of spikes is implemented using the \texttt{atl\_filter\_covariates} function (Listing 3).
 Many other track metrics may be used to identify implausible movement and on which data may be filtered \citep{seidel2018}.
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
@@ -418,8 +418,8 @@ These cannot be corrected by targeted removal of individual positions, as in Bjo
 Since filtering individual positions will not suffice, algorithms to correct such errors must take a track-level view, and target the displaced sequence overall.
 Track-subset algorithms are likely to be system-specific, and may be challenging to conceptualise or implement.
 In the case of prolonged spikes, one relatively simple solution is identifying the bounds and removing positions between them.
-We show an illustrative example of such an algorithm in the form of track-subset filtering for prolonged spikes using the \texttt{atlastools} function \texttt{atl\_remove\_reflections} (Listing 5).
-Users are strongly encouraged to visualise their data before and after applying this method, and we caution against relying on this method if data are heavily distorted by errors affecting entire track-subsets.
+% We show an illustrative example of such an algorithm in the form of track-subset filtering for prolonged spikes using the \texttt{atlastools} function \texttt{atl\_remove\_reflections} (Listing 5).
+Users are strongly encouraged to visualise their data before and after applying such algorithms, and we caution against relying on these method if data are heavily distorted by errors affecting entire track-subsets.
 
 % \begin{lstlisting}[float, language=R, style=customR, caption = {
 %     Removing unrealistic movement in the form of prolonged spikes from a movement track. 
@@ -465,7 +465,7 @@ Furthermore, while larger $K$ may result in smoother tracks (Fig. 4.b -- e), one
 Users must themselves judge how best to trade large-scale and small-scale accuracy, and choose $K$ accordingly.
 One empirical way to compare $K$ is by calculating the root mean squared error (RMSE) for different $K$ on the same data.
 % In general, large $K$s lead to unrealistic tracks, both because the first and last $(K - 1) / 2$ positions are handled as special cases, and because the local median approaches the global median at larger $K$.
-Median smoothing is provided by the \texttt{atlastools} function \texttt{atl\_median\_smooth}, with the only option being the moving window size, which must be an odd integer (Listing 6).
+Median smoothing is provided by the \texttt{atlastools} function \texttt{atl\_median\_smooth}, with the only option being the moving window size, which must be an odd integer (Listing 4).
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
     Median smoothing a movement track using the function \texttt{atl\_median\_smooth} function with a moving window \textit{K = 5}. 
@@ -531,7 +531,7 @@ In both cases, an extra column \texttt{time\_agg} is added which has a uniform d
 Due to its development for ATLAS systems, the `aggregate' assumes the variance around coordinates is named \texttt{VARX} and \texttt{VARY}, and standard deviation around each position is named \texttt{SD}.
 These columns must be present together for the function to correctly handle the error.
 If there is no measure of error, the function simply returns the averaged position and covariates in each time interval.
-Grouping variables' names (such as animal identity) may be passed as a character vector to the \texttt{id\_columns} argument (Listing 7).
+Grouping variables' names (such as animal identity) may be passed as a character vector to the \texttt{id\_columns} argument (Listing 5).
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {Code to thin data by aggregation in \texttt{atlastools}. The method can be either "aggregate" or "resample". 
 The time interval is specified in seconds, while the \texttt{id\_columns} allows a character vector of column names to be passed to the function, with these columns used as identity variables.
@@ -569,7 +569,7 @@ Patch identification assesses whether consecutive positions and the bouts they c
 The splitting and lumping of positions into bouts, and bouts into patches is based on simple user specified thresholds --- the distance and the time interval between positions (and bouts) beyond which they should be considered independent.
 % Patches are considered independent if either the distance or time between them exceeds their respective thresholds.
 Users are encouraged to base these thresholds in the movement habits of their study species.
-For example, residence patch classification of red knot movement tracks considers consecutive stationary positions independent if they are 20m apart and considers consecutive bouts independent if the distance between them $\geq$ 100m, or the time difference between them $\geq$ 30 minutes (Listing 8).
+For example, residence patch classification of red knot movement tracks considers consecutive stationary positions independent if they are 20m apart and considers consecutive bouts independent if the distance between them $\geq$ 100m, or the time difference between them $\geq$ 30 minutes (Listing 6).
 The 20m distance represents a maximum speed of 6.667 m/s between positions, above which the individual is more likely in transit.
 The 100m and 30 minute thresholds are chosen to account for potentially missing data between bouts; if a track ends abruptly and then reappears $\geq$ 100m away or $\geq$ 30 minutes later, this is more safely considered a new residence patch.
 
