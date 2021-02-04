@@ -20,7 +20,6 @@ library(patchwork)
 # define a four colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] = "seagreen"
-pal[2] = RColorBrewer::brewer.pal(5, "Blues")[5]
 ```
 
 We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.
@@ -126,7 +125,7 @@ figure_median_smooth <-
     fontface = "bold"
   ) +
   scale_colour_distiller(
-    palette = "Blues", direction = 1,
+    palette = "Purples", direction = 1,
     values = c(-0.5, 1)
   ) +
   ggthemes::theme_few() +
@@ -196,32 +195,24 @@ fig_agg_data_smooth <-
           col = pal[3]
         ) +
         geom_path(aes(x, y),
-          col = pal[2],
+          col = pal[4],
           lwd = 0.2
         ) +
         geom_point(aes(x, y,
           group = interval
         ),
-        shape = 1,
+        shape = 0,
         size = 2,
-        col = pal[2],
+        col = pal[4],
         alpha = 1,
         show.legend = F
         ) +
         ggthemes::theme_few() +
         theme(
           axis.text = element_blank(),
-          axis.title = element_blank(),
-          plot.title = element_text(
-            face = "bold",
-            margin = margin(t = 30, b = -30),
-            hjust = 0.9
-          )
+          axis.title = element_blank()
         ) +
-        coord_cartesian(ylim = c(0.6, NA)) +
-        labs(
-          title = "(a)"
-        )
+        coord_cartesian(ylim = c(0.6, NA))
 ```
 
 
@@ -271,32 +262,24 @@ fig_agg_data_error <-
           col = "grey"
         ) +
         geom_path(aes(x, y),
-          col = pal[2]
+          col = pal[4]
           # lwd = 0.1
         ) +
         geom_point(aes(x, y,
           group = interval
         ),
-        shape = 1,
+        shape = 0,
         size = 2,
-        col = pal[2],
+        col = pal[4],
         alpha = 1,
         show.legend = F
         ) +
         ggthemes::theme_few() +
         theme(
           axis.text = element_blank(),
-          axis.title = element_blank(),
-          plot.title = element_text(
-            face = "bold",
-            margin = margin(t = 30, b = -30),
-            hjust = 0.9
-          )
+          axis.title = element_blank()
         ) +
-        coord_cartesian(ylim = c(0.6, NA)) +
-        labs(
-          title = "(b)"
-        )
+        coord_cartesian(ylim = c(0.6, NA))
 ```
 
 ### Comparing median aggregation with and without smoothing
@@ -353,17 +336,11 @@ fig_agg_speed <-
   ) +
   ggthemes::theme_few() +
   theme(
-    axis.text.y = element_blank(),
-    plot.title = element_text(
-      face = "bold",
-      margin = margin(t = 30, b = -30),
-      hjust = 0.8
-    )
+    axis.text.y = element_blank()
   ) +
   labs(
     x = "interval (s)",
-    y = "speed",
-    title = "(c)"
+    y = "speed"
   )
 ```
 
@@ -373,7 +350,13 @@ fig_aggregate <-
   wrap_plots(
     fig_agg_data_smooth, fig_agg_data_error, fig_agg_speed,
     design = "AABBC"
-  )
+  )+
+    plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")"
+    ) &
+  theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(fig_aggregate,
