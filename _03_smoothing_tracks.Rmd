@@ -19,7 +19,7 @@ library(patchwork)
 
 # define a four colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
-pal[3] = "seagreen"
+pal[3] <- "seagreen"
 ```
 
 We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.
@@ -184,35 +184,35 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 
 ```{r echo=FALSE}
 # prepare data
-data_agg_smooth = copy(list_of_agg[[3]]) # 30s aggregate
+data_agg_smooth <- copy(list_of_agg[[3]]) # 30s aggregate
 ### plot figures
 fig_agg_data_smooth <-
-      ggplot(data_agg_smooth) +
-        geom_point(
-          data = data_agg,
-          size = 0.2,
-          aes(x, y),
-          col = pal[3]
-        ) +
-        geom_path(aes(x, y),
-          col = pal[4],
-          lwd = 0.2
-        ) +
-        geom_point(aes(x, y,
-          group = interval
-        ),
-        shape = 0,
-        size = 2,
-        col = pal[4],
-        alpha = 1,
-        show.legend = F
-        ) +
-        ggthemes::theme_few() +
-        theme(
-          axis.text = element_blank(),
-          axis.title = element_blank()
-        ) +
-        coord_cartesian(ylim = c(0.6, NA))
+  ggplot(data_agg_smooth) +
+  geom_point(
+    data = data_agg,
+    size = 0.2,
+    aes(x, y),
+    col = pal[3]
+  ) +
+  geom_path(aes(x, y),
+    col = pal[4],
+    lwd = 0.2
+  ) +
+  geom_point(aes(x, y,
+    group = interval
+  ),
+  shape = 0,
+  size = 2,
+  col = pal[4],
+  alpha = 1,
+  show.legend = F
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank()
+  ) +
+  coord_cartesian(ylim = c(0.6, NA))
 ```
 
 
@@ -251,35 +251,35 @@ data[, speed := atl_get_speed(data)]
 
 ```{r echo=FALSE}
 # prepare data
-data_agg_error = copy(list_of_agg_errors[[3]]) # 30s aggregate
+data_agg_error <- copy(list_of_agg_errors[[3]]) # 30s aggregate
 ### plot figures
 fig_agg_data_error <-
-      ggplot(data_agg_error) +
-        geom_point(
-          data = data_errors,
-          size = 0.1,
-          aes(x, y),
-          col = "grey"
-        ) +
-        geom_path(aes(x, y),
-          col = pal[4]
-          # lwd = 0.1
-        ) +
-        geom_point(aes(x, y,
-          group = interval
-        ),
-        shape = 0,
-        size = 2,
-        col = pal[4],
-        alpha = 1,
-        show.legend = F
-        ) +
-        ggthemes::theme_few() +
-        theme(
-          axis.text = element_blank(),
-          axis.title = element_blank()
-        ) +
-        coord_cartesian(ylim = c(0.6, NA))
+  ggplot(data_agg_error) +
+  geom_point(
+    data = data_errors,
+    size = 0.1,
+    aes(x, y),
+    col = "grey"
+  ) +
+  geom_path(aes(x, y),
+    col = pal[4]
+    # lwd = 0.1
+  ) +
+  geom_point(aes(x, y,
+    group = interval
+  ),
+  shape = 0,
+  size = 2,
+  col = pal[4],
+  alpha = 1,
+  show.legend = F
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank()
+  ) +
+  coord_cartesian(ylim = c(0.6, NA))
 ```
 
 ### Comparing median aggregation with and without smoothing
@@ -350,13 +350,13 @@ fig_aggregate <-
   wrap_plots(
     fig_agg_data_smooth, fig_agg_data_error, fig_agg_speed,
     design = "AABBC"
-  )+
+  ) +
     plot_annotation(
       tag_levels = "a",
       tag_prefix = "(",
       tag_suffix = ")"
     ) &
-  theme(plot.tag = element_text(face = "bold"))
+    theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(fig_aggregate,
