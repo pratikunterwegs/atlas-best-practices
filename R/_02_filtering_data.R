@@ -20,26 +20,26 @@ data <- fread("data/data_sim.csv")[5000:10000, ]
 
 ## ----add_outlier, eval=FALSE--------------------------------------------------
 ## # make a copy
-## data_copy <- copy(data)
-## 
-## # add a prolonged spike or reflection to 300 positions
-## data_copy[500:800, `:=`(
-##   x = x + 0.25,
-##   y = y + 0.25
-## )]
-## 
-## # add normal error
-## data_copy[, `:=`(
-##   x = do_add_error(x, std_dev = 0.01),
-##   y = do_add_error(y, std_dev = 0.005)
-## )]
-## 
-## # add 100 outliers
-## data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
+## # data_copy <- copy(data)
+## #
+## # # add a prolonged spike or reflection to 300 positions
+## # data_copy[500:800, `:=`(
+## #   x = x + 0.25,
+## #   y = y + 0.25
+## # )]
+## #
+## # # add normal error
+## # data_copy[, `:=`(
+## #   x = do_add_error(x, std_dev = 0.01),
+## #   y = do_add_error(y, std_dev = 0.005)
+## # )]
+## #
+## # # add 100 outliers
+## # data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-## fwrite(data_copy, file = "data/data_errors.csv")
+## # fwrite(data_copy, file = "data/data_errors.csv")
 
 
 ## -----------------------------------------------------------------------------
@@ -48,7 +48,8 @@ data_copy <- fread("data/data_errors.csv")
 
 ## -----------------------------------------------------------------------------
 # define a four colour palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- RColorBrewer::brewer.pal(5, "Set1")
+pal[3] <- "seagreen"
 
 
 ## ----echo=FALSE---------------------------------------------------------------
@@ -123,18 +124,10 @@ fig_filter_bounds <-
   ggthemes::theme_few() +
   theme(
     axis.text = element_blank(),
-    axis.title = element_blank(),
-    plot.title = element_text(
-      face = "bold",
-      margin = margin(t = 30, b = -30),
-      hjust = 0.1
-    )
+    axis.title = element_blank()
   ) +
   theme(plot.background = element_rect(fill = NA)) +
-  coord_equal(expand = T) +
-  labs(
-    title = "(a)"
-  )
+  coord_equal(expand = T)
 
 
 ## ----example_remove_outliers--------------------------------------------------
@@ -177,9 +170,9 @@ fig_outlier_remove <-
   geom_point(
     data = data_copy[500:800, ],
     aes(x, y),
-    size = 0.5,
+    # size = 0.5,
     alpha = 0.6,
-    shape = 4, col = pal[4]
+    shape = 4, col = "black"
   ) +
   geom_point(
     data = data_copy[!data_copy[500:800, ],
@@ -199,7 +192,7 @@ fig_outlier_remove <-
     col = "grey20",
     alpha = 1
   ) +
-  scale_color_manual(values = c(pal[3], pal[1])) +
+  scale_color_manual(values = c(pal[3], "grey")) +
   scale_shape_manual(values = c(1, 4)) +
   scale_size_manual(
     values = c(0.2, 2)
@@ -207,18 +200,10 @@ fig_outlier_remove <-
   ggthemes::theme_few() +
   theme(
     axis.text = element_blank(),
-    axis.title = element_blank(),
-    plot.title = element_text(
-      face = "bold",
-      margin = margin(t = 30, b = -30),
-      hjust = 0.1
-    )
+    axis.title = element_blank()
   ) +
   coord_equal() +
-  theme(plot.background = element_rect(fill = NA)) +
-  labs(
-    title = "(b)"
-  )
+  theme(plot.background = element_rect(fill = NA))
 
 
 ## -----------------------------------------------------------------------------
@@ -240,7 +225,13 @@ figure_01 <-
   wrap_plots(
     fig_filter_bounds,
     fig_outlier_remove
-  )
+  ) +
+    plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")"
+    ) &
+    theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(figure_01,

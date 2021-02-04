@@ -5,8 +5,9 @@ library(atlastools)
 library(ggplot2)
 library(patchwork)
 
-# prepare a palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- RColorBrewer::brewer.pal(5, "Set1")
+pal[3] <- "seagreen"
+pal[2] <- RColorBrewer::brewer.pal(5, "Blues")[5]
 
 
 ## -----------------------------------------------------------------------------
@@ -69,10 +70,11 @@ fig_data_bbox <-
       col = x > 645000
     ),
     alpha = ifelse(data_raw$x > 645000, 1, 1),
-    size = ifelse(data_raw$x > 645000, 0.3, 2),
+    size = ifelse(data_raw$x > 645000, 0.3, 4),
+    shape = ifelse(data_raw$x > 645000, 16, 4),
     show.legend = F
   ) +
-  scale_colour_manual(values = c("black", pal[3])) +
+  scale_colour_manual(values = c(pal[1], pal[3])) +
   geom_vline(
     xintercept = 645000,
     col = "grey", lty = 2
@@ -152,9 +154,7 @@ fig_speed_outliers <-
     axis.title = element_blank()
   ) +
   ggspatial::annotation_scale(location = "tl") +
-  coord_sf(crs = 32631) +
-  labs(colour = "speed (m/s)")
-
+  coord_sf(crs = 32631)
 # save
 ggsave(fig_speed_outliers,
   filename = "figures/fig_speed_outlier.png",
@@ -202,6 +202,12 @@ atl_median_smooth(
 # make zoomed in figures
 fig_smooth <-
   ggplot() +
+  geom_path(
+    data = data_raw[!data_unproc, on = c("x", "y")],
+    aes(x, y),
+    col = "grey90",
+    size = 0.1
+  ) +
   geom_point(
     data = data_raw[!data_unproc, on = c("x", "y")],
     aes(x, y),
@@ -213,7 +219,8 @@ fig_smooth <-
     data = data,
     aes(x, y),
     col = pal[3],
-    shape = 19,
+    shape = 1,
+    stroke = 1,
     alpha = 0.5
   ) +
   coord_cartesian(
@@ -259,6 +266,12 @@ data_thin <- atl_thin_data(
 # make zoomed in figures
 fig_smooth_thin <-
   ggplot() +
+  geom_path(
+    data = data_raw[!data_unproc, on = c("x", "y")],
+    aes(x, y),
+    col = "grey90",
+    size = 0.1
+  ) +
   geom_point(
     data = data_raw[!data_unproc, on = c("x", "y")],
     aes(x, y),
@@ -276,7 +289,6 @@ fig_smooth_thin <-
   geom_point(
     data = data_unproc,
     aes(x, y),
-    alpha = 0.6,
     col = pal[3],
     shape = 16
   ) +
@@ -307,13 +319,7 @@ figure_walkthrough <-
       fig_speed_outliers, fig_smooth_thin
     ),
     design = "AB"
-  ) +
-    plot_annotation(
-      tag_levels = "a",
-      tag_prefix = "(",
-      tag_suffix = ")"
-    ) &
-    theme(plot.tag = element_text(face = "bold"))
+  )
 
 # # save combined figure
 ggsave(figure_walkthrough,

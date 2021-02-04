@@ -3,7 +3,6 @@
 # remove old tex files and pdfs
 cd docs
 rm *.pdf
-rm *.tex
 
 cd ..
 
@@ -22,9 +21,9 @@ cp -p atlas-manuscript/arxiv_article.pdf docs/ms_atlas_preproc_main_text_`date -
 mv docs/supplementary_material.pdf docs/ms_atlas_preproc_supplementary_material_`date -I`.pdf
 
 # copy tex and replace old tex
-cp -p atlas-manuscript/arxiv_article.tex docs/ms_atlas_preproc_main_text_`date -I`.tex
+cp -p atlas-manuscript/arxiv_article.tex docs/ms_atlas_preproc_main_text.tex
 
-mv docs/supplementary_material.tex docs/ms_atlas_preproc_supplement_`date -I`.tex
+mv docs/supplementary_material.tex docs/ms_atlas_preproc_supplement.tex
 
 # build atlastools manual
 Rscript --slave -e 'devtools::build_manual(pkg = "../atlastools", path = "docs/")'
