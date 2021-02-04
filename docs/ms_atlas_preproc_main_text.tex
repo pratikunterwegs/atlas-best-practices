@@ -421,19 +421,19 @@ In the case of prolonged spikes, one relatively simple solution is identifying t
 We show an illustrative example of such an algorithm in the form of track-subset filtering for prolonged spikes using the \texttt{atlastools} function \texttt{atl\_remove\_reflections} (Listing 5).
 Users are strongly encouraged to visualise their data before and after applying this method, and we caution against relying on this method if data are heavily distorted by errors affecting entire track-subsets.
 
-\begin{lstlisting}[float, language=R, style=customR, caption = {
-    Removing prolonged spikes from a movement track. 
-    The important function arguments here are \texttt{point\_angle\_cutoff} ($A$), \texttt{reflection\_speed\_cutoff} ($S$), and \texttt{est\_ref\_len}, the maximum number of positions after the inner bound that are candidates for the end of the prolonged spike, i.e., the outer bound. 
-    If the prolonged spike ends after less than $N$ positions, the true end point is used as the outer bound of the spike.
-    However, the algorithm behind this function fails when the prolonged spike ends after more than $N$ positions. 
-    Users are advised to use a liberally large value of N in the \texttt{est\_ref\_len} argument; 1,000 may be appropriate for 3s interval data.
-    Further, users are cautioned against relying on such algorithms for severely distorted data.}]
-filtered_data <- atl_remove_reflections(data = track_data,
-                       x = "x", y = "y", time = "time",
-                       point_angle_cutoff = A,
-                       reflection_speed_cutoff = S,
-                       est_ref_len = N)
-\end{lstlisting}
+% \begin{lstlisting}[float, language=R, style=customR, caption = {
+%     Removing unrealistic movement in the form of prolonged spikes from a movement track. 
+%     The important function arguments here are \texttt{point\_angle\_cutoff} ($A$), \texttt{reflection\_speed\_cutoff} ($S$), and \texttt{est\_ref\_len}, the maximum number of positions after the inner bound that are candidates for the end of the prolonged spike, i.e., the outer bound. 
+%     If the prolonged spike ends after less than $N$ positions, the true end point is used as the outer bound of the spike.
+%     However, the algorithm behind this function fails when the prolonged spike ends after more than $N$ positions. 
+%     Users are advised to use a liberally large value of N in the \texttt{est\_ref\_len} argument; 1,000 may be appropriate for 3s interval data.
+%     Further, users are cautioned against relying on such algorithms for severely distorted data.}]
+% filtered_data <- atl_remove_reflections(data = track_data,
+%                        x = "x", y = "y", time = "time",
+%                        point_angle_cutoff = A,
+%                        reflection_speed_cutoff = S,
+%                        est_ref_len = N)
+% \end{lstlisting}
 
 \section{Smoothing and Thinning Data}
 
