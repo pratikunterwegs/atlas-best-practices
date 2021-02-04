@@ -311,7 +311,7 @@ filtered_data <- atl_filter_bounds(data = data,
     These and other distortions that affect continuous track segments can be removed by conceptualising algorithms that find the bounds of the distortion and remove points in between them.
     Users should frequently check the outputs of such algorithms to avoid rejecting valid data.
     }
-    \label{fig:figure_simulated_data}
+    \label{fig:figure_filtering_data}
 \end{figure}
 
 \subsection{Temporal and Spatio-temporal Filters}
@@ -564,13 +564,12 @@ thinned_data <- atl_thin_data(data,
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.95\textwidth]{figures/fig_04_thinning.png}
-    \caption{Thinning a movement track using aggregation preserves track structure while reducing data volume, but thinning without removing gross location errors and unrealistic movement affects track metrics such as speed.
-    (a, b) Movement track positions with an interval of 1 second (green points) aggregated over intervals of (a) 10 and (b) 30 seconds (purple circles), after removing large location errors or filtering unrealistic movement.
-    The canonical track is shown as a black line in both panels, while the red line shows the track connecting thinned positions.
-    (c) Boxplots show the median and interquartile ranges for speed estimates of tracks aggregated over intervals of 3, 10, 30, and 120 seconds, but without the removal of location errors.
+    \caption{\textbf{(a)} Aggregating a filtered and smoothed movement track (green points) preserves track structure while reducing data volume, but \textbf{(b)} aggregating before filtering gross location errors and unrealistic movement (grey points) leads to the persistence of large-scale errors (such as prolonged spikes).
+    The thinned track is shown as purple squares and lines in both panels.
+    \textbf{(c)} Thinning before data cleaning can lead to significant misestimations of essential movement metrics such as speed at lower intervals.
+    Boxplots show the median and interquartile ranges for speed estimates of tracks aggregated over intervals of 3, 10, 30, and 120 seconds, but without the removal of location errors.
     For comparison, the median and 95\textsuperscript{th} percentile of speed of the canonical track are shown as solid and dashed horizontal lines, respectively.
-    Green circles and associated error bars show, in contrast, the median ($\pm$ standard deviation) speed for the same aggregation interval, but after removing large- and small-scale location errors (median smooth $K$ = 11).
-    Removing location errors and unrealistic movement before aggregation substantially improves speed estimates, especially at smaller aggregation intervals, as it removes the apparent spikes that contribute to over estimation of speed if not filtered.}
+    Green circles and associated error bars show, in contrast, the median ($\pm$ standard deviation) speed for the same aggregation interval, but after removing large- and small-scale location errors (median smooth $K$ = 11).}
     \label{fig:figure_thinning}
 \end{figure}
 
@@ -581,7 +580,6 @@ thinned_data <- atl_thin_data(data,
 Tracking data that are still too large for statistical packages, or have strong autocorrelation, can benefit from segmentation-clustering into `residence patches' \citep{bijleveld2016, oudman2018, barraquand2008}.
 Making the patch the unit of observation conveniently sidesteps pseudo-replication while and reduces computational requirements.
 Furthermore, metrics such as the distance travelled within and between patches can help compare broad-scale individual movement strategies.
-% Here, high-throughput tracking every 1s -- 30s has its advantages: users may be permitted the assumption that an individual is truly absent from a location where it was not reported, and that at least during the tracking period, such absences are not simply artefacts of the sampling interval.
 
 First, users should identify positions representing bouts of stationary behaviour, for instance on their speed or residence time \citep{bracis2018}.
 Patch identification assesses whether consecutive positions and the bouts they comprise are spatio-temporally independent, and clusters them together if they are not.
