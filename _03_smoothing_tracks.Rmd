@@ -17,8 +17,10 @@ library(atlastools)
 library(ggplot2)
 library(patchwork)
 
-# prepare a palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+# define a four colour palette
+pal <- RColorBrewer::brewer.pal(5, "Set1")
+pal[3] = "seagreen"
+pal[2] = RColorBrewer::brewer.pal(5, "Blues")[5]
 ```
 
 We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.
@@ -179,30 +181,30 @@ speed_agg_smooth <-
 speed_agg_smooth <- rbindlist(speed_agg_smooth)
 ```
 
+### Plot of aggregation after smoothing
+
 ```{r echo=FALSE}
+# prepare data
+data_agg_smooth = copy(list_of_agg[[3]]) # 30s aggregate
 ### plot figures
-fig_agg_data <-
-  Map(
-    function(df, title) {
-      ggplot(df) +
-        # geom_path(data = data,
-        #           aes(x, y),
-        #           col = "grey20",
-        #           size = 0.2)+
+fig_agg_data_smooth <-
+      ggplot(data_agg_smooth) +
         geom_point(
           data = data_agg,
+          size = 0.2,
           aes(x, y),
-          size = 0.3,
           col = pal[3]
         ) +
         geom_path(aes(x, y),
-          col = pal[4]
+          col = pal[2],
+          lwd = 0.2
         ) +
         geom_point(aes(x, y,
           group = interval
         ),
-        shape = 0,
-        col = pal[4],
+        shape = 1,
+        size = 2,
+        col = pal[2],
         alpha = 1,
         show.legend = F
         ) +
@@ -213,17 +215,13 @@ fig_agg_data <-
           plot.title = element_text(
             face = "bold",
             margin = margin(t = 30, b = -30),
-            hjust = 0.8
+            hjust = 0.9
           )
         ) +
         coord_cartesian(ylim = c(0.6, NA)) +
         labs(
-          title = sprintf("(%s)", title)
+          title = "(a)"
         )
-    },
-    list_of_agg,
-    c(NA, NA, "a", "b")
-  )
 ```
 
 
@@ -243,7 +241,7 @@ We show the effect of aggregating before any error correction here.
 data_errors <- fread("data/data_errors.csv")
 
 # aggregate before correction
-list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
+list_of_agg_errors <- lapply(c(3, 10, 30, 120), function(z) {
   data_return <- atl_thin_data(
     data = data_errors,
     interval = z,
@@ -258,11 +256,54 @@ list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
 data[, speed := atl_get_speed(data)]
 ```
 
+### Figure aggregation before smoothing
+
+```{r echo=FALSE}
+# prepare data
+data_agg_error = copy(list_of_agg_errors[[3]]) # 30s aggregate
+### plot figures
+fig_agg_data_error <-
+      ggplot(data_agg_error) +
+        geom_point(
+          data = data_errors,
+          size = 0.1,
+          aes(x, y),
+          col = "grey"
+        ) +
+        geom_path(aes(x, y),
+          col = pal[2]
+          # lwd = 0.1
+        ) +
+        geom_point(aes(x, y,
+          group = interval
+        ),
+        shape = 1,
+        size = 2,
+        col = pal[2],
+        alpha = 1,
+        show.legend = F
+        ) +
+        ggthemes::theme_few() +
+        theme(
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          plot.title = element_text(
+            face = "bold",
+            margin = margin(t = 30, b = -30),
+            hjust = 0.9
+          )
+        ) +
+        coord_cartesian(ylim = c(0.6, NA)) +
+        labs(
+          title = "(b)"
+        )
+```
+
 ### Comparing median aggregation with and without smoothing
 
 ```{r}
 # now plot distribution of speed
-data_agg <- rbindlist(list_of_agg)
+data_agg <- rbindlist(list_of_agg_errors)
 ```
 
 ```{r echo=FALSE}
@@ -313,8 +354,6 @@ fig_agg_speed <-
   ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
-    axis.text = element_blank(),
-    axis.title = element_blank(),
     plot.title = element_text(
       face = "bold",
       margin = margin(t = 30, b = -30),
@@ -332,7 +371,7 @@ fig_agg_speed <-
 # make combined figure
 fig_aggregate <-
   wrap_plots(
-    append(fig_agg_data[3:4], list(fig_agg_speed)),
+    fig_agg_data_smooth, fig_agg_data_error, fig_agg_speed,
     design = "AABBC"
   )
 
