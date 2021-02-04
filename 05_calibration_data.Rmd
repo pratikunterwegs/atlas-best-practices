@@ -31,8 +31,8 @@ library(ggplot2)
 library(patchwork)
 
 pal <- RColorBrewer::brewer.pal(5, "Set1")
-pal[3] = "seagreen"
-pal[2] = RColorBrewer::brewer.pal(5, "Blues")[5]
+pal[3] <- "seagreen"
+pal[2] <- RColorBrewer::brewer.pal(5, "Blues")[5]
 ```
 
 ## Access data and preliminary visualisation
@@ -218,7 +218,7 @@ fig_speed_outliers <-
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
-  )+
+  ) +
   ggspatial::annotation_scale(location = "tl") +
   coord_sf(crs = 32631)
 # save
@@ -774,7 +774,7 @@ figure_res_patch <-
       tag_prefix = "(",
       tag_suffix = ")"
     ) &
-  theme(plot.tag = element_text(face = "bold"))
+    theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(figure_res_patch,
