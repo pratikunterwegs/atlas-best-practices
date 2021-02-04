@@ -520,7 +520,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="737.72169"
+     inkscape:cx="338.72169"
      inkscape:cy="315.63279"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -528,9 +528,9 @@
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1016"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-height="1043"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
      inkscape:window-maximized="1">
     <sodipodi:guide
        position="14.432555,368.83195"
@@ -763,7 +763,7 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46666622px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#000000;stroke-width:0.26458332"
          id="tspan1308">Thinned Data</tspan></text>
     <rect
-       style="fill:#ffd5d5;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#dbe3db;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5145"
        width="98.343513"
        height="32.072342"
@@ -771,7 +771,7 @@
        y="53.314873"
        ry="8.6975851" />
     <rect
-       style="fill:#ffeeaa;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#b7c8b7;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5145-8"
        width="98.343513"
        height="32.072342"
@@ -785,9 +785,9 @@
        height="32.072342"
        width="98.343513"
        id="rect5177"
-       style="fill:#aade87;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#93ac93;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
     <rect
-       style="fill:#aaccff;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#5fbcd3;fill-opacity:1;stroke:#000000;stroke-width:0.28953519;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5145-0"
        width="98.343513"
        height="32.072342"
@@ -910,7 +910,7 @@
        height="32.072342"
        width="187.99275"
        id="rect5839"
-       style="fill:#ffd5d5;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#dbe3db;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111126px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -993,7 +993,7 @@
        height="34.214661"
        width="236.80595"
        id="rect6175"
-       style="fill:#f2f2f2;fill-opacity:1;stroke:#000000;stroke-width:1.15831757;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#f2f2f2;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        transform="rotate(90)"
        ry="14.432554"
        rx="0" />
@@ -1011,7 +1011,7 @@
            y="635.62616"
            style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:48px;font-family:Arial;-inkscape-font-specification:'Arial Italic'" /></flowRegion><flowPara
          id="flowPara6187">Visualise data at each step!</flowPara></flowRoot>    <rect
-       style="fill:#ffeeaa;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#b7c8b7;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5843"
        width="187.99275"
        height="32.072342"
@@ -1109,7 +1109,7 @@
        height="32.072342"
        width="187.99275"
        id="rect5990"
-       style="fill:#aade87;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#93ac93;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.76111126px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -1187,7 +1187,7 @@
            id="rect6091" /></flowRegion><flowPara
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none;"
          id="flowPara6095">atl_thin_data</flowPara></flowRoot>    <rect
-       style="fill:#aaccff;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#5fbcd3;fill-opacity:1;stroke:#000000;stroke-width:0.40031239;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect6109"
        width="187.99275"
        height="32.072342"
