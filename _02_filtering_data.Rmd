@@ -47,19 +47,19 @@ We add outliers at random to the data to demonstrate their removal.
 ```{r add_outlier, eval=FALSE}
 # make a copy
 # data_copy <- copy(data)
-# 
+#
 # # add a prolonged spike or reflection to 300 positions
 # data_copy[500:800, `:=`(
 #   x = x + 0.25,
 #   y = y + 0.25
 # )]
-# 
+#
 # # add normal error
 # data_copy[, `:=`(
 #   x = do_add_error(x, std_dev = 0.01),
 #   y = do_add_error(y, std_dev = 0.005)
 # )]
-# 
+#
 # # add 100 outliers
 # data_copy <- do_add_outliers(data_copy, p_data = 0.005, std_dev = 0.1)
 ```
@@ -80,7 +80,7 @@ Define a palette with 4 colours for convenience.
 ```{r}
 # define a four colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
-pal[3] = "seagreen"
+pal[3] <- "seagreen"
 ```
 
 We make a figure of the canonical data (grey line) along with the artificially added error (grey points).
@@ -358,13 +358,13 @@ figure_01 <-
   wrap_plots(
     fig_filter_bounds,
     fig_outlier_remove
-  )+
+  ) +
     plot_annotation(
       tag_levels = "a",
       tag_prefix = "(",
       tag_suffix = ")"
     ) &
-  theme(plot.tag = element_text(face = "bold"))
+    theme(plot.tag = element_text(face = "bold"))
 
 # save figure
 ggsave(figure_01,
