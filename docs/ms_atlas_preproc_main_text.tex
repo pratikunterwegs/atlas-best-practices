@@ -297,7 +297,7 @@ The boolean function argument \texttt{remove\_inside} determines whether positio
 
 \begin{lstlisting}[float,floatplacement=h!,language=R, style=customR, caption = {
     The \texttt{atl\_filter\_bounds} function removes positions outside an area defined by coordinate ranges, a polygon, or all three (\texttt{remove\_inside = FALSE}), or positions inside the area (\texttt{remove\_inside = TRUE}).
-    The arguments \texttt{x} and \texttt{y} determine which columns are considered the X and Y coordinates, the arguments \texttt{x\_range} and \texttt{y\_range} determine the acceptable range of coordinates in a reference system based in metres, while the \texttt{sf\_polygon} argument allows the data to be filtered by the user specified \texttt{sf-(MULTI)POLYGON} object. 
+    The arguments \texttt{x} and \texttt{y} determine the X and Y coordinate columns, \texttt{x\_range} and \texttt{y\_range} are the filter bounds in a CRS in metres, and the data can be filtered by an \texttt{sf-(MULTI)POLYGON} can be passed using the \texttt{sf\_polygon} argument. 
     \texttt{atl\_filter\_bounds} returns a filtered \texttt{data.table}, which must be saved as an object (here, \texttt{filtered\_data}).}]
 filtered_data <- atl_filter_bounds(data = data,
                     x = "X", y = "Y",
@@ -330,8 +330,6 @@ Periods of poor tracking quality may result from system malfunctions, and tempor
 Temporal filters can be combined with spatial filters to exclude time-location combinations which would be unrealistic for the tracked animal. 
 For example, red knots in the Dutch Wadden Sea congregate at communal roosts during high-tide, when their foraging grounds on the inter-tidal mudflats are inaccessible \citep{vangils2006}.
 A spatio-temporal filter that retains positions inside the bounds of roosts during high-tide can quickly return data that reveals individual presence at high-tide roosts, while excluding positions that erroneously place individuals on the inundated mudflats.
-% Howevever, in this example, such a filter would also exclude potentially exploratory movements over the flooded mudflats.
-% We caution users to be certain that filters do not exclude positions that reveal interesting aspects of their animals' movement.
 Users should apply filters in sequence rather than all at once, and visualise the output after each filtering step (`sanity checks').
 
 The atlastools function \texttt{atl\_filter\_covariates} allows convenient filtering of a dataset by any number of logical statements (Listing 2).
@@ -341,20 +339,20 @@ The function returns only those data which satisfy each of the filter conditions
 Users must ensure that the filtering variables exist in their dataset in order to avoid errors.
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
-    The \texttt{atl\_filter\_covariates} function can be used both as a simple temporal filter, and also as a combined spatio-temporal filter. 
-    Filter predicates are passed to the \texttt{filters} argument as a character vector, each of which is then evaluated as an \texttt{R} expression in the context of the data supplied. 
+    Data can be filtered by a temporal or a spatio-temporal range using {atl\_filter\_covariates}. 
+    Filter predicates are passed to the \texttt{filters} argument as a character vector. 
     Only rows in the data satisfying all the conditions passed as filters are retained. 
-    Users must make sure the filter variables exist in their dataset.
-    Here, the first example shows how nighttime data can be retained using a predicate (\texttt{inrange} from \texttt{data.table}) that determine whether the value of `hour' is between 6 and 18. 
-    The \texttt{!} sign indicates that the negative of the predicate should be returned, i.e., \texttt{TRUE} when the hour is between 6 PM and 6 AM, but \texttt{FALSE} when the hour is between 6 AM and 6 PM.
-    The second example shows the use of multiple filter statements; this data will be filtered to be within the range of times bounded by \texttt{t\_min} and \texttt{t\_max}, and with X coordinates between \texttt{x\_min} and \texttt{x\_max}.
-    The \texttt{between} function is from \texttt{data.table}.}]
+    Here, the first example shows how nighttime data can be retained using a predicate (\texttt{inrange} from \texttt{data.table}) that determine whether the value of `hour' is between 6 and 18, and also within a range of X coordinates.
+    The second example retains calculated using $>$ 3 base stations (\texttt{NBS}), with location error (\texttt{SD}) $<$ 100, and data between an arbitrary day 5 and day 8.
+    }]
 night_data <- atl_filter_covariates(data = dataset,
-                filters = c("!inrange(hour, 6, 18)"))
+                filters = c("!inrange(hour, 6, 18)",
+                            "between(x, x_min, x_max)"))
 
-data_in_area <- atl_filter_covariates(data = dataset,
-                    filters = c("between(time, t_min, t_max)",
-                                "between(x, x_min, x_max)"))
+filtered_data <- atl_filter_covariates(data = data,
+                    filters = c("NBS > 3",
+                                "SD < 100",
+                                "between(day, 5, 8)"))                            
 \end{lstlisting}
 
 \section{Filtering to Reduce Location Errors}
@@ -373,16 +371,6 @@ ATLAS and other TOA systems
 %      \end{equation*}
 % \end{linenomath*}
 Unreliable positions can be removed by filtering on direct or indirect measures of quality using \texttt{atl\_filter\_covariates}.
-
-\begin{lstlisting}[float, language=R, style=customR, caption = {
-    An example of filtering ATLAS data on position covariates. 
-    The \texttt{filters} argument accepts a character vector with the logical statements. 
-    The function only retains data for which \textit{all} the conditions are satisfied; here that is positions calculated using $>$ 3 base stations (\texttt{NBS}), with location error (\texttt{SD}) $<$ 100, and data between an arbitrary day 5 and day 8.}]
-filtered_data <- atl_filter_covariates(data = data,
-                    filters = c("NBS > 3",
-                                "SD < 100",
-                                "between(day, 5, 8)"))
-\end{lstlisting}
 
 \subsection{Filtering Unrealistic Movement}
 
