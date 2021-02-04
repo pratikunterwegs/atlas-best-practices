@@ -355,19 +355,20 @@ data_in_area <- atl_filter_covariates(data = dataset,
 \subsection{Filtering on Quality Covariates}
 
 Tracking data covariates can be good indicators of the reliability of calculated positions (Beardsworth et al. \textit{in prep.}).
-For intance, in ATLAS systems the number of base stations involved in each localisation is an indirect indicator of data quality, and positions localised using more receivers are usually more reliable \citep[the minimum required for an ATLAS localisation is 3; see][]{weiser2016}.
+For intance, in reverse-GPS ATLAS systems the number of base stations involved in each localisation is an indirect indicator of data quality, and positions localised using more receivers are usually more reliable \citep[the minimum required for an ATLAS localisation is 3; see][]{weiser2016}.
+Reverse-GPS systems also calculate direct measures of location error during localisation \citep{maccurdy2009, maccurdy2019, weiser2016}.
 GPS systems' location error may be similarly indicated indirectly by the number of satellites involved in the localisation, or directly by an error measure such as the Horizontal Dilution of Precision (HDOP).
-ATLAS and other TOA systems also calculate direct measures of location error during localisation: \texttt{VARX}, \texttt{VARY}, and \texttt{COVXY}, which are the variance of the X and Y coordinates, and the covariance of the X and Y coordinates, respectively \citep{maccurdy2009, maccurdy2019, weiser2016}.
-A location error measure associated with each coordinate pair (similar to GPS HDOP) can be calculated and assigned to a new column \texttt{SD} using the formula for the sum of correlated random variables
-\begin{linenomath*}
-    \begin{equation*}
-        SD = \sqrt{{VARX} + {VARY} + 2 \times {COVXY}}
-     \end{equation*}
-\end{linenomath*}
-Filtering on the position-specific standard deviation allows removing unreliable positions, and the filter can be applied using \texttt{atl\_filter\_covariates}.
+ATLAS and other TOA systems 
+% A location error measure associated with each coordinate pair (similar to GPS HDOP) can be calculated and assigned to a new column \texttt{SD} using the formula for the sum of correlated random variables
+% \begin{linenomath*}
+%     \begin{equation*}
+%         SD = \sqrt{{VARX} + {VARY} + 2 \times {COVXY}}
+%      \end{equation*}
+% \end{linenomath*}
+Unreliable positions can be removed by filtering on direct or indirect measures of quality using \texttt{atl\_filter\_covariates}.
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
-    Filtering ATLAS data on position covariates. 
+    An example of filtering ATLAS data on position covariates. 
     The \texttt{filters} argument accepts a character vector with the logical statements. 
     The function only retains data for which \textit{all} the conditions are satisfied; here that is positions calculated using $>$ 3 base stations (\texttt{NBS}), with location error (\texttt{SD}) $<$ 100, and data between an arbitrary day 5 and day 8.}]
 filtered_data <- atl_filter_covariates(data = data,
@@ -415,20 +416,6 @@ data$angle <- atl_turning_angle(data,
 filtered_data <- atl_filter_covariates(data = data,
         filters = c("(speed_in < S & speed_out < S) | angle < A"))
 \end{lstlisting}
-
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.95\textwidth]{figures/fig_03_filter_speed.png}
-%     \caption{Reducing large-scale outliers in a movement track. The goal is to remove positions far away from the canonical track (black line), and retain those with only reasonable displacements from the canonical track (green points). 
-%     \textbf{(a)} location error may affect single observations resulting in point outliers or `spikes' (grey circles), but it may also affect continuous subsets of a track, called a `prolonged spike' (purple triangles). 
-%     The former may be targeted by filtering on appropriate covariates such as speed and turning angle using the \texttt{atlastools} function \texttt{atl\_filter\_covariates}.
-%     Here, we filter out positions with incoming and outgoing speeds $\geq$ the 90\textsuperscript{th} percentile (0.025) and turning angle $\geq$ the 10\textsuperscript{th} percentile (35$^{\circ}$).
-%     Howevever, prolonged spikes cannot be effectively corrected by targeting each coordinate pair in isolation.
-%     \textbf{(b)} The \texttt{atlastools} function \texttt{atl\_remove\_reflections} to remove prolonged spikes (grey circles) in tracking data is an example of targeting track subsets with a common distortion (here, a geometric translation).
-%     While this method filters out the prolonged spike to return only positions with reasonable displacement from the canonical track (green points) in this example, conceptualising and implementing such algorithms is difficult. 
-%     Users are cautioned to frequently check this and similar methods' results.}
-%     \label{fig:figure_filter_bounds}
-% \end{figure}
 
 Sometimes entire susbets of the track may be affected by the same large-scale location error.
 For instance, multiple consecutive positions may be roughly translated (geometrically) away from the real track and form `prolonged spikes', or `reflections' (see Fig. 3.a, b).
