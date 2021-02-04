@@ -580,9 +580,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="171.66389"
-     inkscape:cy="289.4669"
+     inkscape:zoom="1"
+     inkscape:cx="-370.40587"
+     inkscape:cy="804.67995"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -702,8 +702,8 @@
        height="283.20178"
        x="-192.82458"
        y="13.269019"
-       inkscape:export-xdpi="150"
-       inkscape:export-ydpi="150" />
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
     <rect
        ry="8.7159405"
        y="240.13026"
@@ -714,12 +714,12 @@
        style="fill:#ffeeaa;fill-opacity:1;stroke:#000000;stroke-width:0.31051394;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
     <rect
        transform="scale(1,-1)"
-       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.465;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.30000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5910-3"
        width="94.541794"
        height="17.370117"
        x="237.95274"
-       y="-159.68895" />
+       y="-159.56599" />
     <text
        id="text857-3"
        y="-56.932781"
@@ -1245,7 +1245,7 @@
            y="-201.7903"
            style="font-size:21.33333397px;text-align:center;text-anchor:middle;fill:#483737;stroke:none" /></flowRegion><flowPara
          id="flowPara5712"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_filter_bounds</flowPara></flowRoot>    <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_filter_bounds</flowPara></flowRoot>    <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,41.855114,200.44387)"
        style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#483737;fill-opacity:1;stroke:none"
        id="flowRoot5918"
@@ -1258,7 +1258,7 @@
            height="133.72185"
            width="270.74399"
            id="rect5912" /></flowRegion><flowPara
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
          id="flowPara5916">atl_filter_covariates</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot6039"
@@ -1273,7 +1273,7 @@
            y="-201.7903"
            style="font-size:21.33333397px;text-align:center;text-anchor:middle;fill:#483737;stroke:none" /></flowRegion><flowPara
          id="flowPara6037"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_median_smooth</flowPara></flowRoot>    <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_median_smooth</flowPara></flowRoot>    <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,41.941931,331.93161)"
        style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#483737;fill-opacity:1;stroke:none"
        id="flowRoot6143"
@@ -1286,7 +1286,7 @@
            height="133.72185"
            width="270.74399"
            id="rect6137" /></flowRegion><flowPara
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
          id="flowPara6141">atl_res_patch</flowPara></flowRoot>    <rect
        transform="scale(1,-1)"
        style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.46505189;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
@@ -1336,7 +1336,7 @@
              y="-201.7903"
              style="font-size:21.33333397px;text-align:center;text-anchor:middle;fill:#483737;stroke:none" /></flowRegion><flowPara
            id="flowPara5797"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_filter_covariates</flowPara></flowRoot>      <flowRoot
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_filter_covariates</flowPara></flowRoot>      <flowRoot
          transform="matrix(0.26458333,0,0,0.26458333,146.19721,197.31404)"
          style="font-style:normal;font-weight:normal;font-size:18.66666603px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#483737;fill-opacity:1;stroke:none"
          id="flowRoot5960"
@@ -1349,15 +1349,15 @@
              height="133.72185"
              width="270.74399"
              id="rect5954" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara5958">atl_get_speed</flowPara><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara5980">atl_turning_angle</flowPara><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara5984" /><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara5986">atl_filter_covariates</flowPara><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.66666603px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara5988">atl_remove_reflections</flowPara></flowRoot>      <flowRoot
          xml:space="preserve"
          id="flowRoot6097"
@@ -1372,7 +1372,7 @@
              y="-201.7903"
              style="font-size:21.33333397px;text-align:center;text-anchor:middle;fill:#483737;stroke:none" /></flowRegion><flowPara
            id="flowPara6095"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_thin_data</flowPara></flowRoot>      <flowRoot
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none">atl_thin_data</flowPara></flowRoot>      <flowRoot
          transform="matrix(0.26458333,0,0,0.26458333,146.36552,331.93161)"
          style="font-style:normal;font-weight:normal;font-size:21.33333397px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#483737;fill-opacity:1;stroke:none"
          id="flowRoot6165"
@@ -1385,7 +1385,7 @@
              height="133.72185"
              width="270.74399"
              id="rect6159" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:21.33333397px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:center;text-anchor:middle;fill:#483737;stroke:none"
            id="flowPara6163">atl_patch_summary</flowPara></flowRoot>    </g>
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,276.23351,-149.92517)"
@@ -1499,7 +1499,7 @@
        height="32.140026"
        width="112.8729"
        id="rect1380"
-       style="fill:#ffeeaa;fill-opacity:1;stroke:#000000;stroke-width:0.31051394;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#ffeeaa;fill-opacity:1;stroke:#000000;stroke-width:0.311;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
     <text
        id="text1386"
        y="122.93079"
@@ -1560,12 +1560,12 @@
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold';fill:#483e37" /></flowRegion><flowPara
          id="flowPara1477">ctmm, crawl</flowPara></flowRoot>    <rect
        transform="scale(1,-1)"
-       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.55494863;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.30000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect5910-3-5"
        width="94.451851"
        height="24.763718"
        x="238.13483"
-       y="-237.35068" />
+       y="-237.22321" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot1471-6"
@@ -1583,12 +1583,12 @@
          style="text-align:center;text-anchor:middle">moveHMM, amt (SSF)</flowPara><flowPara
          id="flowPara1531"
          style="text-align:center;text-anchor:middle">recurse, segclust2d</flowPara></flowRoot>    <rect
-       y="-290.02844"
+       y="-289.94568"
        x="238.08986"
        height="17.370119"
        width="94.541801"
        id="rect1508"
-       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.465;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#e6e6e6;fill-opacity:1;stroke:#000000;stroke-width:0.30000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
        transform="scale(1,-1)" />
     <flowRoot
        transform="matrix(0.26458333,0,0,0.26458333,14.088949,134.40664)"
