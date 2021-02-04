@@ -79,7 +79,8 @@ Define a palette with 4 colours for convenience.
 
 ```{r}
 # define a four colour palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- RColorBrewer::brewer.pal(5, "Set1")
+pal[3] = "seagreen"
 ```
 
 We make a figure of the canonical data (grey line) along with the artificially added error (grey points).
@@ -273,9 +274,9 @@ fig_outlier_remove <-
   geom_point(
     data = data_copy[500:800, ],
     aes(x, y),
-    size = 0.5,
+    # size = 0.5,
     alpha = 0.6,
-    shape = 4, col = pal[4]
+    shape = 4, col = pal[5]
   ) +
   geom_point(
     data = data_copy[!data_copy[500:800, ],
