@@ -621,17 +621,14 @@ patch_summary <- atl_patch_summary(patch_data = patches,
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.75\textwidth]{figures/fig_05_residence.png}
-    \caption{A rotation-advection movement track, similar to the movement of a soaring bird (Gurarie et al. 2017) classified into residence patches with the \texttt{atlastools} function.
-    (a) The goal is to segment-cluster the track into areas of prolonged residence (clusters of points) while leaving out the transit between them.
-    (b) A plot of residence time against time (solid line; Bracis et al. 2018) shows how the residence patch algorithm segments and clusters positions of prolonged residence. 
+    \caption{Movement tracks can be classified into residence patches, whcih are areas of prolonged residence (clusters of points), while leaving out the transit between them.
+    \textbf{(a)} The residence patch method correctly identifies clusters of positions where the individual is relatively stationary (orange and green patches), as well as positions where it is slowly moving (blue patch).
+    This is especially useful when studying more complex behaviour such as area-restricted search, which may have a directional component.
+    The residence patch method loses the details of movement between patches, but can efficiently represent the general pattern of space-use (see coloured points representing patch centroids, and lines joining them).
+    \textbf{(b)} A plot of residence time against time (solid line; Bracis et al. 2018) shows how the residence patch algorithm segments and clusters positions of prolonged residence. 
     Regions are shaded by the temporal bounds of each residence patch.
     The arguments passed to \texttt{atl\_res\_patch} determine the clustering, and can be adjusted to get a result that fits the study system.
-    Users are cautioned that there are no `correct' arguments.
-    (c) The residence patch method correctly identifies clusters of positions where the individual is relatively stationary (orange and green patches), as well as positions where it is slowly moving (blue patch).
-    This is especially useful when studying more complex behaviour such as area-restricted search, which may have a directional component.
-    The function \texttt{atl\_patch\_summary} conveniently presents the classified data for further use, either as an \texttt{sf} object (left: coloured polygons around clustered points), or as summary data of each patch (right: coloured circles).
-    While the \texttt{sf} object retains the patch geometry as well as the patch attributes (such as duration), the summary data discards the patch geometry.
-    Both spatial and summary objects lose the details of movement between patches (compare black lines of the canonical track [left], and lines connecting patch centroids [right]), but are helpul for questions where the general structure is more relevant.}
+    Users are cautioned that there are no `correct' arguments, and the best guide is the biology of the tracked individual.}
     \label{fig:figure_residence_patch}
 \end{figure}
 
