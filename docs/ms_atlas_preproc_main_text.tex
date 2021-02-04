@@ -507,21 +507,22 @@ Categorical variables, such as the habitat type associated with each position ca
 
 The aggregation method is less sensitive to selecting point outliers by chance than resampling.
 When users want to account for location error with methods such as state-space models \citep{jonsen2003, jonsen2005, johnson2008}, or continuous time movement models \citep{fleming2014a, noonan2019, gurarie2017, calabrese2016, fleming2020}, correctly propagating the location error when thinning is important.
-In ATLAS systems the location error (\texttt{SD}; see \textsc{Filtering on Position Covariates}) is calculated from the variance-covariance matrix of the coordinates of candidate positions considered by the location solver \citep{weiser2016}; this is equivalent to GPS systems' HDOP \citep{ranacher2016}.
-The error around each coordinate (\texttt{VARX} or \texttt{VARY} in ATLAS systems) can be propagated to the averaged position as the sum of errors divided by the square of the number of observations contributing to each average ($N$):
+% In reverse-GPS systems systems the location error is calculated from the variance-covariance matrix of the coordinates of candidate positions considered by the location solver \citep{weiser2016}; this is equivalent to GPS systems' HDOP \citep{ranacher2016}.
+The location error around each coordinate provided by either GPS or reverse-GPS system can be propagated to the averaged position as the sum of errors divided by the square of the number of observations contributing to each average ($N$):
 \begin{linenomath*}
     \begin{equation*}
         Var(X)_{agg} = \left( \sum_{i=1}^{i=N} Var(X)_i \right) / N ^ 2
     \end{equation*}
 \end{linenomath*}
-Similarly, the overall location error estimate for the average of $N$ positions in a time-interval can be calculated by treating it as a variance ($SD ^ 2$):
-\begin{linenomath*}
-    \begin{equation*}
-        SD_{agg} = \sqrt{ \left( \sum_{i=1}^{i=N} SD_i^2 \right) / N ^ 2  }
-    \end{equation*}    
-\end{linenomath*}
+% Similarly, the overall location error estimate for the average of $N$ positions in a time-interval can be calculated by treating it as a variance ($SD ^ 2$):
+% \begin{linenomath*}
+%     \begin{equation*}
+%         SD_{agg} or HDOP_{agg} = \sqrt{ \left( \sum_{i=1}^{i=N} SD_i^2 \right) / N ^ 2  }
+%     \end{equation*}    
+% \end{linenomath*}
 
 Users may question why thinning should be implemented after cleaning steps, when aggregation can obtain consensus positions over an interval, correctly propagate the location error, and also reduce data volumes.
+%%
 We caution users that thinning causes an extensive loss of small-scale detail in the data.
 Additionally, thinning prior to excluding unrealistic movement and smoothing can lead to estimates of essential metrics --- such as speed --- that are substantially different from the true value (Noonan et al. 2019; see Fig. 5.c).
 The mis-estimation of track metrics could have knock-on consequences for the implementation of subsequent filters based on detecting unrealistic movement.
