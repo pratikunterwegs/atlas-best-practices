@@ -670,11 +670,11 @@ This translates to a 2\% underestimation of the stop duration at a tracking inte
     \centering
     \includegraphics[width=0.75\textwidth]{figures/fig_06_calib_residence_patch.png}
     \caption{Pre-processing steps for WATLAS calibration data showing filtering filtering on speed, median smoothing and thinning by aggregation, and making residence patches.
-    \textbf{(a)} Positions with incoming and outgoing speed $\geq$ the 15 m/s are removed (N removed = 13,491, 26.6\%; grey crosses = removed, green points = retained).
+    \textbf{(a)} Positions with incoming and outgoing speed $\geq$ 15 m/s are removed (grey crosses = removed, green points = retained).
     Rectangles show the region expanded in subfigures (b) and (c).
     \textbf{(b)} Expanded view of upper rectangle in (a) showing the raw data (grey crosses), the median smoothed positions (green circles; moving window $K$ = 5), and the smoothed track thinned by aggregation to a 30 second interval (purple squares).
     Square size corresponds to the number of positions used to calculate the averaged position during thinning, with no significant differences.
-    Median smoothing retains all 37,324 observations (though changing their coordinates). Thinning aggregates these positions into 1,803 aggregates (4.8\% of the smoothed data volume).
+    While median smoothing retains all observations (though changing their coordinates), thinning aggregates these positions into approx. 5\% of the smoothed data volume.
     Median smoothing recovers a good estimate of the true track from significantly over-dispersed raw data, while thinning reduces the data volume but preserves track structure.
     \textbf{(c)} Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige.
     Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares).
