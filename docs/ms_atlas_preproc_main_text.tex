@@ -375,7 +375,7 @@ Since it is both difficult and prohibitively time consuming to exactly reproduce
 Users should first manually examine a representative subset of tracks and attempt to visually identify problems --- either with individual positions, or with subsets of the track --- that persist after basic filtering.
 Once such problems are identified, users can conceptualise algorithms that can be applied to their data to resolve them.
 
-An example of a problem with individual positions is that of point outliers or `spikes' \citep{bjorneraas2010}, where a single position is displaced far from the track (see Fig. 3.a).
+An example of a problem with individual positions is that of point outliers or `spikes' \citep{bjorneraas2010}, where a single position is displaced far from the track (see Fig. 2.a, b).
 Point outliers are characterised by artificially high speeds between the outlier and the positions before and after \citep[called incoming and outgoing speed, respectively][]{bjorneraas2010}, lending a `spiky' appearance to the track.
 Removing spikes is simple: remove positions with extreme incoming and outgoing speeds.
 Users must first define plausible upper limits for speed and turning angle for the study species \citep{calenge2009, seidel2018}.
@@ -387,7 +387,7 @@ Some species can realistically achieve speeds $\geq S$ in fast transit segments 
 To avoid removing real, fast transit segments while still excluding spikes we suggest combining the speed filter with a filter on the turning angles of each position \citep[see][]{calenge2009}.
 This combined filter assumes that positions in high-throughput tracking with both high speeds and large turning angles are likely to be due to location errors, since most species are unable to turn sharply at high speed.
 Users can then retain only those positions whose incoming and outgoing speeds are both $< S$ which or satisfy the condition $\theta < A$, where $\theta$ is the turning angle, and $A$ is the turning angle threshold.
-The removal of spikes is implemented using the \texttt{atl\_filter\_covariates} function (Listing 3).
+Spike removal can be implemented using the \texttt{atl\_filter\_covariates} function (Listing 3).
 Many other track metrics may be used to identify implausible movement and on which data may be filtered \citep{seidel2018}.
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
@@ -406,13 +406,14 @@ filtered_data <- atl_filter_covariates(data = data,
 \end{lstlisting}
 
 Sometimes entire susbets of the track may be affected by the same large-scale location error.
-For instance, multiple consecutive positions may be roughly translated (geometrically) away from the real track and form `prolonged spikes', or `reflections' (see Fig. 3.a, b).
+For instance, multiple consecutive positions may be roughly translated (geometrically) away from the real track and form `prolonged spikes', or `reflections' (see Fig. 2.a, b).
 These cannot be corrected by targeted removal of individual positions, as in Bjorneraas and colleagues' approach (2010), since there are no positions with both high incoming and outgoing speeds.
 Since filtering individual positions will not suffice, algorithms to correct such errors must take a track-level view, and target the displaced sequence overall.
 Track-subset algorithms are likely to be system-specific, and may be challenging to conceptualise or implement.
 In the case of prolonged spikes, one relatively simple solution is identifying the bounds and removing positions between them.
 % We show an illustrative example of such an algorithm in the form of track-subset filtering for prolonged spikes using the \texttt{atlastools} function \texttt{atl\_remove\_reflections} (Listing 5).
-Users are strongly encouraged to visualise their data before and after applying such algorithms, and we caution against relying on these method if data are heavily distorted by errors affecting entire track-subsets.
+Users are strongly encouraged to visualise their data before and after applying such algorithms, 
+We caution that these methods are not foolproof, and data that are heavily distorted by errors affecting entire track-subsets should be used with care when making further inferences.
 
 % \begin{lstlisting}[float, language=R, style=customR, caption = {
 %     Removing unrealistic movement in the form of prolonged spikes from a movement track. 
@@ -484,7 +485,7 @@ atl_median_smooth(data = track_data,
 \subsection{Thinning Movement Tracks}
 
 Most data at this stage is technically ‘clean’, yet its volume alone may pose challenges for lower-specification or older hardware and software if these are not optimised for efficient computation.
-Thinning data need not compromise researchers' ability to answer scientific questions with them; for instance, social interactions lasting 1 -- 2 minutes would still be detected on thinning from a sampling interval of 1 second to 1 minute.
+Thinning data need not compromise researchers' ability to answer scientific questions with them; for instance, proximity-based social interactions lasting 1 -- 2 minutes would still be detected on thinning from a sampling interval of 1 second to 1 minute.
 Indeed, temporal auto-correlation may hinder some methods such as the estimation of home-ranges or step-selection functions \citep{fleming2014a, dupke2017}.
 Added to the requirement of uniform sampling intervals by many methods in the field, evenly reducing data volumes is a worthwhile endeavour \citep[e.g.][]{fleming2014a, michelot2016, avgar2016}.
 Two plausible approaches here are resampling and aggregation, and both approaches begin with identifying time-interval groups (e.g. of 1 minute).
@@ -502,28 +503,28 @@ The location error around each coordinate provided by either GPS or reverse-GPS 
         Var(X)_{agg} = \left( \sum_{i=1}^{i=N} Var(X)_i \right) / N ^ 2
     \end{equation*}
 \end{linenomath*}
-% Similarly, the overall location error estimate for the average of $N$ positions in a time-interval can be calculated by treating it as a variance ($SD ^ 2$):
-% \begin{linenomath*}
-%     \begin{equation*}
-%         SD_{agg} or HDOP_{agg} = \sqrt{ \left( \sum_{i=1}^{i=N} SD_i^2 \right) / N ^ 2  }
-%     \end{equation*}    
-% \end{linenomath*}
+Similarly, the overall location error estimate for the average of $N$ positions in a time-interval can be calculated by treating it as a variance:
+\begin{linenomath*}
+    \begin{equation*}
+        SD_{agg} \ or \ HDOP_{agg} = \sqrt{ \left( \sum_{i=1}^{i=N} SD_i^2 \ or \ HDOP_i^2 \right) / N ^ 2  }
+    \end{equation*}    
+\end{linenomath*}
+We caution users that thinning causes an extensive loss of small-scale detail in the data, and should be used carefully.
 
-Users may question why thinning should be implemented after cleaning steps, when aggregation can obtain consensus positions over an interval, correctly propagate the location error, and also reduce data volumes.
+Users may question why aggregation, which can obtain consensus positions over an interval, correctly propagate the location error, and also reduce data volumes, should not be used directly on the raw data.
 %%
-We caution users that thinning causes an extensive loss of small-scale detail in the data.
-Additionally, thinning prior to excluding unrealistic movement and smoothing can lead to estimates of essential metrics --- such as speed --- that are substantially different from the true value (Noonan et al. 2019; see Fig. 5.c).
+We caution that hinning prior to excluding unrealistic movement and smoothing can lead to estimates of essential metrics --- such as speed --- that are substantially different from the true value (Noonan et al. 2019; see Fig. 5.c).
 The mis-estimation of track metrics could have knock-on consequences for the implementation of subsequent filters based on detecting unrealistic movement.
 However, thinning before data-cleaning may have its place as a useful step before exploratory visualisation of the movement track, since reduced data volumes are easier to handle for plotting software.
-
+%
 Thinning is implemented in \texttt{atlastools} using the \texttt{atl\_thin\_data} function, with either aggregation or resampling (specified by the \texttt{method} argument) over an interval using the \texttt{interval} argument.
-The column of timestamps must be named `time' and column classes except the identity columns (\textit{see below}) should allow averaging.
-The `resample' option returns a thinned dataset with all columns from the input data, but `aggregate' drops \texttt{COVXY}, as this cannot be propagated.
-Using `resample' returns the actual timestamp (in UNIX time) of each sample, while `aggregate' returns the mean timestamp (also in UNIX time).
-In both cases, an extra column \texttt{time\_agg} is added which has a uniform difference between each element corresponding to the user-defined thinning interval.
-Due to its development for ATLAS systems, the `aggregate' assumes the variance around coordinates is named \texttt{VARX} and \texttt{VARY}, and standard deviation around each position is named \texttt{SD}.
-These columns must be present together for the function to correctly handle the error.
-If there is no measure of error, the function simply returns the averaged position and covariates in each time interval.
+% The column of timestamps must be named `time' and column classes except the identity columns (\textit{see below}) should allow averaging.
+% The `resample' option returns a thinned dataset with all columns from the input data, but `aggregate' drops \texttt{COVXY}, as this cannot be propagated.
+% Using `resample' returns the actual timestamp (in UNIX time) of each sample, while `aggregate' returns the mean timestamp (also in UNIX time).
+% In both aggregation and resampling, an extra column \texttt{time\_agg} is added which has a uniform difference between each element corresponding to the user-defined thinning interval.
+% Due to its development for ATLAS systems, the `aggregate' assumes the variance around coordinates is named \texttt{VARX} and \texttt{VARY}, and standard deviation around each position is named \texttt{SD}.
+% These columns must be present together for the function to correctly handle the error.
+% If there is no measure of error, the function simply returns the averaged position and covariates in each time interval.
 Grouping variables' names (such as animal identity) may be passed as a character vector to the \texttt{id\_columns} argument (Listing 5).
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {Code to thin data by aggregation in \texttt{atlastools}. The method can be either "aggregate" or "resample". 
