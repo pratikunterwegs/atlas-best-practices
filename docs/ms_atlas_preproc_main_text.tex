@@ -183,12 +183,12 @@ Cleaning high-throughput animal tracking data
 
 Tracking individual animals is the methodological mainstay of movement ecology, which seeks to link animal movement with internal causes, environmental factors, and resulting consequences \citep{nathan2008a, holyoak2008}. 
 Investigating fine-scale environmental and social drivers and the consequences of movement requires position data from many individuals at high temporal and spatial resolution.
-Such high-throughput tracking is possible using GPS tags \citep[see recent examples in][]{strandburg-peshkin2015, papageorgiou2019, harel2016}, yet ‘reverse-GPS’ systems developed to track animals over land \citep{toledo2014, weiser2016, toledo2016,toledo2020, maccurdy2009, maccurdy2019} and in aquatic systems \citep{hussey2015, baktoft2019, baktoft2017,jung2015} routinely produce high-throughput tracking data at much lower costs.
-Although high-resolution tracking inherently provides more detailed information about the true path of the tracked animal, high-throughput data presents a two-fold challenge to ecologists.
+Such high-throughput tracking is possible using GPS tags \citep[see recent examples in][]{strandburg-peshkin2015, papageorgiou2019, harel2016}, yet ‘reverse-GPS’ systems developed to track animals over land \citep{toledo2014, weiser2016, toledo2016,toledo2020, maccurdy2009, maccurdy2019} and in aquatic systems \citep{hussey2015, baktoft2019, baktoft2017,jung2015, aspillaga2021} routinely produce high-throughput tracking data at much lower costs.
+Although high-resolution tracking provides a massive amount of data on the path of a tracked animal, this data presents a two-fold challenge to ecologists.
 First, the location error of each position may approach or exceed the true step size of the animal compared to low-resolution tracking with the same measurement error.
 This biases derived metrics such as speed and tortuosity \citep[see][]{ranacher2016, noonan2019, hurford2009, calenge2009}.
 Additionally, the absolute location errors around a position introduces uncertainty when studying the location of an animal relative to fixed landscape features (e.g. roads) or mobile elements (e.g. other tracked individuals).
-Users have two main options to improve data quality: making inferences after modelling the system-specific location error \citep{fleming2014a, fleming2020, jonsen2003, jonsen2005, johnson2008, patterson2008}, or pre-processing data to clean it of positions with large location errors \citep{bjorneraas2010}.
+Users have two main options to improve data quality: making inferences after modelling the system-specific location error \citep{fleming2014a, fleming2020, jonsen2003, jonsen2005, johnson2008, patterson2008,aspillaga2021}, or pre-processing data to clean it of positions with large location errors \citep{bjorneraas2010}.
 The first approach may be limited by the animal movement models it can fit to the data \citep{fleming2014a, noonan2019, fleming2020}, and may be beyond the computational capacity of common hardware, leading users to prefer data cleaning instead.
 When attempting data cleaning, the second challenge of high-throughput tracking reveals itself: the large number of observations themselves \citep{weiser2016, toledo2020}.
 Having large volumes of data to clean makes manual identification and removal of errors from individual tracks prohibitively time consuming, incentivising automation based on a protocol.
@@ -197,18 +197,18 @@ Pre-processing steps must justifiably discard large location errors, also called
 How well researchers balance these imperatives has consequences for downstream analyses \citep{stine2001}.
 For instance, small-scale resource selection functions can easily infer spurious preference and avoidance effects when there is uncertainty about an animal's true position and movement \citep{visscher2006}.
 Ecologists recognise that tracking data are imperfect observations of the underlying process of animal movement, yet they implicitly consider cleaned data equivalent to be the ground-truth.
-This assumption is reflected by popular statistical methods in movement ecology such as Hidden Markov Models (HMMs) \citep{langrock2012}, stationary-phase identification methods \citep{patin2020a}, or step-selection functions (SSFs) \citep{barnett2008, signer2017, avgar2016}, which expect low location errors relative to real animal movement (i.e., a high signal-to-noise ratio).
+This assumption is reflected in popular statistical methods in movement ecology such as Hidden Markov Models (HMMs) \citep{langrock2012}, stationary-phase identification methods \citep{patin2020a}, or step-selection functions (SSFs) \citep{barnett2008, signer2017, avgar2016}, which expect low location errors relative to real animal movement (i.e., a high signal-to-noise ratio).
 This makes the reproducible, standardised removal of location errors crucial to any animal tracking study.
 While gross errors are often removed by positioning-system algorithms, ‘reasonable’ errors often remain to confront end users \citep{fischler1981, weiser2016, ranacher2016}.
-Location errors may be exacerbated by the conditions of deployment, with systematic differences in location error among different landscape types  \citep[see][]{lewis2007, deon2002, frair2004}. 
-% For instance, the physical features of an animal’s habitat such as hills or woodland may impede the transmissions of radio-telemetry tags (Beardsworth et al. \textit{in prep.}), while canopy cover can lead to location errors in GPS tracking \citep{lewis2007}.
-Standardised pre-processing steps should thus be general enough to tackle animal movement data recovered from a range of environments.
+% Location errors may be exacerbated by the conditions of deployment, with systematic differences in location error among different landscape types  \citep[see][]{lewis2007, deon2002, frair2004}. 
+% % For instance, the physical features of an animal’s habitat such as hills or woodland may impede the transmissions of radio-telemetry tags (Beardsworth et al. \textit{in prep.}), while canopy cover can lead to location errors in GPS tracking \citep{lewis2007}.
+Further, as high-throughput tracking is deployed in more regions, standardised pre-processing steps should be general enough to tackle animal movement data recovered from a range of environments.
 
 Despite the importance and ubiquity of reducing location errors in tracking data, movement ecologists lack formal guidance on this crucial step.
 Pre-processing protocols are often system-specific, or have limited availability, or may not be easily tractable for mainstream computing hardware and software.
 Furthermore, filtering out positions on their location error estimates may not be sufficient to recover a good track estimate when location error does not correspond to biological realism in movement \citep{weiser2016, ranacher2016}.
-This makes identifying and removing implausible movements from a track an important component of recovering true animal movement \citep{bjorneraas2010}.
-Even after removing large location errors and evidently unrealistic movement, a track may comprise of positions that are distributed around the true animal location.
+This makes identifying and removing implausible locations from a track an important component of recovering true animal movement \citep{bjorneraas2010}.
+Even after removing outliers, a track may comprise of positions that are distributed around the true animal location.
 Discarding these positions as `untrue' would lead to excessive data loss, but treating them as `real' locations would lead to unrealistic estimates of metrics such as speed \citep{noonan2019}.
 The large data-volumes of high-throughput tracking allow for a neat solution: tracks can be `smoothed' to reduce small location errors that have remained undetected.
 This large data volume becomes a challenge when users seek to examine animal space-use in relation to relevant environmental covariates, such as the predictors of prolonged residence in an area \citep[see][]{bracis2018}.
@@ -221,7 +221,7 @@ With these in mind we have developed the \texttt{R} package \texttt{atlastools} 
 \texttt{R} is the computational environment of choice in movement ecology \citep{joo2020} and formalising tools as an \texttt{R} package improves portability and reproducibility \citep{marwick2018}.
 \texttt{atlastools} functions are easy to use and understand, and rely on the efficiency of the \texttt{R} package \texttt{data.table} \citep{dowle2020}.
 We begin by showing how the pipeline can clean simulated tracks to which we have artificially introduced location error \citep{gurarie2017}.
-Beginning with basic spatio-temporal filtering of positions, we cover filtering movement tracks, and reducing the effect of location error with a median smooth.
+Beginning with basic spatio-temporal filtering of positions, we cover filtering outliers from movement tracks, and reducing the effect of location error with a median smooth.
 Then, we suggest one solution to issues of computational tractability, which is to synthesise residence patches \citep[\textit{sensu}][]{bijleveld2016, oudman2018, barraquand2008} from clusters of spatio-temporally proximate positions, and so reveal important aspects of animal space use.
 Using calibration data from a manually transported ATLAS tag, we demonstrate how the residence patch method in \texttt{atlastools} accurately identifies areas of prolonged residence under real field conditions.
 Finally, we turn to data from Egyptian fruit bats (\textit{Rousettus aegyptiacus}) tracked in the Hula Valley, Israel, to show a fully worked out example of the pre-processing pipeline and the residence patch method.
@@ -232,8 +232,8 @@ Finally, we turn to data from Egyptian fruit bats (\textit{Rousettus aegyptiacus
     \caption{A general, modular pipeline for pre-processing high-throughput tracking data from raw localisations to cleaned data, and optionally into residence patches. 
     Users should determine the appropriate pre-processing module, and work their way through the corresponding pre-processing steps, until the data are suitable for their intended purpose.
     The \texttt{atlastools} function that may be used to implement each pre-processing step is shown in the grey boxes underneath each step.
-    Popular \texttt{R} packages in movement ecology, or statistical methods are shown underneath suggested analyses (yellow boxes).
-    Users are strongly encouraged to visualise their data and scan it for location errors as a first step, and as they work through the pipeline.
+    Popular \texttt{R} packages in movement ecology, or statistical methods are shown underneath possible analyses (yellow boxes).
+    Users are strongly encouraged to visualise their data and scan it for location errors as they work through the pipeline, always asking the question, could the animal plausibly move this way?
     }
     \label{fig:figure_pipeline}
 \end{figure}
@@ -265,7 +265,7 @@ Users may follow the pipeline in full, or implement the module most suitable for
     \item Users who need uniformly thinned data can either aggregate or resample it.
     %  (see \textsc{Smoothing and Thinning Data}).
     At this stage, the data are ready for a number of popular statistical treatments such as Hidden Markov Model-based classification \citep{michelot2016,langrock2012}.
-    \item Finally, users wishing to study prolonged animal residence in an area can classify their data into residence patches based on the movement ecology of their study system, after filtering out non-stationary positions (see \textsc{Synthesising Movement Tracks into Residence Patches}).
+    \item Finally, users wishing simple segmentation-clustering can classify their data into residence patches based on the movement ecology of their study system, after filtering out non-stationary positions (see \textsc{Synthesising Movement Tracks into Residence Patches}).
     
 \end{enumerate}
 
@@ -281,19 +281,15 @@ This complex track structure provides a suitable challenge for the residence pat
 
 \subsection{Spatial Filtering Using Bounding Boxes and Polygons}
 
-First, data can be filtered to exclude positions outside the spatial bounds of a study area.
-This simply involves comparing position coordinates with the range of acceptable coordinates (the bounding box), and removing those positions outside them (Fig. 2.b; Listing 1). 
-A bounding box filter retains data from within a subset of the tracking range without the need for a geospatial representation such as a shapefile.
-This can help remove unreliable data from a tracking system that is less accurate beyond a certain range (e.g. ATLAS; Beardsworth et al. \textit{in prep.}).
-In some special cases, users may wish to \textit{remove} positions inside a bounding box, either because movement behaviour within an area is not the focus of a study, or because positions recorded within an area are known to be erroneous.
+First, users should exclude positions outside the spatial bounds of a study area by comparing position coordinates with the range of acceptable coordinates (the bounding box), and removing positions outside them (Fig. 2.b; Listing 1). 
+A bounding box filter does not require a geospatial representation such as a shapefile, and can help remove unreliable data from a tracking system that is less accurate beyond a certain range (e.g. ATLAS; Beardsworth et al. \textit{in prep.}).
+In some special cases, users may wish to remove positions \textit{inside} a bounding box, either because movement behaviour within an area is not the focus of a study, or because positions recorded within an area are known to be erroneous.
 An example of the former is studies seeking to study transit behaviour between features which can be approximated by their bounding boxes. 
 Instances of the latter are likely to be system specific, but are known from ATLAS systems (Bijleveld et al. \textit{in prep.}). 
-One drawback to bounding box filters is that they are restricted to rectangular areas.
-Users seeking to filter for areas with other geometries, such as a circular or irregular study area, need a geometric intersection between their data and a spatial representation of the area of interest (e.g. shapefile, geopackage, or \texttt{sf}-object in \texttt{R}).
-The \texttt{atlastools} function \texttt{atl\_filter\_bounds} implements bounding box and explicit spatial filters and accepts X and Y coordinate ranges, an \texttt{sf}-polygon object \citep{pebesma2018}, or any combination of the three to filter the data (Listing 1).
-Multipolygon objects are supported, allowing data from different areas to be selected.
-When both coordinate ranges and a polygon are provided, the data is first filtered by the ranges and then the polygon.
-The boolean function argument \texttt{remove\_inside} determines whether positions inside the bounds are retained (\texttt{FALSE}) or removed (\texttt{TRUE}).
+Bounding boxes are by definition rectangular, and users seeking to filter for other geometries, such as a circular or irregularly-shaped study area, need a geometric intersection between their data and a spatial representation of the area of interest (e.g. shapefile, geopackage, or \texttt{sf}-object in \texttt{R}).
+The \texttt{atlastools} function \texttt{atl\_filter\_bounds} implements bounding box and explicit spatial filters and accepts X and Y coordinate ranges, an \texttt{sf}-polygon or multi-polygon object \citep{pebesma2018}, or any combination of the three to filter the data (Listing 1).
+% When both coordinate ranges and a polygon are provided, the data is first filtered by the ranges and then the polygon.
+% The boolean function argument \texttt{remove\_inside} determines whether positions inside the bounds are retained (\texttt{FALSE}) or removed (\texttt{TRUE}).
 
 \begin{lstlisting}[float,floatplacement=h!,language=R, style=customR, caption = {
     The \texttt{atl\_filter\_bounds} function removes positions outside an area defined by coordinate ranges, a polygon, or all three (\texttt{remove\_inside = FALSE}), or positions inside the area (\texttt{remove\_inside = TRUE}).
