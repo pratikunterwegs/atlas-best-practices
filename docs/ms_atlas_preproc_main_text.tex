@@ -309,7 +309,7 @@ filtered_data <- atl_filter_bounds(data = data,
     \caption{\textbf{(a)} Simulated movement data (black line), with three kinds of artificially added errors: (1) normally distributed small-scale error on each position, (2) large-scale error added to 0.5\% of positions, and (3) 300 consecutive positions displaced to simulate a gross distortion affecting a continuous subset of the track.  
     Tracks can be quickly filtered by spatial bounds (dashed grey lines) to exclude broad regions.
     \textbf{(b)} 
-    Location error may affect single observations resulting in point outliers or `spikes' (grey crosses), or continuous subsets of a track, called a `prolonged spike' (black crosses, top right), and both represent unrealistic movement.
+    Location error may affect single observations resulting in point outliers or `spikes' (grey crosses), or continuous subsets of a track, called a `prolonged spike' (dark crosses, top right), and both represent unrealistic movement.
     While spikes can be removed by filtering out positions with high incoming and outgoing speeds and turning angle, prolonged spikes cannot be effectively corrected by targeting each coordinate pair in isolation.
     These and other distortions that affect continuous track segments can be removed by conceptualising algorithms that find the bounds of the distortion and remove points in between them.
     Users should frequently check the outputs of such algorithms to avoid rejecting valid data.
@@ -319,20 +319,18 @@ filtered_data <- atl_filter_bounds(data = data,
 
 \subsection{Temporal and Spatio-temporal Filters}
 
-Temporal filtering can exclude positions from periods during tracking when data are expected to be unreliable, either due to abnormal movement behaviour or poor tracking quality. 
-An animal’s movement may be non-representative when it has been fitted with a tracker but has not been released, leading to artificial stationary positions, or in the time shortly after release when its movement may be influenced by the stress of capture and handling (see example implementation in \texttt{amt}; \citet{signer2019}). 
-In these cases, all positions from a short time after release (e.g. 24 hours) can be excluded. 
-Periods of poor tracking quality may result from system malfunctions, and temporal filters can be applied to exclude such chunks from the datastream. 
+An animal’s movement may be non-representative when it has been fitted with a tracker but has not been released, leading to artificial stationary positions, or in the time shortly after release when its movement may be influenced by the stress of capture and handling.
+Periods of poor tracking quality may result from system malfunctions, and temporal filters can be applied to exclude such chunks from the datastream.
+Temporal filtering can exclude positions from such periods when data are expected to be unreliable, either due to abnormal movement behaviour or system-specific issues.  
 Temporal filters can be combined with spatial filters to exclude time-location combinations which would be unrealistic for the tracked animal. 
 For example, red knots in the Dutch Wadden Sea congregate at communal roosts during high-tide, when their foraging grounds on the inter-tidal mudflats are inaccessible \citep{vangils2006}.
 A spatio-temporal filter that retains positions inside the bounds of roosts during high-tide can quickly return data that reveals individual presence at high-tide roosts, while excluding positions that erroneously place individuals on the inundated mudflats.
 Users should apply filters in sequence rather than all at once, and visualise the output after each filtering step (`sanity checks').
 
-The atlastools function \texttt{atl\_filter\_covariates} allows convenient filtering of a dataset by any number of logical statements (Listing 2).
-This function can be used to easily filter timestamps in a range, as well as combine simple spatial and temporal filters.
-It accepts a character vector of \texttt{R} expressions that each return a logical vector (i.e., \texttt{TRUE} or \texttt{FALSE}; Listing 2).
-The function returns only those data which satisfy each of the filter conditions. 
-Users must ensure that the filtering variables exist in their dataset in order to avoid errors.
+The atlastools function \texttt{atl\_filter\_covariates} allows convenient filtering of a dataset by any number of logical statements, including querying data within a spatio-temporal range (Listing 2).
+% This function can be used to easily filter timestamps in a range, as well as combine simple spatial and temporal filters.
+% It accepts a character vector of \texttt{R} expressions that each return a logical vector (i.e., \texttt{TRUE} or \texttt{FALSE}; Listing 2).
+The function returns only those data which satisfy each of the filter conditions, and users must ensure that the filtering variables exist in their dataset in order to avoid errors.
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
     Data can be filtered by a temporal or a spatio-temporal range using {atl\_filter\_covariates}. 
@@ -355,11 +353,10 @@ filtered_data <- atl_filter_covariates(data = data,
 
 \subsection{Filtering on Quality Covariates}
 
-Tracking data covariates can be good indicators of the reliability of calculated positions (Beardsworth et al. \textit{in prep.}).
+Tracking data covariates can be good indicators of the reliability of positions calculated by a tracking system (Beardsworth et al. \textit{in prep.}).
 For intance, in reverse-GPS ATLAS systems the number of base stations involved in each localisation is an indirect indicator of data quality, and positions localised using more receivers are usually more reliable \citep[the minimum required for an ATLAS localisation is 3; see][]{weiser2016}.
-Reverse-GPS systems also calculate direct measures of location error during localisation \citep{maccurdy2009, maccurdy2019, weiser2016}.
-GPS systems' location error may be similarly indicated indirectly by the number of satellites involved in the localisation, or directly by an error measure such as the Horizontal Dilution of Precision (HDOP).
-ATLAS and other TOA systems 
+GPS systems' location error may be similarly indicated indirectly by the number of satellites involved in the localisation., 
+Both GPS and reverse-GPS systems may also provide direct measures of location error during localisation \citep{maccurdy2009, maccurdy2019, weiser2016}.
 % A location error measure associated with each coordinate pair (similar to GPS HDOP) can be calculated and assigned to a new column \texttt{SD} using the formula for the sum of correlated random variables
 % \begin{linenomath*}
 %     \begin{equation*}
