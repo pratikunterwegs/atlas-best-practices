@@ -219,7 +219,7 @@ Second, fitting statistical models to datasets with many millions of observation
 Here, we present a hands-on guide to pre-processing high-throughput tracking data, and demonstrate a relatively simple data cleaning pipeline to prepare these data for subsequent analyses (see Fig. 1). 
 We take two important considerations into account, (1) that methods must be computationally efficient, and (2) that the pre-processing steps should be easily understood and reproduced.
 With these in mind we have developed the \texttt{R} package \texttt{atlastools} \citep{gupte2020a, rcoreteam2020}, which implements important steps of the pre-processing pipeline.
-\texttt{R} is the computational environment of choice in movement ecology \citep{joo2020} and formalising tools as an \texttt{R} package improves portability and reproducibility \citep{marwick2018, }.
+\texttt{R} is the computational environment of choice in movement ecology \citep{joo2020} and formalising tools as an \texttt{R} package improves portability and reproducibility \citep{marwick2018}.
 \texttt{atlastools} functions are easy to use and understand, and rely on the efficiency of the \texttt{R} package \texttt{data.table} \citep{dowle2020}.
 We begin by showing how the pipeline can clean simulated tracks to which we have artificially introduced location error \citep{gurarie2017}.
 Beginning with basic spatio-temporal filtering of positions, we cover filtering outliers from movement tracks, and reducing the effect of location error with a median smooth.
@@ -357,7 +357,7 @@ filtered_data <- atl_filter_covariates(data = data,
 Tracking data covariates can be good indicators of the reliability of positions calculated by a tracking system (Beardsworth et al. \textit{in prep.}).
 For instance, in reverse-GPS ATLAS systems the number of base stations involved in each localisation is an indirect indicator of data quality, and positions localised using more receivers are usually more reliable \citep[the minimum required for an ATLAS localisation is 3; see][]{weiser2016}.
 GPS systems' location error may be similarly indicated indirectly by the number of satellites involved in the localisation.
-Both GPS and reverse-GPS systems may also provide direct measures of location error during localisation \citep{maccurdy2009, maccurdy2019, weiser2016}.
+Both GPS and reverse-GPS systems may also provide direct measures of location error during localisation \citep[Horizontal Dilution of Precision, HDOP in GPS, and standard deviation SD in reverse-GPS]{maccurdy2009, maccurdy2019, weiser2016, ranacher2016}.
 % A location error measure associated with each coordinate pair (similar to GPS HDOP) can be calculated and assigned to a new column \texttt{SD} using the formula for the sum of correlated random variables
 % \begin{linenomath*}
 %     \begin{equation*}
@@ -558,9 +558,9 @@ thinned_data <- atl_thin_data(data,
 
 An important and common analysis with animal tracking data is to link space-use with environmental covariates.
 This is difficult even with smoothed and thinned high-throughput data, as these may be too large for statistical packages, or have strong autocorrelation (Fig. 5).
-Users aiming for such analyses can benefit from segmentation-clustering the data into spatio-temporally independent `residence patches', and link the attributes of movement segments (such as duration or distance), with environmental data \citep{bijleveld2016, oudman2018, barraquand2008}.
-Making the patch the unit of observation conveniently sidesteps pseudo-replication while and reduces computational requirements.
-Furthermore, metrics such as the distance travelled within and between patches can help compare broad-scale individual movement strategies.
+Users aiming for such analyses can benefit from segmenting and clustering the data into spatio-temporally independent `residence patches', and metrics such as the distance travelled within and between patches can help compare broad-scale individual movement strategies, or be linked with environmental data \citep{bijleveld2016, oudman2018, barraquand2008}.
+Common methods of segmentation-clustering are either not based in the biology of the tracked individual, or are not scalable to very large yet often gappy datasets \citep{patin2020a}, making a first-principles approach an essential part of a pre-processing pipeline.
+Furthermore, making the patch the unit of observation conveniently sidesteps pseudo-replication while and reduces computational requirements.
 
 First, users should identify positions representing bouts of stationary behaviour, for instance on their speed or residence time \citep{bracis2018}.
 Patch identification assesses whether consecutive positions and the bouts they comprise are spatio-temporally independent, and clusters them together if they are not.
