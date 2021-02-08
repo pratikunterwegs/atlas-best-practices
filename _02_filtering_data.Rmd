@@ -185,10 +185,6 @@ fig_filter_bounds <-
   coord_equal(expand = T)
 ```
 
-**(a)** A velocity-autocorrelated movement track simulated for 5,000 positions (black line) using the `smoove` package (Gurarie et al. 2017). Three kinds of errors have been artificially added: (1) each position (grey points) is offset from the canonical track with the addition of normally distributed small-scale error, (2) large-scale error has been added to 0.5\% of positions, and (3) 300 positions (indices 500 -- 800) have been displaced to the top-right of the track to simulate a gross distortion that affects a continuous subset of the track.
-The goal of pre-processing such datasets is to get the estimated positions (grey points) to match the canonical track (solid black line) as closely as possible.
-**(b)** Tracks can be quickly filtered by spatial bounds ($0.5 \leq Y \leq 1.0$; dashed grey lines) using the `atlastools` function  `atl_filter_bounds`. Setting the function argument `remove_inside = FALSE` retains positions within user supplied bounds (blue points), and excludes those outside (red points).
-
 ### A Note on Filtering by Bounds
 
 The filter on spatial bounds is only for demonstration, and is not applied to the data.
