@@ -11,7 +11,7 @@ Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @o
 ## Outline of Cleaning Steps
 
 We began by visualising the data to check for location errors, and found a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2; main text Fig. 7.a).
-This outlier was removed by filtering data by the X coordinate bounds using the function `atl_filter\_bounds`; X coordinate bounds $\leq$ 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
+This outlier was removed by filtering data by the X coordinate bounds using the function `atl_filter_bounds`; X coordinate bounds $\leq$ 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
 We then calculated the incoming and outgoing speed, as well as the turning angle at each position using the functions `atl_get_speed` and `atl_turning_angle` respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
 We used the function `atl_filter_covariates` to remove positions with incoming and outgoing speeds $\geq$ the speed threshold of 15 m/s (n = 13,491, 26.5%; remaining positions = 37,324, 73.5%; Fig. 1.3; main text Fig. 7.b).
 This speed threshold was chosen as 5 m/s faster than the known boat speed, 10 m/s.
@@ -758,6 +758,8 @@ cat(
 ```
 
 ## Plot figure 7
+
+Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
 
 ```{r echo=FALSE}
 # wrap together
