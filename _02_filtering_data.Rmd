@@ -367,7 +367,7 @@ ggsave(figure_01,
 )
 ```
 
-![](figures/fig_03_filter_speed.png)
+![](figures/fig_02_filtering_data.png)
 
 Reducing large-scale positioning error in a movement track. **(a)** Positioning error may affect single observations resulting in point outliers or 'spikes' (red points), but it may also affect continuous susbets of a track, which we call a `prolonged spike' (purple triangles). While the former may be targeted by filtering on appropriate covariates such as speed and turning angle using the `atlastools` function `atl_filter_covariates`, the latter cannot be effectively corrected by targeting each coordinate pair in isolation.
 **(b)** The `atlastools` function `atl_remove_reflections` to identify prolonged spikes (red triangles) in tracking data is an illustrative example of targeting positioning errors that affect track subsets. While this method returns the canonical track without the prolonged spike (blue points) in this example, users are cautioned to frequently check this and similar semi-supervised algorithms' results.
