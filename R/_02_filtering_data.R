@@ -172,7 +172,7 @@ fig_outlier_remove <-
     aes(x, y),
     # size = 0.5,
     alpha = 0.6,
-    shape = 4, col = "black"
+    shape = 4, col = "grey30"
   ) +
   geom_point(
     data = data_copy[!data_copy[500:800, ],
