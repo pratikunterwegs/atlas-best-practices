@@ -246,18 +246,18 @@ Finally, we turn to data from Egyptian fruit bats (\textit{Rousettus aegyptiacus
 We lay out a modular pipeline for pre-processing raw high-throughput tracking data using the \texttt{R} package \texttt{atlastools} (Fig. 1).
 While the pipeline and package were designed with ATLAS systems in mind, the principles and functions can be used with any high-throughput tracking data.
 Users may follow the pipeline in full, or implement the module most suitable for their data.
+Users are advised to visualise their data throughout their workflow to check for evident location errors \citep{slingsby2016}.
 
 \begin{enumerate}
     
-    \item Users should visualise their data to check for evident location errors \citep{slingsby2016}.
-    \item Users can install \texttt{atlastools} using the \texttt{install\_github} function from the \texttt{R} package \texttt{remotes}:
+    % \item Users can install \texttt{atlastools} using the \texttt{install\_github} function from the \texttt{R} package \texttt{remotes}:
     
-    \texttt{remotes::install\_github("pratikunterwegs/atlastools")}.
+    % \texttt{remotes::install\_github("pratikunterwegs/atlastools")}.
     
     % Package functions are prefixed `\texttt{atl\_}', and are based on the \texttt{data.table} package (Dowle and Srinivasan 2020).
     % Certain functions modify the input data "in place", and users must work on a copy of their data to preserve both the original and cleaned data (details in the Supplementary Material).
-    Since high-throughput tracking systems typically cover an area of a few hundred square kilometres, \texttt{atlastools} users must convert their geographic coordinates to metres as this is assumed by all functions.
-    \item Users can use simple spatio-temporal range filters to select positions within a certain time or area.
+    % Since high-throughput tracking systems typically cover an area of a few hundred square kilometres, \texttt{atlastools} users must convert their geographic coordinates to metres as this is assumed by all functions.
+    \item Users can use simple spatio-temporal filters to select positions within a certain time or area.
     %  (see \textsc{Spatio-Temporal Filtering}).
     \item Next, users should reduce gross location errors by removing unreliable positions which may be identified by a system-specific error measure, or by the plausibility of associated movement metrics, such as speed and turning-angle \citep{seidel2018, calenge2009}.
     %  (see \textsc{Filtering to Reduce Location Errors}).
@@ -270,7 +270,7 @@ Users may follow the pipeline in full, or implement the module most suitable for
     
 \end{enumerate}
 
-\subsection{Simulating Movement Tracks}
+\subsection{Demonstrating the Pipeline with Simulated Data}
 
 To demonstrate the pipeline, we simulated a realistic movement track of 5,000 positions (unbiased correlated velocity model; UCVM) using the \texttt{R} package \texttt{smoove} \citep[][see Fig. 2.a]{gurarie2017}.
 We added three kinds of error to the simulated track: (1) normally distributed small-scale offsets to the X and Y coordinates independently, (2) normally distributed large-scale offsets to a random subset (0.5 \%) of the positions, and (3) large-scale displacement of a continuous sequence of 300 of the 5,000 positions (indices 500 -- 800) (Fig. 2.a).
