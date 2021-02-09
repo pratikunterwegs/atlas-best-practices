@@ -158,14 +158,14 @@ Cleaning high-throughput animal tracking data
     `Cleaning' the data to reduce location errors prior to analyses is one of the main ways movement ecologists deal with noisy data, and has the advantage of being more scalable to massive datasets than more complex methods.
     Though data cleaning is widely recommended, and ecologists routinely consider cleaned data to be the ground-truth, uniform guidance on this crucial step is scarce.
     
-    \item A pipeline for cleaning massive high-throughput datasets must balance ease of use, computational efficiency, and the ability to prepare movement data for a range of analyses.
-    Data cleaning must also reject location errors without discarding valid animal movements.
+    \item A pipeline for cleaning massive high-throughput datasets must balance ease of use, computational efficiency.
+    Data cleaning must also reject location errors discarding valid animal movements.
     Another useful feature of a pre-processing pipeline is efficiently segmenting and clustering location data for statistical methods, while also being scalable to large datasets and robust to imperfect sampling.
     Manual methods being prohibitively time consuming, and to boost reproducibility, a robust pre-processing pipeline must be automated.
     
     \item In this article we introduce a pipeline to pre-process high-throughput animal tracking data in order to prepare it for subsequent analysis.
     This pipeline, consisting of removing outliers, smoothing the filtered result, and thinning it to a uniform sampling interval, is easily scaled to very large datasets.
-    We demonstrate this pipeline on simulated movement data to which we have randomly added location errors.
+    We demonstrate this pipeline on simulated movement data with location errors.
     We further suggest how large volumes of cleaned data can be segmented-clustered into biologically meaningful ‘residence patches’.
     We use calibration data to show how the pipeline improves its quality, and to verify that the residence patch synthesis accurately captures animal space-use.
     Finally, turning to tracking data from Egyptian fruit bats (\textit{Rousettus aegyptiacus}), we demonstrate the pre-processing pipeline and residence patch method in a fully worked out example.
@@ -176,7 +176,7 @@ Cleaning high-throughput animal tracking data
     The use of common pre-processing steps that are simple yet robust promotes standardised methods in the field of movement ecology and leads to better inferences from data.
 \end{enumerate}
 
-\textbf{Keywords} ATLAS, data cleaning, movement ecology, high-throughput tracking, \textit{atlastools}, residence patch
+\textbf{Keywords} high-throughput movement ecology (HTME), data cleaning, movement ecology, high-throughput tracking, \textit{atlastools}, residence patch
 
 \linenumbers
 
@@ -184,7 +184,8 @@ Cleaning high-throughput animal tracking data
 
 Tracking individual animals is the methodological mainstay of movement ecology, which seeks to link animal movement with internal causes, environmental factors, and resulting consequences \citep{nathan2008a, holyoak2008}. 
 Investigating fine-scale environmental and social drivers and the consequences of movement requires position data from many individuals at high temporal and spatial resolution relative to the phenomenon of interest (high-throughput tracking).
-High-throughput tracking is possible using GPS tags \citep[see recent examples in][]{strandburg-peshkin2015, papageorgiou2019, harel2016}, yet ‘reverse-GPS’ systems developed to track animals over land \citep{toledo2014, weiser2016, toledo2016,toledo2020, maccurdy2009, maccurdy2019} and in aquatic systems \citep{hussey2015, baktoft2019, baktoft2017,jung2015, aspillaga2021} routinely produce high-throughput tracking data at much lower costs.
+High-throughput tracking is possible using GPS tags \citep[see recent examples in][]{strandburg-peshkin2015, papageorgiou2019, harel2016}; additionally, ‘reverse-GPS’ systems developed to track animals over land \citep{toledo2014, weiser2016, toledo2016,toledo2020, maccurdy2009, maccurdy2019} and in aquatic systems \citep{hussey2015, baktoft2019, baktoft2017,jung2015, aspillaga2021} routinely produce high-throughput tracking data at much lower costs.
+
 Although high-resolution tracking provides a massive amount of data on the path of a tracked animal, this data presents a two-fold challenge to ecologists.
 First, the location error of each position may approach or exceed the true step size of the animal compared to low-resolution tracking with the same measurement error.
 This biases derived metrics such as speed and tortuosity \citep[see][]{ranacher2016, noonan2019, hurford2009, calenge2009}.
@@ -207,21 +208,20 @@ Further, as high-throughput tracking is deployed in more regions, standardised p
 
 Despite the importance and ubiquity of reducing location errors in tracking data, movement ecologists lack formal guidance on this crucial step.
 Pre-processing protocols are not often reported in the literature, or may not be easily tractable for mainstream computing hardware and software.
-Furthermore, filtering out positions on their location error estimates may not be sufficient to recover a good track estimate when location error does not correspond to biological realism in movement \citep{weiser2016, ranacher2016}.
+Furthermore, filtering out positions on their location error estimates may not be be appropriate for outliers which represent unrealistic movement but have low error measures \citep{weiser2016, ranacher2016}.
 This makes identifying and removing implausible locations from a track an important component of recovering true animal movement \citep{bjorneraas2010}.
-Even after removing outliers, a track may comprise of positions that are distributed around the true animal location.
-Discarding these positions as `untrue' would lead to excessive data loss, but treating them as `real' locations would lead to unrealistic estimates of metrics such as speed \citep{noonan2019}.
+Even after removing outliers, a track may comprise of positions that are distributed around the true animal location \citep{noonan2019}.
 The large data-volumes of high-throughput tracking allow for a neat solution: tracks can be `smoothed' to reduce small location errors that have remained undetected.
-This large data volume becomes a challenge when users seek to examine animal space-use in relation to relevant environmental covariates, such as the predictors of prolonged residence in an area \citep[see][]{bracis2018}.
-First, statistical modelling using high-throughput data may suffer from pseudo-replication since both the response (e.g. step-length) and the predictors (e.g. resource landscape values) are spatio-temporally auto-correlated and hence non-independent \citep{aarts2008, fleming2014a,bijleveld2016, oudman2018, harel2016}.
-Second, fitting statistical models to datasets with many millions of observations may require significant innovation in mainstream statistical software \citep[e.g. ][]{wood2015}, and users may instead want to reduce data volumes by thinning or clustering.
+This large data volume becomes a challenge when users seek to examine animal space-use in relation to relevant environmental covariates, such as the predictors of prolonged residence in an area \citep[see][]{bracis2018, aarts2008, fleming2014a,bijleveld2016, oudman2018, harel2016}.
+% First, statistical modelling using high-throughput data may suffer from pseudo-replication since both the response (e.g. step-length) and the predictors (e.g. resource landscape values) are spatio-temporally auto-correlated and hence non-independent \citep{}.
+% Second, fitting statistical models to datasets with many millions of observations may require significant innovation in mainstream statistical software \citep[e.g. ][]{wood2015}, and users may instead want to reduce data volumes by thinning or clustering.
 
 Here, we present a hands-on guide to pre-processing high-throughput tracking data, and demonstrate a relatively simple data cleaning pipeline to prepare these data for subsequent analyses (see Fig. 1). 
 We take two important considerations into account, (1) that methods must be computationally efficient, and (2) that the pre-processing steps should be easily understood and reproduced.
-With these in mind we have developed the \texttt{R} package \texttt{atlastools} \citep{gupte2020a, rcoreteam2020}, which implements important steps of the pre-processing pipeline.
 \texttt{R} is the computational environment of choice in movement ecology \citep{joo2020} and formalising tools as an \texttt{R} package improves portability and reproducibility \citep{marwick2018}.
+With these considerations in mind we have developed the \texttt{R} package \texttt{atlastools} \citep{gupte2020a, rcoreteam2020}, which implements important steps of the pre-processing pipeline.
 \texttt{atlastools} functions are easy to use and understand, and rely on the efficiency of the \texttt{R} package \texttt{data.table} \citep{dowle2020}.
-We begin by showing how the pipeline can clean simulated tracks to which we have artificially introduced location error \citep{gurarie2017}.
+% We begin by showing how the pipeline can clean simulated tracks to which we have artificially introduced location error \citep{gurarie2017}.
 Beginning with basic spatio-temporal filtering of positions, we cover filtering outliers from movement tracks, and reducing the effect of location error with a median smooth.
 Then, we suggest one solution to issues of computational tractability, which is to synthesise residence patches \citep[\textit{sensu}][]{bijleveld2016, oudman2018, barraquand2008} from clusters of spatio-temporally proximate positions, and so reveal important aspects of animal space use.
 Using calibration data from a manually transported ATLAS tag, we demonstrate how the residence patch method in \texttt{atlastools} accurately identifies areas of prolonged residence under real field conditions.
