@@ -98,6 +98,8 @@ data_errors = lapply(c(0, seq(0.4, 1.25, length.out = 4)),
 data_errors = rbindlist(data_errors)
 ```
 
+## Histogram of speeds after smoothing
+
 ```{r}
 pal2 = RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
 
@@ -216,12 +218,6 @@ figure_median_smooth <-
     axis.title = element_blank()
   )
 
-# # wrap figures
-# figure_median_smooth =
-#   wrap_plots(figure_median_smooth,
-#              fig_hist_smooth,
-#              design = "AAAA\nBB##")
-
 # save figure
 ggsave(figure_median_smooth,
   filename = "figures/fig_03_median_smooth.png",
@@ -257,11 +253,11 @@ speed_agg_smooth <-
   lapply(list_of_agg, function(df) {
     na.omit(df)
     df[, speed := atl_get_speed(df)]
-    df[, list(
-      median = median(speed, na.rm = T),
-      sd = sd(speed, na.rm = T),
-      interval = first(interval)
-    )]
+    # df[, list(
+    #   median = median(speed, na.rm = T),
+    #   sd = sd(speed, na.rm = T),
+    #   interval = first(interval)
+    # )]
   })
 
 # bind
@@ -389,25 +385,16 @@ fig_agg_speed <-
       ),
     lty = c(1, 2)
   ) +
-  geom_errorbar(
+  geom_boxplot(
     data = speed_agg_smooth,
     aes(
-      x = factor(interval),
-      ymin = 1 + median - sd,
-      ymax = 1 + median + sd
+      x = as.factor(interval),
+      y = 1 + speed
     ),
-    width = 0.2,
-    position = position_nudge(x = 0.25)
-  ) +
-  geom_point(
-    data = speed_agg_smooth,
-    aes(
-      x = factor(interval),
-      y = 1 + median
-    ),
-    shape = 21,
-    size = 3,
     fill = pal[3],
+    show.legend = F,
+    width = 0.25,
+    outlier.size = 0.2,
     position = position_nudge(x = 0.25)
   ) +
   geom_boxplot(aes(factor(interval), 1 + speed),
@@ -427,8 +414,8 @@ fig_agg_speed <-
     axis.text.y = element_blank()
   ) +
   labs(
-    x = "interval (s)",
-    y = "speed"
+    x = "Interval (s)",
+    y = "Speed"
   )
 ```
 
@@ -453,7 +440,7 @@ ggsave(fig_aggregate,
 )
 ```
 
-![](figures/fig_05_thinning.png)
+![](figures/fig_04_thinning.png)
 
 Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
 **(a, b)** Movement tracks with a canonical interval of 1s aggregated over intervals of **(a)** 10 and **(b)** 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.
