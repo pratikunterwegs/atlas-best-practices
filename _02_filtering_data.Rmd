@@ -18,6 +18,7 @@ library(atlastools)
 # to plot
 library(ggplot2)
 library(patchwork)
+library(ggthemes)
 ```
 
 ```{r}
@@ -150,6 +151,12 @@ Having filtered the data we shall prepare it for plotting.
 # plot data inside and outside bbox
 fig_filter_bounds <-
   ggplot() +
+  geom_path(
+    data = data_copy,
+    aes(x, y),
+    col = "grey",
+    lwd = 0.2
+  ) +
   geom_point(
     data = data_inside_bbox,
     aes(x, y),
@@ -247,14 +254,75 @@ data_filtered <- atl_filter_covariates(data_copy,
 
 We prepare the data for plotting.
 
+Histogram of speed
+
+```{r}
+fig_hist_speed =
+  ggplot()+
+  geom_histogram(
+    data = data_copy,
+    aes(x = in_speed,
+        fill = ifelse(in_speed > 0.05, "outlier", "good")),
+    position = position_identity(),
+    bins = 60
+  )+
+  geom_histogram(
+    data = data_copy[500:800, ],
+    aes(x = in_speed),
+    fill = pal[4],
+    bins = 60
+  )+
+  geom_vline(
+    xintercept = 0.05,
+    # size = 0.2,
+    lty = 2
+  )+
+  annotate(
+    geom = "text",
+    x = 0.11,
+    y = 150,
+    label = "Threshold",
+    size = 4,
+    angle = 90
+  )+
+  scale_fill_manual(
+    values = c(
+      "outlier" = pal[1],
+      "good" = "grey"
+    )
+  )+
+  scale_y_sqrt()+
+  scale_x_log10(
+  )+
+  theme_test(base_family = "sans")+
+  theme(
+    legend.position = "none",
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.y = element_blank(),
+    plot.title = element_text(
+      face = "bold"
+    ),
+    plot.background = element_blank()
+  )+
+  labs(
+    title = "(c)",
+    x = "Speed"
+  )
+```
+
+
+
 ```{r echo=FALSE}
 # data plot
 fig_outlier_remove <-
   ggplot() +
   geom_path(
     data = data_copy,
-    aes(x, y),
-    col = "grey",
+    aes(x, y,
+        col = ifelse(in_speed >= 0.05 | out_speed >= 0.05, 
+                     "outlier_path", "good_path"),
+        group = NA),
     lwd = 0.2
   ) +
   geom_point(
@@ -262,14 +330,15 @@ fig_outlier_remove <-
     aes(x, y),
     # size = 0.5,
     alpha = 0.6,
-    shape = 4, col = "grey30"
+    # stroke = 1,
+    shape = 4, col = pal[4]
   ) +
   geom_point(
     data = data_copy[!data_copy[500:800, ],
       on = c("x", "y")
     ],
     aes(x, y,
-      col = (in_speed >= 0.03 & out_speed >= 0.03),
+      col = ifelse(in_speed >= 0.03 & out_speed >= 0.03, "outlier", "good"),
       shape = (in_speed >= 0.03 & out_speed >= 0.03),
       size = (in_speed >= 0.03 & out_speed >= 0.03)
     ),
@@ -282,15 +351,31 @@ fig_outlier_remove <-
     col = "grey20",
     alpha = 1
   ) +
-  scale_color_manual(values = c(pal[3], "grey")) +
+  annotation_custom(
+    grob = ggplotGrob(
+      fig_hist_speed
+    ),
+    xmin = 0.80,
+    xmax = 1.08,
+    ymin = 0.25,
+    ymax = 0.6
+  )+
+  scale_color_manual(values = c(
+    "outlier_path" = "red",
+    "good_path" = "grey",
+    "good" = pal[3], 
+    "outlier" = "red")) +
   scale_shape_manual(values = c(1, 4)) +
   scale_size_manual(
     values = c(0.2, 2)
   ) +
-  ggthemes::theme_few() +
+  ggthemes::theme_few(
+    base_family = "Arial"
+  ) +
   theme(
     axis.text = element_blank(),
-    axis.title = element_blank()
+    axis.title = element_blank(),
+    legend.position = "none"
   ) +
   coord_equal() +
   theme(plot.background = element_rect(fill = NA))
