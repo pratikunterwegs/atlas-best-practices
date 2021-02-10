@@ -657,11 +657,9 @@ This translates to a 2\% underestimation of the stop duration at a tracking inte
     Rectangles show the region expanded in panels (b) and (c).
     \textbf{(b)} Expanded view of upper rectangle in (a) showing the raw data (grey crosses), the median smoothed positions (green circles; moving window $K$ = 5), and the smoothed track thinned by aggregation to a 30 second interval (purple squares).
     Square size corresponds to the number of positions used to calculate the averaged position during thinning.
-    % While median smoothing retains all observations (though changing their coordinates), thinning aggregates these positions into approx. 5\% of the smoothed data volume.
-    % Median smoothing recovers a good estimate of the true track from significantly over-dispersed raw data, while thinning reduces the data volume but preserves track structure.
     \textbf{(c)} Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige.
-    Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares).
-    The algorithm identified all areas with prolonged residence, including those which we had not intended to be recorded, such as stops at the field station (n = 12; green polygon over red crossed-squares).
+    Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles).
+    The algorithm identified all areas with prolonged residence, including those which we had not intended to be recorded, such as stops at the field station (n = 12; green polygon over red triangles).
     The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these).}
     \label{fig:figure_calibration}
 \end{figure}
@@ -699,8 +697,8 @@ Constructing residence patches for multiple individuals over multiple nights sug
     \caption{Synthesising animal tracks into residence patches can reveal movement in relation to landscape features, prior exploration, and other individuals.
     \textbf{(a)} Linear approximations of the paths (coloured lines) between residence patches (circles) of three Egyptian fruit bats (\textit{Rousettus aegyptiacus}), tracked over three nights in the Hula Valley, Israel.
     Bat tracks are are shown as thin lines below the linear approximations, and colours show bat identity. The grey hexagon represents a roost site.
-    Dark green points represent known fruit trees.
-    Background is shaded by elevation at 30 metre resolution (SRTM).    
+    Black points represent known fruit trees.
+    Background is shaded by elevation at 30 metre resolution.
     \textbf{(b)} Spatial representations of an individual bat's residence patches (green polygons) can be used to study site-fidelity by examining overlaps between patches, or to study resource selection by inspecting overlaps with known resources (here, black circles show the location of clusters of fruit trees).
     In addition, the linear approximation of movement between patches (blue paths in panel (a)) can be contrasted with the estimated real path between patches (green lines).
     \textbf{(c)} Fine scale tracks (thin coloured lines), large scale movement (thick lines), residence patch polygons, and fruit tree locations show how high-throughput data can be used to study movement across scales.
