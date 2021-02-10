@@ -252,9 +252,7 @@ data_filtered <- atl_filter_covariates(data_copy,
 )
 ```
 
-We prepare the data for plotting.
-
-Histogram of speed
+### Histogram of speed
 
 ```{r}
 fig_hist_speed =
@@ -311,7 +309,7 @@ fig_hist_speed =
   )
 ```
 
-
+## Figure outlier removal
 
 ```{r echo=FALSE}
 # data plot
