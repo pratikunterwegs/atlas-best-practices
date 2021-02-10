@@ -38,6 +38,11 @@ install.packages("remotes")
 remotes::install_github("pratikunterwegs/atlastools")
 ```
 
+```{r}
+library(atlastools)
+```
+
+
 ## Read bat data
 
 Read the bat data from an `SQLite` database local file and convert to a plain text csv file.
@@ -588,7 +593,7 @@ st_write(data_spatials,
 Write cleaned bat data.
 
 ```{r}
-data_clean <- fwrite(rbindlist(data_smooth),
+fwrite(rbindlist(data_smooth),
   file = "data/data_bat_smooth.csv"
 )
 ```
