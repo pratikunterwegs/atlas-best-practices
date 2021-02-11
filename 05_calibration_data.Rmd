@@ -41,7 +41,7 @@ pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
 ```
 
-## Install `atlastools` from Github.
+## Install `atlastools` from Github
 
 `atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
 It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
