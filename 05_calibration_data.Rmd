@@ -569,7 +569,7 @@ fig_basic_residence <-
   geom_point(
     data = data_res_summary,
     aes(x_median, y_median),
-    size = 10, 
+    size = 10,
     shape = 2,
     stroke = 1,
     col = pal[4],

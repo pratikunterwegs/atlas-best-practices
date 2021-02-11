@@ -255,26 +255,28 @@ data_filtered <- atl_filter_covariates(data_copy,
 ### Histogram of speed
 
 ```{r}
-fig_hist_speed =
-  ggplot()+
+fig_hist_speed <-
+  ggplot() +
   geom_histogram(
     data = data_copy,
-    aes(x = in_speed,
-        fill = ifelse(in_speed > 0.05, "outlier", "good")),
+    aes(
+      x = in_speed,
+      fill = ifelse(in_speed > 0.05, "outlier", "good")
+    ),
     position = position_identity(),
     bins = 60
-  )+
+  ) +
   geom_histogram(
     data = data_copy[500:800, ],
     aes(x = in_speed),
     fill = pal[4],
     bins = 60
-  )+
+  ) +
   geom_vline(
     xintercept = 0.05,
     # size = 0.2,
     lty = 2
-  )+
+  ) +
   annotate(
     geom = "text",
     x = 0.11,
@@ -282,17 +284,16 @@ fig_hist_speed =
     label = "Threshold",
     size = 4,
     angle = 90
-  )+
+  ) +
   scale_fill_manual(
     values = c(
       "outlier" = pal[1],
       "good" = "grey"
     )
-  )+
-  scale_y_sqrt()+
-  scale_x_log10(
-  )+
-  theme_test(base_family = "sans")+
+  ) +
+  scale_y_sqrt() +
+  scale_x_log10() +
+  theme_test(base_family = "sans") +
   theme(
     legend.position = "none",
     axis.text = element_blank(),
@@ -302,7 +303,7 @@ fig_hist_speed =
       face = "bold"
     ),
     plot.background = element_blank()
-  )+
+  ) +
   labs(
     title = "(c)",
     x = "Speed"
@@ -318,9 +319,11 @@ fig_outlier_remove <-
   geom_path(
     data = data_copy,
     aes(x, y,
-        col = ifelse(in_speed >= 0.05 | out_speed >= 0.05, 
-                     "outlier_path", "good_path"),
-        group = NA),
+      col = ifelse(in_speed >= 0.05 | out_speed >= 0.05,
+        "outlier_path", "good_path"
+      ),
+      group = NA
+    ),
     lwd = 0.2
   ) +
   geom_point(
@@ -357,12 +360,13 @@ fig_outlier_remove <-
     xmax = 1.08,
     ymin = 0.25,
     ymax = 0.6
-  )+
+  ) +
   scale_color_manual(values = c(
     "outlier_path" = "red",
     "good_path" = "grey",
-    "good" = pal[3], 
-    "outlier" = "red")) +
+    "good" = pal[3],
+    "outlier" = "red"
+  )) +
   scale_shape_manual(values = c(1, 4)) +
   scale_size_manual(
     values = c(0.2, 2)

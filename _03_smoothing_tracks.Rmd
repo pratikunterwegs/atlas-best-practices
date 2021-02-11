@@ -30,7 +30,7 @@ We also assign a variable, `window_size`, which will help identify the datasets 
 # read in the data and set the window size variable
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, window_size := NA]
-data$speed_in = atl_get_speed(data)
+data$speed_in <- atl_get_speed(data)
 
 # data with small scale errors but no reflections or outliers
 data_errors <- fread("data/data_no_reflection.csv")
@@ -76,9 +76,9 @@ We prepare the data for plotting.
 ```{r}
 # bind list after offset
 data_plot <- mapply(function(df, offset) {
-  df = copy(df)
+  df <- copy(df)
   df[, x := x + offset]
-  df$speed_in = atl_get_speed(df)
+  df$speed_in <- atl_get_speed(df)
   return(df)
 }, list_of_smooths, seq(0.4, 1.25, length.out = 4),
 SIMPLIFY = F
@@ -87,47 +87,55 @@ SIMPLIFY = F
 data_plot <- rbindlist(data_plot)
 
 # add offset to data errors
-data_errors = lapply(c(0, seq(0.4, 1.25, length.out = 4)),
-                     function(offset) {
-  df = copy(data_errors)
-  df[,x := x + offset]
-  df[, offset := offset]
-})
+data_errors <- lapply(
+  c(0, seq(0.4, 1.25, length.out = 4)),
+  function(offset) {
+    df <- copy(data_errors)
+    df[, x := x + offset]
+    df[, offset := offset]
+  }
+)
 
 # bind list
-data_errors = rbindlist(data_errors)
+data_errors <- rbindlist(data_errors)
 ```
 
 ## Histogram of speeds after smoothing
 
 ```{r}
-pal2 = RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
+pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
 
-fig_hist_smooth =
-  ggplot()+
+fig_hist_smooth <-
+  ggplot() +
   geom_histogram(
-    data = data_errors[offset == 0,],
-    aes(x = in_speed,
-        fill = "errors"),
+    data = data_errors[offset == 0, ],
+    aes(
+      x = in_speed,
+      fill = "errors"
+    ),
     bins = 80,
     alpha = 1
-  )+
+  ) +
   geom_histogram(
     data = data_plot[window_size %in% c(5, 21)],
-    aes(x = speed_in,
-        fill = as.factor(window_size),
-        group = window_size),
-    bins= 80
-  )+
+    aes(
+      x = speed_in,
+      fill = as.factor(window_size),
+      group = window_size
+    ),
+    bins = 80
+  ) +
   geom_histogram(
     data = data,
-    aes(x = speed_in,
-        fill = "real"),
+    aes(
+      x = speed_in,
+      fill = "real"
+    ),
     # col = pal[1],
     alpha = 0.8,
     bins = 80
-  )+
-  scale_x_log10()+
+  ) +
+  scale_x_log10() +
   scale_fill_manual(
     values = c(
       "real" = alpha("grey20", .8),
@@ -141,9 +149,9 @@ fig_hist_smooth =
       "5" = "K = 5",
       "21" = "K = 21"
     )
-  )+
-  coord_cartesian(xlim = c(1e-5, .05))+
-  theme_test(base_family = "sans")+
+  ) +
+  coord_cartesian(xlim = c(1e-5, .05)) +
+  theme_test(base_family = "sans") +
   theme(
     legend.position = c(0.2, 0.65),
     axis.text = element_blank(),
@@ -153,10 +161,12 @@ fig_hist_smooth =
       face = "bold"
     ),
     plot.background = element_blank()
-  )+
-  labs(x= "Speed [log10 scale]",
-       fill = "Smoothing",
-       title = "(f)")
+  ) +
+  labs(
+    x = "Speed [log10 scale]",
+    fill = "Smoothing",
+    title = "(f)"
+  )
 ```
 
 
@@ -170,12 +180,13 @@ figure_median_smooth <-
   geom_path(
     data = data_errors,
     aes(x, y,
-        group = offset),
+      group = offset
+    ),
     col = "grey60",
     size = 0.1
   ) +
   geom_point(
-    data = data_errors[offset == 0,],
+    data = data_errors[offset == 0, ],
     aes(x, y),
     col = pal[3],
     size = 0.2
