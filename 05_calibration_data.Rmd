@@ -260,7 +260,7 @@ fig_speed_outliers <-
   ) +
   ggspatial::annotation_scale(location = "tl") +
   coord_sf(crs = 32631)
-  # save
+# save
 ggsave(fig_speed_outliers,
   filename = "figures/fig_speed_outlier.png",
   width = 170 / 25, height = 170 / 25
