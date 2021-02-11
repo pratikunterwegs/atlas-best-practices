@@ -20,6 +20,19 @@ Finally, we target small-scale location errors by applying a median smoother wit
 Smoothing does not reduce the number of positions.
 We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
+
+## Install `atlastools` from Github
+
+`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
+It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
+
+```{r install_atlastools}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+```
+
 ## Prepare libraries
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
@@ -39,18 +52,6 @@ library(patchwork)
 # making a colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-```
-
-## Install `atlastools` from Github
-
-`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
-It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
-
-```{r install_atlastools}
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
 ```
 
 ## Access data and preliminary visualisation
