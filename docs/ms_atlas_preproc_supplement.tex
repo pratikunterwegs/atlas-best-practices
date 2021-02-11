@@ -121,7 +121,7 @@
 
 \title{Supplementary Material for \emph{A Guide to Pre-processing High-Frequency Animal Tracking Data}}
 \author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Sivan Toledo \and Ran Nathan \and Allert I. Bijleveld}
-\date{2021-02-08}
+\date{2021-02-11}
 
 \begin{document}
 \maketitle
@@ -138,14 +138,15 @@ Here we show how the residence patch method (Barraquand and Benhamou \protect\hy
 \hypertarget{outline-of-cleaning-steps}{%
 \section{Outline of Cleaning Steps}\label{outline-of-cleaning-steps}}
 
-We began by visualising the data to check for location errors, and found a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2; main text Fig. 7.a).
-This outlier was removed by filtering data by the X coordinate bounds using the function \texttt{atl\_filter\_bounds}; X coordinate bounds \(\leq\) 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
-We then calculated the incoming and outgoing speed, as well as the turning angle at each position using the functions \texttt{atl\_get\_speed} and \texttt{atl\_turning\_angle} respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
-We used the function \texttt{atl\_filter\_covariates} to remove positions with incoming and outgoing speeds \(\geq\) the speed threshold of 15 m/s (n = 13,491, 26.5\%; remaining positions = 37,324, 73.5\%; Fig. 1.3; main text Fig. 7.b).
-This speed threshold was chosen as 5 m/s faster than the known boat speed, 10 m/s.
-Finally, we targeted small-scale location errors by applying a median smooth with a moving window size \(K\) = 5 using the function \texttt{atl\_median\_smooth} (Fig. 1.4; main text Fig. 7.c).
-Smoothing did not reduce the number of positions.
-We thinned the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
+We begin by preparing the libraries we need, and installing \texttt{atlastools} from Github.
+After installing \texttt{atlastools}, we visualise the data to check for location errors, and find a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2).
+This outlier is removed by filtering data by the X coordinate bounds using the function \texttt{atl\_filter\_bounds}; X coordinate bounds \(\leq\) 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
+We then calculate the incoming and outgoing speed, as well as the turning angle at each position using the functions \texttt{atl\_get\_speed} and \texttt{atl\_turning\_angle} respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
+We use the function \texttt{atl\_filter\_covariates} to remove positions with incoming and outgoing speeds \(\geq\) the speed threshold of 15 m/s (n = 13,491, 26.5\%; remaining positions = 37,324, 73.5\%; Fig. 1.3; main text Fig. 7.b).
+This speed threshold is chosen as the fastest boat speed during the experiment, 15 m/s.
+Finally, we target small-scale location errors by applying a median smoother with a moving window size \(K\) = 5 using the function \texttt{atl\_median\_smooth} (Fig. 1.4; main text Fig. 7.c).
+Smoothing does not reduce the number of positions.
+We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
 \hypertarget{prepare-libraries}{%
 \section{Prepare libraries}\label{prepare-libraries}}
@@ -154,15 +155,35 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# load libs}
+\CommentTok{# for data handling}
 \KeywordTok{library}\NormalTok{(data.table)}
 \KeywordTok{library}\NormalTok{(atlastools)}
+
+\CommentTok{# for recursion analysis}
+\KeywordTok{library}\NormalTok{(recurse)}
+
+\CommentTok{# for plotting}
 \KeywordTok{library}\NormalTok{(ggplot2)}
 \KeywordTok{library}\NormalTok{(patchwork)}
 
+\CommentTok{# making a colour palette}
 \NormalTok{pal <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{5}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
 \NormalTok{pal[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "seagreen"}
-\NormalTok{pal[}\DecValTok{2}\NormalTok{] <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{5}\NormalTok{, }\StringTok{"Blues"}\NormalTok{)[}\DecValTok{5}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{install-atlastools-from-github}{%
+\section{\texorpdfstring{Install \texttt{atlastools} from Github}{Install atlastools from Github}}\label{install-atlastools-from-github}}
+
+\texttt{atlastools} is available from Github and is archived on Zenodo (Gupte \protect\hyperlink{ref-gupte2020a}{2020}).
+It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the \texttt{remotes} function \texttt{install\_github}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
+
+\CommentTok{# installation using remotes}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -177,6 +198,38 @@ We then visualise the raw data.
 \CommentTok{# read and plot example data}
 \NormalTok{data <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"data/atlas1060_allTrials_annotated.csv"}\NormalTok{)}
 \NormalTok{data_raw <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+\end{Highlighting}
+\end{Shaded}
+
+Here we show how data can be easily visualised using the popular plotting package \texttt{ggplot2}.
+Note that we plot both the points (\texttt{geom\_point}) and the inferred path between them (\texttt{geom\_path}), and specify a geospatial coordinate system in metres, suitable for the Dutch Wadden Sea (UTM 31N; ESPG code:32631; \texttt{coord\_sf}).
+We save the output to file for future reference.
+
+Since plot code can become very lengthy and complicated, we omit showing further plot code in versions of this document rendered as PDF or HTML; it can however be seen in the online \texttt{.Rmd} version.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# plot data}
+\NormalTok{fig_data_raw <-}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(data) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_path}\NormalTok{(}\KeywordTok{aes}\NormalTok{(x, y),}
+    \DataTypeTok{col =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.2}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\KeywordTok{aes}\NormalTok{(x, y),}
+    \DataTypeTok{col =} \StringTok{"grey"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{size =} \FloatTok{0.2}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\NormalTok{ggthemes}\OperatorTok{::}\KeywordTok{theme_few}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}
+    \DataTypeTok{axis.title =} \KeywordTok{element_blank}\NormalTok{(),}
+    \DataTypeTok{axis.text =} \KeywordTok{element_blank}\NormalTok{()}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_sf}\NormalTok{(}\DataTypeTok{crs =} \DecValTok{32631}\NormalTok{)}
+
+\CommentTok{# save figure}
+\KeywordTok{ggsave}\NormalTok{(fig_data_raw,}
+  \DataTypeTok{filename =} \StringTok{"figures/fig_calibration_raw.png"}\NormalTok{,}
+  \DataTypeTok{width =} \DecValTok{185} \OperatorTok{/}\StringTok{ }\DecValTok{25}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -218,7 +271,7 @@ We then plot the result of filtering, with the excluded point in black, and the 
 \begin{figure}
 \centering
 \includegraphics{figures/fig_calib_bbox.png}
-\caption{Removal of a point outlier using the function \texttt{atl\_filter\_bounds}. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate \textless{} 645,000 in the UTM 31N system. Positions that are retained are shown in green.}
+\caption{Removal of a point outlier using the function \texttt{atl\_filter\_bounds}. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate \textless{} 645,000 in the UTM 31N coordinate system. Positions that are retained are shown in green.}
 \end{figure}
 
 \hypertarget{filter-trajectories}{%
@@ -227,24 +280,23 @@ We then plot the result of filtering, with the excluded point in black, and the 
 \hypertarget{handle-time}{%
 \subsection{Handle time}\label{handle-time}}
 
-Time in ATLAS tracking is counted in milliseconds and is represented by a 64-bit integer (type \texttt{long}), which is not natively supported in R; it will instead be converted to a \texttt{numeric}, or \texttt{double}.
+Time in ATLAS tracks is represented by 64-bit integers (type \texttt{long}) that specify time in milliseconds, starting from the beginning of 1970 (the UNIX epoch). This representation of time is called \texttt{POSIX} time and is usually specified in seconds, not milliseconds.
 
-This is not what is intended, but it works. The \texttt{bit64} package can help handle 64-bit integers if you want to keep to intended type.
+Since about 1.6 billion seconds have passed since the beginning of 1970, current \texttt{POSIX} times in milliseconds cannot be represented by R's built-in 32-bit integers. A naive conversion results in truncation of out-of-range numbers leading to huge errors (dates many thousands of years in the future).
 
-A further issue is that 64-bit integers (whether represented as \texttt{bit64} or \texttt{double}) do not yield meaninful results when you try to convert them to a date-time object, such as of the class \texttt{POSIXct}.
+R does not natively support 64-bit integers. One option is to use the bit64 package, which adds 64-bit integer support to R.
 
-This is because \texttt{as.POSIXct} fails when trying to work with 64-bit integers (it cannot interpret this type), and returns a date many thousands of years in the future (approx. 52,000 CE) if the time column is converted to \texttt{numeric}.
+A simpler solution is to convert the times to R's built in \texttt{double} data type (also called \texttt{numeric}), which uses a 64-bit floating point representation. This representation can represent integers with up to 16 digits without error; we only need 13 digits to represent the number of milliseconds since 1970, so the conversion is error free. We can also perform the conversion and then divide by 1000 so that times are represented in seconds, not milliseconds; this simplifies speed estimation.
 
-There are two possible solutions. The parsimonious one is to convert the 64-bit number to a 32-bit short integer (dividing by 1000), or to use the \texttt{nanotime} package.
-
-The conversion method loses an imperceptible amount of precision. The \texttt{nanotime} requires installing another package. The first method is shown here.
-
-In the spirit of not destroying data, we create a second lower-case column called \texttt{time}.
+If second-resolution is accurate enough (it is for our purposes), the solution that we use is to divide times by 1000 to reduce the resolution from milliseconds to seconds and then to convert the time stamps to R integers.
+In the spirit of not destroying data, we create a second lower-case column called \texttt{time} to store this
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# divide by 1000, convert to integer, then convert to POSIXct}
-\NormalTok{data[, time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.integer}\NormalTok{(TIME }\OperatorTok{/}\StringTok{ }\DecValTok{1000}\NormalTok{)]}
+\NormalTok{data[, time }\OperatorTok{:}\ErrorTok{=}\StringTok{ }\KeywordTok{as.integer}\NormalTok{(}
+  \KeywordTok{as.numeric}\NormalTok{(TIME) }\OperatorTok{/}\StringTok{ }\DecValTok{1000}
+\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -446,13 +498,6 @@ An indicator of individual residence at or near a position can be useful when at
 First we calculate the residence time with a radius of 50 metres.
 For this, we need a dataframe with coordinates, the timestamp, and the animal id.
 We save this data to file for later use.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# load recurse}
-\KeywordTok{library}\NormalTok{(recurse)}
-\end{Highlighting}
-\end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -671,29 +716,20 @@ Install the required \texttt{R} libraries that are required from CRAN if not alr
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# load libs}
+\CommentTok{# libs for data}
 \KeywordTok{library}\NormalTok{(data.table)}
 \KeywordTok{library}\NormalTok{(RSQLite)}
+\KeywordTok{library}\NormalTok{(atlastools)}
+
+\CommentTok{# libs for plotting}
 \KeywordTok{library}\NormalTok{(ggplot2)}
 \KeywordTok{library}\NormalTok{(patchwork)}
 
+\CommentTok{# recursion analysis}
+\KeywordTok{library}\NormalTok{(recurse)}
+
 \CommentTok{# prepare a palette}
 \NormalTok{pal <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{4}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{install-atlastools-from-github.}{%
-\section{\texorpdfstring{Install \texttt{atlastools} from Github.}{Install atlastools from Github.}}\label{install-atlastools-from-github.}}
-
-\texttt{atlastools} is available from Github and is archived on Zenodo (Gupte \protect\hyperlink{ref-gupte2020a}{2020}).
-It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the \texttt{remotes} function \texttt{install\_github}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
-
-\CommentTok{# installation using remotes}
-\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -951,9 +987,6 @@ First, the data is put through the \texttt{recurse} package to get residence tim
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# load recurse}
-\KeywordTok{library}\NormalTok{(recurse)}
-
 \CommentTok{# split the data}
 \NormalTok{data_smooth <-}\StringTok{ }\KeywordTok{split}\NormalTok{(data_smooth, data_smooth}\OperatorTok{$}\NormalTok{TAG)}
 \end{Highlighting}
@@ -1102,7 +1135,7 @@ Write cleaned bat data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{data_clean <-}\StringTok{ }\KeywordTok{fwrite}\NormalTok{(}\KeywordTok{rbindlist}\NormalTok{(data_smooth),}
+\KeywordTok{fwrite}\NormalTok{(}\KeywordTok{rbindlist}\NormalTok{(data_smooth),}
   \DataTypeTok{file =} \StringTok{"data/data_bat_smooth.csv"}
 \NormalTok{)}
 \end{Highlighting}
