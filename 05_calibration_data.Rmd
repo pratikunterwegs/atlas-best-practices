@@ -59,8 +59,13 @@ data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
 ```
 
+Here we show how data can be easily visualised using the popular plotting package `ggplot2`.
+Note that we plot both the points (`geom_point`) and the inferred path between them (`geom_path`), and specify a geospatial coordinate system in metres, suitable for the Dutch Wadden Sea (UTM 31N; ESPG code:32631; `coord_sf`).
+We save the output to file for future reference.
 
-```{r echo=FALSE}
+Since plot code can become very lengthy and complicated, we omit showing further plot code in versions of this document rendered as PDF or HTML; it can however be seen in the online `.Rmd` version.
+
+```{r echo=TRUE}
 # plot data
 fig_data_raw <-
   ggplot(data) +
