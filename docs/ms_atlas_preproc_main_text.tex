@@ -293,11 +293,10 @@ filtered_data <- atl_filter_bounds(data = data,
     \centering
     \includegraphics[width=0.95\textwidth]{figures/fig_02_filtering_data.png}
     \caption{Simulated movement data (black line), with three kinds of artificially added errors: (1) normally distributed small-scale error on each position, (2) large-scale error added to 0.5\% of positions, and (3) 300 consecutive positions displaced to simulate a gross distortion affecting a continuous subset of the track.  
-    \textbf{(a)} Tracks can be quickly filtered by spatial bounds (dashed grey lines) to exclude broad regions.
-    \textbf{(b)} 
-    Location-error may affect single observations resulting in point outliers or `spikes' (grey crosses), or continuous subsets of a track, called a `prolonged spike' (dark crosses, top right), and both represent unrealistic movement.
-    While spikes can be removed by filtering out positions with high incoming and outgoing speeds and turning angle, prolonged spikes cannot be effectively corrected by targeting each coordinate pair in isolation.
-    These and other distortions that affect continuous track segments should be removed by conceptualising algorithms that find the bounds of the distortion and remove points in between them.
+    \textbf{(a)} Tracks can be quickly filtered by spatial bounds (dashed grey lines) to exclude broad regions (green = retained; grey = removed).
+    \textbf{(b)} Location-error may affect single observations resulting in point outliers or `spikes' (red crosses and track segments), or continuous subsets of a track, called a `prolonged spike' (purple crosses, top right), and both represent unrealistic movement.
+    \textbf{(c)} Histograms of speed for the track (grey = small-scale errors, red = spikes), and the prolonged spike (purple).
+    While spikes can be removed by filtering out positions with high incoming and outgoing speeds and turning angle, prolonged spikes cannot be removed in this way, and should be resolved by conceptualising algorithms that find the bounds of the distortion instead.
     Users should frequently check the outputs of such algorithms to avoid rejecting valid data.
     }
     \label{fig:figure_filtering_data}
@@ -444,7 +443,7 @@ For instance, smoothing breaks the relationship between a coordinate and the loc
 This makes subsequent filtering on covariates of data quality unreliable, and smoothed data are unsuitable for use with methods that model location uncertainty \citep{noonan2019, fleming2014a, fleming2020, calabrese2016}.
 Furthermore, while larger $K$ may result in smoother tracks (Fig. 3.b -- e), one drawback of using a large $K$ is that short, quick forays away from the main track are likely to be smoothed away, leading to a loss in detail of the individual's small-scale movement.
 Users must themselves judge how best to balance large-scale and small-scale accuracy, and choose $K$ accordingly.
-One empirical way to compare $K$ is by calculating the root mean squared error (RMSE) for different $K$ on the same data.
+% One empirical way to compare $K$ is by calculating the root mean squared error (RMSE) for different $K$ on the same data.
 % In general, large $K$s lead to unrealistic tracks, both because the first and last $(K - 1) / 2$ positions are handled as special cases, and because the local median approaches the global median at larger $K$.
 Median smoothing is provided by the \texttt{atlastools} function \texttt{atl\_median\_smooth}, with the only option being the moving window size, which must be an odd integer (Listing 4).
 
@@ -533,9 +532,8 @@ thinned_data <- atl_thin_data(data,
     \caption{\textbf{(a)} Aggregating a filtered and smoothed movement track (green points) preserves track structure while reducing data-volume, but \textbf{(b)} aggregating before filtering gross location errors and unrealistic movement (grey points) leads to the persistence of large-scale errors (such as prolonged spikes).
     The thinned track is shown as purple squares and lines in both panels.
     \textbf{(c)} Thinning before data cleaning can lead to significant misestimations of essential movement metrics such as speed at lower intervals.
-    Boxplots show the median and interquartile ranges for speed estimates of tracks aggregated over intervals of 3, 10, 30, and 120 seconds, but without the removal of location errors.
+    Boxplots show the median and interquartile ranges for speed estimates of tracks aggregated over intervals of 3, 10, 30, and 120 seconds (grey = thinning without removing location errors; green = thinning after filtering and smoothing).
     For comparison, the median and 95\textsuperscript{th} percentile of speed of the canonical track are shown as solid and dashed horizontal lines, respectively.
-    Green circles and associated error bars show, in contrast, the median ($\pm$ standard deviation) speed for the same aggregation interval, but after removing large- and small-scale location errors (median smooth $K$ = 11).
     The unfiltered data would have to be thinned to \sfrac{1}{30}\textsuperscript{th} volume to correctly estimate median speed.}
     \label{fig:figure_thinning}
 \end{figure}
@@ -595,7 +593,7 @@ patch_summary <- atl_patch_summary(patch_data = patches,
     The residence patch method loses the details of movement between patches, but can efficiently represent the general pattern of space-use (see coloured points representing patch centroids, and lines joining them).
     \textbf{(b)} A plot of residence time against time (solid line; Bracis et al. 2018) shows how the residence patch algorithm segments and clusters positions of prolonged residence. 
     Regions are shaded by the temporal bounds of each residence patch.
-    The arguments passed to \texttt{atl\_res\_patch} determine the clustering, and can be adjusted to get a result that fits the study system.
+    The arguments passed to \texttt{atl\_res\_patch} determine the clustering, and can be adjusted to fit the study system.
     Users are cautioned that there are no `correct' arguments, and the best guide is the biology of the tracked individual.}
     \label{fig:figure_residence_patch}
 \end{figure}
@@ -639,12 +637,11 @@ This translates to a 2\% underestimation of the stop duration at a tracking inte
     \includegraphics[width=0.75\textwidth]{figures/fig_06_calib_residence_patch.png}
     \caption{Pre-processing steps for WATLAS calibration data showing filtering on speed, median smoothing and thinning by aggregation, and making residence patches.
     \textbf{(a)} Positions with incoming and outgoing speed $>$ 15 m/s are removed (grey crosses = removed, green points = retained).
-    \textbf{(b)} Expanded view of upper rectangle in (a) showing the raw data (grey crosses), the median smoothed positions (green circles; moving window $K$ = 5), and the smoothed track thinned by aggregation to a 30 second interval (purple squares).
+    \textbf{(b)} Raw data (grey crosses), median smoothed positions (green circles; moving window $K$ = 5), and the smoothed track thinned by aggregation to a 30 second interval (purple squares).
     Square size corresponds to the number of positions used to calculate the averaged position during thinning.
-    \textbf{(c)} Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige.
-    Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles).
-    The algorithm identified all areas with prolonged residence, including those which we had not intended to be recorded, such as stops at the field station (n = 12; green polygon over red triangles).
-    The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these).}
+    \textbf{(c)} Clustering thinned data into residence patches (green polygons) yields robust estimates of the location of known stops (purple triangles).
+    The algorithm identified all areas with prolonged residence, including those which we had not intended to be recorded, such as stops at the field station (n = 12; red triangle).
+    The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step; one of these is shown here (purple triangle without green polygon).}
     \label{fig:figure_calibration}
 \end{figure}
 
