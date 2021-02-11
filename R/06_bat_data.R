@@ -1,19 +1,18 @@
 ## -----------------------------------------------------------------------------
-# load libs
+# libs for data
 library(data.table)
 library(RSQLite)
+library(atlastools)
+
+# libs for plotting
 library(ggplot2)
 library(patchwork)
 
+# recursion analysis
+library(recurse)
+
 # prepare a palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
-
-
-## ----install_atlastools-------------------------------------------------------
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
 
 
 ## ----read_bat_data------------------------------------------------------------
@@ -323,9 +322,6 @@ ggsave(fig_bat_smooth,
 
 
 ## -----------------------------------------------------------------------------
-# load recurse
-library(recurse)
-
 # split the data
 data_smooth <- split(data_smooth, data_smooth$TAG)
 
@@ -459,7 +455,7 @@ st_write(data_spatials,
 
 
 ## -----------------------------------------------------------------------------
-data_clean <- fwrite(rbindlist(data_smooth),
+fwrite(rbindlist(data_smooth),
   file = "data/data_bat_smooth.csv"
 )
 
