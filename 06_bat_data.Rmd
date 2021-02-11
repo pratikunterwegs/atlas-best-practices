@@ -16,14 +16,17 @@ We show the pre-processing pipeline at work on the tracks of three Egyptian frui
 Install the required `R` libraries that are required from CRAN if not already installed.
 
 ```{r}
-# load libs
+# libs for data
 library(data.table)
 library(RSQLite)
+library(atlastools)
+
+# libs for plotting
 library(ggplot2)
 library(patchwork)
 
-# atlastools
-library(atlastools)
+# recursion analysis
+library(recurse)
 
 # prepare a palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
@@ -414,9 +417,6 @@ ggsave(fig_bat_smooth,
 First, the data is put through the `recurse` package to get residence time [@bracis2018].
 
 ```{r}
-# load recurse
-library(recurse)
-
 # split the data
 data_smooth <- split(data_smooth, data_smooth$TAG)
 ```
