@@ -26,7 +26,7 @@ We thin the data to a 30 second interval leaving 1,803 positions (4.8\% position
 `atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
 It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
 
-```{r install_atlastools}
+```{r install_atlastools, eval=FALSE}
 install.packages("remotes")
 
 # installation using remotes
@@ -231,10 +231,26 @@ fig_speed_outliers <-
     fill = NA, col = "grey20"
   ) +
   annotate(
+    geom = "text",
+    x = 653250,
+    y = 5906133 + 500,
+    label = "(b)",
+    # size = 10,
+    fontface = "bold"
+  ) +
+  annotate(
     geom = "rect",
     ymin = 5901650, ymax = 5903100,
     xmin = 650000, xmax = 650600,
     fill = NA, col = "grey20"
+  ) +
+  annotate(
+    geom = "text",
+    y = 5901650 - 300,
+    x = 650600,
+    label = "(c)",
+    # size = 10,
+    fontface = "bold"
   ) +
   scale_color_manual(values = c("grey", pal[3])) +
   ggthemes::theme_few() +
@@ -244,7 +260,7 @@ fig_speed_outliers <-
   ) +
   ggspatial::annotation_scale(location = "tl") +
   coord_sf(crs = 32631)
-# save
+  # save
 ggsave(fig_speed_outliers,
   filename = "figures/fig_speed_outlier.png",
   width = 170 / 25, height = 170 / 25
