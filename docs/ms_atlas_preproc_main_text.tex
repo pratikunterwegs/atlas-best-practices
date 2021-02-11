@@ -283,7 +283,7 @@ This complex track structure provides a suitable challenge for the residence pat
 \subsection{Spatial Filtering Using Bounding Boxes and Polygons}
 
 First, users should exclude positions outside the spatial bounds of a study area by comparing position coordinates with the range of acceptable coordinates (the bounding box), and removing positions outside them (Fig. 2.a; Listing 1). 
-A bounding box filter does not require a geospatial representation such as a shapefile, and can help remove unreliable data from a tracking system that is less accurate beyond a certain range (e.g. ATLAS; Beardsworth et al. \textit{in prep.}).
+A bounding box filter does not require a geospatial representation such as a shapefile, and can help remove unreliable data from a tracking system that is less accurate beyond a certain range \citep[e.g. in ATLAS systems][]{beardsworth2021}.
 In some special cases, users may wish to remove positions \textit{inside} a bounding box, either because movement behaviour within an area is not the focus of a study, or because positions recorded within an area are known to be erroneous.
 An example of the former is studies seeking to study transit behaviour between features which can be approximated by their bounding boxes. 
 Instances of the latter are likely to be system specific, but are known from ATLAS systems (Bijleveld et al. \textit{in prep.}). 
@@ -353,7 +353,7 @@ filtered_data <- atl_filter_covariates(data = data,
 
 \subsection{Filtering on Quality Covariates}
 
-Tracking data covariates can be good indicators of the reliability of positions calculated by a tracking system (Beardsworth et al. \textit{in prep.}).
+Tracking data covariates can be good indicators of the reliability of positions calculated by a tracking system \citep{beardsworth2021}.
 GPS systems provide direct measures of location error during localisation \citep[Horizontal Dilution of Precision, HDOP in GPS]{ranacher2016}, while  reverse-GPS systems provide a similar estimate \citep[called Standard Deviation, SD][]{maccurdy2009, maccurdy2019, weiser2016, ranacher2016}.
 Tracking data can also include indirect indicators of data quality.
 For instance, GPS systems' location error may be indicated indirectly by the number of satellites involved in the localisation.
@@ -618,7 +618,7 @@ patch_summary <- atl_patch_summary(patch_data = patches,
 \subsection{Validating the Residence Patch Method}
 
 We applied the pre-processing pipeline using \texttt{atlastools} functions described above to a calibration dataset to verify that the residence patch method could correctly identify known stopping points (see Fig. 6).
-We collected the calibration data (n = 50,816) by walking and boating with a hand-held WATLAS tag (sampling frequency = 1 Hz) around the island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) in August 2020 (Beardsworth et al. \textit{in prep.}; Bijleveld et al. \textit{in prep.}).
+We collected the calibration data (n = 50,816) by walking and boating with a hand-held WATLAS tag (sampling frequency = 1 Hz) around the island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) in August 2020 \citep[][; Bijleveld et al. \textit{in prep.}]{beardsworth2021}.
 Stops in the calibration track were recorded as waypoints using a handheld GPS device (Garmin Dakota 10) at each stop.
 We estimated the real duration of each stop as the time difference between the first and last position recorded within 50m of each waypoint, within a 10 minute window before and after the waypoint timestamp (to avoid biased durations from revisits).
 Stops had a median duration of 10.28 minutes (range: 1.75 minutes -- 20 minutes; see Supplementary Material).
