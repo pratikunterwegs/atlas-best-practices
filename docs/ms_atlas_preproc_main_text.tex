@@ -281,12 +281,14 @@ The \texttt{atlastools} function \texttt{atl\_filter\_bounds} implements both bo
     The \texttt{atl\_filter\_bounds} function filters on an area defined by coordinate ranges, a polygon, or all three; it can remove positions outside (\texttt{remove\_inside = FALSE}), or within the area (\texttt{remove\_inside = TRUE}).
     The arguments \texttt{x} and \texttt{y} determine the X and Y coordinate columns, \texttt{x\_range} and \texttt{y\_range} are the filter bounds in a coordinate reference system in metres, and the data can be filtered by an \texttt{sf-(MULTI)POLYGON} can be passed using the \texttt{sf\_polygon} argument. 
     The output is a \texttt{data.table}, which must be saved as an object (here, \texttt{filtered\_data}).}]
-filtered_data <- atl_filter_bounds(data = data,
-                    x = "X", y = "Y",
-                    x_range = c(x_min, x_max),
-                    y_range = c(y_min, y_max),
-                    sf_polygon = your_polygon,
-                    remove_inside = FALSE)
+filtered_data <- atl_filter_bounds(
+                        data = data,
+                        x = "X", y = "Y",
+                        x_range = c(x_min, x_max),
+                        y_range = c(y_min, y_max),
+                        sf_polygon = your_polygon,
+                        remove_inside = FALSE
+                    )
 \end{lstlisting}
 
 \begin{figure}[h!]
@@ -322,14 +324,22 @@ The function keeps only those data which satisfy each of the filter conditions, 
     Here, the first example shows how nighttime data can be retained using a predicate that determines whether the value of `hour' is between 6 and 18, and also within a range of X coordinates.
     The second example retains ATLAS locations calculated using $>$ 3 base stations (\texttt{NBS}), with location-error (\texttt{SD}) $<$ 100, and data between an arbitrary day 5 and day 8.
     }]
-night_data <- atl_filter_covariates(data = dataset,
-                filters = c("!inrange(hour, 6, 18)",
-                            "between(x, x_min, x_max)"))
+night_data <- atl_filter_covariates(
+                    data = dataset,
+                    filters = c(
+                        "!inrange(hour, 6, 18)",
+                        "between(x, x_min, x_max)"
+                    )
+                )
 
-filtered_data <- atl_filter_covariates(data = data,
-                    filters = c("NBS > 3",
-                                "SD < 100",
-                                "between(day, 5, 8)"))                            
+filtered_data <- atl_filter_covariates(
+                        data = data,
+                        filters = c(
+                            "NBS > 3",
+                            "SD < 100",
+                            "between(day, 5, 8)"
+                        )
+                    )                            
 \end{lstlisting}
 
 \section{Filtering to Reduce Location Errors}
@@ -379,15 +389,25 @@ Spike removal can be implemented using the \texttt{atl\_filter\_covariates} func
     Filtering a movement track on incoming and outgoing speeds, and on turning angle to remove unrealistic movement.
     The functions \texttt{atl\_get\_speed} and \texttt{atl\_turning\_angle} are used to get the speeds and turning angles before filtering, and assigned to a column in the data (assignment of \texttt{speed\_out} is not shown).
     The filter step only retains positions with speeds below the speed threshold $S$ \textit{or} angles above the turning angle threshold $\theta$, i.e., positions where the animal is slow but makes sharp turns, and data where the animal moves quickly in a relatively straight line.}]
-data$speed_in <- atl_get_speed(data,
-                x = "x", y = "y",
-                time = "time", type = c("in"))
+data$speed_in <- atl_get_speed(
+                    data,
+                    x = "x", y = "y",
+                    time = "time", 
+                    type = c("in")
+                )
 
-data$angle <- atl_turning_angle(data,
-                  x = "x", y = "y", time = "time")
+data$angle <- atl_turning_angle(
+                    data,
+                    x = "x", y = "y", 
+                    time = "time"
+                )
 
-filtered_data <- atl_filter_covariates(data = data,
-        filters = c("(speed_in < S & speed_out < S) | angle < A"))
+filtered_data <- atl_filter_covariates(
+                    data = data,
+                    filters = c(
+                        "(speed_in < S & speed_out < S) | angle < A"
+                    )
+                )
 \end{lstlisting}
 
 Sometimes, entire subsets of the track may be affected by the same large-scale location-error.
@@ -428,13 +448,14 @@ The range $ {i - (K-1)/2} \ldots {i + (K-1)/2} $ is referred to as the moving wi
 A common smooth is nearest neighbour averaging, in which the value of an observation $x_i$ is the average of the moving window $K$.
 The median smooth is a variant of nearest neighbour averaging which uses the median rather than the mean, and it is robust to outliers (\citeauthor{tukey1977} 1977).
 The median smoothed value of the X coordinate, for instance, is
+%
 \begin{linenomath*}
     \begin{equation*}
         X_i = Median(X_{i - (K-1)/2} \ldots X_{i + (K-1)/2})
      \end{equation*}
 \end{linenomath*}
-Users can apply a median smooth with an appropriate $K$ independently to the X and Y coordinates of a movement track to smooth it (see Fig. 3.a -- e). 
-% The first and last $(K - 1)/2$ values for a moving window size of $K$ are assigned a value using Tukey's (1977) end-point smoothing rule as implemented in \texttt{R} \citep{hardle1995}.
+%
+Users can apply a median smooth with an appropriate $K$ independently to the X and Y coordinates of a movement track to smooth it (see Fig. 3.a -- e).
 The median smooth is robust to even very large temporal and spatial gaps, and does not interpolate between positions when data are missing. 
 Thus it is not necessary to split the data into segments separated by periods of missing observations when applying the filter (see Fig. 3).
 
@@ -444,16 +465,17 @@ This makes subsequent filtering on covariates of data quality unreliable, and sm
 Furthermore, while larger $K$ may result in smoother tracks (Fig. 3.b -- e), one drawback of using a large $K$ is that short, quick forays away from the main track are likely to be smoothed away, leading to a loss in detail of the individual's small-scale movement.
 Users must themselves judge how best to balance large-scale and small-scale accuracy, and choose $K$ accordingly.
 % One empirical way to compare $K$ is by calculating the root mean squared error (RMSE) for different $K$ on the same data.
-% In general, large $K$s lead to unrealistic tracks, both because the first and last $(K - 1) / 2$ positions are handled as special cases, and because the local median approaches the global median at larger $K$.
 Median smoothing is provided by the \texttt{atlastools} function \texttt{atl\_median\_smooth}, with the only option being the moving window size, which must be an odd integer (Listing 4).
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {
     Median smoothing a movement track using the function \texttt{atl\_median\_smooth} function with a moving window \textit{K = 5}. 
     Larger values of $K$ yield smoother tracks, but $K$ should always be some orders of magnitude lower than the number of observations.}]
-atl_median_smooth(data = track_data,
-                  x = "x", y = "y",
-                  time = "time",
-                  moving_window = 5)
+atl_median_smooth(
+    data = track_data,
+    x = "x", y = "y",
+    time = "time",
+    moving_window = 5
+)
 \end{lstlisting}
 
 % median smooth figure
@@ -519,10 +541,12 @@ Grouping variables' names (such as animal identity) may be passed as a character
 \begin{lstlisting}[float, language=R, style=customR, caption = {Code to thin data by aggregation in \texttt{atlastools}. The method can be either "aggregate" or "resample". 
 The time interval is specified in seconds, while the \texttt{id\_columns} allows a character vector of column names to be passed to the function, with these columns used as identity variables.
 Both methods return a dataset with one rows per time-interval.}]
-thinned_data <- atl_thin_data(data,
+thinned_data <- atl_thin_data(
+                    data,
                     interval = 60,
                     id_columns = c("animal_id"),
-                    method = "aggregate")
+                    method = "aggregate"
+                )
 \end{lstlisting}
 
 % figure for aggregation thinning
@@ -570,17 +594,21 @@ Setting the \texttt{which\_data} argument to \texttt{"spatial"}, returns \texttt
 % The advantage of this latter option is that it can be matched to the larger dataset of positions to more accurately calculate distances between patches.
 
 \begin{lstlisting}[float, language=R, style=customR, caption ={The \texttt{atl\_res\_patch} function can be used to classify a track into residence patches. The arguments \texttt{buffer\_radius} and \texttt{lim\_spat\_indep} are specified in metres, while the \texttt{lim\_time\_indep} is provided in minutes. In this example, specifying \texttt{summary\_variables = c("speed")}, and \texttt{summary\_functions = c("mean", "sd")} will provide the mean and standard deviation of instantaneous speed in each residence patch. The \texttt{atl\_patch\_summary} function is used to access the classified patch in one of three ways, here using the \texttt{summary} option which returns a table of patch-wise summary statistics.}]
-patches <- atl_res_patch(data = track_data,
+patches <- atl_res_patch(
+                data = track_data,
                 buffer_radius = 10,
                 lim_spat_indep = 100,
                 lim_time_indep = 30,
                 min_fixes = 3,
                 summary_variables = c("speed"),
-                summary_functions = c("mean", "sd"))
+                summary_functions = c("mean", "sd")
+            )
               
-patch_summary <- atl_patch_summary(patch_data = patches,
+patch_summary <- atl_patch_summary(
+                    patch_data = patches,
                     which_data = "summary",
-                    buffer_radius = 10)
+                    buffer_radius = 10
+                )
 \end{lstlisting}
 
 % first residence patch figure
