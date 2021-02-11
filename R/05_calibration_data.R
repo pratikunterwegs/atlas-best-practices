@@ -1,3 +1,10 @@
+## ----install_atlastools-------------------------------------------------------
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+
+
 ## -----------------------------------------------------------------------------
 # for data handling
 library(data.table)
@@ -13,13 +20,6 @@ library(patchwork)
 # making a colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-
-
-## ----install_atlastools-------------------------------------------------------
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
 
 
 ## -----------------------------------------------------------------------------
