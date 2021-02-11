@@ -2,6 +2,8 @@
 ]{scrartcl}
 \usepackage{mathpazo}
 \usepackage{helvet}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}%
 \usepackage{xfrac}
 \usepackage{amsmath}
 \usepackage[total={6.75in, 9.5in}]{geometry}
@@ -43,24 +45,9 @@
   language=R,
   showstringspaces=false,
   basicstyle=\small\ttfamily\color{black},
-%   keywordstyle=\bfseries\color{blue!40!black},
-%   commentstyle=\itshape\color{purple!40!black},
-%   identifierstyle=\color{green!40!black},
-%   stringstyle=\color{red}
-%   keywordstyle=\color{keywordstyleCol},      % keyword style
+  keywordstyle=\ttfamily,
   commentstyle=\color{commentstyleCol},   % comment style
-  stringstyle=\color{stringstyleCol},      % string literal style
-  literate=%
-   *{0}{{{\color{NumCol}0}}}1
-    {1}{{{\color{NumCol}1}}}1
-    {2}{{{\color{NumCol}2}}}1
-    {3}{{{\color{NumCol}3}}}1
-    {4}{{{\color{NumCol}4}}}1
-    {5}{{{\color{NumCol}5}}}1
-    {6}{{{\color{NumCol}6}}}1
-    {7}{{{\color{NumCol}7}}}1
-    {8}{{{\color{NumCol}8}}}1
-    {9}{{{\color{NumCol}9}}}1
+  stringstyle=\color{stringstyleCol}      % string literal style
 }
 \usepackage{ulem}
 \graphicspath{ {./figures/} }
@@ -108,7 +95,7 @@ Allert I. Bijleveld\textsuperscript{2}}
 \bigskip
 \textbf{1} Groningen Institute for Evolutionary Life Sciences, University of Groningen, The Netherlands.
 \\
-\textbf{2} Department of Coastal Systems, NIOZ Royal Netherlands Institute for Sea Research, The Netherlands.
+\textbf{2} Department of Coastal Systems, NIOZ Royal Netherlands Institute for Sea Research, 1790 AB, Den Burg, The Netherlands.
 \\
 \textbf{3} School of Zoology, Faculty of Life Sciences, Tel Aviv University, Tel Aviv 69978, Israel.
 \\
@@ -154,7 +141,6 @@ Cleaning high-throughput animal tracking data
 \begin{enumerate}
     \item Modern, high-throughput animal tracking studies collect increasingly large volumes of data at very fine temporal scales.
     At these scales, location error can exceed the animal's step size, leading to mis-estimation of movement metrics such as speed.
-    % Sophisticated methods that estimate both the error and the movement metrics are not easily scalable to massive datasets, and can be difficult to use for both novice and veteran animal ecologists.
     `Cleaning' the data to reduce location errors prior to analyses is one of the main ways movement ecologists deal with noisy data, and has the advantage of being more scalable to massive datasets than more complex methods.
     Though data cleaning is widely recommended, and ecologists routinely consider cleaned data to be the ground-truth, uniform guidance on this crucial step is scarce.
     
@@ -166,8 +152,8 @@ Cleaning high-throughput animal tracking data
     \item In this article we introduce a pipeline to pre-process high-throughput animal tracking data in order to prepare it for subsequent analysis.
     This pipeline, consisting of removing outliers, smoothing the filtered result, and thinning it to a uniform sampling interval, is easily scaled to very large datasets.
     We demonstrate this pipeline on simulated movement data with location errors.
-    We further suggest how large volumes of cleaned data can be segmented-clustered into biologically meaningful ‘residence patches’.
-    We use calibration data to show how the pipeline improves its quality, and to verify that the residence patch synthesis accurately captures animal space-use.
+    We also show a case study of how large volumes of cleaned data can be quickly segmented-clustered into biologically meaningful ‘residence patches’.
+    We use calibration data to show how pre-processing improves its quality, and to verify that the residence patch synthesis accurately captures animal space-use.
     Finally, turning to tracking data from Egyptian fruit bats (\textit{Rousettus aegyptiacus}), we demonstrate the pre-processing pipeline and residence patch method in a fully worked out example.
     
     \item To help with fast implementation, and to help standardise methods, we developed the \texttt{R} package \texttt{atlastools}, which we also introduce here.
