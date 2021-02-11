@@ -114,6 +114,7 @@
 % \IfFontExistsTF{Palatino}{\setmainfont[]{Palatino}}{} 
 \usepackage{mathpazo}
 \usepackage{helvet}
+\usepackage{inconsolata}
 % \IfFontExistsTF{Arial}{\setsansfont[]{Arial}}{}
 % \IfFontExistsTF{Fira Code}{\setmonofont{Fira Code}}
 
@@ -148,6 +149,21 @@ Finally, we target small-scale location errors by applying a median smoother wit
 Smoothing does not reduce the number of positions.
 We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
+\hypertarget{install-atlastools-from-github}{%
+\section{\texorpdfstring{Install \texttt{atlastools} from Github}{Install atlastools from Github}}\label{install-atlastools-from-github}}
+
+\texttt{atlastools} is available from Github and is archived on Zenodo (Gupte \protect\hyperlink{ref-gupte2020a}{2020}).
+It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the \texttt{remotes} function \texttt{install\_github}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
+
+\CommentTok{# installation using remotes}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{prepare-libraries}{%
 \section{Prepare libraries}\label{prepare-libraries}}
 
@@ -169,21 +185,6 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 \CommentTok{# making a colour palette}
 \NormalTok{pal <-}\StringTok{ }\NormalTok{RColorBrewer}\OperatorTok{::}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{5}\NormalTok{, }\StringTok{"Set1"}\NormalTok{)}
 \NormalTok{pal[}\DecValTok{3}\NormalTok{] <-}\StringTok{ "seagreen"}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{install-atlastools-from-github}{%
-\section{\texorpdfstring{Install \texttt{atlastools} from Github}{Install atlastools from Github}}\label{install-atlastools-from-github}}
-
-\texttt{atlastools} is available from Github and is archived on Zenodo (Gupte \protect\hyperlink{ref-gupte2020a}{2020}).
-It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the \texttt{remotes} function \texttt{install\_github}.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"remotes"}\NormalTok{)}
-
-\CommentTok{# installation using remotes}
-\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"pratikunterwegs/atlastools"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
