@@ -220,8 +220,8 @@ figure_median_smooth <-
     fontface = "bold"
   ) +
   scale_colour_distiller(
-    palette = "RdPu", direction = 1,
-    values = c(-1, 1)
+    palette = "BuPu", direction = 1,
+    values = c(-2, 1)
   ) +
   ggthemes::theme_few() +
   theme(

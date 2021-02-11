@@ -20,6 +20,19 @@ Finally, we target small-scale location errors by applying a median smoother wit
 Smoothing does not reduce the number of positions.
 We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
+
+## Install `atlastools` from Github
+
+`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
+It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
+
+```{r install_atlastools, eval=FALSE}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+```
+
 ## Prepare libraries
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
@@ -39,18 +52,6 @@ library(patchwork)
 # making a colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-```
-
-## Install `atlastools` from Github
-
-`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
-It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
-
-```{r install_atlastools}
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
 ```
 
 ## Access data and preliminary visualisation
@@ -230,10 +231,26 @@ fig_speed_outliers <-
     fill = NA, col = "grey20"
   ) +
   annotate(
+    geom = "text",
+    x = 653250,
+    y = 5906133 + 500,
+    label = "(b)",
+    # size = 10,
+    fontface = "bold"
+  ) +
+  annotate(
     geom = "rect",
     ymin = 5901650, ymax = 5903100,
     xmin = 650000, xmax = 650600,
     fill = NA, col = "grey20"
+  ) +
+  annotate(
+    geom = "text",
+    y = 5901650 - 300,
+    x = 650600,
+    label = "(c)",
+    # size = 10,
+    fontface = "bold"
   ) +
   scale_color_manual(values = c("grey", pal[3])) +
   ggthemes::theme_few() +
@@ -624,7 +641,7 @@ ggsave(fig_basic_residence,
 )
 ```
 
-![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple crossed-squares). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without crossed-squares). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (crossed-square without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
+![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
 
 ## Compare patch metrics
 
