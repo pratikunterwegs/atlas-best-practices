@@ -15,7 +15,7 @@ This outlier is removed by filtering data by the X coordinate bounds using the f
 We then calculate the incoming and outgoing speed, as well as the turning angle at each position using the functions `atl_get_speed` and `atl_turning_angle` respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
 We use the function `atl_filter_covariates` to remove positions with incoming and outgoing speeds $\geq$ the speed threshold of 15 m/s (n = 13,491, 26.5%; remaining positions = 37,324, 73.5%; Fig. 1.3; main text Fig. 7.b).
 This speed threshold is chosen as 5 m/s faster than the known boat speed, 10 m/s.
-Finally, we target small-scale location errors by applying a median smooth with a moving window size $K$ = 5 using the function `atl_median_smooth` (Fig. 1.4; main text Fig. 7.c).
+Finally, we target small-scale location errors by applying a median smoother with a moving window size $K$ = 5 using the function `atl_median_smooth` (Fig. 1.4; main text Fig. 7.c).
 Smoothing does not reduce the number of positions.
 We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
