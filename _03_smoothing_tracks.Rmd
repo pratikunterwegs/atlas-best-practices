@@ -30,6 +30,7 @@ We also assign a variable, `window_size`, which will help identify the datasets 
 # read in the data and set the window size variable
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, window_size := NA]
+data$speed_in <- atl_get_speed(data)
 
 # data with small scale errors but no reflections or outliers
 data_errors <- fread("data/data_no_reflection.csv")
@@ -75,13 +76,99 @@ We prepare the data for plotting.
 ```{r}
 # bind list after offset
 data_plot <- mapply(function(df, offset) {
+  df <- copy(df)
   df[, x := x + offset]
+  df$speed_in <- atl_get_speed(df)
+  return(df)
 }, list_of_smooths, seq(0.4, 1.25, length.out = 4),
 SIMPLIFY = F
 )
 
 data_plot <- rbindlist(data_plot)
+
+# add offset to data errors
+data_errors <- lapply(
+  c(0, seq(0.4, 1.25, length.out = 4)),
+  function(offset) {
+    df <- copy(data_errors)
+    df[, x := x + offset]
+    df[, offset := offset]
+  }
+)
+
+# bind list
+data_errors <- rbindlist(data_errors)
 ```
+
+## Histogram of speeds after smoothing
+
+```{r}
+pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
+
+fig_hist_smooth <-
+  ggplot() +
+  geom_histogram(
+    data = data_errors[offset == 0, ],
+    aes(
+      x = in_speed,
+      fill = "errors"
+    ),
+    bins = 80,
+    alpha = 1
+  ) +
+  geom_histogram(
+    data = data_plot[window_size %in% c(5, 21)],
+    aes(
+      x = speed_in,
+      fill = as.factor(window_size),
+      group = window_size
+    ),
+    bins = 80
+  ) +
+  geom_histogram(
+    data = data,
+    aes(
+      x = speed_in,
+      fill = "real"
+    ),
+    # col = pal[1],
+    alpha = 0.8,
+    bins = 80
+  ) +
+  scale_x_log10() +
+  scale_fill_manual(
+    values = c(
+      "real" = alpha("grey20", .8),
+      "errors" = "grey",
+      "5" = pal2[1],
+      "21" = pal2[2]
+    ),
+    labels = c(
+      "real" = "real track",
+      "errors" = "track w/\nerrors",
+      "5" = "K = 5",
+      "21" = "K = 21"
+    )
+  ) +
+  coord_cartesian(xlim = c(1e-5, .05)) +
+  theme_test(base_family = "sans") +
+  theme(
+    legend.position = c(0.2, 0.65),
+    axis.text = element_blank(),
+    # axis.ticks.y = element_blank(),
+    axis.title.y = element_blank(),
+    plot.title = element_text(
+      face = "bold"
+    ),
+    plot.background = element_blank()
+  ) +
+  labs(
+    x = "Speed [log10 scale]",
+    fill = "Smoothing",
+    title = "(f)"
+  )
+```
+
 
 We prepare a plot of the smoothed data.
 
@@ -90,8 +177,16 @@ We prepare a plot of the smoothed data.
 # make list of data to plot
 figure_median_smooth <-
   ggplot() +
-  geom_point(
+  geom_path(
     data = data_errors,
+    aes(x, y,
+      group = offset
+    ),
+    col = "grey60",
+    size = 0.1
+  ) +
+  geom_point(
+    data = data_errors[offset == 0, ],
     aes(x, y),
     col = pal[3],
     size = 0.2
@@ -105,11 +200,11 @@ figure_median_smooth <-
   geom_path(
     data = data_plot,
     aes(x, y,
-      col = window_size,
-      group = window_size
+      group = window_size,
+      col = window_size
     ),
     show.legend = F,
-    lwd = 0.5
+    lwd = 0.3
   ) +
   coord_equal(
     expand = F,
@@ -125,8 +220,8 @@ figure_median_smooth <-
     fontface = "bold"
   ) +
   scale_colour_distiller(
-    palette = "Purples", direction = 1,
-    values = c(-0.5, 1)
+    palette = "RdPu", direction = 1,
+    values = c(-1, 1)
   ) +
   ggthemes::theme_few() +
   theme(
@@ -169,11 +264,11 @@ speed_agg_smooth <-
   lapply(list_of_agg, function(df) {
     na.omit(df)
     df[, speed := atl_get_speed(df)]
-    df[, list(
-      median = median(speed, na.rm = T),
-      sd = sd(speed, na.rm = T),
-      interval = first(interval)
-    )]
+    # df[, list(
+    #   median = median(speed, na.rm = T),
+    #   sd = sd(speed, na.rm = T),
+    #   interval = first(interval)
+    # )]
   })
 
 # bind
@@ -301,25 +396,16 @@ fig_agg_speed <-
       ),
     lty = c(1, 2)
   ) +
-  geom_errorbar(
+  geom_boxplot(
     data = speed_agg_smooth,
     aes(
-      x = factor(interval),
-      ymin = 1 + median - sd,
-      ymax = 1 + median + sd
+      x = as.factor(interval),
+      y = 1 + speed
     ),
-    width = 0.2,
-    position = position_nudge(x = 0.25)
-  ) +
-  geom_point(
-    data = speed_agg_smooth,
-    aes(
-      x = factor(interval),
-      y = 1 + median
-    ),
-    shape = 21,
-    size = 3,
     fill = pal[3],
+    show.legend = F,
+    width = 0.25,
+    outlier.size = 0.2,
     position = position_nudge(x = 0.25)
   ) +
   geom_boxplot(aes(factor(interval), 1 + speed),
@@ -339,8 +425,8 @@ fig_agg_speed <-
     axis.text.y = element_blank()
   ) +
   labs(
-    x = "interval (s)",
-    y = "speed"
+    x = "Interval (s)",
+    y = "Speed"
   )
 ```
 
@@ -365,7 +451,7 @@ ggsave(fig_aggregate,
 )
 ```
 
-![](figures/fig_05_thinning.png)
+![](figures/fig_04_thinning.png)
 
 Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
 **(a, b)** Movement tracks with a canonical interval of 1s aggregated over intervals of **(a)** 10 and **(b)** 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.

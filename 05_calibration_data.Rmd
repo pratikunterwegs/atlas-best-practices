@@ -10,29 +10,47 @@ Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @o
 
 ## Outline of Cleaning Steps
 
-We began by visualising the data to check for location errors, and found a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2; main text Fig. 7.a).
-This outlier was removed by filtering data by the X coordinate bounds using the function `atl_filter\_bounds`; X coordinate bounds $\leq$ 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
-We then calculated the incoming and outgoing speed, as well as the turning angle at each position using the functions `atl_get_speed` and `atl_turning_angle` respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
-We used the function `atl_filter_covariates` to remove positions with incoming and outgoing speeds $\geq$ the speed threshold of 15 m/s (n = 13,491, 26.5%; remaining positions = 37,324, 73.5%; Fig. 1.3; main text Fig. 7.b).
-This speed threshold was chosen as 5 m/s faster than the known boat speed, 10 m/s.
-Finally, we targeted small-scale location errors by applying a median smooth with a moving window size $K$ = 5 using the function `atl_median_smooth` (Fig. 1.4; main text Fig. 7.c).
-Smoothing did not reduce the number of positions.
-We thinned the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
+We begin by preparing the libraries we need, and installing `atlastools` from Github.
+After installing `atlastools`, we visualise the data to check for location errors, and find a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2).
+This outlier is removed by filtering data by the X coordinate bounds using the function `atl_filter_bounds`; X coordinate bounds $\leq$ 645,000 in the UTM 31N coordinate reference system were removed (n = 1; remaining positions = 50,815; Fig. 1.2).
+We then calculate the incoming and outgoing speed, as well as the turning angle at each position using the functions `atl_get_speed` and `atl_turning_angle` respectively, as a precursor to targeting large-scale location errors in the form of point outliers.
+We use the function `atl_filter_covariates` to remove positions with incoming and outgoing speeds $\geq$ the speed threshold of 15 m/s (n = 13,491, 26.5%; remaining positions = 37,324, 73.5%; Fig. 1.3; main text Fig. 7.b).
+This speed threshold is chosen as the fastest boat speed during the experiment, 15 m/s.
+Finally, we target small-scale location errors by applying a median smoother with a moving window size $K$ = 5 using the function `atl_median_smooth` (Fig. 1.4; main text Fig. 7.c).
+Smoothing does not reduce the number of positions.
+We thin the data to a 30 second interval leaving 1,803 positions (4.8\% positions of the smoothed track)
 
 ## Prepare libraries
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
 
 ```{r}
-# load libs
+# for data handling
 library(data.table)
 library(atlastools)
+
+# for recursion analysis
+library(recurse)
+
+# for plotting
 library(ggplot2)
 library(patchwork)
 
+# making a colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-pal[2] <- RColorBrewer::brewer.pal(5, "Blues")[5]
+```
+
+## Install `atlastools` from Github
+
+`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
+It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
+
+```{r install_atlastools}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
 ```
 
 ## Access data and preliminary visualisation
@@ -46,8 +64,13 @@ data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
 ```
 
+Here we show how data can be easily visualised using the popular plotting package `ggplot2`.
+Note that we plot both the points (`geom_point`) and the inferred path between them (`geom_path`), and specify a geospatial coordinate system in metres, suitable for the Dutch Wadden Sea (UTM 31N; ESPG code:32631; `coord_sf`).
+We save the output to file for future reference.
 
-```{r echo=FALSE}
+Since plot code can become very lengthy and complicated, we omit showing further plot code in versions of this document rendered as PDF or HTML; it can however be seen in the online `.Rmd` version.
+
+```{r echo=TRUE}
 # plot data
 fig_data_raw <-
   ggplot(data) +
@@ -136,29 +159,28 @@ ggsave(fig_data_bbox,
 )
 ```
 
-![Removal of a point outlier using the function `atl_filter_bounds`. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate < 645,000 in the UTM 31N system. Positions that are retained are shown in green.](figures/fig_calib_bbox.png)
+![Removal of a point outlier using the function `atl_filter_bounds`. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate < 645,000 in the UTM 31N coordinate system. Positions that are retained are shown in green.](figures/fig_calib_bbox.png)
 
 ## Filter trajectories
 
 ### Handle time
 
-Time in ATLAS tracking is counted in milliseconds and is represented by a 64-bit integer (type `long`), which is not natively supported in R; it will instead be converted to a `numeric`, or `double`.
+Time in ATLAS tracks is represented by 64-bit integers (type `long`) that specify time in milliseconds, starting from the beginning of 1970 (the UNIX epoch). This representation of time is called `POSIX` time and is usually specified in seconds, not milliseconds. 
 
-This is not what is intended, but it works. The `bit64` package can help handle 64-bit integers if you want to keep to intended type.
+Since about 1.6 billion seconds have passed since the beginning of 1970, current `POSIX` times in milliseconds cannot be represented by R's built-in 32-bit integers. A naive conversion results in truncation of out-of-range numbers leading to huge errors (dates many thousands of years in the future).
 
-A further issue is that 64-bit integers (whether represented as `bit64` or `double`) do not yield meaninful results when you try to convert them to a date-time object, such as of the class `POSIXct`.
+R does not natively support 64-bit integers. One option is to use the bit64 package, which adds 64-bit integer support to R. 
 
-This is because `as.POSIXct` fails when trying to work with 64-bit integers (it cannot interpret this type), and returns a date many thousands of years in the future (approx. 52,000 CE) if the time column is converted to `numeric`.
+A simpler solution is to convert the times to R's built in `double` data type (also called `numeric`), which uses a 64-bit floating point representation. This representation can represent integers with up to 16 digits without error; we only need 13 digits to represent the number of milliseconds since 1970, so the conversion is error free. We can also perform the conversion and then divide by 1000 so that times are represented in seconds, not milliseconds; this simplifies speed estimation.
 
-There are two possible solutions. The parsimonious one is to convert the 64-bit number to a 32-bit short integer (dividing by 1000), or to use the `nanotime` package. 
-
-The conversion method loses an imperceptible amount of precision. The `nanotime` requires installing another package. The first method is shown here. 
-
-In the spirit of not destroying data, we create a second lower-case column called `time`.
+If second-resolution is accurate enough (it is for our purposes), the solution that we use is to divide times by 1000 to reduce the resolution from milliseconds to seconds and then to convert the time stamps to R integers.
+In the spirit of not destroying data, we create a second lower-case column called `time` to store this 
 
 ```{r}
 # divide by 1000, convert to integer, then convert to POSIXct
-data[, time := as.integer(TIME / 1000)]
+data[, time := as.integer(
+  as.numeric(TIME) / 1000
+)]
 ```
 
 ### Add speed and turning angle
@@ -475,11 +497,6 @@ For this, we need a dataframe with coordinates, the timestamp, and the animal id
 We save this data to file for later use.
 
 ```{r}
-# load recurse
-library(recurse)
-```
-
-```{r}
 # get 4 column data
 data_for_patch <- data_thin[, list(x, y, time, TAG)]
 
@@ -552,14 +569,15 @@ fig_basic_residence <-
   geom_point(
     data = data_res_summary,
     aes(x_median, y_median),
-    size = 10, shape = 7,
+    size = 10,
+    shape = 2,
     stroke = 1,
     col = pal[4],
     alpha = 1
   ) +
   geom_sf(
     data = hut,
-    size = 10, shape = 7,
+    size = 10, shape = 2,
     stroke = 1,
     col = pal[1]
   ) +
@@ -758,6 +776,8 @@ cat(
 ```
 
 ## Plot figure 7
+
+Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
 
 ```{r echo=FALSE}
 # wrap together

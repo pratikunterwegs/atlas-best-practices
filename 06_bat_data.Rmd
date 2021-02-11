@@ -16,26 +16,20 @@ We show the pre-processing pipeline at work on the tracks of three Egyptian frui
 Install the required `R` libraries that are required from CRAN if not already installed.
 
 ```{r}
-# load libs
+# libs for data
 library(data.table)
 library(RSQLite)
+library(atlastools)
+
+# libs for plotting
 library(ggplot2)
 library(patchwork)
 
+# recursion analysis
+library(recurse)
+
 # prepare a palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
-```
-
-## Install `atlastools` from Github.
-
-`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
-It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
-
-```{r install_atlastools}
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
 ```
 
 ## Read bat data
@@ -423,9 +417,6 @@ ggsave(fig_bat_smooth,
 First, the data is put through the `recurse` package to get residence time [@bracis2018].
 
 ```{r}
-# load recurse
-library(recurse)
-
 # split the data
 data_smooth <- split(data_smooth, data_smooth$TAG)
 ```
@@ -588,7 +579,7 @@ st_write(data_spatials,
 Write cleaned bat data.
 
 ```{r}
-data_clean <- fwrite(rbindlist(data_smooth),
+fwrite(rbindlist(data_smooth),
   file = "data/data_bat_smooth.csv"
 )
 ```

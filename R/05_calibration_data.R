@@ -1,13 +1,25 @@
 ## -----------------------------------------------------------------------------
-# load libs
+# for data handling
 library(data.table)
 library(atlastools)
+
+# for recursion analysis
+library(recurse)
+
+# for plotting
 library(ggplot2)
 library(patchwork)
 
+# making a colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-pal[2] <- RColorBrewer::brewer.pal(5, "Blues")[5]
+
+
+## ----install_atlastools-------------------------------------------------------
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
 
 
 ## -----------------------------------------------------------------------------
@@ -16,7 +28,7 @@ data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
 
 
-## ----echo=FALSE---------------------------------------------------------------
+## ----echo=TRUE----------------------------------------------------------------
 # plot data
 fig_data_raw <-
   ggplot(data) +
@@ -96,7 +108,9 @@ ggsave(fig_data_bbox,
 
 ## -----------------------------------------------------------------------------
 # divide by 1000, convert to integer, then convert to POSIXct
-data[, time := as.integer(TIME / 1000)]
+data[, time := as.integer(
+  as.numeric(TIME) / 1000
+)]
 
 
 ## -----------------------------------------------------------------------------
@@ -366,11 +380,6 @@ SIMPLIFY = TRUE
 
 
 ## -----------------------------------------------------------------------------
-# load recurse
-library(recurse)
-
-
-## -----------------------------------------------------------------------------
 # get 4 column data
 data_for_patch <- data_thin[, list(x, y, time, TAG)]
 
@@ -429,14 +438,15 @@ fig_basic_residence <-
   geom_point(
     data = data_res_summary,
     aes(x_median, y_median),
-    size = 10, shape = 7,
+    size = 10,
+    shape = 2,
     stroke = 1,
     col = pal[4],
     alpha = 1
   ) +
   geom_sf(
     data = hut,
-    size = 10, shape = 7,
+    size = 10, shape = 2,
     stroke = 1,
     col = pal[1]
   ) +
