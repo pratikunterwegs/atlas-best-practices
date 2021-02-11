@@ -1,8 +1,8 @@
-## ----install_atlastools-------------------------------------------------------
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
+## ----install_atlastools, eval=FALSE-------------------------------------------
+## install.packages("remotes")
+## 
+## # installation using remotes
+## remotes::install_github("pratikunterwegs/atlastools")
 
 
 ## -----------------------------------------------------------------------------
@@ -156,10 +156,26 @@ fig_speed_outliers <-
     fill = NA, col = "grey20"
   ) +
   annotate(
+    geom = "text",
+    x = 653250,
+    y = 5906133 + 500,
+    label = "(b)",
+    # size = 10,
+    fontface = "bold"
+  ) +
+  annotate(
     geom = "rect",
     ymin = 5901650, ymax = 5903100,
     xmin = 650000, xmax = 650600,
     fill = NA, col = "grey20"
+  ) +
+  annotate(
+    geom = "text",
+    y = 5901650 - 300,
+    x = 650600,
+    label = "(c)",
+    # size = 10,
+    fontface = "bold"
   ) +
   scale_color_manual(values = c("grey", pal[3])) +
   ggthemes::theme_few() +
