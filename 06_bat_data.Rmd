@@ -22,26 +22,12 @@ library(RSQLite)
 library(ggplot2)
 library(patchwork)
 
+# atlastools
+library(atlastools)
+
 # prepare a palette
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
-
-## Install `atlastools` from Github.
-
-`atlastools` is available from Github and is archived on Zenodo [@gupte2020a].
-It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
-
-```{r install_atlastools}
-install.packages("remotes")
-
-# installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
-```
-
-```{r}
-library(atlastools)
-```
-
 
 ## Read bat data
 
