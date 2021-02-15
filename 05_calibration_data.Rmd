@@ -593,6 +593,7 @@ patch_summary_data <- atl_patch_summary(patch_res_known,
 ```
 
 At this stage, users have successfully pre-processed their data from raw positions to residence patches.
+Residence patches are essentially `sf` objects and can be visualised using the `sf` method for `plot`; for instance `plot(patch_sf_data)`.
 Further sections reproduce the analyses in the main manuscript.
 
 ---
@@ -822,7 +823,7 @@ cat(
 )
 ```
 
-## Plot figure 7
+## Main text Figure 6
 
 Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
 
