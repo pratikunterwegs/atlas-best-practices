@@ -6,7 +6,7 @@ editor_options:
 
 # Validating the Residence Patch Method with Calibration Data
 
-Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @oudman2018] accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
+Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @oudman2018] accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea. These data can be accessed from the `data` folder at this link: https://doi.org/10.5281/zenodo.4287462. These data are more fully reported in [@beardsworth2021].
 
 ## Outline of Cleaning Steps
 
