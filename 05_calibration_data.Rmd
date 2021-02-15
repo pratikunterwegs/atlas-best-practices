@@ -33,6 +33,20 @@ install.packages("remotes")
 remotes::install_github("pratikunterwegs/atlastools")
 ```
 
+### A Note on `:=` {-}
+
+The `atlastools` package is based on `data.table`, to be fast and efficient [@dowle2020].
+A key feature is modification in place, where data is changed without making a copy.
+This is already implemented in `R` and will be familiar to many users as `data_frame$column_name <- values`.
+
+The `data.table` way of writing this assignment would be `data_frame[, column_name := values]`.
+We use this syntax throughout, as it provides many useful shortcuts, such as multiple assignment:
+
+`data_frame[, c("col_a", "col_b) := list(values_a, values_b)]`
+
+Users can use this special syntax, and will find it convenient with practice, but there are _no_ cases where users _must_ use the `data.table` syntax, and can simply treat the data as a regular `data.frame`. However, users are advised to convert their `data.frame` to a `data.table` using the function `data.table::setDT()`.
+
+
 ## Prepare libraries
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
@@ -57,12 +71,16 @@ pal[3] <- "seagreen"
 ## Access data and preliminary visualisation
 
 First we access the data from a local file using the `data.table` package [@dowle2020].
+We look at the first few rows, using `head()`.
 We then visualise the raw data.
 
 ```{r}
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
+
+# see raw data
+head(data_raw)
 ```
 
 Here we show how data can be easily visualised using the popular plotting package `ggplot2`.
