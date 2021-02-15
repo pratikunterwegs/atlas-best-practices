@@ -592,6 +592,12 @@ patch_summary_data <- atl_patch_summary(patch_res_known,
 )
 ```
 
+At this stage, users have successfully pre-processed their data from raw positions to residence patches.
+Further sections reproduce the analyses in the main manuscript.
+
+---
+
+
 ### Prepare to plot data
 
 We read in the island's shapefile to plot it as a background for the residence patch figure.
