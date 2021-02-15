@@ -118,4 +118,5 @@ Other directories such as `figures/` or `_bookdown_files/` are self-explanatory.
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4033154.svg)](https://doi.org/10.5281/zenodo.4033154)
   [![R build status](https://github.com/pratikunterwegs/atlastools/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlastools/actions)
   [![codecov.io](https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master)](https://codecov.io/github/pratikunterwegs/atlastools/branch/master)
+[![R build status](https://github.com/pratikunterwegs/atlas-best-practices/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlas-best-practices/actions)
 <!-- badges: end -->

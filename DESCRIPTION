@@ -1,0 +1,31 @@
+Package: atlasbestpractices
+Title: A Guide to Pre-processing High Throughput Animal Tracking Data
+Version: 1.0.000
+Authors@R:
+    c(person(given = "Pratik",
+           family = "Gupte",
+           role = c("aut", "cre"),
+           email = "p.r.gupte@rug.nl",
+           comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")))
+Description: Source code for a guide to pre-process high-throughput tracking data. Developed for use with ATLAS tracking systems, but suitable for use with nearly any XY-time animal tracking data.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/pratikunterwegs/atlas-best-practices
+BugReports: https://github.com/pratikunterwegs/atlas-best-practices/issues
+Imports:
+    sf,
+    glue,
+    data.table,
+    stats,
+    assertthat,
+    stringr,
+    bit64
+RoxygenNote: 7.1.1
+Suggests:
+    testthat (>= 2.1.0),
+    ggplot2,
+    scales,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
