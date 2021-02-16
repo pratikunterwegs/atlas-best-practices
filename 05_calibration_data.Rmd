@@ -6,7 +6,7 @@ editor_options:
 
 # Validating the Residence Patch Method with Calibration Data
 
-Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @oudman2018] accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
+Here we show how the residence patch method [@barraquand2008; @bijleveld2016; @oudman2018] accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea. These data can be accessed from the `data` folder at this link: https://doi.org/10.5281/zenodo.4287462. These data are more fully reported in [@beardsworth2021].
 
 ## Outline of Cleaning Steps
 
@@ -33,6 +33,20 @@ install.packages("remotes")
 remotes::install_github("pratikunterwegs/atlastools")
 ```
 
+### A Note on `:=` {-}
+
+The `atlastools` package is based on `data.table`, to be fast and efficient [@dowle2020].
+A key feature is modification in place, where data is changed without making a copy.
+This is already implemented in `R` and will be familiar to many users as `data_frame$column_name <- values`.
+
+The `data.table` way of writing this assignment would be `data_frame[, column_name := values]`.
+We use this syntax throughout, as it provides many useful shortcuts, such as multiple assignment:
+
+`data_frame[, c("col_a", "col_b) := list(values_a, values_b)]`
+
+Users can use this special syntax, and will find it convenient with practice, but there are _no_ cases where users _must_ use the `data.table` syntax, and can simply treat the data as a regular `data.frame`. However, users are advised to convert their `data.frame` to a `data.table` using the function `data.table::setDT()`.
+
+
 ## Prepare libraries
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
@@ -57,12 +71,16 @@ pal[3] <- "seagreen"
 ## Access data and preliminary visualisation
 
 First we access the data from a local file using the `data.table` package [@dowle2020].
+We look at the first few rows, using `head()`.
 We then visualise the raw data.
 
 ```{r}
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
+
+# see raw data
+head(data_raw)
 ```
 
 Here we show how data can be easily visualised using the popular plotting package `ggplot2`.
@@ -505,7 +523,8 @@ SIMPLIFY = TRUE
 
 ### Prepare data
 
-An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time [@bracis2018].
+First, we filter data where we know the animal spent some time at or near a position, as this is the first step to identify residence patches. 
+One way of doing this is to filter out positions with speeds above which the animal is likely to be in transit, but a better way of doing this by filtering on a metric such as residence time [@bracis2018].
 
 ### Calculate residence time
 
@@ -547,6 +566,11 @@ patch_res_known <- atl_res_patch(data_for_patch[res_time >= 5, ],
 )
 ```
 
+### A note on summary statistics {-}
+
+Users specifying a `summary_variable` should make sure that the variable for which they want a summary statistic is present in the data.
+For instance, requesting mean speed by passing `summary_variable = "speed"` and `summary_function = "mean"` to `atl_res_patch`, should make sure that their data includes a column called `speed`.
+
 ### Get spatial and summary objects
 
 We get spatial and summary ouput of the residence patch method using the `atl_patch_summary` function using the options `which_data` = "spatial" and `which_data` = "summary.
@@ -567,6 +591,13 @@ patch_summary_data <- atl_patch_summary(patch_res_known,
   which_data = "summary"
 )
 ```
+
+At this stage, users have successfully pre-processed their data from raw positions to residence patches.
+Residence patches are essentially `sf` objects and can be visualised using the `sf` method for `plot`; for instance `plot(patch_sf_data)`.
+Further sections reproduce the analyses in the main manuscript.
+
+---
+
 
 ### Prepare to plot data
 
@@ -792,7 +823,7 @@ cat(
 )
 ```
 
-## Plot figure 7
+## Main text Figure 6
 
 Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
 

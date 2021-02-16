@@ -27,6 +27,9 @@ pal[3] <- "seagreen"
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
 
+# see raw data
+head(data_raw)
+
 
 ## ----echo=TRUE----------------------------------------------------------------
 # plot data

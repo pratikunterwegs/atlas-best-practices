@@ -122,7 +122,7 @@
 
 \title{Supplementary Material for \emph{A Guide to Pre-processing High-Frequency Animal Tracking Data}}
 \author{Pratik R. Gupte \and Christine E. Beardsworth \and Orr Spiegel \and Emmanuel Lourie \and Sivan Toledo \and Ran Nathan \and Allert I. Bijleveld}
-\date{2021-02-11}
+\date{2021-02-16}
 
 \begin{document}
 \maketitle
@@ -134,7 +134,7 @@
 \hypertarget{validating-the-residence-patch-method-with-calibration-data}{%
 \chapter{Validating the Residence Patch Method with Calibration Data}\label{validating-the-residence-patch-method-with-calibration-data}}
 
-Here we show how the residence patch method (Barraquand and Benhamou \protect\hyperlink{ref-barraquand2008}{2008}; Bijleveld et al. \protect\hyperlink{ref-bijleveld2016}{2016}; Oudman et al. \protect\hyperlink{ref-oudman2018}{2018}) accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea.
+Here we show how the residence patch method (Barraquand and Benhamou \protect\hyperlink{ref-barraquand2008}{2008}; Bijleveld et al. \protect\hyperlink{ref-bijleveld2016}{2016}; Oudman et al. \protect\hyperlink{ref-oudman2018}{2018}) accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea. These data can be accessed from the \texttt{data} folder at this link: \url{https://doi.org/10.5281/zenodo.4287462}. These data are more fully reported in (Beardsworth et al. \protect\hyperlink{ref-beardsworth2021}{2021}).
 
 \hypertarget{outline-of-cleaning-steps}{%
 \section{Outline of Cleaning Steps}\label{outline-of-cleaning-steps}}
@@ -164,6 +164,21 @@ It can be installed using \texttt{remotes} or \texttt{devtools}. Here we use the
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{a-note-on}{%
+\subsection*{\texorpdfstring{A Note on \texttt{:=}}{A Note on :=}}\label{a-note-on}}
+\addcontentsline{toc}{subsection}{A Note on \texttt{:=}}
+
+The \texttt{atlastools} package is based on \texttt{data.table}, to be fast and efficient (Dowle and Srinivasan \protect\hyperlink{ref-dowle2020}{2020}).
+A key feature is modification in place, where data is changed without making a copy.
+This is already implemented in \texttt{R} and will be familiar to many users as \texttt{data\_frame\$column\_name\ \textless{}-\ values}.
+
+The \texttt{data.table} way of writing this assignment would be \texttt{data\_frame{[},\ column\_name\ :=\ values{]}}.
+We use this syntax throughout, as it provides many useful shortcuts, such as multiple assignment:
+
+\texttt{data\_frame{[},\ c("col\_a",\ "col\_b)\ :=\ list(values\_a,\ values\_b){]}}
+
+Users can use this special syntax, and will find it convenient with practice, but there are \emph{no} cases where users \emph{must} use the \texttt{data.table} syntax, and can simply treat the data as a regular \texttt{data.frame}. However, users are advised to convert their \texttt{data.frame} to a \texttt{data.table} using the function \texttt{data.table::setDT()}.
+
 \hypertarget{prepare-libraries}{%
 \section{Prepare libraries}\label{prepare-libraries}}
 
@@ -192,6 +207,7 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 \section{Access data and preliminary visualisation}\label{access-data-and-preliminary-visualisation}}
 
 First we access the data from a local file using the \texttt{data.table} package (Dowle and Srinivasan \protect\hyperlink{ref-dowle2020}{2020}).
+We look at the first few rows, using \texttt{head()}.
 We then visualise the raw data.
 
 \begin{Shaded}
@@ -199,6 +215,9 @@ We then visualise the raw data.
 \CommentTok{# read and plot example data}
 \NormalTok{data <-}\StringTok{ }\KeywordTok{fread}\NormalTok{(}\StringTok{"data/atlas1060_allTrials_annotated.csv"}\NormalTok{)}
 \NormalTok{data_raw <-}\StringTok{ }\KeywordTok{copy}\NormalTok{(data)}
+
+\CommentTok{# see raw data}
+\KeywordTok{head}\NormalTok{(data_raw)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -491,7 +510,8 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 \hypertarget{prepare-data}{%
 \subsection{Prepare data}\label{prepare-data}}
 
-An indicator of individual residence at or near a position can be useful when attempting to identify residence patches. Positions can be filtered on a metric such as residence time (Bracis, Bildstein, and Mueller \protect\hyperlink{ref-bracis2018}{2018}).
+First, we filter data where we know the animal spent some time at or near a position, as this is the first step to identify residence patches.
+One way of doing this is to filter out positions with speeds above which the animal is likely to be in transit, but a better way of doing this by filtering on a metric such as residence time (Bracis, Bildstein, and Mueller \protect\hyperlink{ref-bracis2018}{2018}).
 
 \hypertarget{calculate-residence-time}{%
 \subsection{Calculate residence time}\label{calculate-residence-time}}
@@ -539,6 +559,13 @@ From this subset, we construct residence patches using the parameters: \texttt{b
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{a-note-on-summary-statistics}{%
+\subsection*{A note on summary statistics}\label{a-note-on-summary-statistics}}
+\addcontentsline{toc}{subsection}{A note on summary statistics}
+
+Users specifying a \texttt{summary\_variable} should make sure that the variable for which they want a summary statistic is present in the data.
+For instance, requesting mean speed by passing \texttt{summary\_variable\ =\ "speed"} and \texttt{summary\_function\ =\ "mean"} to \texttt{atl\_res\_patch}, should make sure that their data includes a column called \texttt{speed}.
+
 \hypertarget{get-spatial-and-summary-objects}{%
 \subsection{Get spatial and summary objects}\label{get-spatial-and-summary-objects}}
 
@@ -562,6 +589,12 @@ We use a buffer radius here of 20 metres for the spatial buffer, despite using a
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+At this stage, users have successfully pre-processed their data from raw positions to residence patches.
+Residence patches are essentially \texttt{sf} objects and can be visualised using the \texttt{sf} method for \texttt{plot}; for instance \texttt{plot(patch\_sf\_data)}.
+Further sections reproduce the analyses in the main manuscript.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \hypertarget{prepare-to-plot-data}{%
 \subsection{Prepare to plot data}\label{prepare-to-plot-data}}
@@ -700,8 +733,8 @@ We run a simple linear model.
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{plot-figure-7}{%
-\section{Plot figure 7}\label{plot-figure-7}}
+\hypertarget{main-text-figure-6}{%
+\section{Main text Figure 6}\label{main-text-figure-6}}
 
 Plotting code is not shown in PDF and HTML form, see the \texttt{.Rmd} file.
 
@@ -1176,6 +1209,9 @@ Constructing residence patches for multiple individuals over multiple activity p
 \hypertarget{refs}{}
 \leavevmode\hypertarget{ref-barraquand2008}{}%
 Barraquand, Frédéric, and Simon Benhamou. 2008. ``Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.'' \emph{Ecology} 89 (12): 3336--48. \url{https://doi.org/10.1890/08-0162.1}.
+
+\leavevmode\hypertarget{ref-beardsworth2021}{}%
+Beardsworth, Christine E., Evy Gobbens, Frank van Maarseveen, Bas Denissen, Anne Dekinga, Ran Nathan, Sivan Toledo, and Allert I. Bijleveld. 2021. ``Validating a High-Throughput Tracking System: ATLAS as a Regional-Scale Alternative to GPS.'' \emph{bioRxiv}, February, 2021.02.09.430514. \url{https://doi.org/10.1101/2021.02.09.430514}.
 
 \leavevmode\hypertarget{ref-bijleveld2016}{}%
 Bijleveld, Allert Imre, Robert B MacCurdy, Ying-Chi Chan, Emma Penning, Richard M. Gabrielson, John Cluderay, Erik L. Spaulding, et al. 2016. ``Understanding Spatial Distributions: Negative Density-Dependence in Prey Causes Predators to Trade-Off Prey Quantity with Quality.'' \emph{Proceedings of the Royal Society B: Biological Sciences} 283 (1828): 20151557. \url{https://doi.org/10.1098/rspb.2015.1557}.
