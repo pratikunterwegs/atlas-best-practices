@@ -51,7 +51,7 @@ Users can use this special syntax, and will find it convenient with practice, bu
 
 First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.
 
-```{r}
+```{r eval=TRUE}
 # for data handling
 library(data.table)
 library(atlastools)
@@ -74,7 +74,7 @@ First we access the data from a local file using the `data.table` package [@dowl
 We look at the first few rows, using `head()`.
 We then visualise the raw data.
 
-```{r}
+```{r, eval=TRUE}
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
