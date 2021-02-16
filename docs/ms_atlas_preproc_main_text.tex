@@ -259,7 +259,7 @@ Users are advised to visualise their data throughout their workflow to check for
 
 To demonstrate the pipeline, we simulated a realistic movement track of 5,000 positions (unbiased correlated velocity model; UCVM) using the \texttt{R} package \texttt{smoove} \citep[][see Fig. 2.a]{gurarie2017}.
 We added three kinds of error to the simulated track: (1) normally distributed small-scale offsets to the X and Y coordinates independently, (2) normally distributed large-scale offsets to a random subset (0.5 \%) of the positions, and (3) large-scale displacement of a continuous sequence of 300 of the 5,000 positions (indices 500 -- 800) (Fig. 2.a).
-To demonstrate the residence patch method, we chose to simulate three independent rotational/advective correlated velocity movement (RACVM) tracks of 500 positions each ($\omega$ = 7, initial velocity = 0.1, $\mu$ = 0; see Gurarie et al. 2017), and connected them together with a roughly linear path (see Fig. 5.a).
+To demonstrate the residence patch method, we chose to simulate three independent rotational-advective correlated velocity movement (RACVM) tracks of 500 positions each ($\omega$ = 7, initial velocity = 0.1, $\mu$ = 0; see Gurarie et al. 2017), and connected them together with a roughly linear path (see Fig. 5.a).
 RACVM models approximate the tracks of soaring birds which circle on thermals over a relatively small area, and move between thermals \citep[`thermalling'; ][]{gurarie2017, harel2016}.
 This complex track structure provides a suitable challenge for the residence patch method and helps to demonstrate its generality.
 
@@ -412,7 +412,7 @@ filtered_data <- atl_filter_covariates(
 
 Sometimes, entire subsets of the track may be affected by the same large-scale location-error.
 For instance, multiple consecutive positions may be roughly translated (geometrically) away from the real track and form `prolonged spikes', or `reflections' (see Fig. 2.b).
-These cannot be corrected by targeted removal of individual positions, as in Bjorneraas and colleagues' approach (2010), since there are no positions with both high incoming and outgoing speeds.
+These cannot be corrected by targeted removal of individual positions, as in Bjørneraas and colleagues' approach (2010), since there are no positions with both high incoming and outgoing speeds.
 Since filtering individual positions will not suffice, algorithms to correct such errors must take a track-level view, and target the displaced sequence overall.
 Track-subset algorithms are likely to be system-specific, and may be challenging to conceptualise or implement.
 In the case of prolonged spikes, one relatively simple solution is identifying the bounds of displaced segments, and removing positions between them.
@@ -505,8 +505,7 @@ We caution users that thinning causes an extensive loss of small-scale detail in
 
 Both aggregation and resampling have their relative advantages. 
 The aggregation method is less sensitive to selecting point outliers by chance than resampling.
-However, when users want to account for location-error with methods such as state-space models \citep{jonsen2003, jonsen2005, johnson2008}, or continuous time movement models \citep{fleming2014a, noonan2019, gurarie2017, calabrese2016, fleming2020}, correctly propagating the location-error is important, and resampling
-directly propagates these errors without further processing.
+However, when users want to account for location-error with methods such as state-space models \citep{jonsen2003, jonsen2005, johnson2008}, or continuous time movement models \citep{fleming2014a, noonan2019, gurarie2017, calabrese2016, fleming2020}, correctly propagating the location-error is important, and resampling directly propagates these errors without further processing.
 % In reverse-GPS systems systems the location-error is calculated from the variance-covariance matrix of the coordinates of candidate positions considered by the location solver \citep{weiser2016}; this is equivalent to GPS systems' HDOP \citep{ranacher2016}.
 In the aggregation method, the location-error around each coordinate provided by either GPS or reverse-GPS system can be propagated to the averaged position as the sum of errors divided by the square of the number of observations contributing to each average ($N$):
 \begin{linenomath*}
@@ -523,7 +522,7 @@ Similarly, the overall location-error estimate for the average of $N$ positions 
 
 Users may question why thinning, which can obtain consensus positions over an interval and also reduce data-volumes should not be used directly on the raw data.
 %%
-We caution that thinning prior to excluding unrealistic movement and smoothing (Fig 4.b) can lead to preserving artefacts in the data, and estimates of essential metrics --- such as speed --- that are substantially different from the true value (Noonan et al. 2019; see Fig. 4.c).
+We caution that thinning prior to excluding unrealistic movement and smoothing (Fig 4.b) can lead to preserving artefacts in the data, and estimates of essential metrics --- such as speed --- that are substantially different from the true value \citep[see Fig. 4.c;][]{noonan2019}.
 In our example for instance, the data with errors included would have to be thinned to \sfrac{1}{30}\textsuperscript{th} of its volume for the median speed to be correctly estimated; an undesirable step if the aim is fine-scale tracking (Fig. 4.c).
 The mis-estimation of track metrics could have knock-on consequences for the implementation of subsequent filters based on detecting unrealistic movement.
 However, thinning before data-cleaning may have its place as a useful step before exploratory visualisation of the movement track, since reduced data-volumes are easier to handle for plotting software.
@@ -536,7 +535,7 @@ Thinning is implemented in \texttt{atlastools} using the \texttt{atl\_thin\_data
 % Due to its development for ATLAS systems, the `aggregate' assumes the variance around coordinates is named \texttt{VARX} and \texttt{VARY}, and standard deviation around each position is named \texttt{SD}.
 % These columns must be present together for the function to correctly handle the error.
 % If there is no measure of error, the function simply returns the averaged position and covariates in each time interval.
-Grouping variables' names (such as animal identity) may be passed as a character vector to the \texttt{id\_columns} argument (Listing 5).
+Grouping variable names (such as animal identity) may be passed as a character vector to the \texttt{id\_columns} argument (Listing 5).
 
 \begin{lstlisting}[float, language=R, style=customR, caption = {Code to thin data by aggregation in \texttt{atlastools}. The method can be either "aggregate" or "resample". 
 The time interval is specified in seconds, while the \texttt{id\_columns} allows a character vector of column names to be passed to the function, with these columns used as identity variables.
