@@ -5,7 +5,7 @@
 ## remotes::install_github("pratikunterwegs/atlastools")
 
 
-## -----------------------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 # for data handling
 library(data.table)
 library(atlastools)
@@ -22,7 +22,7 @@ pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
 
 
-## -----------------------------------------------------------------------------
+## ---- eval=TRUE---------------------------------------------------------------
 # read and plot example data
 data <- fread("data/atlas1060_allTrials_annotated.csv")
 data_raw <- copy(data)
