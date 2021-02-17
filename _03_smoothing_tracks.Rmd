@@ -39,7 +39,7 @@ data_errors[, window_size := 0]
 
 ## Median Smoothing
 
-We apply a median smooth with four different values of $K$, the moving window size --- 3, 5, 11, and 21 positions.
+We apply a median smooth with four different values of $K$, the moving window size --- 5, 11, 21 and 101 positions.
 $K$ must be an odd number, but apart from that there is no correct magnitude of $K$.
 Very large $K$ will lead to unrealistic tracks, while small $K$ will not result in much reduction of error.
 Users are encouraged to plot their data before and after smoothing to examine the effect of different window sizes.
@@ -64,8 +64,6 @@ list_of_smooths <- lapply(c(5, 11, 21, 101), function(K) {
 ```
 
 We save the 11 point smoothed data.
-
-![](figures/fig_04_median_smooth.png)
 
 ```{r}
 fwrite(list_of_smooths[[2]], file = "data/data_smooth.csv")
