@@ -48,7 +48,7 @@ The `atlastools` function `atl_median_smooth` is quite fast and users can readil
 
 ```{r}
 # smooth the data over four K values
-list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
+list_of_smooths <- lapply(c(5, 11, 21, 101), function(K) {
   data_copy <- copy(data_errors)
 
   data_copy <- atl_median_smooth(
@@ -68,7 +68,7 @@ We save the 11 point smoothed data.
 ![](figures/fig_04_median_smooth.png)
 
 ```{r}
-fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
+fwrite(list_of_smooths[[2]], file = "data/data_smooth.csv")
 ```
 
 We prepare the data for plotting.
@@ -201,27 +201,27 @@ figure_median_smooth <-
     data = data_plot,
     aes(x, y,
       group = window_size,
-      col = window_size
+      col = factor(window_size)
     ),
     show.legend = F,
-    lwd = 0.3
+    lwd = 0.35
   ) +
   coord_equal(
     expand = F,
-    ylim = c(0.6, 0.85),
+    ylim = c(0.6, 0.83),
     xlim = c(NA, 2.3),
     ratio = 1.75
   ) +
   annotate(
     geom = "text",
     x = c(0.75, seq(1.1, 2, length.out = 4)),
-    y = 0.82,
+    y = 0.81,
     label = sprintf("(%s)", letters[seq(5)]),
     fontface = "bold"
   ) +
-  scale_colour_distiller(
-    palette = "BuPu", direction = 1,
-    values = c(-2, 1)
+  scale_colour_manual(
+    values = c(colorspace::sequential_hcl(3, l = 40, palette = "PuBu",
+                                          rev = T), "sienna")
   ) +
   ggthemes::theme_few() +
   theme(
