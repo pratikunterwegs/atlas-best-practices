@@ -23,7 +23,7 @@ data_errors[, window_size := 0]
 
 ## -----------------------------------------------------------------------------
 # smooth the data over four K values
-list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
+list_of_smooths <- lapply(c(5, 11, 21, 101), function(K) {
   data_copy <- copy(data_errors)
 
   data_copy <- atl_median_smooth(
@@ -39,7 +39,7 @@ list_of_smooths <- lapply(c(3, 5, 11, 21), function(K) {
 
 
 ## -----------------------------------------------------------------------------
-fwrite(list_of_smooths[[3]], file = "data/data_smooth.csv")
+fwrite(list_of_smooths[[2]], file = "data/data_smooth.csv")
 
 
 ## -----------------------------------------------------------------------------
@@ -165,27 +165,29 @@ figure_median_smooth <-
     data = data_plot,
     aes(x, y,
       group = window_size,
-      col = window_size
+      col = factor(window_size)
     ),
     show.legend = F,
-    lwd = 0.3
+    lwd = 0.35
   ) +
   coord_equal(
     expand = F,
-    ylim = c(0.6, 0.85),
+    ylim = c(0.6, 0.83),
     xlim = c(NA, 2.3),
     ratio = 1.75
   ) +
   annotate(
     geom = "text",
     x = c(0.75, seq(1.1, 2, length.out = 4)),
-    y = 0.82,
+    y = 0.81,
     label = sprintf("(%s)", letters[seq(5)]),
     fontface = "bold"
   ) +
-  scale_colour_distiller(
-    palette = "BuPu", direction = 1,
-    values = c(-2, 1)
+  scale_colour_manual(
+    values = c(colorspace::sequential_hcl(3,
+      l = 40, palette = "PuBu",
+      rev = T
+    ), "sienna")
   ) +
   ggthemes::theme_few() +
   theme(
@@ -343,14 +345,16 @@ fig_agg_speed <-
       y = 1 + speed
     ),
     fill = pal[3],
+    size = 0.3,
     show.legend = F,
     width = 0.25,
     outlier.size = 0.2,
-    position = position_nudge(x = 0.25)
+    position = position_nudge(x = 0.15)
   ) +
   geom_boxplot(aes(factor(interval), 1 + speed),
-    position = position_nudge(x = -0.25, ),
+    position = position_nudge(x = -0.15, ),
     fill = "grey",
+    size = 0.3,
     alpha = 0.5,
     show.legend = F,
     width = 0.25,
@@ -375,7 +379,7 @@ fig_agg_speed <-
 fig_aggregate <-
   wrap_plots(
     fig_agg_data_smooth, fig_agg_data_error, fig_agg_speed,
-    design = "AABBC"
+    design = "AABBCC"
   ) +
     plot_annotation(
       tag_levels = "a",
