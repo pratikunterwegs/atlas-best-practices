@@ -191,7 +191,7 @@ While gross errors are often removed by positioning-system algorithms, ‘reason
 Further, as high-throughput tracking is deployed in more regions and for more species, standardised pre-processing steps should be general enough to tackle animal movement data recovered from a range of environments, so as to enable sound comparisons across species and ecosystems.
 
 Despite the importance and ubiquity of reducing location errors in tracking data, movement ecologists lack formal guidance on this crucial step.
-Pre-processing protocols are not often reported in the literature, or may not be easily tractable for mainstream computing hardware and software. Although GPS tracking data are autonomously pre-processed without allowing access to the raw data (REF), substantial location errors could still exist. For other tracking technologies, the availability of raw data enables the researcher to better control the data processing stage, and to substantially improve data quality without extrapolating beyond the relevant range.     
+Pre-processing protocols are not often reported in the literature, or may not be easily tractable for mainstream computing hardware and software. Although GPS tracking data are autonomously pre-processed without allowing access to the raw data \citep{kaplan2005}, substantial location errors could still exist. For other tracking technologies, the availability of raw data enables the researcher to better control the data processing stage, and to substantially improve data quality without extrapolating beyond the relevant range.     
 Furthermore, filtering out positions on their location error estimates may not be appropriate for outliers which represent unrealistic movement but have low error measures \citep{weiser2016, ranacher2016}.
 This makes identifying and removing biologically implausible locations from a track an important component of recovering true animal movement \citep{bjorneraas2010}.
 Even after removing unrealistic movement, a track may comprise of positions that are distributed around the true animal location \citep{noonan2019}.
@@ -258,7 +258,7 @@ Users are advised to visualise their data throughout their workflow to check for
 To demonstrate the pipeline, we simulated a realistic movement track of 5,000 positions (unbiased correlated velocity model; UCVM) using the \texttt{R} package \texttt{smoove} \citep[][see Fig. 2.a]{gurarie2017}.
 We added three kinds of error to the simulated track: (1) normally distributed small-scale offsets to the X and Y coordinates independently, (2) normally distributed large-scale offsets to a random subset (0.5 \%) of the positions, and (3) large-scale displacement of a continuous sequence of 300 of the 5,000 positions (indices 500 -- 800) (Fig. 2.a).
 To demonstrate the residence patch method, we chose to simulate three independent rotational-advective correlated velocity movement (RACVM) tracks of 500 positions each ($\omega$ = 7, initial velocity = 0.1, $\mu$ = 0; see Gurarie et al. 2017), and connected them together with a roughly linear path (see Fig. 5.a).
-RACVM models approximate the tracks of soaring birds which circle on thermals over a relatively small area, and move between thermals \citep[`thermalling'; ][]{gurarie2017, harel2016}.
+RACVM models approximate the tracks of soaring birds which circle on thermals over a relatively small area, and move between thermals \citep[`thermalling'; ][]{gurarie2017, harel2016,harel2018}.
 This complex track structure provides a suitable challenge for the residence patch method and helps to demonstrate its generality.
 
 \section{Spatio-Temporal Filtering}
@@ -698,7 +698,7 @@ We constructed residence patches with a buffer distance of 25m, a spatial indepe
 We extracted summary data and spatial polygons from the constructed residence patches.
 Plotting the bats' residence patches and the linear paths between them showed that though all three bats roosted at the same site, they used distinct areas of the study site (Fig. 7.a).
 Bats tended to show prolonged residence near known food sources (fruit trees), travelling repeatedly between previously visited areas (Fig. 7.b).
-However, bats also appeared to spend some time at locations where no fruit trees were recorded (Fig. 7.b, 7.c), in line with previous evidence for their use of trees to rest, to handle and digest food, and presumably for sexual or social reasons (REF).
+However, bats also appeared to spend some time at locations where no fruit trees were recorded (Fig. 7.b, 7.c), in line with previous evidence for their use of trees to rest, to handle and digest food, and presumably for sexual or social reasons \citep{tsoar2010}.
 Bats occurring close together did not have strongly overlapping residence patches, and their paths to and from area of co-occurrence were different (Fig. 7.a, 7.c).
 Constructing residence patches for multiple individuals over multiple nights suggests interesting dynamics of within- and between-individual overlap.
 
