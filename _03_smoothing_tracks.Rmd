@@ -401,14 +401,16 @@ fig_agg_speed <-
       y = 1 + speed
     ),
     fill = pal[3],
+    size = 0.3,
     show.legend = F,
     width = 0.25,
     outlier.size = 0.2,
-    position = position_nudge(x = 0.25)
+    position = position_nudge(x = 0.15)
   ) +
   geom_boxplot(aes(factor(interval), 1 + speed),
-    position = position_nudge(x = -0.25, ),
+    position = position_nudge(x = -0.15, ),
     fill = "grey",
+    size = 0.3,
     alpha = 0.5,
     show.legend = F,
     width = 0.25,
@@ -433,7 +435,7 @@ fig_agg_speed <-
 fig_aggregate <-
   wrap_plots(
     fig_agg_data_smooth, fig_agg_data_error, fig_agg_speed,
-    design = "AABBC"
+    design = "AABBCC"
   ) +
     plot_annotation(
       tag_levels = "a",
