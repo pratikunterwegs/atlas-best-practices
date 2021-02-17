@@ -187,7 +187,7 @@ figure_median_smooth <-
     values = c(colorspace::sequential_hcl(3,
       l = 40, palette = "PuBu",
       rev = T
-    ), "sienna")
+    ), "darkred")
   ) +
   ggthemes::theme_few() +
   theme(
