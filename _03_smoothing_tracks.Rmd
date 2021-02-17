@@ -218,8 +218,10 @@ figure_median_smooth <-
     fontface = "bold"
   ) +
   scale_colour_manual(
-    values = c(colorspace::sequential_hcl(3, l = 40, palette = "PuBu",
-                                          rev = T), "sienna")
+    values = c(colorspace::sequential_hcl(3,
+      l = 40, palette = "PuBu",
+      rev = T
+    ), "darkred")
   ) +
   ggthemes::theme_few() +
   theme(
