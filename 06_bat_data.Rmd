@@ -32,7 +32,7 @@ library(recurse)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
-```{r install_atlastools, eval=TRUE}
+```{r install_atlastools_2, eval=TRUE}
 install.packages("remotes")
 
 # installation using remotes
