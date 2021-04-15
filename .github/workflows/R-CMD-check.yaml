@@ -66,9 +66,10 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          remotes::install_cran("bookdown")
         shell: Rscript {0}
 
-      - name: Run Examples
+      - name: Run Workflows
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: bookdown::render_book("index.Rmd")
