@@ -2,6 +2,7 @@
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287462.svg)](https://doi.org/10.5281/zenodo.4287462)
+[![Paper Workflows](https://github.com/pratikunterwegs/atlastools/workflows/Check-Paper-Workflows/badge.svg)](https://github.com/pratikunterwegs/atlas-best-practices/actions)
 
 
 This is source code for a manuscript that sets out a pipeline for pre-processing data from ATLAS systems, but which can be applied to any high-throughput tracking data.
