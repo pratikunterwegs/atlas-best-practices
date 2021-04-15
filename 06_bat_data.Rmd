@@ -32,6 +32,13 @@ library(recurse)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
+```{r install_atlastools, eval=TRUE}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+```
+
 ## Read bat data
 
 Read the bat data from an `SQLite` database local file and convert to a plain text csv file.
