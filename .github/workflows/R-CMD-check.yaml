@@ -8,7 +8,7 @@ on:
     branches:
       - master
 
-name: R-CMD-check
+name: Check-Paper-Workflows
 
 jobs:
   R-CMD-check:
@@ -68,12 +68,10 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
-      - name: Check
+      - name: Run Examples
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: |
-          options(crayon.enabled = TRUE)
-          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+        run: bookdown::render_book("index.Rmd")
         shell: Rscript {0}
 
       - name: Upload check results
