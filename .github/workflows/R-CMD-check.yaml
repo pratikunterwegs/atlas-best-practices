@@ -68,6 +68,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("bookdown")
           remotes::install_cran("tinytex")
+          tinytex::install_tinytex()
           remotes::install_cran("renv")
           renv::restore()
         shell: Rscript {0}
