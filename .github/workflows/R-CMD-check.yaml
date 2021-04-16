@@ -67,6 +67,8 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("bookdown")
+          remotes::install_cran("renv")
+          renv::restore()
         shell: Rscript {0}
 
       - name: Run Workflows
