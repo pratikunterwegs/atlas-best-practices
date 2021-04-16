@@ -579,7 +579,8 @@ st_crs(data_spatials) <- st_crs(2039)
 
 ```{r}
 st_write(data_spatials,
-  dsn = "data/data_bat_residence_patches.gpkg"
+  dsn = "data/data_bat_residence_patches.gpkg",
+  append = FALSE
 )
 ```
 
