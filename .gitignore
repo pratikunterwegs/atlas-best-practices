@@ -40,10 +40,10 @@ vignettes/*.pdf
 
 # large data
 data/*large*
-data/*atlas*
+!data/*atlas*
 
 # bat data
 data/*bat*.csv
-data/*bat*.sql
-data/Roosts.csv
-data/*trees*
+!data/*bat*.sql
+!data/Roosts.csv
+!data/*trees*

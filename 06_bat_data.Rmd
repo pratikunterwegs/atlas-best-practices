@@ -32,6 +32,13 @@ library(recurse)
 pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
+```{r install_atlastools_2, eval=TRUE}
+install.packages("remotes")
+
+# installation using remotes
+remotes::install_github("pratikunterwegs/atlastools")
+```
+
 ## Read bat data
 
 Read the bat data from an `SQLite` database local file and convert to a plain text csv file.
@@ -485,7 +492,7 @@ data_residence <- rbindlist(data_residence)
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r echo=FALSE, eval=TRUE}
 # not shown or mentioned
 fig_bat_res_timeseries <-
   ggplot() +
@@ -572,7 +579,8 @@ st_crs(data_spatials) <- st_crs(2039)
 
 ```{r}
 st_write(data_spatials,
-  dsn = "data/data_bat_residence_patches.gpkg"
+  dsn = "data/data_bat_residence_patches.gpkg",
+  append = FALSE
 )
 ```
 
