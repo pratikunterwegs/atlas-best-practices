@@ -33,7 +33,9 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 ```
 
 ```{r install_atlastools_2, eval=TRUE}
-install.packages("remotes")
+if (!require(remotes)) {
+  install.packages("remotes", repos = "http://cran.us.r-project.org")
+}
 
 # installation using remotes
 remotes::install_github("pratikunterwegs/atlastools")

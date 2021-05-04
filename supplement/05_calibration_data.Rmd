@@ -27,7 +27,9 @@ We thin the data to a 30 second interval leaving 1,803 positions (4.8\% position
 It can be installed using `remotes` or `devtools`. Here we use the `remotes` function `install_github`.
 
 ```{r install_atlastools, eval=TRUE}
-install.packages("remotes")
+if (!require(remotes)) {
+  install.packages("remotes", repos = "http://cran.us.r-project.org")
+}
 
 # installation using remotes
 remotes::install_github("pratikunterwegs/atlastools")
