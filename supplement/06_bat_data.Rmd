@@ -492,7 +492,7 @@ data_residence <- rbindlist(data_residence)
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
-```{r echo=FALSE, eval=FALSE}
+```{r echo=FALSE, eval=TRUE}
 # not shown or mentioned
 fig_bat_res_timeseries <-
   ggplot() +
@@ -579,7 +579,8 @@ st_crs(data_spatials) <- st_crs(2039)
 
 ```{r}
 st_write(data_spatials,
-  dsn = "data/data_bat_residence_patches.gpkg"
+  dsn = "data/data_bat_residence_patches.gpkg",
+  append = FALSE
 )
 ```
 
