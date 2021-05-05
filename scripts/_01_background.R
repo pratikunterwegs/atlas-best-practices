@@ -110,4 +110,3 @@ setorder(data_move, time)
 
 # save data
 fwrite(data_move, "data/data_for_res_patch.csv")
-

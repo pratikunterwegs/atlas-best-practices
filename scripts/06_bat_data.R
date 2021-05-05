@@ -472,4 +472,3 @@ fwrite(
   patch_summary,
   "data/data_bat_patch_summary.csv"
 )
-

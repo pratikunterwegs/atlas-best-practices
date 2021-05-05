@@ -1,6 +1,6 @@
 ## ----install_atlastools, eval=FALSE-------------------------------------------
 ## install.packages("remotes")
-## 
+##
 ## # installation using remotes
 ## remotes::install_github("pratikunterwegs/atlastools")
 
@@ -668,4 +668,3 @@ ggsave(figure_res_patch,
   filename = "figures/fig_06_calib_residence_patch.png",
   height = 170, width = 170, units = "mm"
 )
-

@@ -205,4 +205,3 @@ ggsave(fig_residence_patch,
   filename = "figures/fig_05_residence.png",
   height = 170, width = 150, units = "mm"
 )
-

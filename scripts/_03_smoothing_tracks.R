@@ -1,16 +1,4 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-
-# Reducing Small-Scale Error and Aggregating Data
-
-## Preparing Libraries and Data
-
-We first load some useful packages and define a colour palette.
-
-```{r}
+## -----------------------------------------------------------------------------
 # prep libs
 library(data.table)
 library(atlastools)
@@ -20,13 +8,9 @@ library(patchwork)
 # define a four colour palette
 pal <- RColorBrewer::brewer.pal(5, "Set1")
 pal[3] <- "seagreen"
-```
 
-We load both the simulated, canonical data (which has no errors), as well as the data with errors which has been pre-processed to remove large-scale errors.
 
-We also assign a variable, `window_size`, which will help identify the datasets when comparing median smooth moving window ($K$) sizes.
-
-```{r read_sim_data_2}
+## ----read_sim_data_2----------------------------------------------------------
 # read in the data and set the window size variable
 data <- fread("data/data_sim.csv")[5000:10000, ]
 data[, window_size := NA]
@@ -35,18 +19,9 @@ data$speed_in <- atl_get_speed(data)
 # data with small scale errors but no reflections or outliers
 data_errors <- fread("data/data_no_reflection.csv")
 data_errors[, window_size := 0]
-```
 
-## Median Smoothing
 
-We apply a median smooth with four different values of $K$, the moving window size --- 5, 11, 21 and 101 positions.
-$K$ must be an odd number, but apart from that there is no correct magnitude of $K$.
-Very large $K$ will lead to unrealistic tracks, while small $K$ will not result in much reduction of error.
-Users are encouraged to plot their data before and after smoothing to examine the effect of different window sizes.
-
-The `atlastools` function `atl_median_smooth` is quite fast and users can readily try multiple $K$ values as shown in the example below.
-
-```{r}
+## -----------------------------------------------------------------------------
 # smooth the data over four K values
 list_of_smooths <- lapply(c(5, 11, 21, 101), function(K) {
   data_copy <- copy(data_errors)
@@ -61,17 +36,13 @@ list_of_smooths <- lapply(c(5, 11, 21, 101), function(K) {
 
   data_copy[, window_size := K]
 })
-```
 
-We save the 11 point smoothed data.
 
-```{r}
+## -----------------------------------------------------------------------------
 fwrite(list_of_smooths[[2]], file = "data/data_smooth.csv")
-```
 
-We prepare the data for plotting.
 
-```{r}
+## -----------------------------------------------------------------------------
 # bind list after offset
 data_plot <- mapply(function(df, offset) {
   df <- copy(df)
@@ -96,11 +67,9 @@ data_errors <- lapply(
 
 # bind list
 data_errors <- rbindlist(data_errors)
-```
 
-## Histogram of speeds after smoothing
 
-```{r}
+## -----------------------------------------------------------------------------
 pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
 
 fig_hist_smooth <-
@@ -165,12 +134,9 @@ fig_hist_smooth <-
     fill = "Smoothing",
     title = "(f)"
   )
-```
 
 
-We prepare a plot of the smoothed data.
-
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # prepare data to plot
 # make list of data to plot
 figure_median_smooth <-
@@ -234,15 +200,9 @@ ggsave(figure_median_smooth,
   filename = "figures/fig_03_median_smooth.png",
   width = 170, height = 170 / 3, units = "mm"
 )
-```
 
-## Thinning Data by Aggregation
 
-Evenly thinning data is a good idea if statistical methods require even sampling, or if the volume of data is too large for statistical packages to efficiently handle it. In `R`, both may be true at once.
-
-Here, we demonstrate thinning by aggregation on data that has been median smoothed using a $K$ of 11.
-
-```{r}
+## -----------------------------------------------------------------------------
 # choose the 11 point median smooth data
 data_agg <- fread("data/data_smooth.csv")
 
@@ -273,11 +233,9 @@ speed_agg_smooth <-
 
 # bind
 speed_agg_smooth <- rbindlist(speed_agg_smooth)
-```
 
-### Plot of aggregation after smoothing
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # prepare data
 data_agg_smooth <- copy(list_of_agg[[3]]) # 30s aggregate
 ### plot figures
@@ -308,21 +266,9 @@ fig_agg_data_smooth <-
     axis.title = element_blank()
   ) +
   coord_cartesian(ylim = c(0.6, NA))
-```
 
 
-## Aggregation Before Reducing Positioning Errors
-
-Users may rightly wonder whether they can get away with aggregating their data, using a median aggregation function, and reduce data volumes, correct uneven sampling frequency, and reduce large-scale errors all in one go.
-
-The answer to most questions in ecology is, "It depends". Median aggregation before correcting positioning errors can indeed be advantageous; for instance for faster visualisation while preserving the broad structure of a track.
-
-However, there are drawbacks. The main one is that information is lost in the aggregation process, lending less power to steps such as smoothing applied after aggregation.
-Further, aggregation (and indeed any kind of thinning) results in significantly different estimates of speed and distance from the real speed.
-
-We show the effect of aggregating before any error correction here.
-
-```{r}
+## -----------------------------------------------------------------------------
 # read data with errors
 data_errors <- fread("data/data_errors.csv")
 
@@ -340,11 +286,9 @@ list_of_agg_errors <- lapply(c(3, 10, 30, 120), function(z) {
 
 # get real speed
 data[, speed := atl_get_speed(data)]
-```
 
-### Figure aggregation before smoothing
 
-```{r echo=FALSE}
+## ----echo=FALSE---------------------------------------------------------------
 # prepare data
 data_agg_error <- copy(list_of_agg_errors[[3]]) # 30s aggregate
 ### plot figures
@@ -375,16 +319,14 @@ fig_agg_data_error <-
     axis.title = element_blank()
   ) +
   coord_cartesian(ylim = c(0.6, NA))
-```
 
-### Comparing median aggregation with and without smoothing
 
-```{r}
+## -----------------------------------------------------------------------------
 # now plot distribution of speed
 data_agg <- rbindlist(list_of_agg_errors)
-```
 
-```{r echo=FALSE}
+
+## ----echo=FALSE---------------------------------------------------------------
 # show boxplot of speed
 fig_agg_speed <-
   ggplot(data_agg) +
@@ -430,9 +372,9 @@ fig_agg_speed <-
     x = "Interval (s)",
     y = "Speed"
   )
-```
 
-```{r echo=FALSE}
+
+## ----echo=FALSE---------------------------------------------------------------
 # make combined figure
 fig_aggregate <-
   wrap_plots(
@@ -451,12 +393,3 @@ ggsave(fig_aggregate,
   filename = "figures/fig_04_thinning.png",
   width = 170, height = 85, units = "mm"
 )
-```
-
-![](figures/fig_04_thinning.png)
-
-Thinning a movement track using median aggregation preserves track structure, but affects essential track metrics such as speed.
-**(a, b)** Movement tracks with a canonical interval of 1s aggregated over intervals of **(a)** 10 and **(b)** 30 seconds, without removing large- or small-scale positioning errors. All symbols represent positions in the aggregated track, with the size of the symbol representing the standard deviation at each position.
-Blue crosses represent positions with speed $\leq$ the 95^th percentile of canonical speeds, while red triangles represent positions with speed $\geq$ 95^th percentile of canonical speeds.
-**(c)** Boxplot of instantaneous speeds after median aggregation of a 1s interval track over intervals of 3, 10, 30, and 120 seconds, but without the removal of positioning errors. The mean and 95^th percentile of speed in the canonical track are shown as solid and dashed lines, respectively. 
-Aggregation without reducing positioning errors can result in speed estimates that are substantially different from the true speed.

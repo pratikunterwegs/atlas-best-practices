@@ -327,4 +327,3 @@ ggsave(figure_01,
 
 ## -----------------------------------------------------------------------------
 fwrite(data_no_reflection, file = "data/data_no_reflection.csv")
-

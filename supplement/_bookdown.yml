@@ -5,8 +5,9 @@ output:
   # pdf_document: 
   #   geometry: "margin=1in"
 delete_merged_file: true
-before_chapter_script: "common.r"
-output_dir: "docs"
+before_chapter_script: "supplement/common.r"
+rmd_subdir: "supplement/"
+output_dir: "../docs"
 language:
   ui:
     chapter_name: "Section "
