@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # remove old tex files and pdfs
 cd docs
 rm *.pdf
@@ -16,7 +15,7 @@ Rscript --vanilla --slave -e 'styler::style_dir("supplement", filetype = "Rmd", 
 Rscript --vanilla --slave -e 'bookdown::render_book("supplement/index.rmd", "bookdown::pdf_document2", output_dir = "docs", config_file = "supplement/_bookdown.yml")'
 
 # to render source files
-Rscript --slave -e 'lapply(list.files(pattern = "supplement\/\\d{2}\\w+.Rmd"), function(x) knitr::purl(x, output = sprintf("R/%s", gsub(".{4}$", ".R", x))))'
+Rscript --slave -e 'lapply(list.files(pattern = "supplement\\/\\d{2}\\w+.Rmd"), function(x) knitr::purl(x, output = sprintf("R/%s", gsub(".{4}$", ".R", x))))'
 
 # copy pdfs and name correctly
 cp -p atlas-manuscript/arxiv_article.pdf docs/ms_atlas_preproc_main_text_`date -I`.pdf
