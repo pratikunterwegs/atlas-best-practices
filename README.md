@@ -36,7 +36,7 @@ Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_mat
 - 06_bat_data.R: Shows a fully worked out example of pre-processing ATLAS tracking data from fruit bats in the Hula Valley, Israel, which forms the main text section _Worked out Example on Animal Tracking Data_.
 Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Processing Egyptian Fruit Bat Tracks_.
 
-- `srtm_hula.ipynb`: A Jupyter notebook with Python code to retrieve SRTM 30m resolution data for the Hula Valley Israel.
+- 0x_get_srtm_hula.py`: Python code to retrieve SRTM 30m resolution data for the Hula Valley, Israel.
 This is used solely as a background for Figure 8 in the main text.
 
 - helper_functions.R: Script with helpful functions to simulate errors in data.
