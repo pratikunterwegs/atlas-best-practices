@@ -8,26 +8,26 @@
 
 This is source code for a manuscript that sets out a pipeline for pre-processing data from ATLAS systems, but which can be applied to any high-throughput tracking data.
 
-## Source Code
+## Source Code for Figures and Analyses
 
-Most of the source code may be found in the folder `R`, with numbers indicating the order in which it is to be run.
+Most of the source code may be found in the folder `scripts`, with numbers indicating the order in which it is to be run.
 This source code is generated from the `.Rmd` files in the top-level directory using `knitr::purl`.
 See the `render_books.sh` file for details of the conversion from `.Rmd` to `.R`.
 
-### R/
+### scripts/
 
-- _01_background.R: Simulating data using the `R` package `smoove` for the section _Pipeline Overview, Getting `atlastools`, and Simulating Data_.
+- 01_background.R: Simulating data using the `R` package `smoove` for the section _Pipeline Overview, Getting `atlastools`, and Simulating Data_.
 Simulated data is saved into the `data` folder as `data_sim.csv` (uniform correlated velocity model data), and `data_for_patch.csv` (three rotational/advection correlated velocity model datasets). 
 No seed was set for `data_sim.csv`, but `data_for_res_patch.csv` was generated using a set seed.
 
-- _02_filtering_data.R: Source code for figures that support the sections _Spatio-Temporal Filtering_ and _Filtering to Reduce Location Errors_.
+- 02_filtering_data.R: Source code for figures that support the sections _Spatio-Temporal Filtering_ and _Filtering to Reduce Location Errors_.
 Also adds error to the UCVM dataset (`data_sim.csv`) using functions defined in `R/helper_functions.R`.
 Makes Figures 2 -- 3.
 Writes cleaned data to `data/data_no_reflections.csv`.
 
-- _03_smoothing_tracks.R: Code to make Figures 4 -- 5 in the section _Smoothing and Thinning Data_.
+- 03_smoothing_tracks.R: Code to make Figures 4 -- 5 in the section _Smoothing and Thinning Data_.
 
-- _04_residence_patch.R: Code to make Figure 6 in the section _Synthesising Movement Tracks into Residence Patches_.
+- 04_residence_patch.R: Code to make Figure 6 in the section _Synthesising Movement Tracks into Residence Patches_.
 
 - 05_calibration_data.R: Code for Figure 7 in the main text subsection _Validating the Residence Patch Method_. 
 Shows a fully worked out example of pre-processing ATLAS data, as well as the linear model validating the residence patch method.
@@ -36,40 +36,44 @@ Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_mat
 - 06_bat_data.R: Shows a fully worked out example of pre-processing ATLAS tracking data from fruit bats in the Hula Valley, Israel, which forms the main text section _Worked out Example on Animal Tracking Data_.
 Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Processing Egyptian Fruit Bat Tracks_.
 
-- helper_functions.R: Script with helpful functions to simulate errors in data.
-
-### Top level
-
-- `.Rmd` files corresponding to the `.R` files described above.
-The `xx_references.Rmd` file ensures a _References_ section in Supplementary Material 01.
-
-- `srtm_hula.ipynb`: A Jupyter notebook with Python code to retrieve SRTM 30m resolution data for the Hula Valley Israel.
+- 0x_get_srtm_hula.py`: Python code to retrieve SRTM 30m resolution data for the Hula Valley, Israel.
 This is used solely as a background for Figure 8 in the main text.
 
-- `render_books.sh`: A shell script with helper commands to generate the Supplementary Material and the source code as `R` scripts from the `Rmd` files.
+- helper_functions.R: Script with helpful functions to simulate errors in data.
 
-- `atlas_best_practices.qgz`: A QGIS 3 project file to generate Figure 8 in the main text.
+## Main Text
 
-- `references.bib`: References for the main text and Supplementary Material 01.
-
-- `.git*`: Files for git repository organisation. The submodule `atlas-manuscript` contains the `TEX` source of the main text and is private.
+The main text is also copied from a local source into the `docs/` as a PDF.
 
 ## Supplementary Material
 
 Supplementary Material 01 is rendered into the `docs/` folder as `docs/ms_atlas_preproc_supplementary_material_DATE.pdf`, where `DATE` is the date of rendering.
 The rendering code using the `R` package `bookdown` is run from the shell script `render_books.sh`.
-The `TEX` version is retained as `supplementary_material.tex`.
+
+This material is placed in the `supplement/` folder.
+
+### supplement/
+
+- `.Rmd` files to create the supplementary material, including:
+
+- `render_books.sh`: A shell script with helper commands to generate the Supplementary Material and the source code as `R` scripts from the `Rmd` files.
+
+- `references.bib`: References for the main text and Supplementary Material 01.
+
+The `xx_references.Rmd` file ensures a _References_ section in Supplementary Material 01.
+
+---
 
 Supplementary Material 02 is the PDF manual for the `R` package `atlastools`, which is rendered from the installed version of `atlastools` using `devtools::build_manual`.
 The rendered output is `atlastools_VERSION.pdf`.
 Versioning is not implemented in the naming.
 This command is also run from the shell script `render_books.sh`.
 
-The latest version of `atlastools` may be found at https://github.com/pratikunterwegs/atlastools.
+## Auxiliary Files
 
-## Main Text
+- `atlas_best_practices.qgz`: A QGIS 3 project file to generate Figure 8 in the main text.
 
-The main text is also copied from a local source into the `docs/` as a PDF.
+- `.git*`: Files for git repository organisation. The submodule `atlas-manuscript` contains the `TEX` source of the main text and is private.
 
 ## Data 
 
@@ -109,9 +113,9 @@ Used to make Figure 8 in the main text section _Worked out Example on Animal Tra
 
 All other data are processed forms of the simulated or empirical movement data and not described further.
 
-## Other Directories
+## Figures
 
-Other directories such as `figures/` or `_bookdown_files/` are self-explanatory.
+The figures folder contains the main text, as well as supplementary material figures.
 
 ## `atlastools` Status
 
@@ -120,5 +124,4 @@ Other directories such as `figures/` or `_bookdown_files/` are self-explanatory.
   [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4033154.svg)](https://doi.org/10.5281/zenodo.4033154)
   [![R build status](https://github.com/pratikunterwegs/atlastools/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlastools/actions)
   [![codecov.io](https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master)](https://codecov.io/github/pratikunterwegs/atlastools/branch/master)
-[![R build status](https://github.com/pratikunterwegs/atlas-best-practices/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlas-best-practices/actions)
 <!-- badges: end -->
