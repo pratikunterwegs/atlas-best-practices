@@ -11,7 +11,7 @@ library(ggthemes)
 
 ## -----------------------------------------------------------------------------
 # source helper functions
-source("R/helper_functions.R")
+source("scripts/helper_functions.R")
 
 
 ## ----read_sim_data------------------------------------------------------------
