@@ -76,11 +76,143 @@ setDT(data)
 fwrite(data, file = "data/bat_data.csv")
 ```
 
-## A First Visual Inspection
+## Exploratory Data Analysis
 
-Plot the bat data as a sanity check, and inspect it visually for errors (Fig. 2.1).
+Plot the bat data as a sanity check, and inspect it visually for errors.
 The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the `Rmarkdown` file "06_bat_data.Rmd".
-The saved plot is shown below as Fig. 2.1.
+
+### Heatmap of Locations
+
+```{r summarise_counts}
+data_heatmap = copy(data)
+data_heatmap[, c("xround", "yround") := list(
+  plyr::round_any(X, 200),
+  plyr::round_any(Y, 200)
+)]
+data_heatmap = data_heatmap[, .N, by = c("xround", "yround")]
+```
+
+```{r plot_heatmap}
+fig_heatmap = 
+ggplot(data_heatmap)+
+  geom_tile(
+    aes(
+      xround, yround, fill = N
+    ),
+    colour = "grey",
+    size = 0.1,
+    show.legend = F
+  )+
+  scale_fill_viridis_c(
+    option = "C",
+    direction = -1,
+    trans = "log10"
+  )+
+  ggthemes::theme_few() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank()
+  ) +
+  coord_sf(crs = 2039)
+
+ggsave(fig_heatmap,
+  filename = "supplement/figures/fig_bat_heatmap_raw.png",
+  dpi = 300,
+  width = 6, height = 4
+)
+```
+
+### Sampling Intervals
+
+```{r sampling_interval_check}
+# get intervals per individual
+data_for_intervals = data[,list(lags = list(diff(TIME/1000))), by = "TAG"]
+data_for_intervals = data_for_intervals[,list(lag = unlist(lags, recursive = F)), by = "TAG"]
+
+# make figure
+fig_lags = 
+ggplot(data_for_intervals)+
+  geom_histogram(
+    aes(
+      x = lag / 8
+    ),
+    bins = 15,
+    fill = "grey",
+    col = "black"
+  )+
+  geom_vline(
+    xintercept = 1,
+    col = "red"
+  )+
+  scale_x_log10(
+    labels = function(x) {sprintf("%ix", x)}
+  )+
+  scale_y_sqrt()+
+  ggthemes::theme_few() +
+  theme(
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(
+      face = "bold",
+      size = 16
+    ),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(
+      face = "bold",
+      size = 16
+    )
+  )+
+  labs(x = "Sampling interval")
+
+# save to figures
+ggsave(fig_lags,
+  filename = "supplement/figures/fig_lag_histogram.png",
+  dpi = 300,
+  width = 3, height = 4
+)
+```
+
+### Localisation Error Measured by Systems
+
+```{r localisation_error}
+fig_error_histogram = 
+ggplot(data)+
+  geom_histogram(
+    aes(
+      x = sqrt(VARX)
+    ),
+    bins = 15,
+    fill = "grey",
+    col = "black"
+  )+
+  scale_x_log10(
+    labels = function(x) {sprintf("%2.fm", x)}
+  )+
+  scale_y_sqrt()+
+  coord_cartesian(
+    xlim = c(0.5, 5e3)
+  )+
+  ggthemes::theme_few() +
+  theme(
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(
+      face = "bold",
+      size = 16
+    ),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(
+      face = "bold",
+      size = 16
+    )
+  )+
+  labs(x = "Variance X")
+
+# save to figures
+ggsave(fig_error_histogram,
+  filename = "supplement/figures/fig_error_histogram.png",
+  dpi = 300,
+  width = 3, height = 4
+)
+```
 
 ```{r echo=FALSE}
 # plot bat data to examine for errors
@@ -105,7 +237,7 @@ fig_bat_raw <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_raw,
-  filename = "figures/fig_bat_raw.png",
+  filename = "supplement/figures/fig_bat_raw.png",
   dpi = 300,
   width = 6, height = 4
 )
@@ -113,7 +245,7 @@ ggsave(fig_bat_raw,
 
 ![Movement data from three Egyptian fruit bats tracked using the ATLAS system (*Rousettus aegyptiacus*; [@toledo2020; @shohami2020]).
 The bats were tracked in the Hula Valley, Israel (33.1$^{\circ}$N, 35.6$^{\circ}$E), and we use three nights of tracking (5\textsuperscript{th}, 6\textsuperscript{th}, and 7\textsuperscript{th} May, 2018), for our demonstration, with an average of 13,370 positions (SD = 2,173; range = 11,195 -- 15,542; interval = 8 seconds) per individual.
-After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary](figures/fig_bat_raw.png)
+After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary](supplement/figures/fig_bat_raw.png)
 
 ## Prepare data for filtering
 
@@ -198,7 +330,6 @@ fig_bat_filter_cov <-
     aes(X, Y,
       col = TAG
     ),
-    size = 0.3,
     show.legend = FALSE
   ) +
   scale_colour_brewer(palette = "Dark2") +
@@ -218,14 +349,14 @@ fig_bat_filter_cov <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_cov,
-  filename = "figures/fig_bat_filter_cov.png",
+  filename = "supplement/figures/fig_bat_filter_cov.png",
   dpi = 300,
   width = 4, height = 6
 )
 ```
 
 ![Bat data filtered for large location errors, removing observations with standard deviation $>$ 20. Grey crosses show data that were removed. Since the number of base stations used in the location process is a good indicator of error [@weiser2016], we also removed observations calculated using fewer than four base stations. Both steps used the function \texttt{atl\_filter\_covariates}.
-This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.](figures/fig_bat_filter_cov.png)
+This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.](supplement/figures/fig_bat_filter_cov.png)
 
 ## Filter by speed
 
@@ -327,13 +458,13 @@ fig_bat_filter_speed <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_speed,
-  filename = "figures/fig_bat_filter_speed.png",
+  filename = "supplement/figures/fig_bat_filter_speed.png",
   dpi = 300,
   width = 4, height = 6
 )
 ```
 
-![Bat data with unrealistic speeds removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using `atl_get_speed`, and filtered out positions with speeds > 20 m/s using `atl_filter_covariates`, leaving 10,337 positions per individual on average (98% from the previous step).](figures/fig_bat_filter_speed.png)
+![Bat data with unrealistic speeds removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using `atl_get_speed`, and filtered out positions with speeds > 20 m/s using `atl_filter_covariates`, leaving 10,337 positions per individual on average (98% from the previous step).](supplement/figures/fig_bat_filter_speed.png)
 
 ## Median smoothing
 
@@ -380,10 +511,11 @@ data_smooth <- rbindlist(data_smooth)
 fig_bat_smooth <-
   ggplot() +
   geom_point(
-    data = data_split,
+    data = data,
     aes(X, Y),
     col = "grey",
-    shape = 4,
+    shape = 1,
+    stroke = 0.3,
     show.legend = FALSE
   ) +
   geom_path(
@@ -391,7 +523,7 @@ fig_bat_smooth <-
     aes(X, Y,
       col = TAG
     ),
-    lwd = 0.3,
+    lwd = 0.6,
     show.legend = FALSE
   ) +
   scale_colour_brewer(palette = "Dark2") +
@@ -411,13 +543,13 @@ fig_bat_smooth <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_smooth,
-  filename = "figures/fig_bat_smooth.png",
+  filename = "supplement/figures/fig_bat_smooth.png",
   dpi = 300,
   width = 4, height = 6
 )
 ```
 
-![Bat data after applying a median smooth with a moving window $K$ = 5. Grey crosses show data prior to smoothing. The smoothing step did not discard any data.](figures/fig_bat_smooth.png)
+![Bat data after applying a median smooth with a moving window $K$ = 5. Grey crosses show data prior to smoothing. The smoothing step did not discard any data.](supplement/figures/fig_bat_smooth.png)
 
 ## Making residence patches
 
@@ -518,7 +650,7 @@ fig_bat_res_timeseries <-
 # not shown or mentioned
 # save to figures
 ggsave(fig_bat_res_timeseries,
-  filename = "figures/fig_bat_res_timeseries.png",
+  filename = "supplement/figures/fig_bat_res_timeseries.png",
   dpi = 300,
   width = 6, height = 3
 )
@@ -614,4 +746,4 @@ fwrite(
 Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.
 However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources **(b, c)**.
 When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar **(c)**.
-Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](figures/fig_07_bats.png)
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](supplement/figures/fig_07_bats.png)
