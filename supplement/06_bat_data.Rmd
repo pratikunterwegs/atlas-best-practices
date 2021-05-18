@@ -86,8 +86,8 @@ The plot code is hidden in the rendered copy (PDF) of this supplementary materia
 ```{r summarise_counts}
 data_heatmap = copy(data)
 data_heatmap[, c("xround", "yround") := list(
-  plyr::round_any(X, 200),
-  plyr::round_any(Y, 200)
+  plyr::round_any(X, 250),
+  plyr::round_any(Y, 250)
 )]
 data_heatmap = data_heatmap[, .N, by = c("xround", "yround")]
 ```
@@ -105,7 +105,7 @@ ggplot(data_heatmap)+
   )+
   scale_fill_viridis_c(
     option = "C",
-    direction = -1,
+    direction = 1,
     trans = "log10"
   )+
   ggthemes::theme_few() +
@@ -134,20 +134,29 @@ fig_lags =
 ggplot(data_for_intervals)+
   geom_histogram(
     aes(
-      x = lag / 8
+      x = lag / 8,
+      fill = (lag / 8 > 3)
     ),
+    position = position_identity(),
     bins = 15,
-    fill = "grey",
-    col = "black"
+    # fill = "grey",
+    col = "black",
+    show.legend = F
   )+
   geom_vline(
     xintercept = 1,
     col = "red"
   )+
   scale_x_log10(
-    labels = function(x) {sprintf("%ix", x)}
+    labels = function(x) {sprintf("%ix", x)},
+    breaks = c(1, 3, 10, 100, 1000)
   )+
   scale_y_sqrt()+
+  scale_fill_viridis_d(
+    option = "H",
+    begin = 0.1,
+    end = 0.8
+  )+
   ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
@@ -178,11 +187,18 @@ fig_error_histogram =
 ggplot(data)+
   geom_histogram(
     aes(
-      x = sqrt(VARX)
+      x = sqrt(VARX),
+      fill = (sqrt(VARX) > 100)
     ),
     bins = 15,
-    fill = "grey",
-    col = "black"
+    # fill = "grey",
+    col = "black",
+    show.legend = F
+  )+
+  scale_fill_viridis_d(
+    option = "H",
+    begin = 0.1,
+    end = 0.8
   )+
   scale_x_log10(
     labels = function(x) {sprintf("%2.fm", x)}
@@ -425,20 +441,19 @@ data_split <- rbindlist(data_split)
 # now plot over raw data
 fig_bat_filter_speed <-
   ggplot() +
-  geom_point(
-    data = data[!data_split,
-      on = c("TAG", "X", "Y", "TIME")
-    ],
-    aes(X, Y),
-    col = "grey",
-    shape = 4
+  geom_path(
+    data = data,
+    aes(X, Y, group = TAG),
+    col = "black",
+    size = 0.3
   ) +
   geom_path(
     data = data_split,
     aes(X, Y,
       col = TAG
     ),
-    size = 0.3,
+    # col = "grey20",
+    # size = 0.3,
     show.legend = FALSE
   ) +
   scale_colour_brewer(palette = "Dark2") +
