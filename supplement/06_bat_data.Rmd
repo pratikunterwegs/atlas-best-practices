@@ -331,7 +331,7 @@ data_split <- rbindlist(data_split)
 
 ```{r echo=FALSE}
 # now plot over raw data
-# fig_bat_filter_cov <-
+fig_bat_filter_cov <-
   ggplot() +
   geom_point(
     data = data[!data_split,
