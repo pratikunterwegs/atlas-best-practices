@@ -951,7 +951,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="242.04321"
+     inkscape:cx="-90.047558"
      inkscape:cy="205.42658"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -2094,14 +2094,7 @@
            height="67.175148"
            width="260.61935"
            id="rect4928" /></flowRegion><flowPara
-         id="flowPara4930" /></flowRoot>    <rect
-       style="fill:none;stroke:#000000;stroke-width:0.30868226;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect5071"
-       width="24.075409"
-       height="31.927132"
-       x="-35.198013"
-       y="236.61974" />
-    <image
+         id="flowPara4930" /></flowRoot>    <image
        y="236.61974"
        x="-35.198013"
        id="image841"
@@ -2109,6 +2102,13 @@
        preserveAspectRatio="none"
        height="31.927141"
        width="23.945354" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.30868226;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect5071"
+       width="24.075409"
+       height="31.927132"
+       x="-35.198013"
+       y="236.61974" />
     <flowRoot
        transform="matrix(0.15865895,0,0,0.15865895,-83.612871,258.35536)"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.33333302px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
