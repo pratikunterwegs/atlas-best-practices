@@ -331,7 +331,7 @@ data_split <- rbindlist(data_split)
 
 ```{r echo=FALSE}
 # now plot over raw data
-fig_bat_filter_cov <-
+# fig_bat_filter_cov <-
   ggplot() +
   geom_point(
     data = data[!data_split,
@@ -443,18 +443,8 @@ fig_bat_filter_speed <-
   ggplot() +
   geom_path(
     data = data,
-    aes(X, Y, group = TAG),
-    col = "black",
-    size = 0.3
-  ) +
-  geom_path(
-    data = data_split,
-    aes(X, Y,
-      col = TAG
-    ),
-    # col = "grey20",
-    # size = 0.3,
-    show.legend = FALSE
+    aes(X, Y, group = TAG, col = TAG),
+    show.legend = F
   ) +
   scale_colour_brewer(palette = "Dark2") +
   ggspatial::annotation_scale(location = "br") +
