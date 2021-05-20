@@ -526,26 +526,27 @@ SIMPLIFY = TRUE
 
 ### Prepare data
 
-First, we filter data where we know the animal spent some time at or near a position, as this is the first step to identify residence patches. 
-One way of doing this is to filter out positions with speeds above which the animal is likely to be in transit, but a better way of doing this by filtering on a metric such as residence time [@bracis2018].
+First, we filter data where we know the animal (or in this case, the human-carried tag) spent some time at or near a position, as this is the first step to identify residence patches. 
+One way of doing this is to filter out positions with speeds above which the tag (ideally on an animal) is likely to be in transit.
+Rather than filtering on instantaneous speed estimates, filtering on a median smoothed speed estimate is more reliable.
 
-### Calculate residence time
+### Exclude transit points
 
-First we calculate the residence time with a radius of 50 metres.
-For this, we need a dataframe with coordinates, the timestamp, and the animal id.
-We save this data to file for later use.
+Here, we aim to remove locations where the tag is clearly moving, by filtering on smoothed speed, using a one-way median smooth with $K$ = 5.
+The speeds between points must be recalculated here because the speed metrics now associated with the data refer to the raw data before median smoothing.
 
 ```{r}
 # get 4 column data
-data_for_patch <- data_thin[, list(x, y, time, TAG)]
+data_for_patch <- copy(data_thin)
 
-# get recurse data for a 10m radius
-recurse_stats <- getRecursions(data_for_patch,
-  radius = 50, timeunits = "mins"
-)
+# recalculate speeds, removing speed out
+data_for_patch[, c("speed_in", "speed_out") := list(
+  atl_get_speed(data_for_patch),
+  NULL
+)]
 
-# assign to recurse data
-data_for_patch[, res_time := recurse_stats$residenceTime]
+# get smoothed speed
+data_for_patch[, speed_smooth := runmed(speed_in, k = 5)]
 
 # save recurse data
 fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
@@ -553,7 +554,7 @@ fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
 
 ### Run residence patch method
 
-We subset data with a residence time > 5 minutes in order to construct residence patches.
+We subset data with a smoothed speed < 2 m/s in order to construct residence patches.
 From this subset, we construct residence patches using the parameters: `buffer_radius` = 5 metres, `lim_spat_indep` = 50 metres, `lim_time_indep` = 5 minutes, and `min_fixes` = 3.
 
 ```{r}
@@ -561,7 +562,8 @@ From this subset, we construct residence patches using the parameters: `buffer_r
 data_for_patch[, id := as.character(TAG)]
 
 # on known residence points
-patch_res_known <- atl_res_patch(data_for_patch[res_time >= 5, ],
+patch_res_known <- atl_res_patch(
+  data = data_for_patch[speed_smooth < 2, ],
   buffer_radius = 5,
   lim_spat_indep = 50,
   lim_time_indep = 5,
