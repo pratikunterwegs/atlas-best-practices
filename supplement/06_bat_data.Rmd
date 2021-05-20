@@ -606,34 +606,69 @@ ggsave(fig_bat_smooth,
 
 ## Making residence patches
 
-### Excluding transit points
+### Calculating residence time
 
-First, we calculate the instantaneous speeds, and then apply a one-way median smooth to the speeds with $K$ = 5. This procedure is also applied to each individual *separately*.
+First, the data is put through the `recurse` package to get residence time [@bracis2018].
 
 ```{r}
 # split the data
-data_residence <- split(data_smooth, data_smooth$TAG)
+data_smooth <- split(data_smooth, data_smooth$TAG)
 ```
 
-We apply this step as with the calibration data in the previous example.
+We calculated residence time, but since bats may revisit the same features, we want to prevent confusion between frequent revisits and prolonged residence.
+
+For this, we stop summing residence times within $Z$ metres of a location if the animal exited the area for one hour or more. The value of $Z$ (radius, in `recurse` parameter terms) was chosen as 50m.
+
+
+This step is relatively complicated and is only required for individuals which frequently return to the same location, or pass over the same areas repeatedly, and for which revisits (cumulative time spent) may be confused for residence time in a single visit.
+
+While a simpler implementation using total residence time divided by the number of revisits is also possible, this does assume that each revisit had the same residence time.
 
 ```{r}
-# get smoothed speeds per individual
-data_residence <- lapply(data_residence, function(dt) {
+# get residence times
+
+data_residence <- lapply(data_smooth, function(dt) {
+  # do basic recurse
+  dt_recurse <- getRecursions(
+    x = dt[, c("X", "Y", "time", "TAG")],
+    radius = 50,
+    timeunits = "mins"
+  )
+
+  # get revisit stats
+  dt_recurse <- setDT(
+    dt_recurse[["revisitStats"]]
+  )
+
+  # count long absences from the area
+  dt_recurse[, timeSinceLastVisit :=
+    ifelse(is.na(timeSinceLastVisit), -Inf, timeSinceLastVisit)]
+  dt_recurse[, longAbsenceCounter := cumsum(timeSinceLastVisit > 60),
+    by = .(coordIdx)
+  ]
+  # get data before the first long absence of 60 mins
+  dt_recurse <- dt_recurse[longAbsenceCounter < 1, ]
+
+  dt_recurse <- dt_recurse[, list(
+    resTime = sum(timeInside),
+    fpt = first(timeInside),
+    revisits = max(visitIdx)
+  ),
+  by = .(coordIdx, x, y)
+  ]
+
+  # prepare and merge existing data with recursion data
+  dt[, coordIdx := seq(nrow(dt))]
+
+  dt <- merge(dt,
+    dt_recurse[, c("coordIdx", "resTime")],
+    by = c("coordIdx")
+  )
+
+  setorderv(dt, "time")
   
-  # first get the speed (in) between smoothed points
-  dt[, c("speed_in", "speed_out") := list(
-    atl_get_speed(dt, x = "X", y = "Y", time = "time"),
-    NULL
-  )]
-  
-  # then smooth the speeds in a new column called speed_smoothed
-  dt[, speed_smoothed := runmed(speed_in, k = 5)]
-  
-  # filter for speeds less than 2 m/s
-  dt = dt[speed_smoothed < 2, ]
-  
-  dt
+  # print message when done
+  message(sprintf("TAG %i residence times done", unique(dt$TAG)))
 })
 ```
 
@@ -645,36 +680,6 @@ data_residence <- rbindlist(data_residence)
 
 # get time as human readable
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
-```
-
-```{r echo=FALSE, eval=TRUE}
-# not shown or mentioned
-fig_bat_res_timeseries <-
-  ggplot() +
-  geom_path(
-    data = data_residence,
-    aes(ts, speed_smoothed,
-      colour = TAG
-    ),
-    show.legend = F
-  ) +
-  scale_color_brewer(palette = "Dark2") +
-  scale_x_datetime() +
-  ggthemes::theme_few() +
-  labs(
-    x = NULL,
-    y = "Speed (m/s)"
-  )
-```
-
-```{r echo=FALSE}
-# not shown or mentioned
-# save to figures
-ggsave(fig_bat_res_timeseries,
-  filename = "supplement/figures/fig_bat_res_timeseries.png",
-  dpi = 300,
-  width = 6, height = 3
-)
 ```
 
 ### Constructing residence patches
@@ -690,16 +695,20 @@ data_residence[, `:=`(
   x = X, y = Y
 )]
 
+# filter for residence time > 5 minutes
+data_residence <- data_residence[resTime > 5, ]
+
 # split the data
 data_residence <- split(data_residence, data_residence$TAG)
 ```
 
-We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes), and `min_fixes = 3`). We change the `buffer_radius` to 30 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts).
+We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes)). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and `min_fixes = 3`.
 
 ```{r}
 # segment into residence patches
 data_patches <- lapply(data_residence, atl_res_patch,
-  buffer_radius = 30
+  buffer_radius = 25,
+  min_fixes = 3
 )
 ```
 
@@ -713,7 +722,7 @@ These objects and the raw movement data are shown in Fig. 2.5.
 # get data spatials
 data_spatials <- lapply(data_patches, atl_patch_summary,
   which_data = "spatial",
-  buffer_radius = 30
+  buffer_radius = 25
 )
 
 # bind list
