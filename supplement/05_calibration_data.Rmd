@@ -850,7 +850,7 @@ figure_res_patch <-
 
 # save figure
 ggsave(figure_res_patch,
-  filename = "figures/fig_06.png",
+  filename = "figures/fig_07.png",
   height = 170, width = 170, units = "mm"
 )
 ```
