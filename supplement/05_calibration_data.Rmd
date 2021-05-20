@@ -672,12 +672,12 @@ fig_basic_residence <-
 
 ```{r echo=FALSE}
 ggsave(fig_basic_residence,
-  filename = "figures/fig_calib_residence.png",
+  filename = "supplement/figures/fig_calib_residence.png",
   height = 170, width = 80, units = "mm"
 )
 ```
 
-![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
+![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The field station on Griend (red triangle) was not intended to be a stop, but the tags were stored here before the trial, and the method correctly picked up this prolonged stationary data as a residence patch. The algorithm failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (purple triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](supplement/figures/fig_calib_residence.png)
 
 ## Compare patch metrics
 
@@ -773,7 +773,6 @@ figure_lm_duration <-
     ),
     se = F,
     col = pal[1],
-    lwd = 0.5,
     method = "lm",
     show.legend = F
   ) +
@@ -785,36 +784,36 @@ figure_lm_duration <-
     parse = T, family = "Arial"
   ) +
   scale_x_continuous(
-    breaks = 60 * seq(3, 18, 2),
-    labels = seq(3, 18, 2)
+    breaks = 60 * seq(5, 20, 5),
+    labels = seq(5, 20, 5)
   ) +
   scale_y_continuous(
-    breaks = 60 * seq(5, 20, 2),
-    labels = seq(5, 20, 2)
+    breaks = 60 * seq(5, 20, 5),
+    labels = seq(5, 20, 5)
   ) +
   coord_fixed(
-    expand = T,
-    ratio = 1.115
-    #             # xlim = c(400, 1050),
-    #             ylim = c(250, 1050)
+    expand = F,
+    xlim = c(5, 20) * 60,
+    ylim = c(5, 20) * 60,
+    ratio = 1.0
   ) +
   geom_abline(
     slope = 1, lty = 2,
     col = "black"
   ) +
-  ggthemes::theme_few() +
+  theme_classic() +
   labs(
-    x = "inferred duration (min)",
-    y = "real duration (min)"
+    x = "Inferred duration (min)",
+    y = "Real duration (min)"
   )
 
 ggsave(figure_lm_duration,
-  filename = "figures/fig_calib_lm_duration.png",
+  filename = "supplement/figures/fig_calib_lm_duration.png",
   width = 80 / 25, height = 80 / 25
 )
 ```
 
-![The inferred duration of residence patches corresponds very closely to the real duration (grey circles, red line shows linear model fit), with an underestimation of the true duration of around 2%. The dashed black line represents $y = x$ for reference.](figures/fig_calib_lm_duration.png)
+![The inferred duration of residence patches corresponds very closely to the real duration (grey circles, red line shows linear model fit), with an underestimation of the true duration of around 2%. The dashed black line represents $y = x$ for reference.](supplement/figures/fig_calib_lm_duration.png)
 
 ### Linear model summary
 
@@ -851,7 +850,7 @@ figure_res_patch <-
 
 # save figure
 ggsave(figure_res_patch,
-  filename = "figures/fig_06_calib_residence_patch.png",
+  filename = "figures/fig_06.png",
   height = 170, width = 170, units = "mm"
 )
 ```
