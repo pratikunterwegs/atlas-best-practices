@@ -1,14 +1,5 @@
 #!/bin/bash
 # remove old tex files and pdfs
-cd docs
-rm *.pdf
-
-cd ..
-
-# copy pdfs and name correctly
-cp -p atlas-manuscript/arxiv_article.pdf docs/ms_atlas_preproc_main_text_`date -I`.pdf
-
-cp figures/fig_0*.png atlas-manuscript/figures
 
 # style files
 Rscript --vanilla --slave -e 'styler::style_dir("scripts", filetype = "R", recursive = FALSE)'
@@ -24,3 +15,5 @@ mv docs/supplementary_material.pdf docs/ms_atlas_preproc_supplementary_material_
 
 # build atlastools manual
 Rscript --slave -e 'devtools::build_manual(pkg = "../atlastools", path = "docs/")'
+
+pandoc atlas-manuscript/arxiv_article.tex --bibliography=atlas-manuscript/references.bib -o docs/ms_preprocessing_`date -I`.docx
