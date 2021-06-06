@@ -5,7 +5,7 @@ bookdown::pdf_document2:
   papersize: a4
   highlight: haddock
   includes:
-    in_header: ../latex/preamble.tex
+    in_header: latex/preamble.tex
 toc-depth: 1
 secnumdepth: 1
 lof: True
