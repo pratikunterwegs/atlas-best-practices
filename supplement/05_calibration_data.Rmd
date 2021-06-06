@@ -57,6 +57,7 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 # for data handling
 library(data.table)
 library(atlastools)
+library(stringi)
 
 # for recursion analysis
 library(recurse)
@@ -484,7 +485,6 @@ ggsave(figure_walkthrough,
 We subset the annotated calibration data to select the waypoints and the positions around them which are supposed to be the locations of known stops. Since each stop was supposed to be 5 minutes long, there are multiple points in each known stop.
 
 ```{r}
-library(stringi)
 data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 ```
 
