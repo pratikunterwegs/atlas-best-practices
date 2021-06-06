@@ -89,30 +89,31 @@ Here we demonstrate a basic heatmap of locations, aggregating over all individua
 In this one instance, the plotting code is also shown as a guide for readers, but in general, plotting code is hidden throughout this document.
 
 ```{r summarise_counts}
-data_heatmap = copy(data)
+data_heatmap <- copy(data)
 data_heatmap[, c("xround", "yround") := list(
   plyr::round_any(X, 250),
   plyr::round_any(Y, 250)
 )]
-data_heatmap = data_heatmap[, .N, by = c("xround", "yround")]
+data_heatmap <- data_heatmap[, .N, by = c("xround", "yround")]
 ```
 
 ```{r plot_heatmap}
-fig_heatmap = 
-ggplot(data_heatmap)+
+fig_heatmap <-
+  ggplot(data_heatmap) +
   geom_tile(
     aes(
-      xround, yround, fill = N
+      xround, yround,
+      fill = N
     ),
     colour = "grey",
     size = 0.1,
     show.legend = F
-  )+
+  ) +
   scale_fill_viridis_c(
     option = "C",
     direction = 1,
     trans = "log10"
-  )+
+  ) +
   ggthemes::theme_few() +
   theme(
     axis.text = element_blank(),
@@ -134,12 +135,12 @@ The plotting code is hidden in the PDF version, but available in the source code
 
 ```{r sampling_interval_check, echo=FALSE}
 # get intervals per individual
-data_for_intervals = data[,list(lags = list(diff(TIME/1000))), by = "TAG"]
-data_for_intervals = data_for_intervals[,list(lag = unlist(lags, recursive = F)), by = "TAG"]
+data_for_intervals <- data[, list(lags = list(diff(TIME / 1000))), by = "TAG"]
+data_for_intervals <- data_for_intervals[, list(lag = unlist(lags, recursive = F)), by = "TAG"]
 
 # make figure
-fig_lags = 
-ggplot(data_for_intervals)+
+fig_lags <-
+  ggplot(data_for_intervals) +
   geom_histogram(
     aes(
       x = lag / 8,
@@ -150,21 +151,23 @@ ggplot(data_for_intervals)+
     # fill = "grey",
     col = "black",
     show.legend = F
-  )+
+  ) +
   geom_vline(
     xintercept = 1,
     col = "red"
-  )+
+  ) +
   scale_x_log10(
-    labels = function(x) {sprintf("%ix", x)},
+    labels = function(x) {
+      sprintf("%ix", x)
+    },
     breaks = c(1, 3, 10, 100, 1000)
-  )+
-  scale_y_sqrt()+
+  ) +
+  scale_y_sqrt() +
   scale_fill_viridis_d(
     option = "H",
     begin = 0.1,
     end = 0.8
-  )+
+  ) +
   ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
@@ -177,7 +180,7 @@ ggplot(data_for_intervals)+
       face = "bold",
       size = 16
     )
-  )+
+  ) +
   labs(x = "Sampling interval")
 
 # save to figures
@@ -194,8 +197,8 @@ Here, we create the histogram of location error (variance in X) [@weiser2016] sh
 The plotting code is hidden in the PDF version, but available in the source code.
 
 ```{r localisation_error, echo=FALSE}
-fig_error_histogram = 
-ggplot(data)+
+fig_error_histogram <-
+  ggplot(data) +
   geom_histogram(
     aes(
       x = sqrt(VARX),
@@ -205,19 +208,21 @@ ggplot(data)+
     # fill = "grey",
     col = "black",
     show.legend = F
-  )+
+  ) +
   scale_fill_viridis_d(
     option = "H",
     begin = 0.1,
     end = 0.8
-  )+
+  ) +
   scale_x_log10(
-    labels = function(x) {sprintf("%2.fm", x)}
-  )+
-  scale_y_sqrt()+
+    labels = function(x) {
+      sprintf("%2.fm", x)
+    }
+  ) +
+  scale_y_sqrt() +
   coord_cartesian(
     xlim = c(0.5, 5e3)
-  )+
+  ) +
   ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
@@ -230,7 +235,7 @@ ggplot(data)+
       face = "bold",
       size = 16
     )
-  )+
+  ) +
   labs(x = "Variance X")
 
 # save to figures
@@ -239,10 +244,6 @@ ggsave(fig_error_histogram,
   dpi = 300,
   width = 3, height = 4
 )
-```
-
-```{r echo=FALSE}
-
 ```
 
 ### Plot paths from raw tracking data
@@ -271,7 +272,7 @@ fig_bat_raw <-
 
 ```{r plot_focus_bad_speed}
 # this figure for the panel in main text figure 1
-fig_bat_focus_bad_speed = 
+fig_bat_focus_bad_speed <-
   fig_bat_raw +
   coord_sf(
     crs = 2039,
@@ -626,7 +627,6 @@ While a simpler implementation using total residence time divided by the number 
 
 ```{r}
 # get residence times
-
 data_residence <- lapply(data_smooth, function(dt) {
   # do basic recurse
   dt_recurse <- getRecursions(
@@ -666,9 +666,11 @@ data_residence <- lapply(data_smooth, function(dt) {
   )
 
   setorderv(dt, "time")
-  
+
   # print message when done
-  message(sprintf("TAG %i residence times done", unique(dt$TAG)))
+  message(sprintf("TAG %s residence times done", unique(dt$TAG)))
+
+  dt
 })
 ```
 
