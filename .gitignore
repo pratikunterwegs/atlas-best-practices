@@ -50,3 +50,6 @@ data/*bat*.csv
 
 # docx
 *.docx
+
+# ignore supplement tex
+docs/*.tex
