@@ -299,7 +299,7 @@ ggsave(fig_bat_raw,
 
 ![Movement data from three Egyptian fruit bats tracked using the ATLAS system (*Rousettus aegyptiacus*; [@toledo2020; @shohami2020]).
 The bats were tracked in the Hula Valley, Israel (33.1$^{\circ}$N, 35.6$^{\circ}$E), and we use three nights of tracking (5\textsuperscript{th}, 6\textsuperscript{th}, and 7\textsuperscript{th} May, 2018), for our demonstration, with an average of 13,370 positions (SD = 2,173; range = 11,195 -- 15,542; interval = 8 seconds) per individual.
-After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary](supplement/figures/fig_bat_raw.png)
+After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary](figures/fig_bat_raw.png)
 
 ## Prepare data for filtering
 
@@ -413,7 +413,7 @@ ggsave(fig_bat_filter_cov,
 ```
 
 ![Bat data filtered for large location errors, removing observations with standard deviation $>$ 20. Grey crosses show data that were removed. Since the number of base stations used in the location process is a good indicator of error [@weiser2016], we also removed observations calculated using fewer than four base stations. Both steps used the function \texttt{atl\_filter\_covariates}.
-This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.](supplement/figures/fig_bat_filter_cov.png)
+This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.](figures/fig_bat_filter_cov.png)
 
 ## Filter by speed
 
@@ -518,7 +518,7 @@ ggsave(fig_bat_filter_speed,
 )
 ```
 
-![Bat data with unrealistic speeds removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using `atl_get_speed`, and filtered out positions with speeds > 20 m/s using `atl_filter_covariates`, leaving 10,337 positions per individual on average (98% from the previous step).](supplement/figures/fig_bat_filter_speed.png)
+![Bat data with unrealistic speeds removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using `atl_get_speed`, and filtered out positions with speeds > 20 m/s using `atl_filter_covariates`, leaving 10,337 positions per individual on average (98% from the previous step).](figures/fig_bat_filter_speed.png)
 
 ## Median smoothing
 
@@ -603,7 +603,7 @@ ggsave(fig_bat_smooth,
 )
 ```
 
-![Bat data after applying a median smooth with a moving window $K$ = 5. Grey circles show data prior to smoothing. The smoothing step did not discard any data.](supplement/figures/fig_bat_smooth.png)
+![Bat data after applying a median smooth with a moving window $K$ = 5. Grey circles show data prior to smoothing. The smoothing step did not discard any data.](figures/fig_bat_smooth.png)
 
 ## Making residence patches
 
@@ -775,4 +775,4 @@ fwrite(
 Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.
 However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources **(b, c)**.
 When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar **(c)**.
-Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](figures/fig_07.png)
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](../figures/fig_07.png)
