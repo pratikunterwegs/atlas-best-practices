@@ -47,3 +47,9 @@ data/*bat*.csv
 !data/*bat*.sql
 !data/Roosts.csv
 !data/*trees*
+
+# docx
+*.docx
+
+# ignore supplement tex
+docs/*.tex

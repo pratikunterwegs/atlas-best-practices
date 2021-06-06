@@ -11,7 +11,7 @@ library(ggthemes)
 
 ## -----------------------------------------------------------------------------
 # source helper functions
-source("R/helper_functions.R")
+source("scripts/helper_functions.R")
 
 
 ## ----read_sim_data------------------------------------------------------------
@@ -320,7 +320,7 @@ figure_01 <-
 
 # save figure
 ggsave(figure_01,
-  filename = "figures/fig_02_filtering_data.png",
+  filename = "figures/fig_03.png",
   width = 170, height = 150, units = "mm"
 )
 

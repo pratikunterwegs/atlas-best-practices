@@ -1,3 +1,13 @@
+#' ---
+#' output: html_document
+#' editor_options:
+#'   chunk_output_type: console
+#' ---
+#'
+#' # Code to Prepare Example Data
+#' 
+#' 
+#' 
 ## ----install_package----------------------------------------------------------
 # use either devtools or remotes to install
 install.packages("devtools")

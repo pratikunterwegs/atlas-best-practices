@@ -57,6 +57,7 @@ First we prepare the libraries we need. Libraries can be installed from CRAN if 
 # for data handling
 library(data.table)
 library(atlastools)
+library(stringi)
 
 # for recursion analysis
 library(recurse)
@@ -110,7 +111,7 @@ fig_data_raw <-
 
 # save figure
 ggsave(fig_data_raw,
-  filename = "figures/fig_calibration_raw.png",
+  filename = "supplement/figures/fig_calibration_raw.png",
   width = 185 / 25
 )
 ```
@@ -175,7 +176,7 @@ fig_data_bbox <-
 
 # save result
 ggsave(fig_data_bbox,
-  filename = "figures/fig_calib_bbox.png",
+  filename = "supplement/figures/fig_calib_bbox.png",
   width = 185 / 25
 )
 ```
@@ -221,7 +222,7 @@ data[, `:=`(
 data[, angle := atl_turning_angle(data = data)]
 ```
 
-### Get 95th percentile of speed and angle
+### Get 90th percentile of speed and angle
 
 ```{r}
 # use sapply
@@ -280,9 +281,10 @@ fig_speed_outliers <-
   ) +
   ggspatial::annotation_scale(location = "tl") +
   coord_sf(crs = 32631)
+
 # save
 ggsave(fig_speed_outliers,
-  filename = "figures/fig_speed_outlier.png",
+  filename = "supplement/figures/fig_speed_outlier.png",
   width = 170 / 25, height = 170 / 25
 )
 ```
@@ -374,7 +376,7 @@ fig_smooth <-
   ggspatial::annotation_scale(location = "br")
 
 ggsave(fig_smooth,
-  filename = "figures/fig_calib_median_smooth.png",
+  filename = "supplement/figures/fig_calib_median_smooth.png",
   width = 90 / 25, height = 90 / 25
 )
 ```
@@ -452,7 +454,7 @@ fig_smooth_thin <-
   ggspatial::annotation_scale(location = "br")
 
 ggsave(fig_smooth_thin,
-  filename = "figures/fig_calib_smooth_thin.png",
+  filename = "supplement/figures/fig_calib_smooth_thin.png",
   width = 90 / 25, height = 90 / 25, dpi = 300
 )
 ```
@@ -469,7 +471,7 @@ figure_walkthrough <-
 
 # # save combined figure
 ggsave(figure_walkthrough,
-  filename = "figures/fig_walkthrough.png",
+  filename = "supplement/figures/fig_walkthrough.png",
   height = 90, width = 170, units = "mm"
 )
 ```
@@ -483,7 +485,6 @@ ggsave(figure_walkthrough,
 We subset the annotated calibration data to select the waypoints and the positions around them which are supposed to be the locations of known stops. Since each stop was supposed to be 5 minutes long, there are multiple points in each known stop.
 
 ```{r}
-library(stringi)
 data_res <- data_unproc[stri_detect(tID, regex = "(WP)")]
 ```
 
@@ -525,26 +526,27 @@ SIMPLIFY = TRUE
 
 ### Prepare data
 
-First, we filter data where we know the animal spent some time at or near a position, as this is the first step to identify residence patches. 
-One way of doing this is to filter out positions with speeds above which the animal is likely to be in transit, but a better way of doing this by filtering on a metric such as residence time [@bracis2018].
+First, we filter data where we know the animal (or in this case, the human-carried tag) spent some time at or near a position, as this is the first step to identify residence patches. 
+One way of doing this is to filter out positions with speeds above which the tag (ideally on an animal) is likely to be in transit.
+Rather than filtering on instantaneous speed estimates, filtering on a median smoothed speed estimate is more reliable.
 
-### Calculate residence time
+### Exclude transit points
 
-First we calculate the residence time with a radius of 50 metres.
-For this, we need a dataframe with coordinates, the timestamp, and the animal id.
-We save this data to file for later use.
+Here, we aim to remove locations where the tag is clearly moving, by filtering on smoothed speed, using a one-way median smooth with $K$ = 5.
+The speeds between points must be recalculated here because the speed metrics now associated with the data refer to the raw data before median smoothing.
 
 ```{r}
 # get 4 column data
-data_for_patch <- data_thin[, list(x, y, time, TAG)]
+data_for_patch <- copy(data_thin)
 
-# get recurse data for a 10m radius
-recurse_stats <- getRecursions(data_for_patch,
-  radius = 50, timeunits = "mins"
-)
+# recalculate speeds, removing speed out
+data_for_patch[, c("speed_in", "speed_out") := list(
+  atl_get_speed(data_for_patch),
+  NULL
+)]
 
-# assign to recurse data
-data_for_patch[, res_time := recurse_stats$residenceTime]
+# get smoothed speed
+data_for_patch[, speed_smooth := runmed(speed_in, k = 5)]
 
 # save recurse data
 fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
@@ -552,7 +554,7 @@ fwrite(data_for_patch, file = "data/data_calib_for_patch.csv")
 
 ### Run residence patch method
 
-We subset data with a residence time > 5 minutes in order to construct residence patches.
+We subset data with a smoothed speed < 2 m/s in order to construct residence patches.
 From this subset, we construct residence patches using the parameters: `buffer_radius` = 5 metres, `lim_spat_indep` = 50 metres, `lim_time_indep` = 5 minutes, and `min_fixes` = 3.
 
 ```{r}
@@ -560,7 +562,8 @@ From this subset, we construct residence patches using the parameters: `buffer_r
 data_for_patch[, id := as.character(TAG)]
 
 # on known residence points
-patch_res_known <- atl_res_patch(data_for_patch[res_time >= 5, ],
+patch_res_known <- atl_res_patch(
+  data = data_for_patch[speed_smooth < 2, ],
   buffer_radius = 5,
   lim_spat_indep = 50,
   lim_time_indep = 5,
@@ -669,12 +672,12 @@ fig_basic_residence <-
 
 ```{r echo=FALSE}
 ggsave(fig_basic_residence,
-  filename = "figures/fig_calib_residence.png",
+  filename = "supplement/figures/fig_calib_residence.png",
   height = 170, width = 80, units = "mm"
 )
 ```
 
-![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The algorithm also failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
+![Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25$^{\circ}$N, 5.25$^{\circ}$E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The field station on Griend (red triangle) was not intended to be a stop, but the tags were stored here before the trial, and the method correctly picked up this prolonged stationary data as a residence patch. The algorithm failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (purple triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.](figures/fig_calib_residence.png)
 
 ## Compare patch metrics
 
@@ -770,7 +773,6 @@ figure_lm_duration <-
     ),
     se = F,
     col = pal[1],
-    lwd = 0.5,
     method = "lm",
     show.legend = F
   ) +
@@ -782,31 +784,31 @@ figure_lm_duration <-
     parse = T, family = "Arial"
   ) +
   scale_x_continuous(
-    breaks = 60 * seq(3, 18, 2),
-    labels = seq(3, 18, 2)
+    breaks = 60 * seq(5, 20, 5),
+    labels = seq(5, 20, 5)
   ) +
   scale_y_continuous(
-    breaks = 60 * seq(5, 20, 2),
-    labels = seq(5, 20, 2)
+    breaks = 60 * seq(5, 20, 5),
+    labels = seq(5, 20, 5)
   ) +
   coord_fixed(
-    expand = T,
-    ratio = 1.115
-    #             # xlim = c(400, 1050),
-    #             ylim = c(250, 1050)
+    expand = F,
+    xlim = c(5, 20) * 60,
+    ylim = c(5, 20) * 60,
+    ratio = 1.0
   ) +
   geom_abline(
     slope = 1, lty = 2,
     col = "black"
   ) +
-  ggthemes::theme_few() +
+  theme_classic() +
   labs(
-    x = "inferred duration (min)",
-    y = "real duration (min)"
+    x = "Inferred duration (min)",
+    y = "Real duration (min)"
   )
 
 ggsave(figure_lm_duration,
-  filename = "figures/fig_calib_lm_duration.png",
+  filename = "supplement/figures/fig_calib_lm_duration.png",
   width = 80 / 25, height = 80 / 25
 )
 ```
@@ -848,7 +850,7 @@ figure_res_patch <-
 
 # save figure
 ggsave(figure_res_patch,
-  filename = "figures/fig_06_calib_residence_patch.png",
+  filename = "figures/fig_07.png",
   height = 170, width = 170, units = "mm"
 )
 ```

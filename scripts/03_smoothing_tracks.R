@@ -197,7 +197,7 @@ figure_median_smooth <-
 
 # save figure
 ggsave(figure_median_smooth,
-  filename = "figures/fig_03_median_smooth.png",
+  filename = "figures/fig_04.png",
   width = 170, height = 170 / 3, units = "mm"
 )
 
@@ -390,6 +390,6 @@ fig_aggregate <-
 
 # save figure
 ggsave(fig_aggregate,
-  filename = "figures/fig_04_thinning.png",
+  filename = "figures/fig_05.png",
   width = 170, height = 85, units = "mm"
 )

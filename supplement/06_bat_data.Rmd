@@ -76,11 +76,179 @@ setDT(data)
 fwrite(data, file = "data/bat_data.csv")
 ```
 
-## A First Visual Inspection
+## Exploratory Data Analysis Panels for Main Text Figure 1
 
-Plot the bat data as a sanity check, and inspect it visually for errors (Fig. 2.1).
-The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the `Rmarkdown` file "06_bat_data.Rmd".
-The saved plot is shown below as Fig. 2.1.
+Here, we make some basic figures for exploratory data analysis shown in Figure 1 of the main text.
+
+Plot the bat data as a sanity check, and inspect it visually for errors.
+The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the `Rmarkdown` file "supplement/06_bat_data.Rmd".
+
+### Heatmap of Locations
+
+Here we demonstrate a basic heatmap of locations, aggregating over all individuals.
+In this one instance, the plotting code is also shown as a guide for readers, but in general, plotting code is hidden throughout this document.
+
+```{r summarise_counts}
+data_heatmap <- copy(data)
+data_heatmap[, c("xround", "yround") := list(
+  plyr::round_any(X, 250),
+  plyr::round_any(Y, 250)
+)]
+data_heatmap <- data_heatmap[, .N, by = c("xround", "yround")]
+```
+
+```{r plot_heatmap}
+fig_heatmap <-
+  ggplot(data_heatmap) +
+  geom_tile(
+    aes(
+      xround, yround,
+      fill = N
+    ),
+    colour = "grey",
+    size = 0.1,
+    show.legend = F
+  ) +
+  scale_fill_viridis_c(
+    option = "C",
+    direction = 1,
+    trans = "log10"
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank()
+  ) +
+  coord_sf(crs = 2039)
+
+ggsave(fig_heatmap,
+  filename = "supplement/figures/fig_bat_heatmap_raw.png",
+  dpi = 300,
+  width = 6, height = 4
+)
+```
+
+### Sampling Intervals
+
+Here, we create the histogram of sampling intervals shown in Figure 1 of the main text.
+The plotting code is hidden in the PDF version, but available in the source code.
+
+```{r sampling_interval_check, echo=FALSE}
+# get intervals per individual
+data_for_intervals <- data[, list(lags = list(diff(TIME / 1000))), by = "TAG"]
+data_for_intervals <- data_for_intervals[, list(lag = unlist(lags, recursive = F)), by = "TAG"]
+
+# make figure
+fig_lags <-
+  ggplot(data_for_intervals) +
+  geom_histogram(
+    aes(
+      x = lag / 8,
+      fill = (lag / 8 > 3)
+    ),
+    position = position_identity(),
+    bins = 15,
+    # fill = "grey",
+    col = "black",
+    show.legend = F
+  ) +
+  geom_vline(
+    xintercept = 1,
+    col = "red"
+  ) +
+  scale_x_log10(
+    labels = function(x) {
+      sprintf("%ix", x)
+    },
+    breaks = c(1, 3, 10, 100, 1000)
+  ) +
+  scale_y_sqrt() +
+  scale_fill_viridis_d(
+    option = "H",
+    begin = 0.1,
+    end = 0.8
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(
+      face = "bold",
+      size = 16
+    ),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(
+      face = "bold",
+      size = 16
+    )
+  ) +
+  labs(x = "Sampling interval")
+
+# save to figures
+ggsave(fig_lags,
+  filename = "supplement/figures/fig_lag_histogram.png",
+  dpi = 300,
+  width = 3, height = 4
+)
+```
+
+### Localisation Error Measured by Systems
+
+Here, we create the histogram of location error (variance in X) [@weiser2016] shown in Figure 1 of the main text.
+The plotting code is hidden in the PDF version, but available in the source code.
+
+```{r localisation_error, echo=FALSE}
+fig_error_histogram <-
+  ggplot(data) +
+  geom_histogram(
+    aes(
+      x = sqrt(VARX),
+      fill = (sqrt(VARX) > 100)
+    ),
+    bins = 15,
+    # fill = "grey",
+    col = "black",
+    show.legend = F
+  ) +
+  scale_fill_viridis_d(
+    option = "H",
+    begin = 0.1,
+    end = 0.8
+  ) +
+  scale_x_log10(
+    labels = function(x) {
+      sprintf("%2.fm", x)
+    }
+  ) +
+  scale_y_sqrt() +
+  coord_cartesian(
+    xlim = c(0.5, 5e3)
+  ) +
+  ggthemes::theme_few() +
+  theme(
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(
+      face = "bold",
+      size = 16
+    ),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(
+      face = "bold",
+      size = 16
+    )
+  ) +
+  labs(x = "Variance X")
+
+# save to figures
+ggsave(fig_error_histogram,
+  filename = "supplement/figures/fig_error_histogram.png",
+  dpi = 300,
+  width = 3, height = 4
+)
+```
+
+### Plot paths from raw tracking data
+
+Here, we plot the paths of individual bats from the raw tracking data to visually inspect them for errors.
 
 ```{r echo=FALSE}
 # plot bat data to examine for errors
@@ -102,10 +270,28 @@ fig_bat_raw <-
   coord_sf(crs = 2039)
 ```
 
+```{r plot_focus_bad_speed}
+# this figure for the panel in main text figure 1
+fig_bat_focus_bad_speed <-
+  fig_bat_raw +
+  coord_sf(
+    crs = 2039,
+    xlim = c(253000, NA),
+    ylim = c(772000, NA)
+  )
+
+# save to supplement figures
+ggsave(fig_bat_focus_bad_speed,
+  filename = "supplement/figures/fig_bat_focus_bad_speed.png",
+  dpi = 300,
+  width = 4, height = 6
+)
+```
+
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_raw,
-  filename = "figures/fig_bat_raw.png",
+  filename = "supplement/figures/fig_bat_raw.png",
   dpi = 300,
   width = 6, height = 4
 )
@@ -120,6 +306,8 @@ After first plotting the individual tracks, we notice severe distortions, making
 Here we apply a series of simple filters.
 It is always safer to deal with one individual at a time, so we split the data.table
 into a list of data.tables to avoid mixups among individuals.
+
+This is a very rudimentary demonstration of the principle behind **batch processing** --- splitting data into smaller, independent subsets, and applying the same steps to each subset.
 
 ### Prepare data per individual
 
@@ -140,7 +328,6 @@ No natural bounds suggest themselves, so instead we proceed to filter by covaria
 
 We use filter out positions with `SD > 20` and positions calculated using only 3 base stations, using the function `atl_filter_covariates`.
 
-
 First we calculate the variable `SD`.
 
 ```{r}
@@ -155,6 +342,8 @@ invisible(
 
 Then we pass the filters to `atl_filter_covariates`.
 We apply the filter to each individual's data using an `lapply`.
+
+This is another basic example of the principles behind batch-processing, and could be parallelised using the `R` package `furrr` (see https://CRAN.R-project.org/package=furrr).
 
 ```{r}
 # filter for SD <= 20
@@ -198,7 +387,6 @@ fig_bat_filter_cov <-
     aes(X, Y,
       col = TAG
     ),
-    size = 0.3,
     show.legend = FALSE
   ) +
   scale_colour_brewer(palette = "Dark2") +
@@ -218,7 +406,7 @@ fig_bat_filter_cov <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_cov,
-  filename = "figures/fig_bat_filter_cov.png",
+  filename = "supplement/figures/fig_bat_filter_cov.png",
   dpi = 300,
   width = 4, height = 6
 )
@@ -304,11 +492,8 @@ fig_bat_filter_speed <-
   ) +
   geom_path(
     data = data_split,
-    aes(X, Y,
-      col = TAG
-    ),
-    size = 0.3,
-    show.legend = FALSE
+    aes(X, Y, group = TAG, col = TAG),
+    show.legend = F
   ) +
   scale_colour_brewer(palette = "Dark2") +
   ggspatial::annotation_scale(location = "br") +
@@ -327,7 +512,7 @@ fig_bat_filter_speed <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_filter_speed,
-  filename = "figures/fig_bat_filter_speed.png",
+  filename = "supplement/figures/fig_bat_filter_speed.png",
   dpi = 300,
   width = 4, height = 6
 )
@@ -380,10 +565,11 @@ data_smooth <- rbindlist(data_smooth)
 fig_bat_smooth <-
   ggplot() +
   geom_point(
-    data = data_split,
+    data = data,
     aes(X, Y),
     col = "grey",
-    shape = 4,
+    shape = 1,
+    stroke = 0.3,
     show.legend = FALSE
   ) +
   geom_path(
@@ -391,7 +577,7 @@ fig_bat_smooth <-
     aes(X, Y,
       col = TAG
     ),
-    lwd = 0.3,
+    lwd = 0.6,
     show.legend = FALSE
   ) +
   scale_colour_brewer(palette = "Dark2") +
@@ -411,13 +597,13 @@ fig_bat_smooth <-
 ```{r echo=FALSE}
 # save to figures
 ggsave(fig_bat_smooth,
-  filename = "figures/fig_bat_smooth.png",
+  filename = "supplement/figures/fig_bat_smooth.png",
   dpi = 300,
   width = 4, height = 6
 )
 ```
 
-![Bat data after applying a median smooth with a moving window $K$ = 5. Grey crosses show data prior to smoothing. The smoothing step did not discard any data.](figures/fig_bat_smooth.png)
+![Bat data after applying a median smooth with a moving window $K$ = 5. Grey circles show data prior to smoothing. The smoothing step did not discard any data.](figures/fig_bat_smooth.png)
 
 ## Making residence patches
 
@@ -441,7 +627,6 @@ While a simpler implementation using total residence time divided by the number 
 
 ```{r}
 # get residence times
-
 data_residence <- lapply(data_smooth, function(dt) {
   # do basic recurse
   dt_recurse <- getRecursions(
@@ -481,6 +666,11 @@ data_residence <- lapply(data_smooth, function(dt) {
   )
 
   setorderv(dt, "time")
+
+  # print message when done
+  message(sprintf("TAG %s residence times done", unique(dt$TAG)))
+
+  dt
 })
 ```
 
@@ -494,40 +684,10 @@ data_residence <- rbindlist(data_residence)
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 ```
 
-```{r echo=FALSE, eval=TRUE}
-# not shown or mentioned
-fig_bat_res_timeseries <-
-  ggplot() +
-  geom_path(
-    data = data_residence,
-    aes(ts, resTime,
-      colour = TAG
-    ),
-    show.legend = F
-  ) +
-  scale_color_brewer(palette = "Dark2") +
-  scale_x_datetime() +
-  ggthemes::theme_few() +
-  labs(
-    x = NULL,
-    y = "residence time (mins)"
-  )
-```
-
-```{r echo=FALSE}
-# not shown or mentioned
-# save to figures
-ggsave(fig_bat_res_timeseries,
-  filename = "figures/fig_bat_res_timeseries.png",
-  dpi = 300,
-  width = 6, height = 3
-)
-```
-
 ### Constructing residence patches
 
 Some preparation is required. First, the function requires columns `x`, `y`,
-`time`, and `id`, which we assign using the `data.table` syntax.
+`time`, and `id`, which we assign using the `data.table` syntax. The `time` column is already present, but the other columns need to be renamed to lower case.
 Then we subset the data to only work with positions where the individual had a residence time of more than 5 minutes.
 
 ```{r}
@@ -544,12 +704,13 @@ data_residence <- data_residence[resTime > 5, ]
 data_residence <- split(data_residence, data_residence$TAG)
 ```
 
-We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes), and `min_fixes = 3`). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts).
+We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes)). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and `min_fixes = 3`.
 
 ```{r}
 # segment into residence patches
 data_patches <- lapply(data_residence, atl_res_patch,
-  buffer_radius = 25
+  buffer_radius = 25,
+  min_fixes = 3
 )
 ```
 
@@ -614,4 +775,4 @@ fwrite(
 Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.
 However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources **(b, c)**.
 When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar **(c)**.
-Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](figures/fig_07_bats.png)
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](../figures/fig_07.png)

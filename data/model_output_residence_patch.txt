@@ -4,16 +4,16 @@ lm(formula = duration_real ~ duration, data = patch_summary_compare)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
--103.24  -19.28   -2.92    7.00   93.43 
+-105.07  -16.51   -4.26    9.54   91.66 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 101.4206    47.6694    2.13    0.049 *  
-duration      1.0211     0.0788   12.97  6.7e-10 ***
+(Intercept) 102.4395    47.4097    2.16    0.046 *  
+duration      1.0225     0.0786   13.02  6.3e-10 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 50.4 on 16 degrees of freedom
-Multiple R-squared:  0.913,	Adjusted R-squared:  0.908 
-F-statistic:  168 on 1 and 16 DF,  p-value: 6.66e-10
+Residual standard error: 50.2 on 16 degrees of freedom
+Multiple R-squared:  0.914,	Adjusted R-squared:  0.908 
+F-statistic:  169 on 1 and 16 DF,  p-value: 6.29e-10
 
