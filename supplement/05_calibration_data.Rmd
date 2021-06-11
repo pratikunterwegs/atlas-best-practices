@@ -44,7 +44,7 @@ This is already implemented in `R` and will be familiar to many users as `data_f
 The `data.table` way of writing this assignment would be `data_frame[, column_name := values]`.
 We use this syntax throughout, as it provides many useful shortcuts, such as multiple assignment:
 
-`data_frame[, c("col_a", "col_b) := list(values_a, values_b)]`
+`data_frame[, c("col_a", "col_b") := list(values_a, values_b)]`
 
 Users can use this special syntax, and will find it convenient with practice, but there are _no_ cases where users _must_ use the `data.table` syntax, and can simply treat the data as a regular `data.frame`. However, users are advised to convert their `data.frame` to a `data.table` using the function `data.table::setDT()`.
 
@@ -74,8 +74,10 @@ pal[3] <- "seagreen"
 ## Access data and preliminary visualisation
 
 First we access the data from a local file using the `data.table` package [@dowle2020].
-We look at the first few rows, using `head()`.
-We then visualise the raw data.
+
+In all, we aim to keep three versions of the data: (1) `data_raw`, the entirely unprocessed data, (2) `data`, the working version, and (3) `data_unproc`, data that has been partially processed, but which is one step behind `data`. This allows us to better illustrate the pre-processing steps, and prevents us from irreversibly modifying our data --- at best, we would have to re-run many pre-processing steps, and at worse, we might overwrite the data on disk.
+
+We look at the first few rows, using `head()`. We then visualise the raw data.
 
 ```{r, eval=TRUE}
 # read and plot example data
@@ -120,7 +122,7 @@ ggsave(fig_data_raw,
 
 ## Filter by bounding box
 
-We first save a copy of the data, so that we can plot the raw data with the cleaned data plotted over it for comparison.
+We first save a copy of the data, so that we can plot the unprocessed data with the cleaned data plotted over it for comparison. Here, `data_unproc`, `data`, and `data_raw` are still the same, since no pre-processing steps have been applied yet.
 
 ```{r}
 # make a copy using the data.table copy function
@@ -130,7 +132,7 @@ data_unproc <- copy(data)
 We then filter by a bounding box in order to remove the point outlier to the far south east of the main track. We use the `atl_filter_bounds` functions using the `x_range` argument, to which we pass the limit in the UTM 31N coordinate reference system.
 This limit is used to exclude all points with an X coordinate < 645,000.
 
-We then plot the result of filtering, with the excluded point in black, and the points that are retained in green.
+We then plot the result of filtering, with the excluded point in black, and the points that are retained in green. After this stage, `data` is filtered and 'ahead' of `data_raw` and `data_unproc`, which are still the same. This pattern will repeat throughout this material.
 
 ```{r}
 # remove inside must be set to falses
@@ -294,6 +296,8 @@ ggsave(fig_speed_outliers,
 Here we use a speed threshold of 15 m/s, the fastest known boat speed.
 We then plot the data with the extreme speeds shown in grey, and the positions retained shown in green.
 
+Here, `data_unproc` moves 'ahead' of `data_raw`, and holds the data filtered by a bounding box --- `data` is also moving ahead, and will be filtered on speed.
+
 ```{r}
 # make a copy
 data_unproc <- copy(data)
@@ -385,7 +389,7 @@ ggsave(fig_smooth,
 
 ## Thinning the data
 
-Next we thin the data to demonstrate thinning by median smoothing.
+Next we thin the data by aggregation to demonstrate thinning after median smoothing.
 Following this, we plot the median smooth and thinning by aggregation.
 
 ```{r}
@@ -393,12 +397,7 @@ Following this, we plot the median smooth and thinning by aggregation.
 data_unproc <- copy(data)
 
 # remove columns we don't need
-data <- data[, setdiff(
-  colnames(data),
-  c("tID", "Timestamp", "id", "TIME", "UTCtime")
-),
-with = FALSE
-]
+data <- data[, !c("tID", "Timestamp", "id", "TIME", "UTCtime")]
 
 # thin to a 30s interval
 data_thin <- atl_thin_data(
@@ -495,39 +494,61 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 ```{r}
 # get centroid
 data_res_summary <- data_res[, list(
-  x_median = median(x),
-  y_median = median(y),
-  t_median = median(time)
+    nfixes_real = .N,
+    x_median = median(x),
+    y_median = median(y),
+    t_median = median(time)
+  ),
+  by = "tID"
+]
+
+# now get times 10 mins before and after
+data_res_summary[, c("t_min", "t_max") := list(
+  t_median - (10 * 60),
+  t_median + (10 * 60)
+)]
+
+# manually get the duration of the stops
+wp_data <- mapply(function(l, u, mx, my) {
+
+  # first select all data whose timestamp is between
+  # the upper and lower bounds of the stop (l = lower, u = upper)
+  tmp_data <- data_unproc[inrange(time, l, u), ]
+
+  # calculate the distance between the positions selected above
+  # and the median X and Y coordinates of the stop (centroid)
+  tmp_data[, distance := sqrt((mx - x)^2 + (my - y)^2)]
+
+  # keep positions that are within 50m of the centroid
+  tmp_data <- tmp_data[distance <= 50, ]
+
+  # get the duration of the stop as the difference between
+  # the minimum and maximum times of the positions retained above
+  return(diff(range(tmp_data$time)))
+}, data_res_summary$t_min, data_res_summary$t_max,
+   data_res_summary$x_median, data_res_summary$y_median,
+
+   # this specifies that a vector, rather than a list, is returned
+   SIMPLIFY = TRUE
+)
+
+# get waypoint summary --- rounding median coordinates to the nearest 100m
+patch_summary_real <- data_res_summary[, list(
+  nfixes_real = nfixes_real,
+  x_median = round(median(x_median), digits = -2),
+  y_median = round(median(y_median), digits = -2)
 ),
 by = "tID"
 ]
 
-# now get times 10 mins before and after
-data_res_summary[, `:=`(
-  t_min = t_median - (10 * 60),
-  t_max = t_median + (10 * 60)
-)]
-
-# make a list of positions 10min before and after
-wp_data <- mapply(function(l, u, mx, my) {
-  tmp_data <- data_unproc[inrange(time, l, u)]
-  tmp_data[, distance := sqrt((mx - x)^2 + (my - y)^2)]
-
-  # keep within 50
-  tmp_data <- tmp_data[distance <= 50, ]
-
-  # get duration
-  return(diff(range(tmp_data$time)))
-}, data_res_summary$t_min, data_res_summary$t_max,
-data_res_summary$x_median, data_res_summary$y_median,
-SIMPLIFY = TRUE
-)
+# add real duration
+patch_summary_real[, duration_real := wp_data]
 ```
 
 ### Prepare data
 
 First, we filter data where we know the animal (or in this case, the human-carried tag) spent some time at or near a position, as this is the first step to identify residence patches. 
-One way of doing this is to filter out positions with speeds above which the tag (ideally on an animal) is likely to be in transit.
+One way of doing this is by filtering out positions with speeds above which the tag (ideally on an animal) is likely to be in transit.
 Rather than filtering on instantaneous speed estimates, filtering on a median smoothed speed estimate is more reliable.
 
 ### Exclude transit points
@@ -578,8 +599,20 @@ For instance, requesting mean speed by passing `summary_variable = "speed"` and 
 
 ### Get spatial and summary objects
 
-We get spatial and summary ouput of the residence patch method using the `atl_patch_summary` function using the options `which_data` = "spatial" and `which_data` = "summary.
-We use a buffer radius here of 20 metres for the spatial buffer, despite using a buffer radius of 5 metres earlier, simply because it is easier to visualise in the output figure.
+Having classified slow-moving or stationary behavioural bouts into residence patches, many animal ecologists would most probably wish to know something about the environment at or around these patches --- more accurately, around the point locations classified into patches.
+
+How exactly this is done depends on the relative spatial scales of the residence patches and the resolution of the environmental data layer.
+For instance, a residence patch some 40m -- 50m wide or long may be overlaid on an environmental raster layer with a resolution of 250m.
+In this case, sampling the layer at the centroid of the patch is as good as sampling at all the patch's points -- the mean is unlikely to differ (except at raster pixel boundaries).
+
+On the other hand, a raster with a 10m resolution (e.g. Sentinel 1 and 2 data) may be worthwhile to sample at all the locations comprising a residence patch, so as to calculate the mean and variance of environmental conditions.
+
+Furthermore, many (if not all) animals integrate cues from quite a distance (10m -- 100m) when making decisions on when to settle in an area, and when to leave. Thus it can also be useful to sample environmental layers not at point locations, but to extract the mean and variance from an _area_, or a buffer, around the animal's point locations.
+
+We have provided a convenient function to get either _(1)_ the points (classified into patches), or _(2)_ a summary ouput of the residence patches (i.e., the median coordinates and their attributes), or finally _(3)_ a spatial buffer around the points from _(1)_. 
+This function, `atl_patch_summary` implements these options using the `which_data` argument, where the options are _(1)_ "points", _(2)_ "summary", or _(3)_ "spatial".
+
+Here, we choose option (3), using a spatial buffer of 20m. The distance of the bufffer is passed to the argument `buffer_radius`.
 
 ```{r}
 # for the known and unkniwn patches
@@ -608,10 +641,10 @@ Further sections reproduce the analyses in the main manuscript.
 
 We read in the island's shapefile to plot it as a background for the residence patch figure.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # read griend and hut
-griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
-hut <- sf::st_read("data/griend_hut.gpkg")
+griend <- sf::st_read("data/griend_polygon/griend_polygon.shp", quiet = TRUE)
+hut <- sf::st_read("data/griend_hut.gpkg", quiet = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -681,25 +714,9 @@ ggsave(fig_basic_residence,
 
 ## Compare patch metrics
 
-We then merge the annoated, known stop data with the calculated patch duration.
-We filter this data to exclude one exceedingly long outlier of about an hour (WP080), which how
+We filter these data to exclude one exceedingly long outlier of about an hour (WP080).
 
 ```{r}
-# get known patch summary
-data_res <- data_unproc[stringi::stri_detect(tID, regex = "(WP)"), ]
-
-# get waypoint summary
-patch_summary_real <- data_res[, list(
-  nfixes_real = .N,
-  x_median = round(median(x), digits = -2),
-  y_median = round(median(y), digits = -2)
-),
-by = "tID"
-]
-
-# add real duration
-patch_summary_real[, duration_real := wp_data]
-
 # round median coordinate for inferred patches
 patch_summary_inferred <-
   patch_summary_data[
@@ -712,7 +729,11 @@ patch_summary_inferred <-
     x_median = round(x_median, digits = -2),
     y_median = round(y_median, digits = -2)
   )]
+```
 
+We add data from the known patches, matching by X and Y median.
+
+```{r }
 # join with respatch summary
 patch_summary_compare <-
   merge(patch_summary_real,
