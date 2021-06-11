@@ -494,6 +494,7 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 ```{r}
 # get centroid
 data_res_summary <- data_res[, list(
+    nfixes_real = .N,
     x_median = median(x),
     y_median = median(y),
     t_median = median(time)
@@ -530,6 +531,18 @@ wp_data <- mapply(function(l, u, mx, my) {
    # this specifies that a vector, rather than a list, is returned
    SIMPLIFY = TRUE
 )
+
+# get waypoint summary --- rounding median coordinates to the nearest 100m
+patch_summary_real <- data_res_summary[, list(
+  nfixes_real = nfixes_real,
+  x_median = round(median(x_median), digits = -2),
+  y_median = round(median(y_median), digits = -2)
+),
+by = "tID"
+]
+
+# add real duration
+patch_summary_real[, duration_real := wp_data]
 ```
 
 ### Prepare data
@@ -628,10 +641,10 @@ Further sections reproduce the analyses in the main manuscript.
 
 We read in the island's shapefile to plot it as a background for the residence patch figure.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # read griend and hut
-griend <- sf::st_read("data/griend_polygon/griend_polygon.shp")
-hut <- sf::st_read("data/griend_hut.gpkg")
+griend <- sf::st_read("data/griend_polygon/griend_polygon.shp", quiet = TRUE)
+hut <- sf::st_read("data/griend_hut.gpkg", quiet = TRUE)
 ```
 
 ```{r echo=FALSE}
@@ -701,25 +714,9 @@ ggsave(fig_basic_residence,
 
 ## Compare patch metrics
 
-We then merge the annoated, known stop data with the calculated patch duration.
-We filter this data to exclude one exceedingly long outlier of about an hour (WP080), which how
+We filter these data to exclude one exceedingly long outlier of about an hour (WP080).
 
 ```{r}
-# get known patch summary
-data_res <- data_unproc[stringi::stri_detect(tID, regex = "(WP)"), ]
-
-# get waypoint summary
-patch_summary_real <- data_res[, list(
-  nfixes_real = .N,
-  x_median = round(median(x), digits = -2),
-  y_median = round(median(y), digits = -2)
-),
-by = "tID"
-]
-
-# add real duration
-patch_summary_real[, duration_real := wp_data]
-
 # round median coordinate for inferred patches
 patch_summary_inferred <-
   patch_summary_data[
@@ -732,7 +729,11 @@ patch_summary_inferred <-
     x_median = round(x_median, digits = -2),
     y_median = round(y_median, digits = -2)
   )]
+```
 
+We add data from the known patches, matching by X and Y median.
+
+```{r }
 # join with respatch summary
 patch_summary_compare <-
   merge(patch_summary_real,
