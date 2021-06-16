@@ -627,7 +627,7 @@ While a simpler implementation using total residence time divided by the number 
 ```{r}
 # get residence times
 data_residence <- lapply(data_smooth, function(dt) {
-  
+
   # do basic recurse -- refer to Bracis et al. (2018) Ecography
   dt_recurse <- getRecursions(
     x = dt[, c("X", "Y", "time", "TAG")],

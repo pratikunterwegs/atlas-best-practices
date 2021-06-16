@@ -5,9 +5,9 @@
 #' ---
 #'
 #' # Code to Prepare Example Data
-#' 
-#' 
-#' 
+#'
+#'
+#'
 ## ----install_package----------------------------------------------------------
 # use either devtools or remotes to install
 install.packages("devtools")
