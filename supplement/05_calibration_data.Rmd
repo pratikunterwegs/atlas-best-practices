@@ -494,12 +494,12 @@ Essentially, this means that the maximum duration of a stop can be 20 minutes, a
 ```{r}
 # get centroid
 data_res_summary <- data_res[, list(
-    nfixes_real = .N,
-    x_median = median(x),
-    y_median = median(y),
-    t_median = median(time)
-  ),
-  by = "tID"
+  nfixes_real = .N,
+  x_median = median(x),
+  y_median = median(y),
+  t_median = median(time)
+),
+by = "tID"
 ]
 
 # now get times 10 mins before and after
@@ -526,10 +526,10 @@ wp_data <- mapply(function(l, u, mx, my) {
   # the minimum and maximum times of the positions retained above
   return(diff(range(tmp_data$time)))
 }, data_res_summary$t_min, data_res_summary$t_max,
-   data_res_summary$x_median, data_res_summary$y_median,
+data_res_summary$x_median, data_res_summary$y_median,
 
-   # this specifies that a vector, rather than a list, is returned
-   SIMPLIFY = TRUE
+# this specifies that a vector, rather than a list, is returned
+SIMPLIFY = TRUE
 )
 
 # get waypoint summary --- rounding median coordinates to the nearest 100m
