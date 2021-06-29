@@ -467,7 +467,7 @@ fig_agg_speed <-
     ),
     breaks = c("aggunfil", "aggsmooth"),
     name = NULL
-  )+
+  ) +
   ggthemes::theme_few() +
   theme(
     axis.text.y = element_blank(),
