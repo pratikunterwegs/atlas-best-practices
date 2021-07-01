@@ -11,8 +11,12 @@ This is source code for a manuscript that sets out a pipeline for pre-processing
 ## Source Code for Figures and Analyses
 
 Most of the source code may be found in the folder `scripts`, with numbers indicating the order in which it is to be run.
-This source code is generated from the `.Rmd` files in the top-level directory using `knitr::purl`.
+This source code (for figures 7 and 8) is partially generated from the `.Rmd` files in the directory `supplement` using `knitr::purl`.
 See the `render_books.sh` file for details of the conversion from `.Rmd` to `.R`.
+
+### renv/
+
+Settings to store and restore the R packages to the versions used in this project.
 
 ### scripts/
 
@@ -27,16 +31,16 @@ Writes cleaned data to `data/data_no_reflections.csv`.
 
 - 03_smoothing_tracks.R: Code to make Figures 4 -- 5 in the section _Smoothing and Thinning Data_.
 
-- 04_residence_patch.R: Code to make Figure 6 in the section _Synthesising Movement Tracks into Residence Patches_.
+- 04_residence_patch.R: Code to make Figure 6 in the section _Creating System-Specific Pre-processing Tools_.
 
-- 05_calibration_data.R: Code for Figure 7 in the main text subsection _Validating the Residence Patch Method_. 
+- 05_calibration_data.R: Code for Figure 7 in the main text subsection _A Real-World Test of User-Built Pre-Processing Tools_. 
 Shows a fully worked out example of pre-processing ATLAS data, as well as the linear model validating the residence patch method.
 Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Validating the Residence Patch Method with Calibration Data_.
 
 - 06_bat_data.R: Shows a fully worked out example of pre-processing ATLAS tracking data from fruit bats in the Hula Valley, Israel, which forms the main text section _Worked out Example on Animal Tracking Data_.
 Also used in Supplementary Material 01 (`docs/ms_atlas_preproc_supplementary_material_DATE.pdf`) section _Processing Egyptian Fruit Bat Tracks_.
 
-- 0x_get_srtm_hula.py`: Python code to retrieve SRTM 30m resolution data for the Hula Valley, Israel.
+- 0x_get_srtm_hula.py`: Python code to retrieve Shuttle Radio Topography Mission 30m resolution data for the Hula Valley, Israel.
 This is used solely as a background for Figure 8 in the main text.
 
 - helper_functions.R: Script with helpful functions to simulate errors in data.
@@ -54,7 +58,11 @@ This material is placed in the `supplement/` folder.
 
 ### supplement/
 
-- `.Rmd` files to create the supplementary material, including:
+- `figures/` The supplementary material figures.
+
+- `latex/` and `*.yml` Formatting options for the supplementary material output.
+
+- `.Rmd` files to create the supplementary material.
 
 - `render_books.sh`: A shell script with helper commands to generate the Supplementary Material and the source code as `R` scripts from the `Rmd` files.
 
@@ -117,11 +125,3 @@ All other data are processed forms of the simulated or empirical movement data a
 
 The figures folder contains the main text, as well as supplementary material figures.
 
-## `atlastools` Status
-
-<!-- badges: start -->
-  [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4033154.svg)](https://doi.org/10.5281/zenodo.4033154)
-  [![R build status](https://github.com/pratikunterwegs/atlastools/workflows/R-CMD-check/badge.svg)](https://github.com/pratikunterwegs/atlastools/actions)
-  [![codecov.io](https://codecov.io/github/pratikunterwegs/atlastools/coverage.svg?branch=master)](https://codecov.io/github/pratikunterwegs/atlastools/branch/master)
-<!-- badges: end -->
