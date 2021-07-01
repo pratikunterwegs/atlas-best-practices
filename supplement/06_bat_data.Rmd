@@ -696,7 +696,7 @@ data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 data_residence[, hour := data.table::hour(ts)]
 
 # filter for hour between 8pm and 5am
-data_residence = atl_filter_covariates(
+data_residence <- atl_filter_covariates(
   data = data_residence,
   filters = "hour > 20 | hour < 5"
 )
@@ -716,12 +716,16 @@ data_residence[, `:=`(
 )]
 
 # get mean residence time per id
-data_residence[, list(mean_residence = mean(resTime),
-                      sd_residence = sd(resTime)), by = "TAG"]
+data_residence[, list(
+  mean_residence = mean(resTime),
+  sd_residence = sd(resTime)
+), by = "TAG"]
 
 # get mean residence time for all bats pooled
-data_residence[, list(mean_residence = mean(resTime),
-                      sd_residence = sd(resTime))]
+data_residence[, list(
+  mean_residence = mean(resTime),
+  sd_residence = sd(resTime)
+)]
 
 # filter for residence time > 5 minutes
 data_residence <- data_residence[resTime > 5, ]
@@ -809,32 +813,35 @@ We exclude the first and last patch of each day as being roosting related, and e
 setDT(patch_summary)
 
 # exclude roost
-patch_summary = patch_summary[x_median > 254000, ]
+patch_summary <- patch_summary[x_median > 254000, ]
 
 # get mean and sd of duration in patches
-patch_summary[, list(mean_duration = mean(duration / 60), 
-                     sd_duration = sd(duration / 60))]
+patch_summary[, list(
+  mean_duration = mean(duration / 60),
+  sd_duration = sd(duration / 60)
+)]
 
 # assign night id
 patch_summary[, c("hour", "day") := list(
   data.table::hour(as.POSIXct(time_start, origin = "1970-01-01")),
-  data.table::mday(as.POSIXct(time_start, origin = "1970-01-01")))]
+  data.table::mday(as.POSIXct(time_start, origin = "1970-01-01"))
+)]
 
 patch_summary[, night := 1 + c(0, cumsum(diff(hour) > 12)), by = "id"]
 
 # get total foraging time
-foraging_proportion = patch_summary[, list(
-  time_total_forage = (max(time_end) - min(time_start)) / 60, 
-  time_forage_site = sum(duration / 60)),
-  by = c("id", "night")
-  ]
+foraging_proportion <- patch_summary[, list(
+  time_total_forage = (max(time_end) - min(time_start)) / 60,
+  time_forage_site = sum(duration / 60)
+),
+by = c("id", "night")
+]
 
 # get proporion of foraging that is at a foraging site
 foraging_proportion[, list(
   mean_foraging_prop = mean(time_forage_site / time_total_forage),
   sd_foraging_prop = sd(time_forage_site / time_total_forage)
 )]
-
 ```
 
 
