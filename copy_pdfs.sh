@@ -2,7 +2,7 @@
 # remove old tex files and pdfs
 
 cd docs
-rm *.pdf
+rm *main*.pdf
 
 cd ..
 

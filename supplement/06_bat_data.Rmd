@@ -322,13 +322,15 @@ data_split <- copy(data)
 data_split <- split(data_split, by = "TAG")
 ```
 
-## Filter by covariates
+## Filter by system-generated error attributes
 
-No natural bounds suggest themselves, so instead we proceed to filter by covariates, since point outliers are obviously visible.
+No natural bounds suggest themselves, so instead we proceed to filter by system-generated attributes of error, since point outliers are obviously visible.
 
 We use filter out positions with `SD > 20` and positions calculated using only 3 base stations, using the function `atl_filter_covariates`.
 
-First we calculate the variable `SD`.
+First we calculate the variable `SD`, which for ATLAS systems is calculated as:
+
+$$SD = \sqrt{{VARX} + {VARY} + 2 \times {COVXY}}$$
 
 ```{r}
 # get SD.
@@ -643,7 +645,7 @@ data_residence <- lapply(data_smooth, function(dt) {
   # count long absences from the each position
   dt_recurse[, timeSinceLastVisit :=
     ifelse(is.na(timeSinceLastVisit), -Inf, timeSinceLastVisit)]
-  dt_recurse[, longAbsenceCounter := cumsum(timeSinceLastVisit > 60),
+  dt_recurse[, longAbsenceCounter := cumsum(timeSinceLastVisit > 5),
     by = .(coordIdx)
   ]
 
@@ -689,6 +691,15 @@ data_residence <- rbindlist(data_residence)
 
 # get time as human readable
 data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
+
+# get hour of day to filter for nighttime
+data_residence[, hour := data.table::hour(ts)]
+
+# filter for hour between 8pm and 5am
+data_residence <- atl_filter_covariates(
+  data = data_residence,
+  filters = "hour > 20 | hour < 5"
+)
 ```
 
 ### Constructing residence patches
@@ -704,8 +715,23 @@ data_residence[, `:=`(
   x = X, y = Y
 )]
 
+# get mean residence time per id
+data_residence[, list(
+  mean_residence = mean(resTime),
+  sd_residence = sd(resTime)
+), by = "TAG"]
+
+# get mean residence time for all bats pooled
+data_residence[, list(
+  mean_residence = mean(resTime),
+  sd_residence = sd(resTime)
+)]
+
 # filter for residence time > 5 minutes
 data_residence <- data_residence[resTime > 5, ]
+
+# average positions per bat after removing transit points
+data_residence[, list(.N), by = "TAG"][, list(mean_positions_ = mean(N))]
 
 # split the data
 data_residence <- split(data_residence, data_residence$TAG)
@@ -777,6 +803,47 @@ fwrite(
   "data/data_bat_patch_summary.csv"
 )
 ```
+
+### Duration at foraging sites
+
+We exclude the first and last patch of each day as being roosting related, and examine how much of the total foraging time (time between the remaining first and last patch) was spent at foraging sites. It follows that the remainder of the time must have been spent in transit, or otherwise not foraging.
+
+```{r}
+# make patch summary a datatable
+setDT(patch_summary)
+
+# exclude roost
+patch_summary <- patch_summary[x_median > 254000, ]
+
+# get mean and sd of duration in patches
+patch_summary[, list(
+  mean_duration = mean(duration / 60),
+  sd_duration = sd(duration / 60)
+)]
+
+# assign night id
+patch_summary[, c("hour", "day") := list(
+  data.table::hour(as.POSIXct(time_start, origin = "1970-01-01")),
+  data.table::mday(as.POSIXct(time_start, origin = "1970-01-01"))
+)]
+
+patch_summary[, night := 1 + c(0, cumsum(diff(hour) > 12)), by = "id"]
+
+# get total foraging time
+foraging_proportion <- patch_summary[, list(
+  time_total_forage = (max(time_end) - min(time_start)) / 60,
+  time_forage_site = sum(duration / 60)
+),
+by = c("id", "night")
+]
+
+# get proporion of foraging that is at a foraging site
+foraging_proportion[, list(
+  mean_foraging_prop = mean(time_forage_site / time_total_forage),
+  sd_foraging_prop = sd(time_forage_site / time_total_forage)
+)]
+```
+
 
 ![A visual examination of plots of the bats' residence patches and linear approximations of paths between them showed that though all three bats roosted at the same site, they used distinct areas of the study site over the three nights **(a)**.
 Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.

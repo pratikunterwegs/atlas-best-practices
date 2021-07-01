@@ -204,12 +204,12 @@ ggsave(figure_median_smooth,
 
 ## -----------------------------------------------------------------------------
 # choose the 11 point median smooth data
-data_agg <- fread("data/data_smooth.csv")
+data_smooth <- fread("data/data_smooth.csv")
 
 # get list of aggregated data
 list_of_agg <- lapply(c(3, 10, 30, 120), function(z) {
   data_return <- atl_thin_data(
-    data = data_agg,
+    data = data_smooth,
     interval = z,
     method = "aggregate"
   )
@@ -240,30 +240,75 @@ speed_agg_smooth <- rbindlist(speed_agg_smooth)
 data_agg_smooth <- copy(list_of_agg[[3]]) # 30s aggregate
 ### plot figures
 fig_agg_data_smooth <-
-  ggplot(data_agg_smooth) +
+  ggplot() +
   geom_point(
-    data = data_agg,
+    data = data_smooth,
     size = 0.2,
-    aes(x, y),
-    col = pal[3]
+    aes(
+      x, y,
+      colour = "smooth",
+      shape = "smooth"
+    )
   ) +
-  geom_path(aes(x, y),
-    col = pal[4],
+  geom_path(
+    data = data_agg_smooth,
+    aes(
+      x, y,
+      colour = "thin",
+      shape = "thin"
+    ),
     lwd = 0.2
   ) +
-  geom_point(aes(x, y,
-    group = interval
-  ),
-  shape = 0,
-  size = 2,
-  col = pal[4],
-  alpha = 1,
-  show.legend = F
+  geom_point(
+    data = data_agg_smooth,
+    aes(
+      x, y,
+      group = interval,
+      shape = "thin",
+      col = "thin"
+    ),
+    # shape = 0,
+    size = 2,
+    # col = pal[4],
+    alpha = 1
+    # show.legend = F
+  ) +
+  scale_colour_manual(
+    values = c(
+      thin = pal[4],
+      smooth = pal[3]
+    ),
+    labels = c(
+      thin = "Thinned data",
+      smooth = "Smoothed,\nfiltered data"
+    ),
+    name = NULL
+  ) +
+  scale_shape_manual(
+    values = c(
+      thin = 0,
+      smooth = 16
+    ),
+    labels = c(
+      thin = "Thinned data",
+      smooth = "Smoothed,\nfiltered data"
+    ),
+    name = NULL
+  ) +
+  guides(
+    color = guide_legend(
+      override.aes = list(
+        linetype = c(0, 1)
+      )
+    )
   ) +
   ggthemes::theme_few() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
+  ) +
+  theme(
+    legend.position = "top"
   ) +
   coord_cartesian(ylim = c(0.6, NA))
 
@@ -293,32 +338,76 @@ data[, speed := atl_get_speed(data)]
 data_agg_error <- copy(list_of_agg_errors[[3]]) # 30s aggregate
 ### plot figures
 fig_agg_data_error <-
-  ggplot(data_agg_error) +
+  ggplot() +
   geom_point(
     data = data_errors,
     size = 0.1,
-    aes(x, y),
-    col = "grey"
+    aes(
+      x, y,
+      col = "errors",
+      shape = "errors"
+    )
   ) +
-  geom_path(aes(x, y),
-    col = pal[4]
-    # lwd = 0.1
+  geom_path(
+    data = data_agg_error,
+    aes(
+      x, y,
+      col = "agg"
+    )
   ) +
-  geom_point(aes(x, y,
-    group = interval
-  ),
-  shape = 0,
-  size = 2,
-  col = pal[4],
-  alpha = 1,
-  show.legend = F
+  geom_point(
+    data = data_agg_error,
+    aes(
+      x, y,
+      col = "agg",
+      shape = "agg",
+      group = interval
+    ),
+    size = 2,
+    alpha = 1
+  ) +
+  scale_colour_manual(
+    values = c(
+      agg = pal[4],
+      errors = "grey"
+    ),
+    labels = c(
+      agg = "Thinned data",
+      errors = "Unfiltered data"
+    ),
+    breaks = c("errors", "agg"),
+    name = NULL
+  ) +
+  scale_shape_manual(
+    values = c(
+      agg = 0,
+      errors = 16
+    ),
+    labels = c(
+      agg = "Thinned data",
+      errors = "Unfiltered data"
+    ),
+    breaks = c("errors", "agg"),
+    name = NULL
+  ) +
+  guides(
+    color = guide_legend(
+      override.aes = list(
+        linetype = c(0, 1)
+      )
+    )
   ) +
   ggthemes::theme_few() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
-  coord_cartesian(ylim = c(0.6, NA))
+  theme(
+    legend.position = "top"
+  ) +
+  coord_cartesian(
+    ylim = c(0.6, NA)
+  )
 
 
 ## -----------------------------------------------------------------------------
@@ -329,7 +418,7 @@ data_agg <- rbindlist(list_of_agg_errors)
 ## ----echo=FALSE---------------------------------------------------------------
 # show boxplot of speed
 fig_agg_speed <-
-  ggplot(data_agg) +
+  ggplot() +
   geom_hline(
     yintercept =
       1 + quantile(data$speed,
@@ -342,18 +431,21 @@ fig_agg_speed <-
     data = speed_agg_smooth,
     aes(
       x = as.factor(interval),
-      y = 1 + speed
+      y = 1 + speed,
+      fill = "aggsmooth"
     ),
-    fill = pal[3],
     size = 0.3,
-    show.legend = F,
     width = 0.25,
     outlier.size = 0.2,
     position = position_nudge(x = 0.15)
   ) +
-  geom_boxplot(aes(factor(interval), 1 + speed),
+  geom_boxplot(
+    data = data_agg,
+    aes(
+      factor(interval), 1 + speed,
+      fill = "aggunfil"
+    ),
     position = position_nudge(x = -0.15, ),
-    fill = "grey",
     size = 0.3,
     alpha = 0.5,
     show.legend = F,
@@ -364,12 +456,25 @@ fig_agg_speed <-
     label = scales::comma,
     limits = c(NA, 1.005)
   ) +
+  scale_fill_manual(
+    values = c(
+      aggsmooth = pal[3],
+      aggunfil = "grey"
+    ),
+    labels = c(
+      aggunfil = "Unfiltered data",
+      aggsmooth = "Smoothed,\nfiltered data"
+    ),
+    breaks = c("aggunfil", "aggsmooth"),
+    name = NULL
+  ) +
   ggthemes::theme_few() +
   theme(
-    axis.text.y = element_blank()
+    axis.text.y = element_blank(),
+    legend.position = "top"
   ) +
   labs(
-    x = "Interval (s)",
+    x = "Thinning interval (s)",
     y = "Speed"
   )
 
@@ -386,7 +491,12 @@ fig_aggregate <-
       tag_prefix = "(",
       tag_suffix = ")"
     ) &
-    theme(plot.tag = element_text(face = "bold"))
+    theme(
+      legend.text = element_text(
+        size = 6
+      ),
+      plot.tag = element_text(face = "bold")
+    )
 
 # save figure
 ggsave(fig_aggregate,

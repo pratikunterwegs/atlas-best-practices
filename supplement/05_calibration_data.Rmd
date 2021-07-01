@@ -75,7 +75,7 @@ pal[3] <- "seagreen"
 
 First we access the data from a local file using the `data.table` package [@dowle2020].
 
-In all, we aim to keep three versions of the data: (1) `data_raw`, the entirely unprocessed data, (2) `data`, the working version, and (3) `data_unproc`, data that has been partially processed, but which is one step behind `data`. This allows us to better illustrate the pre-processing steps, and prevents us from irreversibly modifying our data --- at best, we would have to re-run many pre-processing steps, and at worse, we might overwrite the data on disk.
+In all, we aim to keep three versions of the data: (1) `data_raw`, the entirely unprocessed data, (2) `data`, the working version, and (3) `data_unproc`, data that has been partially processed, but which is one step behind `data`. This allows us to better illustrate the pre-processing steps, and prevents us from irreversibly modifying our data --- at best, we would have to re-run many pre-processing steps, and at worst, we might overwrite the original data on disk.
 
 We look at the first few rows, using `head()`. We then visualise the raw data.
 
