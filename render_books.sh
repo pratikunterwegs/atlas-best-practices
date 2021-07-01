@@ -1,6 +1,9 @@
 #!/bin/bash
 # remove old tex files and pdfs
 
+rm docs/*supplement*.pdf
+rm docs/atlastools*.pdf
+
 # style files
 Rscript --vanilla --slave -e 'styler::style_dir("scripts", filetype = "R", recursive = FALSE)'
 Rscript --vanilla --slave -e 'styler::style_dir("supplement", filetype = "Rmd", recursive = FALSE)'
