@@ -53,3 +53,7 @@ data/*bat*.csv
 
 # ignore supplement tex
 docs/*.tex
+docs/*/pdf
+
+# ignore unzipped data
+data/data_lt_plot.csv
