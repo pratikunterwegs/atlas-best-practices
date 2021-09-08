@@ -71,6 +71,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("bookdown")
+          remotes::install_cran("Rcpp")
           remotes::install_cran("tinytex")
           tinytex::install_tinytex()
           remotes::install_cran("renv")
