@@ -201,7 +201,7 @@ If second-resolution is accurate enough (it is for our purposes), the solution t
 In the spirit of not destroying data, we create a second lower-case column called `time` to store this 
 
 ```{r}
-# divide by 1000, convert to integer, then convert to POSIXct
+# divide by 1000, convert to integer
 data[, time := as.integer(
   as.numeric(TIME) / 1000
 )]
@@ -543,6 +543,9 @@ by = "tID"
 
 # add real duration
 patch_summary_real[, duration_real := wp_data]
+
+# write to file
+fwrite(patch_summary_real, "data/data_real_watlas_stops.csv")
 ```
 
 ### Prepare data
