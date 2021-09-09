@@ -1,6 +1,8 @@
 #!/bin/bash
 # remove old tex files and pdfs
 
+cd ..
+
 rm docs/*supplement*.pdf
 rm docs/atlastools*.pdf
 
