@@ -224,6 +224,71 @@ data[, `:=`(
 data[, angle := atl_turning_angle(data = data)]
 ```
 
+Compare number of receivers and SD and speed.
+
+```{r}
+data_nbs = data[, c("NBS", "SD", "speed_in", "VARX", "VARY")]
+data_nbs = melt(
+  data_nbs,
+  id.vars = c("NBS")
+)
+```
+
+```{r}
+# plot heatmaps
+fig_sd_nbs = 
+  ggplot(data_nbs)+
+  geom_jitter(
+    aes(factor(NBS), SD, col = speed_in),
+    size = 0.2,
+    alpha = 0.4
+  )+
+  geom_hline(
+    yintercept = 100,
+    lty = 2, col = "grey"
+  )+
+  geom_vline(
+    xintercept = 1.5,
+    lty = 2, col = "grey"
+  )+
+  scale_colour_viridis_c(
+    option = "G", direction = -1,
+    limits = c(0, 20),
+    na.value = "red"
+  )+
+  coord_cartesian(
+    expand = F,
+    xlim = c(0.5, 6),
+    ylim = c(1, 1e3)
+  )+
+  scale_y_log10()+
+  theme_classic()+
+  theme(
+    # panel.border = element_rect(
+    #   colour = "black",
+    #   fill = "NA"
+    # ),
+    legend.key.width = unit(2, "mm"),
+    legend.key.height = unit(5, "mm"),
+    legend.position = c(0.8, 0.85),
+    legend.background = element_blank()
+  )+
+  # facet_wrap(~variable)+
+  labs(
+    colour = "Speed (m/s)",
+    x = "# WATLAS receivers",
+    y = "Positioning error (SD)"
+  )
+
+ggsave(
+  fig_sd_nbs,
+  filename = "supplement/figures/fig_sd_nbs.png",
+  height = 5,
+  width = 3
+)
+```
+
+
 ### Get 90th percentile of speed and angle
 
 ```{r}
