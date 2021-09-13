@@ -105,20 +105,15 @@ fig_heatmap <-
       xround, yround,
       fill = N
     ),
-    colour = "grey",
     size = 0.1,
     show.legend = F
   ) +
   scale_fill_viridis_c(
-    option = "C",
-    direction = 1,
+    option = "A",
+    direction = -1,
     trans = "log10"
   ) +
-  ggthemes::theme_few() +
-  theme(
-    axis.text = element_blank(),
-    axis.title = element_blank()
-  ) +
+  theme_void() +
   coord_sf(crs = 2039)
 
 ggsave(fig_heatmap,
@@ -149,26 +144,20 @@ fig_lags <-
     position = position_identity(),
     bins = 15,
     # fill = "grey",
-    col = "black",
+    # col = "black",
     show.legend = F
   ) +
-  geom_vline(
-    xintercept = 1,
-    col = "red"
-  ) +
   scale_x_log10(
-    labels = function(x) {
-      sprintf("%ix", x)
-    },
-    breaks = c(1, 3, 10, 100, 1000)
+    breaks = c(1, 1000),
+    labels = c("low", "high")
   ) +
   scale_y_sqrt() +
   scale_fill_viridis_d(
-    option = "H",
-    begin = 0.1,
+    option = "B",
+    begin = 0.4,
     end = 0.8
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text.y = element_blank(),
     axis.text.x = element_text(
@@ -206,24 +195,23 @@ fig_error_histogram <-
     ),
     bins = 15,
     # fill = "grey",
-    col = "black",
+    # col = "black",
     show.legend = F
   ) +
   scale_fill_viridis_d(
-    option = "H",
-    begin = 0.1,
+    option = "B",
+    begin = 0.4,
     end = 0.8
   ) +
   scale_x_log10(
-    labels = function(x) {
-      sprintf("%2.fm", x)
-    }
+    breaks = c(1, 1000),
+    labels = c("low", "high")
   ) +
   scale_y_sqrt() +
   coord_cartesian(
     xlim = c(0.5, 5e3)
   ) +
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
     axis.text.y = element_blank(),
     axis.text.x = element_text(
@@ -236,7 +224,7 @@ fig_error_histogram <-
       size = 16
     )
   ) +
-  labs(x = "Variance X")
+  labs(x = "Positioning error")
 
 # save to figures
 ggsave(fig_error_histogram,
@@ -262,7 +250,7 @@ fig_bat_raw <-
   ) +
   scale_colour_brewer(palette = "Dark2") +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -599,6 +587,14 @@ fig_bat_smooth <-
 # save to figures
 ggsave(fig_bat_smooth,
   filename = "supplement/figures/fig_bat_smooth.png",
+  dpi = 300,
+  width = 4, height = 6
+)
+
+# for fig 1
+ggsave(
+  fig_bat_smooth + theme_void(),
+  filename = "supplement/figures/fig_bat_preproc_f1.png",
   dpi = 300,
   width = 4, height = 6
 )
