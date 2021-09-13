@@ -569,13 +569,13 @@
      inkscape:cx="118.69206"
      inkscape:cy="515.29564"
      inkscape:document-units="mm"
-     inkscape:current-layer="g331"
+     inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
      inkscape:window-width="2482"
      inkscape:window-height="1417"
-     inkscape:window-x="2630"
+     inkscape:window-x="70"
      inkscape:window-y="-8"
      inkscape:window-maximized="1">
     <sodipodi:guide
@@ -1014,7 +1014,7 @@
        transform="scale(1,-1)" />
     <g
        id="g314"
-       transform="translate(0,23.004318)">
+       transform="rotate(180,-169.97476,150.23418)">
       <rect
          rx="0"
          ry="14.452698"
