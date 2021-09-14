@@ -138,7 +138,7 @@ fig_filter_bounds <-
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
-  theme(plot.background = element_rect(fill = NA)) +
+  theme(plot.background = element_rect(fill = "white", colour = NA))+
   coord_equal(expand = T)
 
 
@@ -313,7 +313,7 @@ ggplot() +
     legend.position = "none"
   ) +
   coord_equal() +
-  theme(plot.background = element_rect(fill = NA))
+  theme(plot.background = element_rect(fill = "white", colour = NA))
 
 ## ----echo=FALSE---------------------------------------------------------------
 # wrap plot
