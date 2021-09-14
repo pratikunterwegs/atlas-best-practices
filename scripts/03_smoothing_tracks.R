@@ -83,7 +83,7 @@ plot_smooth = Map(list_of_smooths,
       # lwd = 0.35,
       col = col
     )+
-    coord_equal(
+    coord_cartesian(
       expand = T,
       ylim = c(0.6, 0.78),
       # xlim = c(NA, 2.3),
@@ -171,74 +171,8 @@ ggsave(
   units = "mm"
 )
 
-
-
 ## -----------------------------------------------------------------------------
 pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
-
-fig_hist_smooth <-
-  ggplot() +
-  geom_histogram(
-    data = data_errors[offset == 0, ],
-    aes(
-      x = in_speed,
-      fill = "errors"
-    ),
-    bins = 80,
-    alpha = 1
-  ) +
-  geom_histogram(
-    data = data_plot[window_size %in% c(5, 21)],
-    aes(
-      x = speed_in,
-      fill = as.factor(window_size),
-      group = window_size
-    ),
-    bins = 80
-  ) +
-  geom_histogram(
-    data = data,
-    aes(
-      x = speed_in,
-      fill = "real"
-    ),
-    # col = pal[1],
-    alpha = 0.8,
-    bins = 80
-  ) +
-  scale_x_log10() +
-  scale_fill_manual(
-    values = c(
-      "real" = alpha("grey20", .8),
-      "errors" = "grey",
-      "5" = pal2[1],
-      "21" = pal2[2]
-    ),
-    labels = c(
-      "real" = "real track",
-      "errors" = "track w/\nerrors",
-      "5" = "K = 5",
-      "21" = "K = 21"
-    )
-  ) +
-  coord_cartesian(xlim = c(1e-5, .05)) +
-  theme_test(base_family = "sans") +
-  theme(
-    legend.position = c(0.2, 0.65),
-    axis.text = element_blank(),
-    # axis.ticks.y = element_blank(),
-    axis.title.y = element_blank(),
-    plot.title = element_text(
-      face = "bold"
-    ),
-    plot.background = element_blank()
-  ) +
-  labs(
-    x = "Speed [log10 scale]",
-    fill = "Smoothing",
-    title = "(f)"
-  )
-
 
 ## -----------------------------------------------------------------------------
 # choose the 11 point median smooth data
@@ -340,13 +274,15 @@ fig_agg_data_smooth <-
       )
     )
   ) +
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
     axis.text = element_blank(),
-    axis.title = element_blank()
-  ) +
-  theme(
-    legend.position = "top"
+    axis.title = element_blank(),
+    legend.position = "top",
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    )
   ) +
   coord_cartesian(ylim = c(0.6, NA))
 
@@ -374,6 +310,7 @@ data[, speed := atl_get_speed(data)]
 ## ----echo=FALSE---------------------------------------------------------------
 # prepare data
 data_agg_error <- copy(list_of_agg_errors[[3]]) # 30s aggregate
+
 ### plot figures
 fig_agg_data_error <-
   ggplot() +
@@ -435,13 +372,17 @@ fig_agg_data_error <-
       )
     )
   ) +
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
   theme(
-    legend.position = "top"
+    legend.position = "top",
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    )
   ) +
   coord_cartesian(
     ylim = c(0.6, NA)
@@ -506,7 +447,7 @@ fig_agg_speed <-
     breaks = c("aggunfil", "aggsmooth"),
     name = NULL
   ) +
-  ggthemes::theme_few() +
+  theme_classic()+
   theme(
     axis.text.y = element_blank(),
     legend.position = "top"
