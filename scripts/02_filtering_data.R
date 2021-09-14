@@ -6,8 +6,6 @@ library(atlastools)
 # to plot
 library(ggplot2)
 library(patchwork)
-library(ggthemes)
-
 
 ## -----------------------------------------------------------------------------
 # source helper functions
