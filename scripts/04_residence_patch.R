@@ -73,8 +73,11 @@ ggplot(
     guide = "none"
   )+
   # facet_wrap(~interval)+
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
+    plot.background = element_rect(
+      fill = "white", colour = NA
+    ),
     legend.position = c(0.2, 0.8),
     legend.key.width = unit(1, "mm"),
     legend.background = element_blank(),
@@ -229,8 +232,11 @@ fig_res_patches <-
     # xlim = c(-3, NA)
   ) +
   facet_wrap(~interval)+
-  ggthemes::theme_few() +
+  theme_void()+
   theme(
+    plot.background = element_rect(
+      fill = "white", colour = NA
+    ),
     axis.title = element_blank(),
     axis.text = element_blank(),
     strip.text = element_blank(),
