@@ -211,7 +211,7 @@ fig_error_histogram <-
   coord_cartesian(
     xlim = c(0.5, 5e3)
   ) +
-  theme_void()+
+  theme_void() +
   theme(
     axis.text.y = element_blank(),
     axis.text.x = element_text(
@@ -250,7 +250,7 @@ fig_bat_raw <-
   ) +
   scale_colour_brewer(palette = "Dark2") +
   ggspatial::annotation_scale(location = "br") +
-  theme_void()+
+  theme_void() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()

@@ -45,10 +45,10 @@ data <- fread("data/data_sim.csv")[5000:10000, ]
 data_copy <- fread("data/data_errors.csv")
 
 ## remove 10% positions
-data_copy = data_copy[!sample(
+data_copy <- data_copy[!sample(
   x = seq(nrow(data_copy)),
   size = as.integer(0.1 * nrow(data_copy)),
-  ), ]
+), ]
 
 # save as dataset
 fwrite(data_copy, "data/data_errors_missing.csv")
@@ -104,7 +104,7 @@ fig_filter_bounds <-
   ggplot() +
   geom_point(
     data = data_copy[!data_inside_bbox,
-                     on = c("x", "y")
+      on = c("x", "y")
     ],
     aes(x, y),
     col = "grey",
@@ -138,7 +138,7 @@ fig_filter_bounds <-
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
-  theme(plot.background = element_rect(fill = "white", colour = NA))+
+  theme(plot.background = element_rect(fill = "white", colour = NA)) +
   coord_equal(expand = T)
 
 
@@ -244,46 +244,48 @@ setorder(data_filtered, time)
 ## ----echo=FALSE---------------------------------------------------------------
 # data plot
 fig_outlier_remove <-
-ggplot() +
-  
+  ggplot() +
   geom_path(
     data = data_copy[!reflection, on = c("x", "y")],
     aes(x, y, col = "outlier_path"),
     lwd = 0.2
-  )+
+  ) +
   geom_path(
     data = data_filtered[!reflection, on = c("x", "y")],
-    aes(x, y,col = "good_path"),
+    aes(x, y, col = "good_path"),
     lwd = 0.2
-  )+
+  ) +
   geom_point(
-    data = data_copy[!reflection, 
-                     on = c("x", "y")][
-                       !data_filtered, on = c("x", "y")],
+    data = data_copy[!reflection,
+      on = c("x", "y")
+    ][
+      !data_filtered,
+      on = c("x", "y")
+    ],
     aes(x, y, col = "outlier"),
     shape = 4, stroke = 1
-  )+
+  ) +
   geom_point(
     data = reflection,
-    aes(x, y,col = "reflection"),
+    aes(x, y, col = "reflection"),
     # size = 0.5,
     alpha = 0.6,
     # stroke = 1,
     shape = 1
-  )+
+  ) +
   geom_point(
     data = data_filtered[!reflection, on = c("x", "y")],
     aes(x, y),
     col = pal[3],
     show.legend = F,
     alpha = 1, size = 0.2
-  )+
+  ) +
   geom_path(
     data = data,
     aes(x, y),
     col = "grey20",
     alpha = 1
-  )+
+  ) +
   annotation_custom(
     grob = ggplotGrob(
       fig_hist_speed

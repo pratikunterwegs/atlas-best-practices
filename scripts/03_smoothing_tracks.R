@@ -53,63 +53,64 @@ data_plot <- mapply(function(df, offset) {
 SIMPLIFY = F
 )
 
-pal_smooth = c(colorspace::sequential_hcl(
+pal_smooth <- c(colorspace::sequential_hcl(
   3,
   l = 40, palette = "PuBu",
   rev = T
 ), "darkred")
 
-plot_smooth = Map(list_of_smooths, 
-    pal_smooth,
-    f = function(df, col) {
-  ggplot(df) +
-    geom_path(
-      data = data_errors,
-      aes(x, y),
-      col = "grey70",
-      size = 0.2
-    )+
-    geom_point(
-      data = data_errors,
-      aes(x, y),
-      col = "grey60",
-      size = 0.2,
-      shape = 16
-    )+
-    geom_path(
-      data = df,
-      aes(x, y),
-      show.legend = F,
-      # lwd = 0.35,
-      col = col
-    )+
-    coord_cartesian(
-      expand = T,
-      ylim = c(0.6, 0.78),
-      # xlim = c(NA, 2.3),
-      ratio = 2
-    ) +
-    theme_void(base_size = 8)+
-    theme(
-      plot.background = element_rect(
-        fill = "white", colour = NA
-      ),
-      plot.title = ggtext::element_markdown()
-    )+
-    labs(
-      title = sprintf("Median smooth; *K* = %i", unique(df$window_size))
-    )
-})
+plot_smooth <- Map(list_of_smooths,
+  pal_smooth,
+  f = function(df, col) {
+    ggplot(df) +
+      geom_path(
+        data = data_errors,
+        aes(x, y),
+        col = "grey70",
+        size = 0.2
+      ) +
+      geom_point(
+        data = data_errors,
+        aes(x, y),
+        col = "grey60",
+        size = 0.2,
+        shape = 16
+      ) +
+      geom_path(
+        data = df,
+        aes(x, y),
+        show.legend = F,
+        # lwd = 0.35,
+        col = col
+      ) +
+      coord_cartesian(
+        expand = T,
+        ylim = c(0.6, 0.78),
+        # xlim = c(NA, 2.3),
+        ratio = 2
+      ) +
+      theme_void(base_size = 8) +
+      theme(
+        plot.background = element_rect(
+          fill = "white", colour = NA
+        ),
+        plot.title = ggtext::element_markdown()
+      ) +
+      labs(
+        title = sprintf("Median smooth; *K* = %i", unique(df$window_size))
+      )
+  }
+)
 
 # plot the filtered data to show the errors
-plot_errors =
-  ggplot()+
+plot_errors <-
+  ggplot() +
   geom_path(
     data = data_errors,
     aes(x, y),
     col = "grey90",
     size = 0.1
-  )+
+  ) +
   geom_point(
     data = data_errors,
     aes(x, y),
@@ -121,53 +122,53 @@ plot_errors =
     data = data,
     aes(x, y),
     col = "grey20"
-  )+
+  ) +
   coord_equal(
     expand = T,
     ylim = c(0.6, 0.78),
     # xlim = c(NA, 2.3),
     ratio = 2
   ) +
-    theme_void(base_size = 8)+
-    theme(
-      plot.background = element_rect(
-        fill = "white", colour = NA
-      ),
-      plot.title = ggtext::element_markdown()
-    )+
-    labs(
-      title = "Filtered data & true path"
-    )
-
-# wrap plots manually --- patchwork is stupid like this
-figure_median_smooth = 
-  wrap_plots(
-  plot_errors, plot_smooth[[3]], 
-  plot_smooth[[1]], plot_smooth[[2]], plot_smooth[[4]],
-  design = "ABB\nEBB\n#DC"
-) +
+  theme_void(base_size = 8) +
   theme(
     plot.background = element_rect(
-      fill = "white"
-    )
-  )+
-  plot_annotation(
-    tag_levels = "a",
-    tag_prefix = "(",
-    tag_suffix = ")"
-  ) &
-  theme(
-    plot.tag = element_text(
-      face = "bold"
-    )
+      fill = "white", colour = NA
+    ),
+    plot.title = ggtext::element_markdown()
+  ) +
+  labs(
+    title = "Filtered data & true path"
   )
+
+# wrap plots manually --- patchwork is stupid like this
+figure_median_smooth <-
+  wrap_plots(
+    plot_errors, plot_smooth[[3]],
+    plot_smooth[[1]], plot_smooth[[2]], plot_smooth[[4]],
+    design = "ABB\nEBB\n#DC"
+  ) +
+    theme(
+      plot.background = element_rect(
+        fill = "white"
+      )
+    ) +
+    plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")"
+    ) &
+    theme(
+      plot.tag = element_text(
+        face = "bold"
+      )
+    )
 
 ## ----echo=FALSE---------------------------------------------------------------
 # save figure
 ggsave(
   figure_median_smooth,
   filename = "figures/fig_04.png",
-  width = 170, height = 150, 
+  width = 170, height = 150,
   units = "mm"
 )
 
@@ -274,7 +275,7 @@ fig_agg_data_smooth <-
       )
     )
   ) +
-  theme_void()+
+  theme_void() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank(),
@@ -372,7 +373,7 @@ fig_agg_data_error <-
       )
     )
   ) +
-  theme_void()+
+  theme_void() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -447,7 +448,7 @@ fig_agg_speed <-
     breaks = c("aggunfil", "aggsmooth"),
     name = NULL
   ) +
-  theme_classic()+
+  theme_classic() +
   theme(
     axis.text.y = element_blank(),
     legend.position = "top"

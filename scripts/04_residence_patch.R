@@ -15,31 +15,31 @@ pal <- RColorBrewer::brewer.pal(4, "Set1")
 # read patch data
 data <- fread("data/data_lt_plot.csv")
 # filter for illustrative plots
-data = data[id == 3 & growth == 0.01 & type == "exploit", ]
+data <- data[id == 3 & growth == 0.01 & type == "exploit", ]
 
 data[, stationary := (
   c(0, diff(x)) == 0 & c(0, diff(y)) == 0
 ), by = "interval"]
 
 # get cell r from agent
-data_r = copy(data[interval == 1,])
-data_r = data_r[, c("x_wrap", "y_wrap") := list(
+data_r <- copy(data[interval == 1, ])
+data_r <- data_r[, c("x_wrap", "y_wrap") := list(
   round(x_wrap),
   round(y_wrap)
 )]
-data_r = data_r[, list(
+data_r <- data_r[, list(
   cell_r = mean(cell_r)
 ), by = c("x_wrap", "y_wrap")]
 
 
 ## plot initial figure
-fig_a =
-ggplot(
-  data[interval == 1,], 
-  aes(
-    x_wrap, y_wrap
-  )
-)+
+fig_a <-
+  ggplot(
+    data[interval == 1, ],
+    aes(
+      x_wrap, y_wrap
+    )
+  ) +
   geom_tile(
     data = data_r,
     aes(
@@ -47,33 +47,33 @@ ggplot(
       fill = cell_r
     ),
     alpha = 0.5
-  )+
+  ) +
   geom_path(
     aes(
       group = interval
     ),
     col = "grey",
     size = 0.3
-  )+
+  ) +
   geom_point(
     aes(
       shape = stationary
     ),
     alpha = 0.8
-  )+
+  ) +
   scale_fill_distiller(
-    palette = "YlGn", 
+    palette = "YlGn",
     direction = 1,
     breaks = c(0.1, 0.5, 0.99),
     labels = c("Low", "Med.", "High"),
     name = "Productivity"
-  )+
+  ) +
   scale_shape_manual(
     values = c(3, 16),
     guide = "none"
-  )+
+  ) +
   # facet_wrap(~interval)+
-  theme_void()+
+  theme_void() +
   theme(
     plot.background = element_rect(
       fill = "white", colour = NA
@@ -85,8 +85,8 @@ ggplot(
     axis.text = element_blank(),
     strip.text = element_blank(),
     strip.background = element_blank()
-  )+
-  coord_equal()+
+  ) +
+  coord_equal() +
   labs(
     colour = "Productivity"
   )
@@ -127,7 +127,7 @@ ggplot(
 
 ## prepare for residence patch methods
 # save an original copy
-data_org = copy(data)
+data_org <- copy(data)
 
 # an id is required
 data[, id := as.character(id)]
@@ -140,13 +140,13 @@ data[, c("x", "y") := NULL]
 setnames(data, c("x_wrap", "y_wrap"), c("x", "y"))
 
 ## split the data by interval
-data = split(data, by = "interval")
+data <- split(data, by = "interval")
 
 ## -----------------------------------------------------------------------------
 # make residence patch
 patches <- Map(
-  data, 
-  f = atl_res_patch, 
+  data,
+  f = atl_res_patch,
   buffer_radius = 0.5,
   lim_spat_indep = 5,
   lim_time_indep = 10,
@@ -171,25 +171,25 @@ patches_summary <- Map(
 )
 
 ## collect patch data
-patches_summary = Map(
+patches_summary <- Map(
   patches_summary, names(patches_summary),
   f = function(df, i) {
-    df$interval = i
+    df$interval <- i
     df
   }
 )
-patches_summary = rbindlist(patches_summary)
+patches_summary <- rbindlist(patches_summary)
 setnames(patches_summary, ".", "mean_r")
 
-patches_sf = Map(
+patches_sf <- Map(
   patches_sf, names(patches_sf),
   f = function(df, i) {
-    df$interval = i
+    df$interval <- i
     df
   }
 )
-patches_sf = rbindlist(patches_sf)
-patches_sf = sf::st_as_sf(patches_sf, sf_column_name = "polygons")
+patches_sf <- rbindlist(patches_sf)
+patches_sf <- sf::st_as_sf(patches_sf, sf_column_name = "polygons")
 
 ## ----echo=FALSE---------------------------------------------------------------
 # plot_patches <-
@@ -212,7 +212,7 @@ fig_res_patches <-
     show.legend = FALSE
   ) +
   geom_sf(
-    data = patches_sf[patches_sf$interval == 1,],
+    data = patches_sf[patches_sf$interval == 1, ],
     aes(fill = factor(patch)),
     alpha = 0.4,
     lwd = 0.2,
@@ -221,18 +221,18 @@ fig_res_patches <-
   ) +
   scale_colour_manual(
     values = c("black", "black")
-  )+
+  ) +
   scale_fill_brewer(
     palette = "Set2"
-  )+
+  ) +
   scale_shape_manual(
     values = c(3, 16)
-  )+
+  ) +
   coord_sf(
     # xlim = c(-3, NA)
   ) +
-  facet_wrap(~interval)+
-  theme_void()+
+  facet_wrap(~interval) +
+  theme_void() +
   theme(
     plot.background = element_rect(
       fill = "white", colour = NA
@@ -293,31 +293,31 @@ fig_res_patches <-
 
 ## ----echo=FALSE---------------------------------------------------------------
 # fig_residence_patch <-
-  # fig_res_patches +
-  # annotation_custom(
-  #   grob = ggplotGrob(
-  #     fig_res_inset
-  #   ),
-  #   xmin = -3.5,
-  #   xmax = 4,
-  #   ymin = 6,
-  #   ymax = 12.25
-  # )
+# fig_res_patches +
+# annotation_custom(
+#   grob = ggplotGrob(
+#     fig_res_inset
+#   ),
+#   xmin = -3.5,
+#   xmax = 4,
+#   ymin = 6,
+#   ymax = 12.25
+# )
 
-fig_residence_patch = 
+fig_residence_patch <-
   wrap_plots(
     fig_a,
     fig_res_patches
-  )+
-  plot_annotation(
-    tag_levels = "a",
-    tag_suffix = ")",
-    tag_prefix = "("
-  ) &
-  theme(
-    plot.tag.position = c(0.1, 0.95),
-    plot.tag = element_text(face = "bold")
-  )
+  ) +
+    plot_annotation(
+      tag_levels = "a",
+      tag_suffix = ")",
+      tag_prefix = "("
+    ) &
+    theme(
+      plot.tag.position = c(0.1, 0.95),
+      plot.tag = element_text(face = "bold")
+    )
 
 # save the figure
 ggsave(fig_residence_patch,
