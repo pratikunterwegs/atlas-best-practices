@@ -12,3 +12,8 @@ lof: True
 lot: True
 documentclass: book
 geometry: "left=4cm, right=3cm, top=2.5cm, bottom=2.5cm"
+
+# for Github Pages
+bookdown::gitbook:
+  fig_caption: yes
+  highlight: haddock
