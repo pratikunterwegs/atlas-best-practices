@@ -823,7 +823,7 @@ data_residence <- data_residence[resTime > 5, ]
 data_residence[, list(.N), by = "TAG"][, list(mean_positions_ = mean(N))]
 
 # split the data
-data_residence <- split(data_residence, data_residence$TAG)
+data_residence <- split(data_residence, by = c("TAG", "night"))
 ```
 
 We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes)). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and `min_fixes = 3`.
@@ -832,7 +832,9 @@ We apply the residence patch method, using the default argument values (`lim_spa
 # segment into residence patches
 data_patches <- lapply(data_residence, atl_res_patch,
   buffer_radius = 25,
-  min_fixes = 3
+  min_fixes = 3,
+  summary_variable = c("night", "distance_roost"),
+  summary_functions = c("mean", "sd")
 )
 ```
 
