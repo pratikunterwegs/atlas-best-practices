@@ -250,7 +250,9 @@ fig_bat_raw <-
   ),
   show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
   theme_void() +
   theme(
@@ -380,9 +382,11 @@ fig_bat_filter_cov <-
     ),
     show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -486,9 +490,11 @@ fig_bat_filter_speed <-
     aes(X, Y, group = TAG, col = TAG),
     show.legend = F
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -571,9 +577,9 @@ fig_bat_smooth <-
     lwd = 0.6,
     show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(values = pal) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
