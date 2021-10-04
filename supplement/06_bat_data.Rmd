@@ -254,7 +254,7 @@ fig_bat_raw <-
     values = pal
   ) +
   ggspatial::annotation_scale(location = "br") +
-  theme_void() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
