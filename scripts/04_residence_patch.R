@@ -151,8 +151,8 @@ patches <- Map(
   lim_spat_indep = 5,
   lim_time_indep = 10,
   min_fixes = 5,
-  summary_variables = "cell_r",
-  summary_functions = c("mean")
+  summary_variables = c("cell_r"),
+  summary_functions = c("mean", "sd")
 )
 
 # get spatial representation
@@ -216,14 +216,14 @@ fig_res_patches <-
     aes(fill = factor(patch)),
     alpha = 0.4,
     lwd = 0.2,
-    colour = "transparent",
+    colour = "grey",
     show.legend = FALSE
   ) +
   scale_colour_manual(
     values = c("black", "black")
   ) +
-  scale_fill_brewer(
-    palette = "Set2"
+  scale_fill_viridis_d(
+    option = "D"
   ) +
   scale_shape_manual(
     values = c(3, 16)
