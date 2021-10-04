@@ -14,7 +14,7 @@ Rscript --vanilla --slave -e 'styler::style_dir("supplement", filetype = "Rmd", 
 Rscript --vanilla --slave -e 'bookdown::render_book("supplement/")'
 
 # render worked out examples for Github Pages into docs
-Rscript --vanilla --slave -e 'bookdown::render_book("supplement/")'
+Rscript --vanilla --slave -e 'bookdown::render_book("supplement/", output_format = bookdown::gitbook())'
 
 # to render source files
 # Rscript --slave -e 'lapply(list.files(pattern = "supplement\\/\\d{2}\\w+.Rmd"), function(x) knitr::purl(x, output = sprintf("R/%s", gsub(".{4}$", ".R", x))))'
