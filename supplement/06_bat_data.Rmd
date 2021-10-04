@@ -769,11 +769,26 @@ fig_roost_exclude =
   )
 ```
 
+```{r}
 # filter for hour between 8pm and 5am
 data_residence <- atl_filter_covariates(
   data = data_residence,
-  filters = "hour > 20 | hour < 5"
+  filters = c(
+    "hour > 20 | hour < 5",
+    "distance_roost > 1000")
 )
+```
+
+### Split data by night-id
+
+We assign a night-id to each position, i.e., the night-time spanning two calendar days. We then filter for data with a residence time > 5 minutes, as we expect that a bat stopped at a location for more than 5 minutes is likely to be foraging.
+
+```{r}
+# split data into separate nights
+data_residence[, night := 1 + c(0, cumsum(diff(hour) > 12)), by = "TAG"]
+
+# filter for residence time > 5 minutes
+data_residence <- data_residence[resTime > 5, ]
 ```
 
 ### Constructing residence patches
