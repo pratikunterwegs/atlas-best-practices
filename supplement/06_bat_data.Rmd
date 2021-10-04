@@ -29,7 +29,7 @@ library(patchwork)
 library(recurse)
 
 # prepare a palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- pals::kovesi.rainbow_bgyr_35_85_c73(3)
 ```
 
 ```{r install_atlastools_2, eval=TRUE}
@@ -38,7 +38,9 @@ if (!require(remotes)) {
 }
 
 # installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
+if (!require(remotes)) {
+  remotes::install_github("pratikunterwegs/atlastools", upgrade = FALSE)
+}
 ```
 
 ## Read bat data
