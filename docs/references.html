@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <meta name="description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  
+  <meta name="twitter:description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  
+
+<meta name="author" content="Pratik R. Gupte" />
+<meta name="author" content="Christine E. Beardsworth" />
+<meta name="author" content="Orr Spiegel" />
+<meta name="author" content="Emmanuel Lourie" />
+<meta name="author" content="Sivan Toledo" />
+<meta name="author" content="Ran Nathan" />
+<meta name="author" content="Allert I. Bijleveld" />
+
+
+<meta name="date" content="2021-10-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="processing-egyptian-fruit-bat-tracks.html"/>
+
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html"><i class="fa fa-check"></i><b>1</b> Validating the Residence Patch Method with Calibration Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#outline-of-cleaning-steps"><i class="fa fa-check"></i><b>1.1</b> Outline of Cleaning Steps</a></li>
+<li class="chapter" data-level="1.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#install-atlastools-from-github"><i class="fa fa-check"></i><b>1.2</b> Install <code>atlastools</code> from Github</a>
+<ul>
+<li><a href="validating-the-residence-patch-method-with-calibration-data.html#a-note-on">A Note on <code>:=</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-libraries"><i class="fa fa-check"></i><b>1.3</b> Prepare libraries</a></li>
+<li class="chapter" data-level="1.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#access-data-and-preliminary-visualisation"><i class="fa fa-check"></i><b>1.4</b> Access data and preliminary visualisation</a></li>
+<li class="chapter" data-level="1.5" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>1.5</b> Filter by bounding box</a></li>
+<li class="chapter" data-level="1.6" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>1.6</b> Filter trajectories</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>1.6.1</b> Handle time</a></li>
+<li class="chapter" data-level="1.6.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>1.6.2</b> Add speed and turning angle</a></li>
+<li class="chapter" data-level="1.6.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-90th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>1.6.3</b> Get 90th percentile of speed and angle</a></li>
+<li class="chapter" data-level="1.6.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>1.6.4</b> Filter on speed</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>1.7</b> Smoothing the trajectory</a></li>
+<li class="chapter" data-level="1.8" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#thinning-the-data"><i class="fa fa-check"></i><b>1.8</b> Thinning the data</a></li>
+<li class="chapter" data-level="1.9" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#residence-patches"><i class="fa fa-check"></i><b>1.9</b> Residence patches</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-waypoint-centroids"><i class="fa fa-check"></i><b>1.9.1</b> Get waypoint centroids</a></li>
+<li class="chapter" data-level="1.9.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>1.9.2</b> Prepare data</a></li>
+<li class="chapter" data-level="1.9.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#exclude-transit-points"><i class="fa fa-check"></i><b>1.9.3</b> Exclude transit points</a></li>
+<li class="chapter" data-level="1.9.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#run-residence-patch-method"><i class="fa fa-check"></i><b>1.9.4</b> Run residence patch method</a></li>
+<li class="chapter" data-level="" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#a-note-on-summary-statistics"><i class="fa fa-check"></i>A note on summary statistics</a></li>
+<li class="chapter" data-level="1.9.5" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>1.9.5</b> Get spatial and summary objects</a></li>
+<li class="chapter" data-level="1.9.6" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-to-plot-data"><i class="fa fa-check"></i><b>1.9.6</b> Prepare to plot data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.10" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>1.10</b> Compare patch metrics</a>
+<ul>
+<li class="chapter" data-level="1.10.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#linear-model-durations"><i class="fa fa-check"></i><b>1.10.1</b> Linear model durations</a></li>
+<li class="chapter" data-level="1.10.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#linear-model-summary"><i class="fa fa-check"></i><b>1.10.2</b> Linear model summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.11" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#main-text-figure-6"><i class="fa fa-check"></i><b>1.11</b> Main text Figure 6</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>2</b> Processing Egyptian Fruit Bat Tracks</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-libraries-1"><i class="fa fa-check"></i><b>2.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#read-bat-data"><i class="fa fa-check"></i><b>2.2</b> Read bat data</a></li>
+<li class="chapter" data-level="2.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#exploratory-data-analysis-panels-main-text-figure-1"><i class="fa fa-check"></i><b>2.3</b> Exploratory Data Analysis Panels: Main Text Figure 1</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#heatmap-of-locations"><i class="fa fa-check"></i><b>2.3.1</b> Heatmap of Locations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sampling-intervals"><i class="fa fa-check"></i><b>2.3.2</b> Sampling Intervals</a></li>
+<li class="chapter" data-level="2.3.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#localisation-error-measured-by-systems"><i class="fa fa-check"></i><b>2.3.3</b> Localisation Error Measured by Systems</a></li>
+<li class="chapter" data-level="2.3.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#plot-paths-from-raw-tracking-data"><i class="fa fa-check"></i><b>2.3.4</b> Plot paths from raw tracking data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>2.4</b> Prepare data for filtering</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-per-individual"><i class="fa fa-check"></i><b>2.4.1</b> Prepare data per individual</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-system-generated-error-attributes"><i class="fa fa-check"></i><b>2.5</b> Filter by system-generated error attributes</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-filtered-data"><i class="fa fa-check"></i><b>2.5.1</b> Sanity check: Plot filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>2.6</b> Filter by speed</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-speed-filtered-data"><i class="fa fa-check"></i><b>2.6.1</b> Sanity check: Plot speed filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#median-smoothing"><i class="fa fa-check"></i><b>2.7</b> Median smoothing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-smoothed-data"><i class="fa fa-check"></i><b>2.7.1</b> Sanity check: Plot smoothed data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#making-residence-patches"><i class="fa fa-check"></i><b>2.8</b> Making residence patches</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>2.8.1</b> Calculating residence time</a></li>
+<li class="chapter" data-level="2.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>2.8.2</b> Constructing residence patches</a></li>
+<li class="chapter" data-level="2.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#getting-residence-patch-data"><i class="fa fa-check"></i><b>2.8.3</b> Getting residence patch data</a></li>
+<li class="chapter" data-level="2.8.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#write-patch-spatial-representations"><i class="fa fa-check"></i><b>2.8.4</b> Write patch spatial representations</a></li>
+<li class="chapter" data-level="2.8.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#duration-at-foraging-sites"><i class="fa fa-check"></i><b>2.8.5</b> Duration at foraging sites</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>3</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Supplementary Material for <em>A Guide to Pre-processing High-Frequency Animal Tracking Data</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1" number="3">
+<h1><span class="header-section-number">Section 3</span> References</h1>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Barraquand, Frédéric, and Simon Benhamou. 2008. <span>“Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.”</span> <em>Ecology</em> 89 (12): 3336–48. <a href="https://doi.org/10.1890/08-0162.1">https://doi.org/10.1890/08-0162.1</a>.
+</div>
+<div class="csl-entry">
+Beardsworth, Christine E., Evy Gobbens, Frank van Maarseveen, Bas Denissen, Anne Dekinga, Ran Nathan, Sivan Toledo, and Allert I. Bijleveld. 2021. <span>“Validating a High-Throughput Tracking System: <span>ATLAS</span> as a Regional-Scale Alternative to <span>GPS</span>.”</span> <em>bioRxiv</em>, February, 2021.02.09.430514. <a href="https://doi.org/10.1101/2021.02.09.430514">https://doi.org/10.1101/2021.02.09.430514</a>.
+</div>
+<div class="csl-entry">
+Bijleveld, Allert Imre, Robert B MacCurdy, Ying-Chi Chan, Emma Penning, Richard M. Gabrielson, John Cluderay, Erik L. Spaulding, et al. 2016. <span>“Understanding Spatial Distributions: Negative Density-Dependence in Prey Causes Predators to Trade-Off Prey Quantity with Quality.”</span> <em>Proceedings of the Royal Society B: Biological Sciences</em> 283 (1828): 20151557. <a href="https://doi.org/10.1098/rspb.2015.1557">https://doi.org/10.1098/rspb.2015.1557</a>.
+</div>
+<div class="csl-entry">
+Bracis, Chloe, Keith L. Bildstein, and Thomas Mueller. 2018. <span>“Revisitation Analysis Uncovers Spatio-Temporal Patterns in Animal Movement Data.”</span> <em>Ecography</em> 41 (11): 1801–11. <a href="https://doi.org/10.1111/ecog.03618">https://doi.org/10.1111/ecog.03618</a>.
+</div>
+<div class="csl-entry">
+Dowle, Matt, and Arun Srinivasan. 2020. <em>Data.table: <span>Extension</span> of ‘Data.frame‘</em>. Manual.
+</div>
+<div class="csl-entry">
+Gupte, Pratik Rajan. 2020. <span>“Atlastools: <span>Pre</span>-Processing <span>Tools</span> for <span>High Frequency Tracking Data</span>.”</span> Zenodo. <a href="https://doi.org/10.5281/ZENODO.4033154">https://doi.org/10.5281/ZENODO.4033154</a>.
+</div>
+<div class="csl-entry">
+Oudman, Thomas, Theunis Piersma, Mohamed V. Ahmedou Salem, Marieke E. Feis, Anne Dekinga, Sander Holthuijsen, Job ten Horn, Jan A. van Gils, and Allert I. Bijleveld. 2018. <span>“Resource Landscapes Explain Contrasting Patterns of Aggregation and Site Fidelity by Red Knots at Two Wintering Sites.”</span> <em>Movement Ecology</em> 6 (1): 24–24. <a href="https://doi.org/10.1186/s40462-018-0142-4">https://doi.org/10.1186/s40462-018-0142-4</a>.
+</div>
+<div class="csl-entry">
+Shohami, David, and Ran Nathan. 2020. <span>“Cognitive Map-Based Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.”</span> <span>Dryad</span>. <a href="https://doi.org/10.5061/DRYAD.G4F4QRFN2">https://doi.org/10.5061/DRYAD.G4F4QRFN2</a>.
+</div>
+<div class="csl-entry">
+Toledo, Sivan, David Shohami, Ingo Schiffner, Emmanuel Lourie, Yotam Orchan, Yoav Bartan, and Ran Nathan. 2020. <span>“Cognitive Map<span></span>based Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.”</span> <em>Science</em> 369 (6500): 188–93. <a href="https://doi.org/10.1126/science.aax6904">https://doi.org/10.1126/science.aax6904</a>.
+</div>
+<div class="csl-entry">
+Weiser, Adi Weller, Yotam Orchan, Ran Nathan, Motti Charter, Anthony J. Weiss, and Sivan Toledo. 2016. <span>“Characterizing the <span>Accuracy</span> of a <span>Self</span>-<span>Synchronized Reverse</span>-<span>GPS Wildlife Localization System</span>.”</span> In <em>2016 15th <span>ACM</span>/<span>IEEE International Conference</span> on <span>Information Processing</span> in <span>Sensor Networks</span> (<span>IPSN</span>)</em>, 1–12. <a href="https://doi.org/10.1109/IPSN.2016.7460662">https://doi.org/10.1109/IPSN.2016.7460662</a>.
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="processing-egyptian-fruit-bat-tracks.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["supplementary_material.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

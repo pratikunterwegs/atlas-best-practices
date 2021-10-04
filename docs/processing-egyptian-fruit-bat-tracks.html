@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <meta name="description" content="Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  
+  <meta name="twitter:description" content="Section 2 Processing Egyptian Fruit Bat Tracks | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  
+
+<meta name="author" content="Pratik R. Gupte" />
+<meta name="author" content="Christine E. Beardsworth" />
+<meta name="author" content="Orr Spiegel" />
+<meta name="author" content="Emmanuel Lourie" />
+<meta name="author" content="Sivan Toledo" />
+<meta name="author" content="Ran Nathan" />
+<meta name="author" content="Allert I. Bijleveld" />
+
+
+<meta name="date" content="2021-10-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="validating-the-residence-patch-method-with-calibration-data.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html"><i class="fa fa-check"></i><b>1</b> Validating the Residence Patch Method with Calibration Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#outline-of-cleaning-steps"><i class="fa fa-check"></i><b>1.1</b> Outline of Cleaning Steps</a></li>
+<li class="chapter" data-level="1.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#install-atlastools-from-github"><i class="fa fa-check"></i><b>1.2</b> Install <code>atlastools</code> from Github</a>
+<ul>
+<li><a href="validating-the-residence-patch-method-with-calibration-data.html#a-note-on">A Note on <code>:=</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-libraries"><i class="fa fa-check"></i><b>1.3</b> Prepare libraries</a></li>
+<li class="chapter" data-level="1.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#access-data-and-preliminary-visualisation"><i class="fa fa-check"></i><b>1.4</b> Access data and preliminary visualisation</a></li>
+<li class="chapter" data-level="1.5" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-by-bounding-box"><i class="fa fa-check"></i><b>1.5</b> Filter by bounding box</a></li>
+<li class="chapter" data-level="1.6" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-trajectories"><i class="fa fa-check"></i><b>1.6</b> Filter trajectories</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#handle-time"><i class="fa fa-check"></i><b>1.6.1</b> Handle time</a></li>
+<li class="chapter" data-level="1.6.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#add-speed-and-turning-angle"><i class="fa fa-check"></i><b>1.6.2</b> Add speed and turning angle</a></li>
+<li class="chapter" data-level="1.6.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-90th-percentile-of-speed-and-angle"><i class="fa fa-check"></i><b>1.6.3</b> Get 90th percentile of speed and angle</a></li>
+<li class="chapter" data-level="1.6.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#filter-on-speed"><i class="fa fa-check"></i><b>1.6.4</b> Filter on speed</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#smoothing-the-trajectory"><i class="fa fa-check"></i><b>1.7</b> Smoothing the trajectory</a></li>
+<li class="chapter" data-level="1.8" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#thinning-the-data"><i class="fa fa-check"></i><b>1.8</b> Thinning the data</a></li>
+<li class="chapter" data-level="1.9" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#residence-patches"><i class="fa fa-check"></i><b>1.9</b> Residence patches</a>
+<ul>
+<li class="chapter" data-level="1.9.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-waypoint-centroids"><i class="fa fa-check"></i><b>1.9.1</b> Get waypoint centroids</a></li>
+<li class="chapter" data-level="1.9.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-data"><i class="fa fa-check"></i><b>1.9.2</b> Prepare data</a></li>
+<li class="chapter" data-level="1.9.3" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#exclude-transit-points"><i class="fa fa-check"></i><b>1.9.3</b> Exclude transit points</a></li>
+<li class="chapter" data-level="1.9.4" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#run-residence-patch-method"><i class="fa fa-check"></i><b>1.9.4</b> Run residence patch method</a></li>
+<li class="chapter" data-level="" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#a-note-on-summary-statistics"><i class="fa fa-check"></i>A note on summary statistics</a></li>
+<li class="chapter" data-level="1.9.5" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#get-spatial-and-summary-objects"><i class="fa fa-check"></i><b>1.9.5</b> Get spatial and summary objects</a></li>
+<li class="chapter" data-level="1.9.6" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#prepare-to-plot-data"><i class="fa fa-check"></i><b>1.9.6</b> Prepare to plot data</a></li>
+</ul></li>
+<li class="chapter" data-level="1.10" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#compare-patch-metrics"><i class="fa fa-check"></i><b>1.10</b> Compare patch metrics</a>
+<ul>
+<li class="chapter" data-level="1.10.1" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#linear-model-durations"><i class="fa fa-check"></i><b>1.10.1</b> Linear model durations</a></li>
+<li class="chapter" data-level="1.10.2" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#linear-model-summary"><i class="fa fa-check"></i><b>1.10.2</b> Linear model summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.11" data-path="validating-the-residence-patch-method-with-calibration-data.html"><a href="validating-the-residence-patch-method-with-calibration-data.html#main-text-figure-6"><i class="fa fa-check"></i><b>1.11</b> Main text Figure 6</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html"><i class="fa fa-check"></i><b>2</b> Processing Egyptian Fruit Bat Tracks</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-libraries-1"><i class="fa fa-check"></i><b>2.1</b> Prepare libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#read-bat-data"><i class="fa fa-check"></i><b>2.2</b> Read bat data</a></li>
+<li class="chapter" data-level="2.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#exploratory-data-analysis-panels-main-text-figure-1"><i class="fa fa-check"></i><b>2.3</b> Exploratory Data Analysis Panels: Main Text Figure 1</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#heatmap-of-locations"><i class="fa fa-check"></i><b>2.3.1</b> Heatmap of Locations</a></li>
+<li class="chapter" data-level="2.3.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sampling-intervals"><i class="fa fa-check"></i><b>2.3.2</b> Sampling Intervals</a></li>
+<li class="chapter" data-level="2.3.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#localisation-error-measured-by-systems"><i class="fa fa-check"></i><b>2.3.3</b> Localisation Error Measured by Systems</a></li>
+<li class="chapter" data-level="2.3.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#plot-paths-from-raw-tracking-data"><i class="fa fa-check"></i><b>2.3.4</b> Plot paths from raw tracking data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-for-filtering"><i class="fa fa-check"></i><b>2.4</b> Prepare data for filtering</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#prepare-data-per-individual"><i class="fa fa-check"></i><b>2.4.1</b> Prepare data per individual</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-system-generated-error-attributes"><i class="fa fa-check"></i><b>2.5</b> Filter by system-generated error attributes</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-filtered-data"><i class="fa fa-check"></i><b>2.5.1</b> Sanity check: Plot filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#filter-by-speed"><i class="fa fa-check"></i><b>2.6</b> Filter by speed</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-speed-filtered-data"><i class="fa fa-check"></i><b>2.6.1</b> Sanity check: Plot speed filtered data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#median-smoothing"><i class="fa fa-check"></i><b>2.7</b> Median smoothing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#sanity-check-plot-smoothed-data"><i class="fa fa-check"></i><b>2.7.1</b> Sanity check: Plot smoothed data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#making-residence-patches"><i class="fa fa-check"></i><b>2.8</b> Making residence patches</a>
+<ul>
+<li class="chapter" data-level="2.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>2.8.1</b> Calculating residence time</a></li>
+<li class="chapter" data-level="2.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>2.8.2</b> Constructing residence patches</a></li>
+<li class="chapter" data-level="2.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#getting-residence-patch-data"><i class="fa fa-check"></i><b>2.8.3</b> Getting residence patch data</a></li>
+<li class="chapter" data-level="2.8.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#write-patch-spatial-representations"><i class="fa fa-check"></i><b>2.8.4</b> Write patch spatial representations</a></li>
+<li class="chapter" data-level="2.8.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#duration-at-foraging-sites"><i class="fa fa-check"></i><b>2.8.5</b> Duration at foraging sites</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>3</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Supplementary Material for <em>A Guide to Pre-processing High-Frequency Animal Tracking Data</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="processing-egyptian-fruit-bat-tracks" class="section level1" number="2">
+<h1><span class="header-section-number">Section 2</span> Processing Egyptian Fruit Bat Tracks</h1>
+<p>We show the pre-processing pipeline at work on the tracks of three Egyptian fruit bats (<em>Rousettus aegyptiacus</em>), and construct residence patches.</p>
+<div id="prepare-libraries-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Prepare libraries</h2>
+<p>Install the required <code>R</code> libraries that are required from CRAN if not already installed.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># libs for data</span></span>
+<span id="cb23-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb23-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RSQLite)</span>
+<span id="cb23-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(atlastools)</span>
+<span id="cb23-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># libs for plotting</span></span>
+<span id="cb23-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb23-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb23-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># recursion analysis</span></span>
+<span id="cb23-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(recurse)</span>
+<span id="cb23-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare a palette</span></span>
+<span id="cb23-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-14" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(remotes)) {</span>
+<span id="cb24-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb24-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># installation using remotes</span></span>
+<span id="cb24-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(atlastools)) {</span>
+<span id="cb24-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-7" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;pratikunterwegs/atlastools&quot;</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="read-bat-data" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Read bat data</h2>
+<p>Read the bat data from an <code>SQLite</code> database local file and convert to a plain text csv file.
+This data can be found in the “data” folder.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare the connection</span></span>
+<span id="cb25-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
+<span id="cb25-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">drv =</span> <span class="fu">SQLite</span>(),</span>
+<span id="cb25-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dbname =</span> <span class="st">&quot;data/Three_example_bats.sql&quot;</span></span>
+<span id="cb25-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># list the tables</span></span>
+<span id="cb25-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-8" aria-hidden="true" tabindex="-1"></a>table_name <span class="ot">&lt;-</span> <span class="fu">dbListTables</span>(con)</span>
+<span id="cb25-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare to query all tables</span></span>
+<span id="cb25-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-11" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&#39;select * from </span><span class="sc">\&quot;</span><span class="st">%s</span><span class="sc">\&quot;</span><span class="st">&#39;</span>, table_name)</span>
+<span id="cb25-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co"># query the database</span></span>
+<span id="cb25-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-14" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(<span class="at">conn =</span> con, <span class="at">statement =</span> query)</span>
+<span id="cb25-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># disconnect from database</span></span>
+<span id="cb25-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div>
+<p>Convert data to csv, and save a local copy in the folder “data.”</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert data to datatable</span></span>
+<span id="cb26-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(data)</span>
+<span id="cb26-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># write data for QGIS</span></span>
+<span id="cb26-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(data, <span class="at">file =</span> <span class="st">&quot;data/bat_data.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="exploratory-data-analysis-panels-main-text-figure-1" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Exploratory Data Analysis Panels: Main Text Figure 1</h2>
+<p>Here, we make some basic figures for exploratory data analysis shown in Figure 1 of the main text.</p>
+<p>Plot the bat data as a sanity check, and inspect it visually for errors.
+The plot code is hidden in the rendered copy (PDF) of this supplementary material, but is available in the <code>Rmarkdown</code> file “supplement/06_bat_data.Rmd.”</p>
+<div id="heatmap-of-locations" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Heatmap of Locations</h3>
+<p>Here we demonstrate a basic heatmap of locations, aggregating over all individuals.
+In this one instance, the plotting code is also shown as a guide for readers, but in general, plotting code is hidden throughout this document.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-1" aria-hidden="true" tabindex="-1"></a>data_heatmap <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
+<span id="cb27-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-2" aria-hidden="true" tabindex="-1"></a>data_heatmap[, <span class="fu">c</span>(<span class="st">&quot;xround&quot;</span>, <span class="st">&quot;yround&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
+<span id="cb27-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-3" aria-hidden="true" tabindex="-1"></a>  plyr<span class="sc">::</span><span class="fu">round_any</span>(X, <span class="dv">250</span>),</span>
+<span id="cb27-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  plyr<span class="sc">::</span><span class="fu">round_any</span>(Y, <span class="dv">250</span>)</span>
+<span id="cb27-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-5" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb27-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb27-6" aria-hidden="true" tabindex="-1"></a>data_heatmap <span class="ot">&lt;-</span> data_heatmap[, .N, by <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;xround&quot;</span>, <span class="st">&quot;yround&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-1" aria-hidden="true" tabindex="-1"></a>fig_heatmap <span class="ot">&lt;-</span></span>
+<span id="cb28-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data_heatmap) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(</span>
+<span id="cb28-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb28-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-5" aria-hidden="true" tabindex="-1"></a>      xround, yround,</span>
+<span id="cb28-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> N</span>
+<span id="cb28-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb28-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">0.1</span>,</span>
+<span id="cb28-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">show.legend =</span> F</span>
+<span id="cb28-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(</span>
+<span id="cb28-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">&quot;A&quot;</span>,</span>
+<span id="cb28-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb28-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span></span>
+<span id="cb28-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb28-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="dv">2039</span>)</span>
+<span id="cb28-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_heatmap,</span>
+<span id="cb28-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;supplement/figures/fig_bat_heatmap_raw.png&quot;</span>,</span>
+<span id="cb28-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>,</span>
+<span id="cb28-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span></span>
+<span id="cb28-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb28-23" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="sampling-intervals" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Sampling Intervals</h3>
+<p>Here, we create the histogram of sampling intervals shown in Figure 1 of the main text.
+The plotting code is hidden in the PDF version, but available in the source code.</p>
+</div>
+<div id="localisation-error-measured-by-systems" class="section level3" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Localisation Error Measured by Systems</h3>
+<p>Here, we create the histogram of location error (variance in X) <span class="citation">(<a href="#ref-weiser2016" role="doc-biblioref">Weiser et al. 2016</a>)</span> shown in Figure 1 of the main text.
+The plotting code is hidden in the PDF version, but available in the source code.</p>
+</div>
+<div id="plot-paths-from-raw-tracking-data" class="section level3" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Plot paths from raw tracking data</h3>
+<p>Here, we plot the paths of individual bats from the raw tracking data to visually inspect them for errors.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this figure for the panel in main text figure 1</span></span>
+<span id="cb29-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-2" aria-hidden="true" tabindex="-1"></a>fig_bat_focus_bad_speed <span class="ot">&lt;-</span></span>
+<span id="cb29-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-3" aria-hidden="true" tabindex="-1"></a>  fig_bat_raw <span class="sc">+</span></span>
+<span id="cb29-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(</span>
+<span id="cb29-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">crs =</span> <span class="dv">2039</span>,</span>
+<span id="cb29-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">253000</span>, <span class="cn">NA</span>),</span>
+<span id="cb29-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">772000</span>, <span class="cn">NA</span>)</span>
+<span id="cb29-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb29-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># save to supplement figures</span></span>
+<span id="cb29-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_bat_focus_bad_speed,</span>
+<span id="cb29-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;supplement/figures/fig_bat_focus_bad_speed.png&quot;</span>,</span>
+<span id="cb29-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span>,</span>
+<span id="cb29-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">6</span></span>
+<span id="cb29-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb29-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure">
+<img src="figures/fig_bat_raw.png" alt="" />
+<p class="caption">Movement data from three Egyptian fruit bats tracked using the ATLAS system (<em>Rousettus aegyptiacus</em>; <span class="citation">(<a href="#ref-toledo2020" role="doc-biblioref">Toledo et al. 2020</a>; <a href="#ref-shohami2020" role="doc-biblioref">Shohami and Nathan 2020</a>)</span>).
+The bats were tracked in the Hula Valley, Israel (33.1<span class="math inline">\(^{\circ}\)</span>N, 35.6<span class="math inline">\(^{\circ}\)</span>E), and we use three nights of tracking (5, 6, and 7 May, 2018), for our demonstration, with an average of 13,370 positions (SD = 2,173; range = 11,195 – 15,542; interval = 8 seconds) per individual.
+After first plotting the individual tracks, we notice severe distortions, making pre-processing necesary</p>
+</div>
+</div>
+</div>
+<div id="prepare-data-for-filtering" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Prepare data for filtering</h2>
+<p>Here we apply a series of simple filters.
+It is always safer to deal with one individual at a time, so we split the data.table
+into a list of data.tables to avoid mixups among individuals.</p>
+<p>This is a very rudimentary demonstration of the principle behind <strong>batch processing</strong> — splitting data into smaller, independent subsets, and applying the same steps to each subset.</p>
+<div id="prepare-data-per-individual" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Prepare data per individual</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># split bat data by tag</span></span>
+<span id="cb30-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># first make a copy using the data.table function copy</span></span>
+<span id="cb30-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># this prevents the orignal data from being modified by atlastools</span></span>
+<span id="cb30-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># functions which DO MODIFY BY REFERENCE!</span></span>
+<span id="cb30-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-5" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
+<span id="cb30-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># now split</span></span>
+<span id="cb30-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb30-8" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">split</span>(data_split, <span class="at">by =</span> <span class="st">&quot;TAG&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="filter-by-system-generated-error-attributes" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Filter by system-generated error attributes</h2>
+<p>No natural bounds suggest themselves, so instead we proceed to filter by system-generated attributes of error, since point outliers are obviously visible.</p>
+<p>We use filter out positions with <code>SD &gt; 20</code> and positions calculated using only 3 base stations, using the function <code>atl_filter_covariates</code>.</p>
+<p>First we calculate the variable <code>SD</code>, which for ATLAS systems is calculated as:</p>
+<p><span class="math display">\[SD = \sqrt{{VARX} + {VARY} + 2 \times {COVXY}}\]</span></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get SD.</span></span>
+<span id="cb31-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># since the data are data.tables, no assignment is necessary</span></span>
+<span id="cb31-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(</span>
+<span id="cb31-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb31-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    dt[, SD <span class="sc">:</span><span class="er">=</span> <span class="fu">sqrt</span>(VARX <span class="sc">+</span> VARY <span class="sc">+</span> (<span class="dv">2</span> <span class="sc">*</span> COVXY))]</span>
+<span id="cb31-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb31-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Then we pass the filters to <code>atl_filter_covariates</code>.
+We apply the filter to each individual’s data using an <code>lapply</code> – this separates the data from each individual into a separate data frame, lessening the chances of inter-individual mix-ups.</p>
+<p>This is another basic example of the principles behind batch-processing, and could be parallelised using the <code>R</code> package <code>furrr</code> (see <a href="https://CRAN.R-project.org/package=furrr" class="uri">https://CRAN.R-project.org/package=furrr</a>).</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for SD &lt;= 20</span></span>
+<span id="cb32-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># here, reassignment is necessary as rows are being removed</span></span>
+<span id="cb32-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-3" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb32-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
+<span id="cb32-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dt,</span>
+<span id="cb32-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">filters =</span> <span class="fu">c</span>(</span>
+<span id="cb32-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;SD &lt;= 20&quot;</span>,</span>
+<span id="cb32-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;NBS &gt; 3&quot;</span></span>
+<span id="cb32-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb32-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb32-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div id="sanity-check-plot-filtered-data" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Sanity check: Plot filtered data</h3>
+<p>We plot the data to check whether the filtering has improved the data (Fig. 2.2).
+The plot code is once again hidden in this rendering, but is available in the source code file.</p>
+<div class="figure">
+<img src="figures/fig_bat_filter_cov.png" alt="" />
+<p class="caption">Bat data filtered for large location errors, removing observations with standard deviation <span class="math inline">\(&gt;\)</span> 20. Grey crosses show data that were removed. Since the number of base stations used in the location process is a good indicator of error <span class="citation">(<a href="#ref-weiser2016" role="doc-biblioref">Weiser et al. 2016</a>)</span>, we also removed observations calculated using fewer than four base stations. Both steps used the function .
+This filtering reduced the data to an average of 10,447 positions per individual (78% of the raw data on average). However, some point outliers remain.</p>
+</div>
+</div>
+</div>
+<div id="filter-by-speed" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Filter by speed</h2>
+<p>Some point outliers remain, and could be removed using a speed filter.</p>
+<p>First we calculate speeds, using <code>atl_get_speed</code>. We must assign the speed output to a new column in the data.table, which has a special syntax which modifies in place, and is shown below. This syntax is a feature of the <code>data.table</code> package, not strictly of <code>atlastools</code> <span class="citation">(<a href="#ref-dowle2020" role="doc-biblioref">Dowle and Srinivasan 2020</a>)</span>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get speeds as with SD, no reassignment required for columns</span></span>
+<span id="cb33-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(</span>
+<span id="cb33-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb33-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first process time to seconds</span></span>
+<span id="cb33-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># assign to a new column</span></span>
+<span id="cb33-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-7" aria-hidden="true" tabindex="-1"></a>    dt[, time <span class="sc">:</span><span class="er">=</span> <span class="fu">floor</span>(TIME <span class="sc">/</span> <span class="dv">1000</span>)]</span>
+<span id="cb33-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-9" aria-hidden="true" tabindex="-1"></a>    dt[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
+<span id="cb33-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_in =</span> <span class="fu">atl_get_speed</span>(dt,</span>
+<span id="cb33-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">&quot;X&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Y&quot;</span>,</span>
+<span id="cb33-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb33-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">&quot;in&quot;</span></span>
+<span id="cb33-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-14" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb33-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">speed_out =</span> <span class="fu">atl_get_speed</span>(dt,</span>
+<span id="cb33-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">&quot;X&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Y&quot;</span>,</span>
+<span id="cb33-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb33-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="st">&quot;out&quot;</span></span>
+<span id="cb33-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-19" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb33-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-20" aria-hidden="true" tabindex="-1"></a>    )]</span>
+<span id="cb33-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-21" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb33-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb33-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Now filter for speeds &gt; 20 m/s (around 70 km/h), passing the predicate (a statement return TRUE or FALSE) to <code>atl_filter_covariates</code>. First, we remove positions which have <code>NA</code> for their <code>speed_in</code> (the first position) and their <code>speed_out</code> (last position).</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter speeds</span></span>
+<span id="cb34-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reassignment is required here</span></span>
+<span id="cb34-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-3" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_split, <span class="cf">function</span>(dt) {</span>
+<span id="cb34-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(dt, <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;speed_in&quot;</span>, <span class="st">&quot;speed_out&quot;</span>))</span>
+<span id="cb34-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
+<span id="cb34-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dt,</span>
+<span id="cb34-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">filters =</span> <span class="fu">c</span>(</span>
+<span id="cb34-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;speed_in &lt;= 20&quot;</span>,</span>
+<span id="cb34-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;speed_out &lt;= 20&quot;</span></span>
+<span id="cb34-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb34-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb34-13" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<div id="sanity-check-plot-speed-filtered-data" class="section level3" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Sanity check: Plot speed filtered data</h3>
+<p>The speed filtered data is now inspected for errors (Fig. 2.3). The plot code is once again hidden.</p>
+<div class="figure">
+<img src="figures/fig_bat_filter_speed.png" alt="" />
+<p class="caption">Bat data with unrealistic speeds removed. Notice, compared with the previous figure, that spikes of unrealistic movement in all three tracks have been removed. Grey crosses show data that were removed. We calculated the incoming and outgoing speed of each position using <code>atl_get_speed</code>, and filtered out positions with speeds &gt; 20 m/s using <code>atl_filter_covariates</code>, leaving 10,337 positions per individual on average (98% from the previous step).</p>
+</div>
+</div>
+</div>
+<div id="median-smoothing" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Median smoothing</h2>
+<p>The quality of the data is relatively high, and a median smooth is not strictly necessary. We demonstrate the application of a 5 point median smooth to the data nonetheless (Fig. 2.4).</p>
+<p>Since the median smoothing function <code>atl_median_smooth</code> modifies in place, we first make a copy of the data, using <code>data.table</code>’s <code>copy</code> function.
+No reassignment is required, in this case. The <code>lapply</code> function allows arguments to <code>atl_median_smooth</code> to be passed within <code>lapply</code> itself.</p>
+<p>In this case, the same moving window <span class="math inline">\(K\)</span> is applied to all individuals, but modifying this code to use the multivariate version <code>Map</code> allows different <span class="math inline">\(K\)</span> to be used for different individuals. This is a programming matter, and is not covered here further.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># since the function modifies in place, we shall make a copy</span></span>
+<span id="cb35-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb35-2" aria-hidden="true" tabindex="-1"></a>data_smooth <span class="ot">&lt;-</span> <span class="fu">copy</span>(data_split)</span>
+<span id="cb35-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data again</span></span>
+<span id="cb35-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb35-5" aria-hidden="true" tabindex="-1"></a>data_smooth <span class="ot">&lt;-</span> <span class="fu">split</span>(data_smooth, <span class="at">by =</span> <span class="st">&quot;TAG&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the median smooth to each list element</span></span>
+<span id="cb36-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># no reassignment is required as THE FUNCTION MODIFIES IN PLACE!</span></span>
+<span id="cb36-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(</span>
+<span id="cb36-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the function arguments to atl_median_smooth</span></span>
+<span id="cb36-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># can be passed directly in lapply</span></span>
+<span id="cb36-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(</span>
+<span id="cb36-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">X =</span> data_smooth,</span>
+<span id="cb36-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> atl_median_smooth,</span>
+<span id="cb36-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="st">&quot;time&quot;</span>, <span class="at">moving_window =</span> <span class="dv">5</span></span>
+<span id="cb36-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb36-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb36-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div id="sanity-check-plot-smoothed-data" class="section level3" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> Sanity check: Plot smoothed data</h3>
+<div class="figure">
+<img src="figures/fig_bat_smooth.png" alt="" />
+<p class="caption">Bat data after applying a median smooth with a moving window <span class="math inline">\(K\)</span> = 5. Grey circles show data prior to smoothing. The smoothing step did not discard any data.</p>
+</div>
+</div>
+</div>
+<div id="making-residence-patches" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Making residence patches</h2>
+<div id="calculating-residence-time" class="section level3" number="2.8.1">
+<h3><span class="header-section-number">2.8.1</span> Calculating residence time</h3>
+<p>First, the data is put through the <code>recurse</code> package to get residence time <span class="citation">(<a href="#ref-bracis2018" role="doc-biblioref">Bracis, Bildstein, and Mueller 2018</a>)</span>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data</span></span>
+<span id="cb37-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb37-2" aria-hidden="true" tabindex="-1"></a>data_smooth <span class="ot">&lt;-</span> <span class="fu">split</span>(data_smooth, data_smooth<span class="sc">$</span>TAG)</span></code></pre></div>
+<p>We calculated residence time, but since bats may revisit the same features, we want to prevent confusion between frequent revisits and prolonged residence.</p>
+<p>For this, we stop summing residence times within <span class="math inline">\(Z\)</span> metres of a location if the animal exited the area for one hour or more. The value of <span class="math inline">\(Z\)</span> (radius, in <code>recurse</code> parameter terms) was chosen as 50m.</p>
+<p>This step is relatively complicated and is only required for individuals which frequently return to the same location, or pass over the same areas repeatedly, and for which revisits (cumulative time spent) may be confused for residence time in a single visit.</p>
+<p>While a simpler implementation using total residence time divided by the number of revisits is also possible, this does assume that each revisit had the same residence time.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get residence times</span></span>
+<span id="cb38-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-2" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_smooth, <span class="cf">function</span>(dt) {</span>
+<span id="cb38-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># do basic recurse -- refer to Bracis et al. (2018) Ecography</span></span>
+<span id="cb38-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-5" aria-hidden="true" tabindex="-1"></a>  dt_recurse <span class="ot">&lt;-</span> <span class="fu">getRecursions</span>(</span>
+<span id="cb38-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> dt[, <span class="fu">c</span>(<span class="st">&quot;X&quot;</span>, <span class="st">&quot;Y&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;TAG&quot;</span>)],</span>
+<span id="cb38-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">50</span>,</span>
+<span id="cb38-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">timeunits =</span> <span class="st">&quot;mins&quot;</span></span>
+<span id="cb38-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get revisit stats column provided as recurse output</span></span>
+<span id="cb38-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-12" aria-hidden="true" tabindex="-1"></a>  dt_recurse <span class="ot">&lt;-</span> <span class="fu">setDT</span>(</span>
+<span id="cb38-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-13" aria-hidden="true" tabindex="-1"></a>    dt_recurse[[<span class="st">&quot;revisitStats&quot;</span>]]</span>
+<span id="cb38-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># count long absences from the each position</span></span>
+<span id="cb38-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-17" aria-hidden="true" tabindex="-1"></a>  dt_recurse[, timeSinceLastVisit <span class="sc">:</span><span class="er">=</span></span>
+<span id="cb38-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ifelse</span>(<span class="fu">is.na</span>(timeSinceLastVisit), <span class="sc">-</span><span class="cn">Inf</span>, timeSinceLastVisit)]</span>
+<span id="cb38-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-19" aria-hidden="true" tabindex="-1"></a>  dt_recurse[, longAbsenceCounter <span class="sc">:</span><span class="er">=</span> <span class="fu">cumsum</span>(timeSinceLastVisit <span class="sc">&gt;</span> <span class="dv">5</span>),</span>
+<span id="cb38-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-20" aria-hidden="true" tabindex="-1"></a>    by <span class="ot">=</span> .(coordIdx)</span>
+<span id="cb38-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-21" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb38-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter data to exclude revisits after the first long absence of 60 mins</span></span>
+<span id="cb38-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-24" aria-hidden="true" tabindex="-1"></a>  dt_recurse <span class="ot">&lt;-</span> dt_recurse[longAbsenceCounter <span class="sc">&lt;</span> <span class="dv">1</span>, ]</span>
+<span id="cb38-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the residence time as the sum of times inside</span></span>
+<span id="cb38-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># before the first &#39;long absence&#39;</span></span>
+<span id="cb38-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># also calculate the First Passage Time and the number of revisits</span></span>
+<span id="cb38-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-29" aria-hidden="true" tabindex="-1"></a>  dt_recurse <span class="ot">&lt;-</span> dt_recurse[, <span class="fu">list</span>(</span>
+<span id="cb38-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">resTime =</span> <span class="fu">sum</span>(timeInside),</span>
+<span id="cb38-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">fpt =</span> <span class="fu">first</span>(timeInside),</span>
+<span id="cb38-32"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">revisits =</span> <span class="fu">max</span>(visitIdx)</span>
+<span id="cb38-33"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-33" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb38-34"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-34" aria-hidden="true" tabindex="-1"></a>  by <span class="ot">=</span> .(coordIdx, x, y)</span>
+<span id="cb38-35"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-35" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb38-36"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-37"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># prepare to merge existing data with recursion data</span></span>
+<span id="cb38-38"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-38" aria-hidden="true" tabindex="-1"></a>  dt[, coordIdx <span class="sc">:</span><span class="er">=</span> <span class="fu">seq</span>(<span class="fu">nrow</span>(dt))]</span>
+<span id="cb38-39"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-40"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># merge the revised recursion analysis data with the tracking data</span></span>
+<span id="cb38-41"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-41" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> <span class="fu">merge</span>(dt,</span>
+<span id="cb38-42"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-42" aria-hidden="true" tabindex="-1"></a>    dt_recurse[, <span class="fu">c</span>(<span class="st">&quot;coordIdx&quot;</span>, <span class="st">&quot;resTime&quot;</span>)],</span>
+<span id="cb38-43"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;coordIdx&quot;</span>)</span>
+<span id="cb38-44"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-44" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-45"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-46"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ensure the data are ordered in ascending order of time</span></span>
+<span id="cb38-47"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setorderv</span>(dt, <span class="st">&quot;time&quot;</span>)</span>
+<span id="cb38-48"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-49"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># print message when done</span></span>
+<span id="cb38-50"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;TAG %s residence times done&quot;</span>, <span class="fu">unique</span>(dt<span class="sc">$</span>TAG)))</span>
+<span id="cb38-51"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-52"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return the dataframe</span></span>
+<span id="cb38-53"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-53" aria-hidden="true" tabindex="-1"></a>  dt</span>
+<span id="cb38-54"><a href="processing-egyptian-fruit-bat-tracks.html#cb38-54" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<p>We bind the data together and assign a human readable timestamp column.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bind the list</span></span>
+<span id="cb39-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-2" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(data_residence)</span>
+<span id="cb39-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get time as human readable</span></span>
+<span id="cb39-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-5" aria-hidden="true" tabindex="-1"></a>data_residence[, ts <span class="sc">:</span><span class="er">=</span> <span class="fu">as.POSIXct</span>(time, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)]</span>
+<span id="cb39-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get hour of day to filter for nighttime</span></span>
+<span id="cb39-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-8" aria-hidden="true" tabindex="-1"></a>data_residence[, hour <span class="sc">:</span><span class="er">=</span> data.table<span class="sc">::</span><span class="fu">hour</span>(ts)]</span>
+<span id="cb39-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for hour between 8pm and 5am</span></span>
+<span id="cb39-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-11" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
+<span id="cb39-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_residence,</span>
+<span id="cb39-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">filters =</span> <span class="st">&quot;hour &gt; 20 | hour &lt; 5&quot;</span></span>
+<span id="cb39-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="constructing-residence-patches" class="section level3" number="2.8.2">
+<h3><span class="header-section-number">2.8.2</span> Constructing residence patches</h3>
+<p>Some preparation is required. First, the function requires columns <code>x</code>, <code>y</code>,
+<code>time</code>, and <code>id</code>, which we assign using the <code>data.table</code> syntax. The <code>time</code> column is already present, but the other columns need to be renamed to lower case.
+Then we subset the data to only work with positions where the individual had a residence time of more than 5 minutes.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add an id column</span></span>
+<span id="cb40-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-2" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
+<span id="cb40-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> TAG,</span>
+<span id="cb40-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> X, <span class="at">y =</span> Y</span>
+<span id="cb40-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-5" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb40-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time per id</span></span>
+<span id="cb40-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-8" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
+<span id="cb40-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
+<span id="cb40-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
+<span id="cb40-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-11" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>]</span>
+<span id="cb40-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             TAG mean_residence sd_residence</span></span>
+<span id="cb40-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 972001004424          202.1        135.8</span></span>
+<span id="cb40-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 972001004449           28.1         34.0</span></span>
+<span id="cb40-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 972001004452           43.5         47.3</span></span>
+<span id="cb40-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time for all bats pooled</span></span>
+<span id="cb40-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-17" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
+<span id="cb40-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
+<span id="cb40-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
+<span id="cb40-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-20" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb40-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_residence sd_residence</span></span>
+<span id="cb40-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:           95.6          119</span></span>
+<span id="cb40-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-23" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for residence time &gt; 5 minutes</span></span>
+<span id="cb40-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-24" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> data_residence[resTime <span class="sc">&gt;</span> <span class="dv">5</span>, ]</span>
+<span id="cb40-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-26" aria-hidden="true" tabindex="-1"></a><span class="co"># average positions per bat after removing transit points</span></span>
+<span id="cb40-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-27" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(.N), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>][, <span class="fu">list</span>(<span class="at">mean_positions_ =</span> <span class="fu">mean</span>(N))]</span>
+<span id="cb40-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_positions_</span></span>
+<span id="cb40-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            5736</span></span>
+<span id="cb40-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-30" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data</span></span>
+<span id="cb40-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-31" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">split</span>(data_residence, data_residence<span class="sc">$</span>TAG)</span></code></pre></div>
+<p>We apply the residence patch method, using the default argument values (<code>lim_spat_indep = 100</code> (metres), <code>lim_time_indep = 30</code> (minutes)). We change the <code>buffer_radius</code> to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and <code>min_fixes = 3</code>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># segment into residence patches</span></span>
+<span id="cb41-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-2" aria-hidden="true" tabindex="-1"></a>data_patches <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_residence, atl_res_patch,</span>
+<span id="cb41-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span>,</span>
+<span id="cb41-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_fixes =</span> <span class="dv">3</span></span>
+<span id="cb41-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="getting-residence-patch-data" class="section level3" number="2.8.3">
+<h3><span class="header-section-number">2.8.3</span> Getting residence patch data</h3>
+<p>We extract the residence patch data as spatial <code>sf-MULTIPOLYGON</code> objects.
+These are returned as a list and must be converted into a single <code>sf</code> object.
+These objects and the raw movement data are shown in Fig. 2.5.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get data spatials</span></span>
+<span id="cb42-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-2" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary,</span>
+<span id="cb42-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
+<span id="cb42-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span></span>
+<span id="cb42-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># bind list</span></span>
+<span id="cb42-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-8" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(data_spatials)</span>
+<span id="cb42-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to sf</span></span>
+<span id="cb42-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb42-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-12" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(data_spatials, <span class="at">sf_column_name =</span> <span class="st">&quot;polygons&quot;</span>)</span>
+<span id="cb42-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign a crs</span></span>
+<span id="cb42-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(data_spatials) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="dv">2039</span>)</span></code></pre></div>
+</div>
+<div id="write-patch-spatial-representations" class="section level3" number="2.8.4">
+<h3><span class="header-section-number">2.8.4</span> Write patch spatial representations</h3>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_spatials,</span>
+<span id="cb43-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">&quot;data/data_bat_residence_patches.gpkg&quot;</span>,</span>
+<span id="cb43-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">append =</span> <span class="cn">FALSE</span></span>
+<span id="cb43-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deleting layer `data_bat_residence_patches&#39; using driver `GPKG&#39;</span></span>
+<span id="cb43-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing layer `data_bat_residence_patches&#39; to data source </span></span>
+<span id="cb43-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `data/data_bat_residence_patches.gpkg&#39; using driver `GPKG&#39;</span></span>
+<span id="cb43-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing 55 features with 18 fields and geometry type Multi Polygon.</span></span></code></pre></div>
+<p>Write cleaned bat data.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(<span class="fu">rbindlist</span>(data_smooth),</span>
+<span id="cb44-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/data_bat_smooth.csv&quot;</span></span>
+<span id="cb44-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Write patch summary.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get summary</span></span>
+<span id="cb45-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-2" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary)</span>
+<span id="cb45-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bind summary</span></span>
+<span id="cb45-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-5" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(patch_summary)</span>
+<span id="cb45-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write</span></span>
+<span id="cb45-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb45-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-9" aria-hidden="true" tabindex="-1"></a>  patch_summary,</span>
+<span id="cb45-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;data/data_bat_patch_summary.csv&quot;</span></span>
+<span id="cb45-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="duration-at-foraging-sites" class="section level3" number="2.8.5">
+<h3><span class="header-section-number">2.8.5</span> Duration at foraging sites</h3>
+<p>We exclude the first and last patch of each day as being roosting related, and examine how much of the total foraging time (time between the remaining first and last patch) was spent at foraging sites. It follows that the remainder of the time must have been spent in transit, or otherwise not foraging.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make patch summary a datatable</span></span>
+<span id="cb46-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(patch_summary)</span>
+<span id="cb46-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># exclude roost</span></span>
+<span id="cb46-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-5" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> patch_summary[x_median <span class="sc">&gt;</span> <span class="dv">254000</span>, ]</span>
+<span id="cb46-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean and sd of duration in patches</span></span>
+<span id="cb46-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-8" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">list</span>(</span>
+<span id="cb46-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_duration =</span> <span class="fu">mean</span>(duration <span class="sc">/</span> <span class="dv">60</span>),</span>
+<span id="cb46-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_duration =</span> <span class="fu">sd</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
+<span id="cb46-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-11" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb46-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_duration sd_duration</span></span>
+<span id="cb46-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            57        62.2</span></span>
+<span id="cb46-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign night id</span></span>
+<span id="cb46-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-15" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">c</span>(<span class="st">&quot;hour&quot;</span>, <span class="st">&quot;day&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
+<span id="cb46-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">hour</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)),</span>
+<span id="cb46-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">mday</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>))</span>
+<span id="cb46-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-18" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb46-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-20" aria-hidden="true" tabindex="-1"></a>patch_summary[, night <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(<span class="fu">diff</span>(hour) <span class="sc">&gt;</span> <span class="dv">12</span>)), by <span class="ot">=</span> <span class="st">&quot;id&quot;</span>]</span>
+<span id="cb46-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="co"># get total foraging time</span></span>
+<span id="cb46-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-23" aria-hidden="true" tabindex="-1"></a>foraging_proportion <span class="ot">&lt;-</span> patch_summary[, <span class="fu">list</span>(</span>
+<span id="cb46-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_total_forage =</span> (<span class="fu">max</span>(time_end) <span class="sc">-</span> <span class="fu">min</span>(time_start)) <span class="sc">/</span> <span class="dv">60</span>,</span>
+<span id="cb46-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_forage_site =</span> <span class="fu">sum</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
+<span id="cb46-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-26" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb46-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-27" aria-hidden="true" tabindex="-1"></a>by <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;night&quot;</span>)</span>
+<span id="cb46-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-28" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb46-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="co"># get proporion of foraging that is at a foraging site</span></span>
+<span id="cb46-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-31" aria-hidden="true" tabindex="-1"></a>foraging_proportion[, <span class="fu">list</span>(</span>
+<span id="cb46-32"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_foraging_prop =</span> <span class="fu">mean</span>(time_forage_site <span class="sc">/</span> time_total_forage),</span>
+<span id="cb46-33"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_foraging_prop =</span> <span class="fu">sd</span>(time_forage_site <span class="sc">/</span> time_total_forage)</span>
+<span id="cb46-34"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-34" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb46-35"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_foraging_prop sd_foraging_prop</span></span>
+<span id="cb46-36"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:              0.838            0.155</span></span></code></pre></div>
+<div class="figure">
+<img src="../figures/fig_08.png" alt="" />
+<p class="caption">A visual examination of plots of the bats’ residence patches and linear approximations of paths between them showed that though all three bats roosted at the same site, they used distinct areas of the study site over the three nights <strong>(a)</strong>.
+Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas <strong>(b, c)</strong>.
+However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources <strong>(b, c)</strong>.
+When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar <strong>(c)</strong>.
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap <strong>(b, c)</strong>.</p>
+</div>
+
+</div>
+</div>
+</div>
+<h3> References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bracis2018" class="csl-entry">
+Bracis, Chloe, Keith L. Bildstein, and Thomas Mueller. 2018. <span>“Revisitation Analysis Uncovers Spatio-Temporal Patterns in Animal Movement Data.”</span> <em>Ecography</em> 41 (11): 1801–11. <a href="https://doi.org/10.1111/ecog.03618">https://doi.org/10.1111/ecog.03618</a>.
+</div>
+<div id="ref-dowle2020" class="csl-entry">
+Dowle, Matt, and Arun Srinivasan. 2020. <em>Data.table: <span>Extension</span> of ‘Data.frame‘</em>. Manual.
+</div>
+<div id="ref-shohami2020" class="csl-entry">
+Shohami, David, and Ran Nathan. 2020. <span>“Cognitive Map-Based Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.”</span> <span>Dryad</span>. <a href="https://doi.org/10.5061/DRYAD.G4F4QRFN2">https://doi.org/10.5061/DRYAD.G4F4QRFN2</a>.
+</div>
+<div id="ref-toledo2020" class="csl-entry">
+Toledo, Sivan, David Shohami, Ingo Schiffner, Emmanuel Lourie, Yotam Orchan, Yoav Bartan, and Ran Nathan. 2020. <span>“Cognitive Map<span></span>based Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.”</span> <em>Science</em> 369 (6500): 188–93. <a href="https://doi.org/10.1126/science.aax6904">https://doi.org/10.1126/science.aax6904</a>.
+</div>
+<div id="ref-weiser2016" class="csl-entry">
+Weiser, Adi Weller, Yotam Orchan, Ran Nathan, Motti Charter, Anthony J. Weiss, and Sivan Toledo. 2016. <span>“Characterizing the <span>Accuracy</span> of a <span>Self</span>-<span>Synchronized Reverse</span>-<span>GPS Wildlife Localization System</span>.”</span> In <em>2016 15th <span>ACM</span>/<span>IEEE International Conference</span> on <span>Information Processing</span> in <span>Sensor Networks</span> (<span>IPSN</span>)</em>, 1–12. <a href="https://doi.org/10.1109/IPSN.2016.7460662">https://doi.org/10.1109/IPSN.2016.7460662</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="validating-the-residence-patch-method-with-calibration-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["supplementary_material.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
