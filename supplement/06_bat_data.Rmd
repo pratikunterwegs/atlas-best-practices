@@ -698,6 +698,76 @@ data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 
 # get hour of day to filter for nighttime
 data_residence[, hour := data.table::hour(ts)]
+```
+
+### Movements away from the roost
+
+To focus on night-time bat foraging around fruit trees, we shall filter data _both_ on the timestamps, to select night-time positions, and on the locations, to select positions > 1 km away from the roost-cave at Har Gershom (see main text Fig. 8).
+
+Combining these two filters allows us to exclude bat positions at the roost-cave that may be due to individual-differences in bats' departure or return times to and from their foraging areas.
+
+```{r}
+# read in roosts and select the Har Gershom roost
+roosts = fread("data/Roosts.csv")
+setnames(roosts, "Species", "roost_name")
+roosts = roosts[roost_name == "Har Gershom"]
+
+# define a simple distance function that is vectorised
+get_distance_adhoc = function(x1, y1, x2, y2) {
+  sqrt(((x2 - x1) ^2) + ((y2 - y1) ^2) )
+}
+
+# calculate distance to roost cave at Har Gershom
+data_residence[, distance_roost := get_distance_adhoc(
+  x1 = roosts$X, 
+  x2 = data_residence$X, 
+  y1 = roosts$Y, 
+  y2 = data_residence$Y
+)
+]
+
+# plot for sanity check --- this plot is not shown
+fig_roost_exclude =
+  ggplot(data_residence)+
+  geom_point(
+    aes(X, Y, col = distance_roost)
+  )+
+  geom_point(
+    data = roosts,
+    aes(X, Y),
+    shape = 21, size = 4,
+    fill = "blue",
+    alpha = 0.5
+  )+
+  scale_colour_viridis_c(
+    option = "B", direction = -1,
+    trans = "log10",
+    breaks = c(1000, 2500, 5000),
+    labels = function(x) {
+      scales::comma(
+        x,
+        scale = 0.001, suffix = "km"
+      )
+    },
+    limits = c(1000, NA),
+    na.value = "lightblue"
+  )+
+  ggspatial::annotation_scale(location = "br") +
+  theme_test() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(vjust = 1)
+  ) +
+  coord_sf(
+    crs = 2039
+  )+
+  labs(
+    colour = "distance (km)"
+  )
+```
 
 # filter for hour between 8pm and 5am
 data_residence <- atl_filter_covariates(
