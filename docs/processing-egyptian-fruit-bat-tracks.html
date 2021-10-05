@@ -30,7 +30,7 @@
 <meta name="author" content="Allert I. Bijleveld" />
 
 
-<meta name="date" content="2021-10-04" />
+<meta name="date" content="2021-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -227,10 +227,12 @@ div.csl-indent {
 <li class="chapter" data-level="2.8" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#making-residence-patches"><i class="fa fa-check"></i><b>2.8</b> Making residence patches</a>
 <ul>
 <li class="chapter" data-level="2.8.1" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#calculating-residence-time"><i class="fa fa-check"></i><b>2.8.1</b> Calculating residence time</a></li>
-<li class="chapter" data-level="2.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>2.8.2</b> Constructing residence patches</a></li>
-<li class="chapter" data-level="2.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#getting-residence-patch-data"><i class="fa fa-check"></i><b>2.8.3</b> Getting residence patch data</a></li>
-<li class="chapter" data-level="2.8.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#write-patch-spatial-representations"><i class="fa fa-check"></i><b>2.8.4</b> Write patch spatial representations</a></li>
-<li class="chapter" data-level="2.8.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#duration-at-foraging-sites"><i class="fa fa-check"></i><b>2.8.5</b> Duration at foraging sites</a></li>
+<li class="chapter" data-level="2.8.2" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#movements-away-from-the-roost"><i class="fa fa-check"></i><b>2.8.2</b> Movements away from the roost</a></li>
+<li class="chapter" data-level="2.8.3" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#split-data-by-night-id"><i class="fa fa-check"></i><b>2.8.3</b> Split data by night-id</a></li>
+<li class="chapter" data-level="2.8.4" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#constructing-residence-patches"><i class="fa fa-check"></i><b>2.8.4</b> Constructing residence patches</a></li>
+<li class="chapter" data-level="2.8.5" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#getting-residence-patch-data"><i class="fa fa-check"></i><b>2.8.5</b> Getting residence patch data</a></li>
+<li class="chapter" data-level="2.8.6" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#write-patch-spatial-representations"><i class="fa fa-check"></i><b>2.8.6</b> Write patch spatial representations</a></li>
+<li class="chapter" data-level="2.8.7" data-path="processing-egyptian-fruit-bat-tracks.html"><a href="processing-egyptian-fruit-bat-tracks.html#duration-at-foraging-sites"><i class="fa fa-check"></i><b>2.8.7</b> Duration at foraging sites</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>3</b> References</a></li>
@@ -270,7 +272,7 @@ div.csl-indent {
 <span id="cb23-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(recurse)</span>
 <span id="cb23-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare a palette</span></span>
-<span id="cb23-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-14" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">4</span>, <span class="st">&quot;Set1&quot;</span>)</span></code></pre></div>
+<span id="cb23-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb23-14" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> pals<span class="sc">::</span><span class="fu">kovesi.rainbow_bgyr_35_85_c73</span>(<span class="dv">3</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(remotes)) {</span>
 <span id="cb24-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
 <span id="cb24-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -593,144 +595,212 @@ No reassignment is required, in this case. The <code>lapply</code> function allo
 <span id="cb39-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-5" aria-hidden="true" tabindex="-1"></a>data_residence[, ts <span class="sc">:</span><span class="er">=</span> <span class="fu">as.POSIXct</span>(time, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)]</span>
 <span id="cb39-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get hour of day to filter for nighttime</span></span>
-<span id="cb39-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-8" aria-hidden="true" tabindex="-1"></a>data_residence[, hour <span class="sc">:</span><span class="er">=</span> data.table<span class="sc">::</span><span class="fu">hour</span>(ts)]</span>
-<span id="cb39-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for hour between 8pm and 5am</span></span>
-<span id="cb39-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-11" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
-<span id="cb39-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_residence,</span>
-<span id="cb39-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">filters =</span> <span class="st">&quot;hour &gt; 20 | hour &lt; 5&quot;</span></span>
-<span id="cb39-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb39-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb39-8" aria-hidden="true" tabindex="-1"></a>data_residence[, hour <span class="sc">:</span><span class="er">=</span> data.table<span class="sc">::</span><span class="fu">hour</span>(ts)]</span></code></pre></div>
 </div>
-<div id="constructing-residence-patches" class="section level3" number="2.8.2">
-<h3><span class="header-section-number">2.8.2</span> Constructing residence patches</h3>
+<div id="movements-away-from-the-roost" class="section level3" number="2.8.2">
+<h3><span class="header-section-number">2.8.2</span> Movements away from the roost</h3>
+<p>To focus on night-time bat foraging around fruit trees, we shall filter data <em>both</em> on the timestamps, to select night-time positions, and on the locations, to select positions &gt; 1 km away from the roost-cave at Har Gershom (see main text Fig. 8).</p>
+<p>Combining these two filters allows us to exclude bat positions at the roost-cave that may be due to individual-differences in bats’ departure or return times to and from their foraging areas.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in roosts and select the Har Gershom roost</span></span>
+<span id="cb40-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-2" aria-hidden="true" tabindex="-1"></a>roosts <span class="ot">=</span> <span class="fu">fread</span>(<span class="st">&quot;data/Roosts.csv&quot;</span>)</span>
+<span id="cb40-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(roosts, <span class="st">&quot;Species&quot;</span>, <span class="st">&quot;roost_name&quot;</span>)</span>
+<span id="cb40-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-4" aria-hidden="true" tabindex="-1"></a>roosts <span class="ot">=</span> roosts[roost_name <span class="sc">==</span> <span class="st">&quot;Har Gershom&quot;</span>]</span>
+<span id="cb40-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># define a simple distance function that is vectorised</span></span>
+<span id="cb40-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-7" aria-hidden="true" tabindex="-1"></a>get_distance_adhoc <span class="ot">=</span> <span class="cf">function</span>(x1, y1, x2, y2) {</span>
+<span id="cb40-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(((x2 <span class="sc">-</span> x1) <span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> ((y2 <span class="sc">-</span> y1) <span class="sc">^</span><span class="dv">2</span>) )</span>
+<span id="cb40-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate distance to roost cave at Har Gershom</span></span>
+<span id="cb40-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-12" aria-hidden="true" tabindex="-1"></a>data_residence[, distance_roost <span class="sc">:</span><span class="er">=</span> <span class="fu">get_distance_adhoc</span>(</span>
+<span id="cb40-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">x1 =</span> roosts<span class="sc">$</span>X, </span>
+<span id="cb40-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">x2 =</span> data_residence<span class="sc">$</span>X, </span>
+<span id="cb40-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">y1 =</span> roosts<span class="sc">$</span>Y, </span>
+<span id="cb40-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">y2 =</span> data_residence<span class="sc">$</span>Y</span>
+<span id="cb40-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-18" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb40-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for sanity check --- this plot is not shown</span></span>
+<span id="cb40-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-21" aria-hidden="true" tabindex="-1"></a>fig_roost_exclude <span class="ot">=</span></span>
+<span id="cb40-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data_residence)<span class="sc">+</span></span>
+<span id="cb40-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb40-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(X, Y, <span class="at">col =</span> distance_roost)</span>
+<span id="cb40-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-25" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb40-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb40-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> roosts,</span>
+<span id="cb40-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(X, Y),</span>
+<span id="cb40-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb40-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb40-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.5</span></span>
+<span id="cb40-32"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-32" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb40-33"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_c</span>(</span>
+<span id="cb40-34"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">&quot;B&quot;</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb40-35"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> <span class="st">&quot;log10&quot;</span>,</span>
+<span id="cb40-36"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">2500</span>, <span class="dv">5000</span>),</span>
+<span id="cb40-37"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb40-38"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-38" aria-hidden="true" tabindex="-1"></a>      scales<span class="sc">::</span><span class="fu">comma</span>(</span>
+<span id="cb40-39"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-39" aria-hidden="true" tabindex="-1"></a>        x,</span>
+<span id="cb40-40"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">scale =</span> <span class="fl">0.001</span>, <span class="at">suffix =</span> <span class="st">&quot;km&quot;</span></span>
+<span id="cb40-41"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-41" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb40-42"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-42" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb40-43"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="cn">NA</span>),</span>
+<span id="cb40-44"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">&quot;lightblue&quot;</span></span>
+<span id="cb40-45"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-45" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb40-46"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-46" aria-hidden="true" tabindex="-1"></a>  ggspatial<span class="sc">::</span><span class="fu">annotation_scale</span>(<span class="at">location =</span> <span class="st">&quot;br&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-47"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_test</span>() <span class="sc">+</span></span>
+<span id="cb40-48"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb40-49"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb40-50"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb40-51"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb40-52"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb40-53"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="dv">1</span>)</span>
+<span id="cb40-54"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-54" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-55"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(</span>
+<span id="cb40-56"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">crs =</span> <span class="dv">2039</span></span>
+<span id="cb40-57"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-57" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb40-58"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb40-59"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;distance (km)&quot;</span></span>
+<span id="cb40-60"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-60" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for hour between 8pm and 5am</span></span>
+<span id="cb41-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-2" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
+<span id="cb41-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_residence,</span>
+<span id="cb41-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">filters =</span> <span class="fu">c</span>(</span>
+<span id="cb41-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;hour &gt; 20 | hour &lt; 5&quot;</span>,</span>
+<span id="cb41-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;distance_roost &gt; 1000&quot;</span>)</span>
+<span id="cb41-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="split-data-by-night-id" class="section level3" number="2.8.3">
+<h3><span class="header-section-number">2.8.3</span> Split data by night-id</h3>
+<p>We assign a night-id to each position, i.e., the night-time spanning two calendar days. We then filter for data with a residence time &gt; 5 minutes, as we expect that a bat stopped at a location for more than 5 minutes is likely to be foraging.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># split data into separate nights</span></span>
+<span id="cb42-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-2" aria-hidden="true" tabindex="-1"></a>data_residence[, night <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(<span class="fu">diff</span>(hour) <span class="sc">&gt;</span> <span class="dv">12</span>)), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>]</span>
+<span id="cb42-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for residence time &gt; 5 minutes</span></span>
+<span id="cb42-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-5" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> data_residence[resTime <span class="sc">&gt;</span> <span class="dv">5</span>, ]</span></code></pre></div>
+</div>
+<div id="constructing-residence-patches" class="section level3" number="2.8.4">
+<h3><span class="header-section-number">2.8.4</span> Constructing residence patches</h3>
 <p>Some preparation is required. First, the function requires columns <code>x</code>, <code>y</code>,
-<code>time</code>, and <code>id</code>, which we assign using the <code>data.table</code> syntax. The <code>time</code> column is already present, but the other columns need to be renamed to lower case.
-Then we subset the data to only work with positions where the individual had a residence time of more than 5 minutes.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add an id column</span></span>
-<span id="cb40-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-2" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
-<span id="cb40-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> TAG,</span>
-<span id="cb40-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> X, <span class="at">y =</span> Y</span>
-<span id="cb40-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-5" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb40-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time per id</span></span>
-<span id="cb40-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-8" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
-<span id="cb40-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
-<span id="cb40-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
-<span id="cb40-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-11" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>]</span>
-<span id="cb40-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             TAG mean_residence sd_residence</span></span>
-<span id="cb40-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 972001004424          202.1        135.8</span></span>
-<span id="cb40-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 972001004449           28.1         34.0</span></span>
-<span id="cb40-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 972001004452           43.5         47.3</span></span>
-<span id="cb40-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time for all bats pooled</span></span>
-<span id="cb40-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-17" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
-<span id="cb40-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
-<span id="cb40-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
-<span id="cb40-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-20" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb40-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_residence sd_residence</span></span>
-<span id="cb40-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:           95.6          119</span></span>
-<span id="cb40-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-23" aria-hidden="true" tabindex="-1"></a><span class="co"># filter for residence time &gt; 5 minutes</span></span>
-<span id="cb40-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-24" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> data_residence[resTime <span class="sc">&gt;</span> <span class="dv">5</span>, ]</span>
-<span id="cb40-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-26" aria-hidden="true" tabindex="-1"></a><span class="co"># average positions per bat after removing transit points</span></span>
-<span id="cb40-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-27" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(.N), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>][, <span class="fu">list</span>(<span class="at">mean_positions_ =</span> <span class="fu">mean</span>(N))]</span>
-<span id="cb40-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_positions_</span></span>
-<span id="cb40-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            5736</span></span>
-<span id="cb40-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-30" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data</span></span>
-<span id="cb40-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb40-31" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">split</span>(data_residence, data_residence<span class="sc">$</span>TAG)</span></code></pre></div>
+<code>time</code>, and <code>id</code>, which we assign using the <code>data.table</code> syntax. The <code>time</code> column is already present, but the other columns need to be renamed to lower case.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add an id column</span></span>
+<span id="cb43-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-2" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
+<span id="cb43-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> TAG,</span>
+<span id="cb43-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> X, <span class="at">y =</span> Y</span>
+<span id="cb43-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-5" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb43-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time per id</span></span>
+<span id="cb43-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-8" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
+<span id="cb43-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
+<span id="cb43-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
+<span id="cb43-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-11" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>]</span>
+<span id="cb43-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             TAG mean_residence sd_residence</span></span>
+<span id="cb43-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 972001004424          238.4        116.8</span></span>
+<span id="cb43-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 972001004449           52.8         33.5</span></span>
+<span id="cb43-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 972001004452           53.5         38.5</span></span>
+<span id="cb43-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean residence time for all bats pooled</span></span>
+<span id="cb43-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-17" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(</span>
+<span id="cb43-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_residence =</span> <span class="fu">mean</span>(resTime),</span>
+<span id="cb43-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_residence =</span> <span class="fu">sd</span>(resTime)</span>
+<span id="cb43-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-20" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb43-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_residence sd_residence</span></span>
+<span id="cb43-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            133          123</span></span>
+<span id="cb43-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-23" aria-hidden="true" tabindex="-1"></a><span class="co"># average positions per bat after removing transit points</span></span>
+<span id="cb43-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-24" aria-hidden="true" tabindex="-1"></a>data_residence[, <span class="fu">list</span>(.N), by <span class="ot">=</span> <span class="st">&quot;TAG&quot;</span>][, <span class="fu">list</span>(<span class="at">mean_positions_ =</span> <span class="fu">mean</span>(N))]</span>
+<span id="cb43-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_positions_</span></span>
+<span id="cb43-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            5549</span></span>
+<span id="cb43-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-27" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data</span></span>
+<span id="cb43-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-28" aria-hidden="true" tabindex="-1"></a>data_residence <span class="ot">&lt;-</span> <span class="fu">split</span>(data_residence, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;TAG&quot;</span>, <span class="st">&quot;night&quot;</span>))</span></code></pre></div>
 <p>We apply the residence patch method, using the default argument values (<code>lim_spat_indep = 100</code> (metres), <code>lim_time_indep = 30</code> (minutes)). We change the <code>buffer_radius</code> to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and <code>min_fixes = 3</code>.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># segment into residence patches</span></span>
-<span id="cb41-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-2" aria-hidden="true" tabindex="-1"></a>data_patches <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_residence, atl_res_patch,</span>
-<span id="cb41-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span>,</span>
-<span id="cb41-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_fixes =</span> <span class="dv">3</span></span>
-<span id="cb41-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb41-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># segment into residence patches</span></span>
+<span id="cb44-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-2" aria-hidden="true" tabindex="-1"></a>data_patches <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_residence, atl_res_patch,</span>
+<span id="cb44-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span>,</span>
+<span id="cb44-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_fixes =</span> <span class="dv">3</span>,</span>
+<span id="cb44-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">summary_variable =</span> <span class="fu">c</span>(<span class="st">&quot;night&quot;</span>, <span class="st">&quot;distance_roost&quot;</span>),</span>
+<span id="cb44-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">summary_functions =</span> <span class="fu">c</span>(<span class="st">&quot;mean&quot;</span>, <span class="st">&quot;sd&quot;</span>)</span>
+<span id="cb44-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
-<div id="getting-residence-patch-data" class="section level3" number="2.8.3">
-<h3><span class="header-section-number">2.8.3</span> Getting residence patch data</h3>
+<div id="getting-residence-patch-data" class="section level3" number="2.8.5">
+<h3><span class="header-section-number">2.8.5</span> Getting residence patch data</h3>
 <p>We extract the residence patch data as spatial <code>sf-MULTIPOLYGON</code> objects.
 These are returned as a list and must be converted into a single <code>sf</code> object.
 These objects and the raw movement data are shown in Fig. 2.5.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get data spatials</span></span>
-<span id="cb42-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-2" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary,</span>
-<span id="cb42-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
-<span id="cb42-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span></span>
-<span id="cb42-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb42-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># bind list</span></span>
-<span id="cb42-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-8" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(data_spatials)</span>
-<span id="cb42-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to sf</span></span>
-<span id="cb42-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb42-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-12" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(data_spatials, <span class="at">sf_column_name =</span> <span class="st">&quot;polygons&quot;</span>)</span>
-<span id="cb42-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign a crs</span></span>
-<span id="cb42-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(data_spatials) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="dv">2039</span>)</span></code></pre></div>
-</div>
-<div id="write-patch-spatial-representations" class="section level3" number="2.8.4">
-<h3><span class="header-section-number">2.8.4</span> Write patch spatial representations</h3>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_spatials,</span>
-<span id="cb43-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">&quot;data/data_bat_residence_patches.gpkg&quot;</span>,</span>
-<span id="cb43-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">append =</span> <span class="cn">FALSE</span></span>
-<span id="cb43-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb43-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deleting layer `data_bat_residence_patches&#39; using driver `GPKG&#39;</span></span>
-<span id="cb43-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing layer `data_bat_residence_patches&#39; to data source </span></span>
-<span id="cb43-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `data/data_bat_residence_patches.gpkg&#39; using driver `GPKG&#39;</span></span>
-<span id="cb43-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing 55 features with 18 fields and geometry type Multi Polygon.</span></span></code></pre></div>
-<p>Write cleaned bat data.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(<span class="fu">rbindlist</span>(data_smooth),</span>
-<span id="cb44-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/data_bat_smooth.csv&quot;</span></span>
-<span id="cb44-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb44-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Write patch summary.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get summary</span></span>
-<span id="cb45-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-2" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary)</span>
-<span id="cb45-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bind summary</span></span>
-<span id="cb45-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-5" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(patch_summary)</span>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get data spatials</span></span>
+<span id="cb45-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-2" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary,</span>
+<span id="cb45-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
+<span id="cb45-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">25</span></span>
+<span id="cb45-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb45-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write</span></span>
-<span id="cb45-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
-<span id="cb45-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-9" aria-hidden="true" tabindex="-1"></a>  patch_summary,</span>
-<span id="cb45-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;data/data_bat_patch_summary.csv&quot;</span></span>
-<span id="cb45-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb45-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># bind list</span></span>
+<span id="cb45-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-8" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(data_spatials)</span>
+<span id="cb45-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to sf</span></span>
+<span id="cb45-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb45-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-12" aria-hidden="true" tabindex="-1"></a>data_spatials <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(data_spatials, <span class="at">sf_column_name =</span> <span class="st">&quot;polygons&quot;</span>)</span>
+<span id="cb45-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign a crs</span></span>
+<span id="cb45-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(data_spatials) <span class="ot">&lt;-</span> <span class="fu">st_crs</span>(<span class="dv">2039</span>)</span></code></pre></div>
 </div>
-<div id="duration-at-foraging-sites" class="section level3" number="2.8.5">
-<h3><span class="header-section-number">2.8.5</span> Duration at foraging sites</h3>
+<div id="write-patch-spatial-representations" class="section level3" number="2.8.6">
+<h3><span class="header-section-number">2.8.6</span> Write patch spatial representations</h3>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_write</span>(data_spatials,</span>
+<span id="cb46-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">&quot;data/data_bat_residence_patches.gpkg&quot;</span>,</span>
+<span id="cb46-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">append =</span> <span class="cn">FALSE</span></span>
+<span id="cb46-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Deleting layer `data_bat_residence_patches&#39; using driver `GPKG&#39;</span></span>
+<span id="cb46-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing layer `data_bat_residence_patches&#39; to data source </span></span>
+<span id="cb46-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `data/data_bat_residence_patches.gpkg&#39; using driver `GPKG&#39;</span></span>
+<span id="cb46-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Writing 45 features with 22 fields and geometry type Multi Polygon.</span></span></code></pre></div>
+<p>Write cleaned bat data.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(<span class="fu">rbindlist</span>(data_smooth),</span>
+<span id="cb47-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">&quot;data/data_bat_smooth.csv&quot;</span></span>
+<span id="cb47-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb47-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Write patch summary.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get summary</span></span>
+<span id="cb48-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-2" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data_patches, atl_patch_summary)</span>
+<span id="cb48-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># bind summary</span></span>
+<span id="cb48-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-5" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(patch_summary)</span>
+<span id="cb48-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write</span></span>
+<span id="cb48-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(</span>
+<span id="cb48-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-9" aria-hidden="true" tabindex="-1"></a>  patch_summary,</span>
+<span id="cb48-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;data/data_bat_patch_summary.csv&quot;</span></span>
+<span id="cb48-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb48-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="duration-at-foraging-sites" class="section level3" number="2.8.7">
+<h3><span class="header-section-number">2.8.7</span> Duration at foraging sites</h3>
 <p>We exclude the first and last patch of each day as being roosting related, and examine how much of the total foraging time (time between the remaining first and last patch) was spent at foraging sites. It follows that the remainder of the time must have been spent in transit, or otherwise not foraging.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make patch summary a datatable</span></span>
-<span id="cb46-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(patch_summary)</span>
-<span id="cb46-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># exclude roost</span></span>
-<span id="cb46-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-5" aria-hidden="true" tabindex="-1"></a>patch_summary <span class="ot">&lt;-</span> patch_summary[x_median <span class="sc">&gt;</span> <span class="dv">254000</span>, ]</span>
-<span id="cb46-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean and sd of duration in patches</span></span>
-<span id="cb46-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-8" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">list</span>(</span>
-<span id="cb46-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_duration =</span> <span class="fu">mean</span>(duration <span class="sc">/</span> <span class="dv">60</span>),</span>
-<span id="cb46-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_duration =</span> <span class="fu">sd</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
-<span id="cb46-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-11" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb46-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_duration sd_duration</span></span>
-<span id="cb46-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            57        62.2</span></span>
-<span id="cb46-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># assign night id</span></span>
-<span id="cb46-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-15" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">c</span>(<span class="st">&quot;hour&quot;</span>, <span class="st">&quot;day&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
-<span id="cb46-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-16" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">hour</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)),</span>
-<span id="cb46-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-17" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">mday</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>))</span>
-<span id="cb46-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-18" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb46-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-20" aria-hidden="true" tabindex="-1"></a>patch_summary[, night <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(<span class="fu">diff</span>(hour) <span class="sc">&gt;</span> <span class="dv">12</span>)), by <span class="ot">=</span> <span class="st">&quot;id&quot;</span>]</span>
-<span id="cb46-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-22" aria-hidden="true" tabindex="-1"></a><span class="co"># get total foraging time</span></span>
-<span id="cb46-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-23" aria-hidden="true" tabindex="-1"></a>foraging_proportion <span class="ot">&lt;-</span> patch_summary[, <span class="fu">list</span>(</span>
-<span id="cb46-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_total_forage =</span> (<span class="fu">max</span>(time_end) <span class="sc">-</span> <span class="fu">min</span>(time_start)) <span class="sc">/</span> <span class="dv">60</span>,</span>
-<span id="cb46-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_forage_site =</span> <span class="fu">sum</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
-<span id="cb46-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-26" aria-hidden="true" tabindex="-1"></a>),</span>
-<span id="cb46-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-27" aria-hidden="true" tabindex="-1"></a>by <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;night&quot;</span>)</span>
-<span id="cb46-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-28" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb46-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="co"># get proporion of foraging that is at a foraging site</span></span>
-<span id="cb46-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-31" aria-hidden="true" tabindex="-1"></a>foraging_proportion[, <span class="fu">list</span>(</span>
-<span id="cb46-32"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_foraging_prop =</span> <span class="fu">mean</span>(time_forage_site <span class="sc">/</span> time_total_forage),</span>
-<span id="cb46-33"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_foraging_prop =</span> <span class="fu">sd</span>(time_forage_site <span class="sc">/</span> time_total_forage)</span>
-<span id="cb46-34"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-34" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb46-35"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_foraging_prop sd_foraging_prop</span></span>
-<span id="cb46-36"><a href="processing-egyptian-fruit-bat-tracks.html#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:              0.838            0.155</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make patch summary a datatable</span></span>
+<span id="cb49-2"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setDT</span>(patch_summary)</span>
+<span id="cb49-3"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get mean and sd of duration in patches</span></span>
+<span id="cb49-5"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-5" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">list</span>(</span>
+<span id="cb49-6"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_duration =</span> <span class="fu">mean</span>(duration <span class="sc">/</span> <span class="dv">60</span>),</span>
+<span id="cb49-7"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_duration =</span> <span class="fu">sd</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
+<span id="cb49-8"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-8" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb49-9"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_duration sd_duration</span></span>
+<span id="cb49-10"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:            57        62.2</span></span>
+<span id="cb49-11"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="co"># assign night id</span></span>
+<span id="cb49-12"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-12" aria-hidden="true" tabindex="-1"></a>patch_summary[, <span class="fu">c</span>(<span class="st">&quot;hour&quot;</span>, <span class="st">&quot;day&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
+<span id="cb49-13"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-13" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">hour</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>)),</span>
+<span id="cb49-14"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-14" aria-hidden="true" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">mday</span>(<span class="fu">as.POSIXct</span>(time_start, <span class="at">origin =</span> <span class="st">&quot;1970-01-01&quot;</span>))</span>
+<span id="cb49-15"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-15" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb49-16"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-17"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># get total foraging time</span></span>
+<span id="cb49-18"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-18" aria-hidden="true" tabindex="-1"></a>foraging_proportion <span class="ot">&lt;-</span> patch_summary[, <span class="fu">list</span>(</span>
+<span id="cb49-19"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_total_forage =</span> (<span class="fu">max</span>(time_end) <span class="sc">-</span> <span class="fu">min</span>(time_start)) <span class="sc">/</span> <span class="dv">60</span>,</span>
+<span id="cb49-20"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_forage_site =</span> <span class="fu">sum</span>(duration <span class="sc">/</span> <span class="dv">60</span>)</span>
+<span id="cb49-21"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-21" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb49-22"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-22" aria-hidden="true" tabindex="-1"></a>by <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;night_mean&quot;</span>)</span>
+<span id="cb49-23"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-23" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb49-24"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-25"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-25" aria-hidden="true" tabindex="-1"></a><span class="co"># get proporion of foraging that is at a foraging site</span></span>
+<span id="cb49-26"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-26" aria-hidden="true" tabindex="-1"></a>foraging_proportion[, <span class="fu">list</span>(</span>
+<span id="cb49-27"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_foraging_prop =</span> <span class="fu">mean</span>(time_forage_site <span class="sc">/</span> time_total_forage),</span>
+<span id="cb49-28"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_foraging_prop =</span> <span class="fu">sd</span>(time_forage_site <span class="sc">/</span> time_total_forage)</span>
+<span id="cb49-29"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-29" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb49-30"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    mean_foraging_prop sd_foraging_prop</span></span>
+<span id="cb49-31"><a href="processing-egyptian-fruit-bat-tracks.html#cb49-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:              0.838            0.155</span></span></code></pre></div>
 <div class="figure">
 <img src="../figures/fig_08.png" alt="" />
 <p class="caption">A visual examination of plots of the bats’ residence patches and linear approximations of paths between them showed that though all three bats roosted at the same site, they used distinct areas of the study site over the three nights <strong>(a)</strong>.

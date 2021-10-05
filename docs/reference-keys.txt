@@ -40,6 +40,8 @@ median-smoothing
 sanity-check-plot-smoothed-data
 making-residence-patches
 calculating-residence-time
+movements-away-from-the-roost
+split-data-by-night-id
 constructing-residence-patches
 getting-residence-patch-data
 write-patch-spatial-representations
