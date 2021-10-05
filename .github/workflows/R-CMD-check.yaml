@@ -60,7 +60,7 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt install libv8-dev libprotobuf-dev protobuf-compiler libgit2-dev
+          sudo apt install libv8-dev libprotobuf-dev protobuf-compiler libgit2-dev libcurl
           while read -r cmd
           do
             eval sudo $cmd
@@ -74,6 +74,8 @@ jobs:
           remotes::install_cran("tinytex")
           tinytex::install_tinytex()
           remotes::install_cran("renv")
+          remotes::install_cran("gert")
+          remotes::install_cran("Rcurl")
           renv::restore()
           remotes::install_cran("Rcpp")
         shell: Rscript {0}
