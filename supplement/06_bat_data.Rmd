@@ -725,7 +725,11 @@ data_residence[, distance_roost := get_distance_adhoc(
   y2 = data_residence$Y
 )
 ]
+```
 
+Users should plot the data to examine the effect of applying filters --- this code is shown, but the figure is hidden for brevity.
+
+```{r}
 # plot for sanity check --- this plot is not shown
 fig_roost_exclude =
   ggplot(data_residence)+
@@ -769,8 +773,10 @@ fig_roost_exclude =
   )
 ```
 
+We now filter the data to exclude both day-time data, as well as data that is < 1 km from the roost.
+
 ```{r}
-# filter for hour between 8pm and 5am
+# filter for hour between 8pm and 5am and distance > 1km
 data_residence <- atl_filter_covariates(
   data = data_residence,
   filters = c(
