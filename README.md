@@ -8,6 +8,10 @@
 
 This is source code for a manuscript that sets out a pipeline for pre-processing data from ATLAS systems, but which can be applied to any high-throughput tracking data.
 
+## [Readable, Online Version of Worked-out Examples](https://pratikunterwegs.github.io/atlas-best-practices/validating-the-residence-patch-method-with-calibration-data.html)
+
+The worked out examples mentioned in the manuscript and provided in the supplementary material as a PDF, can also be found hosted on Github Pages in its online version, here: [Online Version of Worked-out Examples](https://pratikunterwegs.github.io/atlas-best-practices/validating-the-residence-patch-method-with-calibration-data.html).
+
 ## Source Code for Figures and Analyses
 
 Most of the source code may be found in the folder `scripts`, with numbers indicating the order in which it is to be run.

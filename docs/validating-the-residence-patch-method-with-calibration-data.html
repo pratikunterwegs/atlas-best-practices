@@ -39,7 +39,6 @@
   
 
 <link rel="next" href="processing-egyptian-fruit-bat-tracks.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -57,6 +56,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
@@ -65,7 +65,6 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -126,28 +125,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 </head>
 
@@ -264,10 +241,10 @@ div.csl-indent {
 <p class="author"><em>Allert I. Bijleveld</em></p>
 <p class="date"><em>2021-10-05</em></p>
 </div>
-<div id="validating-the-residence-patch-method-with-calibration-data" class="section level1" number="1">
+<div id="validating-the-residence-patch-method-with-calibration-data" class="section level1">
 <h1><span class="header-section-number">Section 1</span> Validating the Residence Patch Method with Calibration Data</h1>
-<p>Here we show how the residence patch method <span class="citation">(<a href="#ref-barraquand2008" role="doc-biblioref">Barraquand and Benhamou 2008</a>; <a href="#ref-bijleveld2016" role="doc-biblioref">Bijleveld et al. 2016</a>; <a href="#ref-oudman2018" role="doc-biblioref">Oudman et al. 2018</a>)</span> accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea. These data can be accessed from the <code>data</code> folder at this link: <a href="https://doi.org/10.5281/zenodo.4287462" class="uri">https://doi.org/10.5281/zenodo.4287462</a>. These data are more fully reported in <span class="citation">(<a href="#ref-beardsworth2021" role="doc-biblioref">Beardsworth et al. 2021</a>)</span>.</p>
-<div id="outline-of-cleaning-steps" class="section level2" number="1.1">
+<p>Here we show how the residence patch method <span class="citation">(Barraquand and Benhamou <a href="#ref-barraquand2008" role="doc-biblioref">2008</a>; Bijleveld et al. <a href="#ref-bijleveld2016" role="doc-biblioref">2016</a>; Oudman et al. <a href="#ref-oudman2018" role="doc-biblioref">2018</a>)</span> accurately estimates the duration of known stops in a track collected as part of a calibration exercise in the Wadden Sea. These data can be accessed from the <code>data</code> folder at this link: <a href="https://doi.org/10.5281/zenodo.4287462" class="uri">https://doi.org/10.5281/zenodo.4287462</a>. These data are more fully reported in <span class="citation">(Beardsworth et al. <a href="#ref-beardsworth2021" role="doc-biblioref">2021</a>)</span>.</p>
+<div id="outline-of-cleaning-steps" class="section level2">
 <h2><span class="header-section-number">1.1</span> Outline of Cleaning Steps</h2>
 <p>We begin by preparing the libraries we need, and installing <code>atlastools</code> from Github.
 After installing <code>atlastools</code>, we visualise the data to check for location errors, and find a single outlier position approx. 15km away from the study area (Fig. 1.1, 1.2).
@@ -279,21 +256,21 @@ Finally, we target small-scale location errors by applying a median smoother wit
 Smoothing does not reduce the number of positions.
 We thin the data to a 30 second interval leaving 1,803 positions (4.8% positions of the smoothed track)</p>
 </div>
-<div id="install-atlastools-from-github" class="section level2" number="1.2">
+<div id="install-atlastools-from-github" class="section level2">
 <h2><span class="header-section-number">1.2</span> Install <code>atlastools</code> from Github</h2>
-<p><code>atlastools</code> is available from Github and is archived on Zenodo <span class="citation">(<a href="#ref-gupte2020a" role="doc-biblioref">Gupte 2020</a>)</span>.
+<p><code>atlastools</code> is available from Github and is archived on Zenodo <span class="citation">(Gupte <a href="#ref-gupte2020a" role="doc-biblioref">2020</a>)</span>.
 It can be installed using <code>remotes</code> or <code>devtools</code>. Here we use the <code>remotes</code> function <code>install_github</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(remotes)) {</span>
-<span id="cb1-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>, <span class="at">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
-<span id="cb1-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># installation using remotes</span></span>
-<span id="cb1-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(atlastools)) {</span>
-<span id="cb1-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;pratikunterwegs/atlastools&quot;</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
-<div id="a-note-on" class="section level3 unnumbered">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(remotes)) {</span>
+<span id="cb1-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-2"></a>  <span class="kw">install.packages</span>(<span class="st">&quot;remotes&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;http://cran.us.r-project.org&quot;</span>)</span>
+<span id="cb1-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-3"></a>}</span>
+<span id="cb1-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-4"></a></span>
+<span id="cb1-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-5"></a><span class="co"># installation using remotes</span></span>
+<span id="cb1-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-6"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(atlastools)) {</span>
+<span id="cb1-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-7"></a>  remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;pratikunterwegs/atlastools&quot;</span>, <span class="dt">upgrade =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb1-8"></a>}</span></code></pre></div>
+<div id="a-note-on" class="section level3">
 <h3>A Note on <code>:=</code></h3>
-<p>The <code>atlastools</code> package is based on <code>data.table</code>, to be fast and efficient <span class="citation">(<a href="#ref-dowle2020" role="doc-biblioref">Dowle and Srinivasan 2020</a>)</span>.
+<p>The <code>atlastools</code> package is based on <code>data.table</code>, to be fast and efficient <span class="citation">(Dowle and Srinivasan <a href="#ref-dowle2020" role="doc-biblioref">2020</a>)</span>.
 A key feature is modification in place, where data is changed without making a copy.
 This is already implemented in <code>R</code> and will be familiar to many users as <code>data_frame$column_name &lt;- values</code>.</p>
 <p>The <code>data.table</code> way of writing this assignment would be <code>data_frame[, column_name := values]</code>.
@@ -302,103 +279,103 @@ We use this syntax throughout, as it provides many useful shortcuts, such as mul
 <p>Users can use this special syntax, and will find it convenient with practice, but there are <em>no</em> cases where users <em>must</em> use the <code>data.table</code> syntax, and can simply treat the data as a regular <code>data.frame</code>. However, users are advised to convert their <code>data.frame</code> to a <code>data.table</code> using the function <code>data.table::setDT()</code>.</p>
 </div>
 </div>
-<div id="prepare-libraries" class="section level2" number="1.3">
+<div id="prepare-libraries" class="section level2">
 <h2><span class="header-section-number">1.3</span> Prepare libraries</h2>
 <p>First we prepare the libraries we need. Libraries can be installed from CRAN if necessary.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for data handling</span></span>
-<span id="cb2-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb2-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(atlastools)</span>
-<span id="cb2-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
-<span id="cb2-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># for recursion analysis</span></span>
-<span id="cb2-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(recurse)</span>
-<span id="cb2-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># for plotting</span></span>
-<span id="cb2-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb2-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb2-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># making a colour palette</span></span>
-<span id="cb2-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-14" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">5</span>, <span class="st">&quot;Set1&quot;</span>)</span>
-<span id="cb2-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-15" aria-hidden="true" tabindex="-1"></a>pal[<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;seagreen&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-1"></a><span class="co"># for data handling</span></span>
+<span id="cb2-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-2"></a><span class="kw">library</span>(data.table)</span>
+<span id="cb2-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-3"></a><span class="kw">library</span>(atlastools)</span>
+<span id="cb2-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-4"></a><span class="kw">library</span>(stringi)</span>
+<span id="cb2-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-5"></a></span>
+<span id="cb2-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-6"></a><span class="co"># for recursion analysis</span></span>
+<span id="cb2-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-7"></a><span class="kw">library</span>(recurse)</span>
+<span id="cb2-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-8"></a></span>
+<span id="cb2-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-9"></a><span class="co"># for plotting</span></span>
+<span id="cb2-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-10"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb2-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-11"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb2-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-12"></a></span>
+<span id="cb2-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-13"></a><span class="co"># making a colour palette</span></span>
+<span id="cb2-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-14"></a>pal &lt;-<span class="st"> </span>RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">5</span>, <span class="st">&quot;Set1&quot;</span>)</span>
+<span id="cb2-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb2-15"></a>pal[<span class="dv">3</span>] &lt;-<span class="st"> &quot;seagreen&quot;</span></span></code></pre></div>
 </div>
-<div id="access-data-and-preliminary-visualisation" class="section level2" number="1.4">
+<div id="access-data-and-preliminary-visualisation" class="section level2">
 <h2><span class="header-section-number">1.4</span> Access data and preliminary visualisation</h2>
-<p>First we access the data from a local file using the <code>data.table</code> package <span class="citation">(<a href="#ref-dowle2020" role="doc-biblioref">Dowle and Srinivasan 2020</a>)</span>.</p>
+<p>First we access the data from a local file using the <code>data.table</code> package <span class="citation">(Dowle and Srinivasan <a href="#ref-dowle2020" role="doc-biblioref">2020</a>)</span>.</p>
 <p>In all, we aim to keep three versions of the data: (1) <code>data_raw</code>, the entirely unprocessed data, (2) <code>data</code>, the working version, and (3) <code>data_unproc</code>, data that has been partially processed, but which is one step behind <code>data</code>. This allows us to better illustrate the pre-processing steps, and prevents us from irreversibly modifying our data — at best, we would have to re-run many pre-processing steps, and at worst, we might overwrite the original data on disk.</p>
 <p>We look at the first few rows, using <code>head()</code>. We then visualise the raw data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read and plot example data</span></span>
-<span id="cb3-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&quot;data/atlas1060_allTrials_annotated.csv&quot;</span>)</span>
-<span id="cb3-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-3" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
-<span id="cb3-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see raw data</span></span>
-<span id="cb3-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_raw)</span>
-<span id="cb3-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            TAG          TIME NBS VARX VARY COVXY   SD           Timestamp</span></span>
-<span id="cb3-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 31001001060 1598027365845   6 6.28 2.85 1.682 3.53 2020-08-21 17:29:25</span></span>
-<span id="cb3-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 31001001060 1598027366845   6 2.23 2.23 0.277 2.24 2020-08-21 17:29:26</span></span>
-<span id="cb3-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 31001001060 1598027367845   6 2.94 2.82 0.612 2.64 2020-08-21 17:29:27</span></span>
-<span id="cb3-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4: 31001001060 1598027368845   6 8.45 3.68 2.734 4.20 2020-08-21 17:29:28</span></span>
-<span id="cb3-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5: 31001001060 1598027369845   5 6.80 3.26 2.273 3.82 2020-08-21 17:29:29</span></span>
-<span id="cb3-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6: 31001001060 1598027370845   6 3.95 2.94 0.983 2.98 2020-08-21 17:29:30</span></span>
-<span id="cb3-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            id      x       y Long  Lat             UTCtime    tID</span></span>
-<span id="cb3-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1: 2020-08-21 650083 5902624 5.25 53.3 2020-08-21 16:29:25 DELETE</span></span>
-<span id="cb3-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: 2020-08-21 650083 5902624 5.25 53.3 2020-08-21 16:29:26 DELETE</span></span>
-<span id="cb3-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: 2020-08-21 650073 5902622 5.25 53.3 2020-08-21 16:29:27 DELETE</span></span>
-<span id="cb3-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4: 2020-08-21 650079 5902625 5.25 53.3 2020-08-21 16:29:28 DELETE</span></span>
-<span id="cb3-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5: 2020-08-21 650067 5902621 5.25 53.3 2020-08-21 16:29:29 DELETE</span></span>
-<span id="cb3-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6: 2020-08-21 650071 5902621 5.25 53.3 2020-08-21 16:29:30 DELETE</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-1"></a><span class="co"># read and plot example data</span></span>
+<span id="cb3-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-2"></a>data &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">&quot;data/atlas1060_allTrials_annotated.csv&quot;</span>)</span>
+<span id="cb3-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-3"></a>data_raw &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb3-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-4"></a></span>
+<span id="cb3-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-5"></a><span class="co"># see raw data</span></span>
+<span id="cb3-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-6"></a><span class="kw">head</span>(data_raw)</span>
+<span id="cb3-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-7"></a><span class="co">#&gt;            TAG          TIME NBS VARX VARY COVXY   SD           Timestamp</span></span>
+<span id="cb3-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-8"></a><span class="co">#&gt; 1: 31001001060 1598027365845   6 6.28 2.85 1.682 3.53 2020-08-21 17:29:25</span></span>
+<span id="cb3-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-9"></a><span class="co">#&gt; 2: 31001001060 1598027366845   6 2.23 2.23 0.277 2.24 2020-08-21 17:29:26</span></span>
+<span id="cb3-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-10"></a><span class="co">#&gt; 3: 31001001060 1598027367845   6 2.94 2.82 0.612 2.64 2020-08-21 17:29:27</span></span>
+<span id="cb3-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-11"></a><span class="co">#&gt; 4: 31001001060 1598027368845   6 8.45 3.68 2.734 4.20 2020-08-21 17:29:28</span></span>
+<span id="cb3-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-12"></a><span class="co">#&gt; 5: 31001001060 1598027369845   5 6.80 3.26 2.273 3.82 2020-08-21 17:29:29</span></span>
+<span id="cb3-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-13"></a><span class="co">#&gt; 6: 31001001060 1598027370845   6 3.95 2.94 0.983 2.98 2020-08-21 17:29:30</span></span>
+<span id="cb3-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-14"></a><span class="co">#&gt;            id      x       y Long  Lat             UTCtime    tID</span></span>
+<span id="cb3-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-15"></a><span class="co">#&gt; 1: 2020-08-21 650083 5902624 5.25 53.3 2020-08-21 16:29:25 DELETE</span></span>
+<span id="cb3-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-16"></a><span class="co">#&gt; 2: 2020-08-21 650083 5902624 5.25 53.3 2020-08-21 16:29:26 DELETE</span></span>
+<span id="cb3-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-17"></a><span class="co">#&gt; 3: 2020-08-21 650073 5902622 5.25 53.3 2020-08-21 16:29:27 DELETE</span></span>
+<span id="cb3-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-18"></a><span class="co">#&gt; 4: 2020-08-21 650079 5902625 5.25 53.3 2020-08-21 16:29:28 DELETE</span></span>
+<span id="cb3-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-19"></a><span class="co">#&gt; 5: 2020-08-21 650067 5902621 5.25 53.3 2020-08-21 16:29:29 DELETE</span></span>
+<span id="cb3-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb3-20"></a><span class="co">#&gt; 6: 2020-08-21 650071 5902621 5.25 53.3 2020-08-21 16:29:30 DELETE</span></span></code></pre></div>
 <p>Here we show how data can be easily visualised using the popular plotting package <code>ggplot2</code>.
 Note that we plot both the points (<code>geom_point</code>) and the inferred path between them (<code>geom_path</code>), and specify a geospatial coordinate system in metres, suitable for the Dutch Wadden Sea (UTM 31N; ESPG code:32631; <code>coord_sf</code>).
 We save the output to file for future reference.</p>
 <p>Since plot code can become very lengthy and complicated, we omit showing further plot code in versions of this document rendered as PDF or HTML; it can however be seen in the online <code>.Rmd</code> version.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot data</span></span>
-<span id="cb4-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-2" aria-hidden="true" tabindex="-1"></a>fig_data_raw <span class="ot">&lt;-</span></span>
-<span id="cb4-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="fu">aes</span>(x, y),</span>
-<span id="cb4-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">0.2</span></span>
-<span id="cb4-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(x, y),</span>
-<span id="cb4-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.2</span></span>
-<span id="cb4-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  ggthemes<span class="sc">::</span><span class="fu">theme_few</span>() <span class="sc">+</span></span>
-<span id="cb4-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb4-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb4-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb4-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb4-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="dv">32631</span>)</span>
-<span id="cb4-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># save figure</span></span>
-<span id="cb4-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(fig_data_raw,</span>
-<span id="cb4-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;supplement/figures/fig_calibration_raw.png&quot;</span>,</span>
-<span id="cb4-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">185</span> <span class="sc">/</span> <span class="dv">25</span></span>
-<span id="cb4-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-1"></a><span class="co"># plot data</span></span>
+<span id="cb4-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-2"></a>fig_data_raw &lt;-</span>
+<span id="cb4-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-3"></a><span class="st">  </span><span class="kw">ggplot</span>(data) <span class="op">+</span></span>
+<span id="cb4-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-4"></a><span class="st">  </span><span class="kw">geom_path</span>(<span class="kw">aes</span>(x, y),</span>
+<span id="cb4-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-5"></a>    <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="fl">0.2</span></span>
+<span id="cb4-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-6"></a>  ) <span class="op">+</span></span>
+<span id="cb4-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-7"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(x, y),</span>
+<span id="cb4-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-8"></a>    <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">size =</span> <span class="fl">0.2</span></span>
+<span id="cb4-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-9"></a>  ) <span class="op">+</span></span>
+<span id="cb4-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-10"></a><span class="st">  </span>ggthemes<span class="op">::</span><span class="kw">theme_few</span>() <span class="op">+</span></span>
+<span id="cb4-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-11"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb4-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-12"></a>    <span class="dt">axis.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb4-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-13"></a>    <span class="dt">axis.text =</span> <span class="kw">element_blank</span>()</span>
+<span id="cb4-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-14"></a>  ) <span class="op">+</span></span>
+<span id="cb4-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-15"></a><span class="st">  </span><span class="kw">coord_sf</span>(<span class="dt">crs =</span> <span class="dv">32631</span>)</span>
+<span id="cb4-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-16"></a></span>
+<span id="cb4-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-17"></a><span class="co"># save figure</span></span>
+<span id="cb4-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-18"></a><span class="kw">ggsave</span>(fig_data_raw,</span>
+<span id="cb4-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-19"></a>  <span class="dt">filename =</span> <span class="st">&quot;supplement/figures/fig_calibration_raw.png&quot;</span>,</span>
+<span id="cb4-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-20"></a>  <span class="dt">width =</span> <span class="dv">185</span> <span class="op">/</span><span class="st"> </span><span class="dv">25</span></span>
+<span id="cb4-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb4-21"></a>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calibration_raw.png" alt="" />
 <p class="caption">The raw data from a calibration exercise conducted around the island of Griend in the Dutch Wadden Sea. A handheld WATLAS tag was used to examine how ATLAS data compared to GPS tracks, and we use the WATLAS data here to demonstrate the basics of the pre-processing pipeline, as well as validate the residence patch method. It is immediately clear from the figure that the track shows location errors, both in the form of point outliers as well as small-scale errors around the true location.</p>
 </div>
 </div>
-<div id="filter-by-bounding-box" class="section level2" number="1.5">
+<div id="filter-by-bounding-box" class="section level2">
 <h2><span class="header-section-number">1.5</span> Filter by bounding box</h2>
 <p>We first save a copy of the data, so that we can plot the unprocessed data with the cleaned data plotted over it for comparison. Here, <code>data_unproc</code>, <code>data</code>, and <code>data_raw</code> are still the same, since no pre-processing steps have been applied yet.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a copy using the data.table copy function</span></span>
-<span id="cb5-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb5-2" aria-hidden="true" tabindex="-1"></a>data_unproc <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb5-1"></a><span class="co"># make a copy using the data.table copy function</span></span>
+<span id="cb5-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb5-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span></code></pre></div>
 <p>We then filter by a bounding box in order to remove the point outlier to the far south east of the main track. We use the <code>atl_filter_bounds</code> functions using the <code>x_range</code> argument, to which we pass the limit in the UTM 31N coordinate reference system.
 This limit is used to exclude all points with an X coordinate &lt; 645,000.</p>
 <p>We then plot the result of filtering, with the excluded point in black, and the points that are retained in green. After this stage, <code>data</code> is filtered and ‘ahead’ of <code>data_raw</code> and <code>data_unproc</code>, which are still the same. This pattern will repeat throughout this material.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove inside must be set to falses</span></span>
-<span id="cb6-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">atl_filter_bounds</span>(</span>
-<span id="cb6-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb6-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">&quot;x&quot;</span>, <span class="at">y =</span> <span class="st">&quot;y&quot;</span>,</span>
-<span id="cb6-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_range =</span> <span class="fu">c</span>(<span class="dv">645000</span>, <span class="fu">max</span>(data<span class="sc">$</span>x)),</span>
-<span id="cb6-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">remove_inside =</span> <span class="cn">FALSE</span></span>
-<span id="cb6-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-1"></a><span class="co"># remove inside must be set to falses</span></span>
+<span id="cb6-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-2"></a>data &lt;-<span class="st"> </span><span class="kw">atl_filter_bounds</span>(</span>
+<span id="cb6-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-3"></a>  <span class="dt">data =</span> data,</span>
+<span id="cb6-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-4"></a>  <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>,</span>
+<span id="cb6-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-5"></a>  <span class="dt">x_range =</span> <span class="kw">c</span>(<span class="dv">645000</span>, <span class="kw">max</span>(data<span class="op">$</span>x)),</span>
+<span id="cb6-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-6"></a>  <span class="dt">remove_inside =</span> <span class="ot">FALSE</span></span>
+<span id="cb6-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb6-7"></a>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calib_bbox.png" alt="" />
 <p class="caption">Removal of a point outlier using the function <code>atl_filter_bounds</code>. The point outlier (black point) is removed based on its X coordinate value, with the data filtered to exclude positions with an X coordinate &lt; 645,000 in the UTM 31N coordinate system. Positions that are retained are shown in green.</p>
 </div>
 </div>
-<div id="filter-trajectories" class="section level2" number="1.6">
+<div id="filter-trajectories" class="section level2">
 <h2><span class="header-section-number">1.6</span> Filter trajectories</h2>
-<div id="handle-time" class="section level3" number="1.6.1">
+<div id="handle-time" class="section level3">
 <h3><span class="header-section-number">1.6.1</span> Handle time</h3>
 <p>Time in ATLAS tracks is represented by 64-bit integers (type <code>long</code>) that specify time in milliseconds, starting from the beginning of 1970 (the UNIX epoch). This representation of time is called <code>POSIX</code> time and is usually specified in seconds, not milliseconds.</p>
 <p>Since about 1.6 billion seconds have passed since the beginning of 1970, current <code>POSIX</code> times in milliseconds cannot be represented by R’s built-in 32-bit integers. A naive conversion results in truncation of out-of-range numbers leading to huge errors (dates many thousands of years in the future).</p>
@@ -406,219 +383,219 @@ This limit is used to exclude all points with an X coordinate &lt; 645,000.</p>
 <p>A simpler solution is to convert the times to R’s built in <code>double</code> data type (also called <code>numeric</code>), which uses a 64-bit floating point representation. This representation can represent integers with up to 16 digits without error; we only need 13 digits to represent the number of milliseconds since 1970, so the conversion is error free. We can also perform the conversion and then divide by 1000 so that times are represented in seconds, not milliseconds; this simplifies speed estimation.</p>
 <p>If second-resolution is accurate enough (it is for our purposes), the solution that we use is to divide times by 1000 to reduce the resolution from milliseconds to seconds and then to convert the time stamps to R integers.
 In the spirit of not destroying data, we create a second lower-case column called <code>time</code> to store this</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># divide by 1000, convert to integer</span></span>
-<span id="cb7-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-2" aria-hidden="true" tabindex="-1"></a>data[, time <span class="sc">:</span><span class="er">=</span> <span class="fu">as.integer</span>(</span>
-<span id="cb7-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(TIME) <span class="sc">/</span> <span class="dv">1000</span></span>
-<span id="cb7-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-4" aria-hidden="true" tabindex="-1"></a>)]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-1"></a><span class="co"># divide by 1000, convert to integer</span></span>
+<span id="cb7-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-2"></a>data[, time <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.integer</span>(</span>
+<span id="cb7-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-3"></a>  <span class="kw">as.numeric</span>(TIME) <span class="op">/</span><span class="st"> </span><span class="dv">1000</span></span>
+<span id="cb7-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb7-4"></a>)]</span></code></pre></div>
 </div>
-<div id="add-speed-and-turning-angle" class="section level3" number="1.6.2">
+<div id="add-speed-and-turning-angle" class="section level3">
 <h3><span class="header-section-number">1.6.2</span> Add speed and turning angle</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add incoming and outgoing speed</span></span>
-<span id="cb8-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-2" aria-hidden="true" tabindex="-1"></a>data[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
-<span id="cb8-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">speed_in =</span> <span class="fu">atl_get_speed</span>(data,</span>
-<span id="cb8-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;x&quot;</span>,</span>
-<span id="cb8-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;y&quot;</span>,</span>
-<span id="cb8-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="st">&quot;time&quot;</span></span>
-<span id="cb8-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb8-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">speed_out =</span> <span class="fu">atl_get_speed</span>(data, <span class="at">type =</span> <span class="st">&quot;out&quot;</span>)</span>
-<span id="cb8-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-9" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb8-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># add turning angle</span></span>
-<span id="cb8-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-12" aria-hidden="true" tabindex="-1"></a>data[, angle <span class="sc">:</span><span class="er">=</span> <span class="fu">atl_turning_angle</span>(<span class="at">data =</span> data)]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-1"></a><span class="co"># add incoming and outgoing speed</span></span>
+<span id="cb8-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-2"></a>data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(</span>
+<span id="cb8-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-3"></a>  <span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data,</span>
+<span id="cb8-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-4"></a>    <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>,</span>
+<span id="cb8-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-5"></a>    <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>,</span>
+<span id="cb8-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-6"></a>    <span class="dt">time =</span> <span class="st">&quot;time&quot;</span></span>
+<span id="cb8-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-7"></a>  ),</span>
+<span id="cb8-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-8"></a>  <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>)</span>
+<span id="cb8-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-9"></a>)]</span>
+<span id="cb8-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-10"></a></span>
+<span id="cb8-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-11"></a><span class="co"># add turning angle</span></span>
+<span id="cb8-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb8-12"></a>data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</span></code></pre></div>
 <p>Compare number of receivers and SD and speed.</p>
 </div>
-<div id="get-90th-percentile-of-speed-and-angle" class="section level3" number="1.6.3">
+<div id="get-90th-percentile-of-speed-and-angle" class="section level3">
 <h3><span class="header-section-number">1.6.3</span> Get 90th percentile of speed and angle</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use sapply</span></span>
-<span id="cb9-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-2" aria-hidden="true" tabindex="-1"></a>speed_angle_thresholds <span class="ot">&lt;-</span></span>
-<span id="cb9-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sapply</span>(data[, <span class="fu">list</span>(speed_in, speed_out, angle)],</span>
-<span id="cb9-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-4" aria-hidden="true" tabindex="-1"></a>    quantile,</span>
-<span id="cb9-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">probs =</span> <span class="fl">0.9</span>, <span class="at">na.rm =</span> T</span>
-<span id="cb9-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-1"></a><span class="co"># use sapply</span></span>
+<span id="cb9-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-2"></a>speed_angle_thresholds &lt;-</span>
+<span id="cb9-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-3"></a><span class="st">  </span><span class="kw">sapply</span>(data[, <span class="kw">list</span>(speed_in, speed_out, angle)],</span>
+<span id="cb9-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-4"></a>    quantile,</span>
+<span id="cb9-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-5"></a>    <span class="dt">probs =</span> <span class="fl">0.9</span>, <span class="dt">na.rm =</span> T</span>
+<span id="cb9-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb9-6"></a>  )</span></code></pre></div>
 </div>
-<div id="filter-on-speed" class="section level3" number="1.6.4">
+<div id="filter-on-speed" class="section level3">
 <h3><span class="header-section-number">1.6.4</span> Filter on speed</h3>
 <p>Here we use a speed threshold of 15 m/s, the fastest known boat speed.
 We then plot the data with the extreme speeds shown in grey, and the positions retained shown in green.</p>
 <p>Here, <code>data_unproc</code> moves ‘ahead’ of <code>data_raw</code>, and holds the data filtered by a bounding box — <code>data</code> is also moving ahead, and will be filtered on speed.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a copy</span></span>
-<span id="cb10-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-2" aria-hidden="true" tabindex="-1"></a>data_unproc <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
-<span id="cb10-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># remove speed outliers</span></span>
-<span id="cb10-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">atl_filter_covariates</span>(</span>
-<span id="cb10-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb10-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">filters =</span> <span class="fu">c</span>(<span class="st">&quot;(speed_in &lt; 15 &amp; speed_out &lt; 15)&quot;</span>)</span>
-<span id="cb10-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># recalculate speed and angle</span></span>
-<span id="cb10-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-11" aria-hidden="true" tabindex="-1"></a>data[, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
-<span id="cb10-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">speed_in =</span> <span class="fu">atl_get_speed</span>(data,</span>
-<span id="cb10-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;x&quot;</span>,</span>
-<span id="cb10-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;y&quot;</span>,</span>
-<span id="cb10-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> <span class="st">&quot;time&quot;</span></span>
-<span id="cb10-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb10-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">speed_out =</span> <span class="fu">atl_get_speed</span>(data, <span class="at">type =</span> <span class="st">&quot;out&quot;</span>)</span>
-<span id="cb10-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-18" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb10-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># add turning angle</span></span>
-<span id="cb10-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-21" aria-hidden="true" tabindex="-1"></a>data[, angle <span class="sc">:</span><span class="er">=</span> <span class="fu">atl_turning_angle</span>(<span class="at">data =</span> data)]</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-1"></a><span class="co"># make a copy</span></span>
+<span id="cb10-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb10-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-3"></a></span>
+<span id="cb10-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-4"></a><span class="co"># remove speed outliers</span></span>
+<span id="cb10-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-5"></a>data &lt;-<span class="st"> </span><span class="kw">atl_filter_covariates</span>(</span>
+<span id="cb10-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-6"></a>  <span class="dt">data =</span> data,</span>
+<span id="cb10-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-7"></a>  <span class="dt">filters =</span> <span class="kw">c</span>(<span class="st">&quot;(speed_in &lt; 15 &amp; speed_out &lt; 15)&quot;</span>)</span>
+<span id="cb10-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-8"></a>)</span>
+<span id="cb10-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-9"></a></span>
+<span id="cb10-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-10"></a><span class="co"># recalculate speed and angle</span></span>
+<span id="cb10-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-11"></a>data[, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(</span>
+<span id="cb10-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-12"></a>  <span class="dt">speed_in =</span> <span class="kw">atl_get_speed</span>(data,</span>
+<span id="cb10-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-13"></a>    <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>,</span>
+<span id="cb10-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-14"></a>    <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>,</span>
+<span id="cb10-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-15"></a>    <span class="dt">time =</span> <span class="st">&quot;time&quot;</span></span>
+<span id="cb10-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-16"></a>  ),</span>
+<span id="cb10-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-17"></a>  <span class="dt">speed_out =</span> <span class="kw">atl_get_speed</span>(data, <span class="dt">type =</span> <span class="st">&quot;out&quot;</span>)</span>
+<span id="cb10-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-18"></a>)]</span>
+<span id="cb10-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-19"></a></span>
+<span id="cb10-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-20"></a><span class="co"># add turning angle</span></span>
+<span id="cb10-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb10-21"></a>data[, angle <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">atl_turning_angle</span>(<span class="dt">data =</span> data)]</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_speed_outlier.png" alt="" />
 <p class="caption">Improving data quality by filtering out positions that would require unrealistic movement. We removed positions with speeds <span class="math inline">\(\geq\)</span> 15 m/s, which is the fastest possible speed in this calibration data, part of which was collected in a moving boat around Griend. Grey positions are removed, while green positions are retained. Rectangles indicate areas expanded for visualisation in following figures.</p>
 </div>
 </div>
 </div>
-<div id="smoothing-the-trajectory" class="section level2" number="1.7">
+<div id="smoothing-the-trajectory" class="section level2">
 <h2><span class="header-section-number">1.7</span> Smoothing the trajectory</h2>
 <p>We then apply a median smooth over a moving window (<span class="math inline">\(K\)</span> = 5).
 This function modifies in place, and does not need to be assigned to a new variable.
 We create a copy of the data before applying the smooth so that we can compare the data before and after smoothing.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># apply a 5 point median smooth, first make a copy</span></span>
-<span id="cb11-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-2" aria-hidden="true" tabindex="-1"></a>data_unproc <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
-<span id="cb11-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now apply the smooth</span></span>
-<span id="cb11-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">atl_median_smooth</span>(</span>
-<span id="cb11-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb11-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">&quot;x&quot;</span>, <span class="at">y =</span> <span class="st">&quot;y&quot;</span>, <span class="at">time =</span> <span class="st">&quot;time&quot;</span>,</span>
-<span id="cb11-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">moving_window =</span> <span class="dv">5</span></span>
-<span id="cb11-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-1"></a><span class="co"># apply a 5 point median smooth, first make a copy</span></span>
+<span id="cb11-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb11-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-3"></a></span>
+<span id="cb11-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-4"></a><span class="co"># now apply the smooth</span></span>
+<span id="cb11-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-5"></a><span class="kw">atl_median_smooth</span>(</span>
+<span id="cb11-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-6"></a>  <span class="dt">data =</span> data,</span>
+<span id="cb11-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-7"></a>  <span class="dt">x =</span> <span class="st">&quot;x&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;y&quot;</span>, <span class="dt">time =</span> <span class="st">&quot;time&quot;</span>,</span>
+<span id="cb11-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-8"></a>  <span class="dt">moving_window =</span> <span class="dv">5</span></span>
+<span id="cb11-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb11-9"></a>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calib_median_smooth.png" alt="" />
 <p class="caption">Reducing small-scale location error using a median smooth with a moving window <span class="math inline">\(K\)</span> = 5. Median smoothed positions are shown in green, while raw, unfiltered data is shown in grey. Median smoothing successfully recovers the likely path of the track without a loss of data. The area shown is the upper rectangle from Fig. 1.3.</p>
 </div>
 </div>
-<div id="thinning-the-data" class="section level2" number="1.8">
+<div id="thinning-the-data" class="section level2">
 <h2><span class="header-section-number">1.8</span> Thinning the data</h2>
 <p>Next we thin the data by aggregation to demonstrate thinning after median smoothing.
 Following this, we plot the median smooth and thinning by aggregation.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save a copy</span></span>
-<span id="cb12-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-2" aria-hidden="true" tabindex="-1"></a>data_unproc <span class="ot">&lt;-</span> <span class="fu">copy</span>(data)</span>
-<span id="cb12-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># remove columns we don&#39;t need</span></span>
-<span id="cb12-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data[, <span class="sc">!</span><span class="fu">c</span>(<span class="st">&quot;tID&quot;</span>, <span class="st">&quot;Timestamp&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;TIME&quot;</span>, <span class="st">&quot;UTCtime&quot;</span>)]</span>
-<span id="cb12-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># thin to a 30s interval</span></span>
-<span id="cb12-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-8" aria-hidden="true" tabindex="-1"></a>data_thin <span class="ot">&lt;-</span> <span class="fu">atl_thin_data</span>(</span>
-<span id="cb12-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
-<span id="cb12-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="dv">30</span>,</span>
-<span id="cb12-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;aggregate&quot;</span>,</span>
-<span id="cb12-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">id_columns =</span> <span class="st">&quot;TAG&quot;</span></span>
-<span id="cb12-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-1"></a><span class="co"># save a copy</span></span>
+<span id="cb12-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-2"></a>data_unproc &lt;-<span class="st"> </span><span class="kw">copy</span>(data)</span>
+<span id="cb12-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-3"></a></span>
+<span id="cb12-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-4"></a><span class="co"># remove columns we don&#39;t need</span></span>
+<span id="cb12-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-5"></a>data &lt;-<span class="st"> </span>data[, <span class="op">!</span><span class="kw">c</span>(<span class="st">&quot;tID&quot;</span>, <span class="st">&quot;Timestamp&quot;</span>, <span class="st">&quot;id&quot;</span>, <span class="st">&quot;TIME&quot;</span>, <span class="st">&quot;UTCtime&quot;</span>)]</span>
+<span id="cb12-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-6"></a></span>
+<span id="cb12-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-7"></a><span class="co"># thin to a 30s interval</span></span>
+<span id="cb12-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-8"></a>data_thin &lt;-<span class="st"> </span><span class="kw">atl_thin_data</span>(</span>
+<span id="cb12-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-9"></a>  <span class="dt">data =</span> data,</span>
+<span id="cb12-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-10"></a>  <span class="dt">interval =</span> <span class="dv">30</span>,</span>
+<span id="cb12-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-11"></a>  <span class="dt">method =</span> <span class="st">&quot;aggregate&quot;</span>,</span>
+<span id="cb12-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-12"></a>  <span class="dt">id_columns =</span> <span class="st">&quot;TAG&quot;</span></span>
+<span id="cb12-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb12-13"></a>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calib_smooth_thin.png" alt="" />
 <p class="caption">Thinning by aggregation over a 30 second interval (down from 1 second) preserves track structure while reducing the data volume for computation. Here, thinned positions are shown as purple squares, with the size of the square indicating the number of positions within the 30 second bin used to obtain the average position. Green points show the median smoothed data from Fig. 1.4, while the raw data are shown in grey. The area shown is the upper rectangle in Fig. 1.3.</p>
 </div>
 </div>
-<div id="residence-patches" class="section level2" number="1.9">
+<div id="residence-patches" class="section level2">
 <h2><span class="header-section-number">1.9</span> Residence patches</h2>
-<div id="get-waypoint-centroids" class="section level3" number="1.9.1">
+<div id="get-waypoint-centroids" class="section level3">
 <h3><span class="header-section-number">1.9.1</span> Get waypoint centroids</h3>
 <p>We subset the annotated calibration data to select the waypoints and the positions around them which are supposed to be the locations of known stops. Since each stop was supposed to be 5 minutes long, there are multiple points in each known stop.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb13-1" aria-hidden="true" tabindex="-1"></a>data_res <span class="ot">&lt;-</span> data_unproc[<span class="fu">stri_detect</span>(tID, <span class="at">regex =</span> <span class="st">&quot;(WP)&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb13-1"></a>data_res &lt;-<span class="st"> </span>data_unproc[<span class="kw">stri_detect</span>(tID, <span class="dt">regex =</span> <span class="st">&quot;(WP)&quot;</span>)]</span></code></pre></div>
 <p>From this data, we get the centroid of known stops, and determine the time difference between the first and last point within 50 metres, and within 10 minutes of the waypoint positions’ median time.</p>
 <p>Essentially, this means that the maximum duration of a stop can be 20 minutes, and stops above this duration are not expected.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get centroid</span></span>
-<span id="cb14-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-2" aria-hidden="true" tabindex="-1"></a>data_res_summary <span class="ot">&lt;-</span> data_res[, <span class="fu">list</span>(</span>
-<span id="cb14-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfixes_real =</span> .N,</span>
-<span id="cb14-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_median =</span> <span class="fu">median</span>(x),</span>
-<span id="cb14-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y_median =</span> <span class="fu">median</span>(y),</span>
-<span id="cb14-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">t_median =</span> <span class="fu">median</span>(time)</span>
-<span id="cb14-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-7" aria-hidden="true" tabindex="-1"></a>),</span>
-<span id="cb14-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-8" aria-hidden="true" tabindex="-1"></a>by <span class="ot">=</span> <span class="st">&quot;tID&quot;</span></span>
-<span id="cb14-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-9" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb14-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># now get times 10 mins before and after</span></span>
-<span id="cb14-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-12" aria-hidden="true" tabindex="-1"></a>data_res_summary[, <span class="fu">c</span>(<span class="st">&quot;t_min&quot;</span>, <span class="st">&quot;t_max&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
-<span id="cb14-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-13" aria-hidden="true" tabindex="-1"></a>  t_median <span class="sc">-</span> (<span class="dv">10</span> <span class="sc">*</span> <span class="dv">60</span>),</span>
-<span id="cb14-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-14" aria-hidden="true" tabindex="-1"></a>  t_median <span class="sc">+</span> (<span class="dv">10</span> <span class="sc">*</span> <span class="dv">60</span>)</span>
-<span id="cb14-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-15" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb14-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># manually get the duration of the stops</span></span>
-<span id="cb14-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-18" aria-hidden="true" tabindex="-1"></a>wp_data <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span>(l, u, mx, my) {</span>
-<span id="cb14-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first select all data whose timestamp is between</span></span>
-<span id="cb14-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the upper and lower bounds of the stop (l = lower, u = upper)</span></span>
-<span id="cb14-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-22" aria-hidden="true" tabindex="-1"></a>  tmp_data <span class="ot">&lt;-</span> data_unproc[<span class="fu">inrange</span>(time, l, u), ]</span>
-<span id="cb14-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the distance between the positions selected above</span></span>
-<span id="cb14-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and the median X and Y coordinates of the stop (centroid)</span></span>
-<span id="cb14-26"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-26" aria-hidden="true" tabindex="-1"></a>  tmp_data[, distance <span class="sc">:</span><span class="er">=</span> <span class="fu">sqrt</span>((mx <span class="sc">-</span> x)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (my <span class="sc">-</span> y)<span class="sc">^</span><span class="dv">2</span>)]</span>
-<span id="cb14-27"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-28"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># keep positions that are within 50m of the centroid</span></span>
-<span id="cb14-29"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-29" aria-hidden="true" tabindex="-1"></a>  tmp_data <span class="ot">&lt;-</span> tmp_data[distance <span class="sc">&lt;=</span> <span class="dv">50</span>, ]</span>
-<span id="cb14-30"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-31"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># get the duration of the stop as the difference between</span></span>
-<span id="cb14-32"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the minimum and maximum times of the positions retained above</span></span>
-<span id="cb14-33"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">diff</span>(<span class="fu">range</span>(tmp_data<span class="sc">$</span>time)))</span>
-<span id="cb14-34"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-34" aria-hidden="true" tabindex="-1"></a>}, data_res_summary<span class="sc">$</span>t_min, data_res_summary<span class="sc">$</span>t_max,</span>
-<span id="cb14-35"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-35" aria-hidden="true" tabindex="-1"></a>data_res_summary<span class="sc">$</span>x_median, data_res_summary<span class="sc">$</span>y_median,</span>
-<span id="cb14-36"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-37"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="co"># this specifies that a vector, rather than a list, is returned</span></span>
-<span id="cb14-38"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="at">SIMPLIFY =</span> <span class="cn">TRUE</span></span>
-<span id="cb14-39"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-40"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-41"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="co"># get waypoint summary --- rounding median coordinates to the nearest 100m</span></span>
-<span id="cb14-42"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-42" aria-hidden="true" tabindex="-1"></a>patch_summary_real <span class="ot">&lt;-</span> data_res_summary[, <span class="fu">list</span>(</span>
-<span id="cb14-43"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfixes_real =</span> nfixes_real,</span>
-<span id="cb14-44"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_median =</span> <span class="fu">round</span>(<span class="fu">median</span>(x_median), <span class="at">digits =</span> <span class="sc">-</span><span class="dv">2</span>),</span>
-<span id="cb14-45"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">y_median =</span> <span class="fu">round</span>(<span class="fu">median</span>(y_median), <span class="at">digits =</span> <span class="sc">-</span><span class="dv">2</span>)</span>
-<span id="cb14-46"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-46" aria-hidden="true" tabindex="-1"></a>),</span>
-<span id="cb14-47"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-47" aria-hidden="true" tabindex="-1"></a>by <span class="ot">=</span> <span class="st">&quot;tID&quot;</span></span>
-<span id="cb14-48"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-48" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb14-49"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-50"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="co"># add real duration</span></span>
-<span id="cb14-51"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-51" aria-hidden="true" tabindex="-1"></a>patch_summary_real[, duration_real <span class="sc">:</span><span class="er">=</span> wp_data]</span>
-<span id="cb14-52"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-53"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="co"># write to file</span></span>
-<span id="cb14-54"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(patch_summary_real, <span class="st">&quot;data/data_real_watlas_stops.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-1"></a><span class="co"># get centroid</span></span>
+<span id="cb14-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-2"></a>data_res_summary &lt;-<span class="st"> </span>data_res[, <span class="kw">list</span>(</span>
+<span id="cb14-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-3"></a>  <span class="dt">nfixes_real =</span> .N,</span>
+<span id="cb14-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-4"></a>  <span class="dt">x_median =</span> <span class="kw">median</span>(x),</span>
+<span id="cb14-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-5"></a>  <span class="dt">y_median =</span> <span class="kw">median</span>(y),</span>
+<span id="cb14-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-6"></a>  <span class="dt">t_median =</span> <span class="kw">median</span>(time)</span>
+<span id="cb14-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-7"></a>),</span>
+<span id="cb14-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-8"></a>by =<span class="st"> &quot;tID&quot;</span></span>
+<span id="cb14-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-9"></a>]</span>
+<span id="cb14-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-10"></a></span>
+<span id="cb14-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-11"></a><span class="co"># now get times 10 mins before and after</span></span>
+<span id="cb14-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-12"></a>data_res_summary[, <span class="kw">c</span>(<span class="st">&quot;t_min&quot;</span>, <span class="st">&quot;t_max&quot;</span>) <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb14-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-13"></a>  t_median <span class="op">-</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>),</span>
+<span id="cb14-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-14"></a>  t_median <span class="op">+</span><span class="st"> </span>(<span class="dv">10</span> <span class="op">*</span><span class="st"> </span><span class="dv">60</span>)</span>
+<span id="cb14-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-15"></a>)]</span>
+<span id="cb14-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-16"></a></span>
+<span id="cb14-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-17"></a><span class="co"># manually get the duration of the stops</span></span>
+<span id="cb14-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-18"></a>wp_data &lt;-<span class="st"> </span><span class="kw">mapply</span>(<span class="cf">function</span>(l, u, mx, my) {</span>
+<span id="cb14-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-19"></a></span>
+<span id="cb14-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-20"></a>  <span class="co"># first select all data whose timestamp is between</span></span>
+<span id="cb14-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-21"></a>  <span class="co"># the upper and lower bounds of the stop (l = lower, u = upper)</span></span>
+<span id="cb14-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-22"></a>  tmp_data &lt;-<span class="st"> </span>data_unproc[<span class="kw">inrange</span>(time, l, u), ]</span>
+<span id="cb14-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-23"></a></span>
+<span id="cb14-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-24"></a>  <span class="co"># calculate the distance between the positions selected above</span></span>
+<span id="cb14-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-25"></a>  <span class="co"># and the median X and Y coordinates of the stop (centroid)</span></span>
+<span id="cb14-26"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-26"></a>  tmp_data[, distance <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">sqrt</span>((mx <span class="op">-</span><span class="st"> </span>x)<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(my <span class="op">-</span><span class="st"> </span>y)<span class="op">^</span><span class="dv">2</span>)]</span>
+<span id="cb14-27"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-27"></a></span>
+<span id="cb14-28"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-28"></a>  <span class="co"># keep positions that are within 50m of the centroid</span></span>
+<span id="cb14-29"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-29"></a>  tmp_data &lt;-<span class="st"> </span>tmp_data[distance <span class="op">&lt;=</span><span class="st"> </span><span class="dv">50</span>, ]</span>
+<span id="cb14-30"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-30"></a></span>
+<span id="cb14-31"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-31"></a>  <span class="co"># get the duration of the stop as the difference between</span></span>
+<span id="cb14-32"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-32"></a>  <span class="co"># the minimum and maximum times of the positions retained above</span></span>
+<span id="cb14-33"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-33"></a>  <span class="kw">return</span>(<span class="kw">diff</span>(<span class="kw">range</span>(tmp_data<span class="op">$</span>time)))</span>
+<span id="cb14-34"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-34"></a>}, data_res_summary<span class="op">$</span>t_min, data_res_summary<span class="op">$</span>t_max,</span>
+<span id="cb14-35"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-35"></a>data_res_summary<span class="op">$</span>x_median, data_res_summary<span class="op">$</span>y_median,</span>
+<span id="cb14-36"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-36"></a></span>
+<span id="cb14-37"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-37"></a><span class="co"># this specifies that a vector, rather than a list, is returned</span></span>
+<span id="cb14-38"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-38"></a><span class="dt">SIMPLIFY =</span> <span class="ot">TRUE</span></span>
+<span id="cb14-39"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-39"></a>)</span>
+<span id="cb14-40"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-40"></a></span>
+<span id="cb14-41"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-41"></a><span class="co"># get waypoint summary --- rounding median coordinates to the nearest 100m</span></span>
+<span id="cb14-42"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-42"></a>patch_summary_real &lt;-<span class="st"> </span>data_res_summary[, <span class="kw">list</span>(</span>
+<span id="cb14-43"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-43"></a>  <span class="dt">nfixes_real =</span> nfixes_real,</span>
+<span id="cb14-44"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-44"></a>  <span class="dt">x_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(x_median), <span class="dt">digits =</span> <span class="dv">-2</span>),</span>
+<span id="cb14-45"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-45"></a>  <span class="dt">y_median =</span> <span class="kw">round</span>(<span class="kw">median</span>(y_median), <span class="dt">digits =</span> <span class="dv">-2</span>)</span>
+<span id="cb14-46"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-46"></a>),</span>
+<span id="cb14-47"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-47"></a>by =<span class="st"> &quot;tID&quot;</span></span>
+<span id="cb14-48"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-48"></a>]</span>
+<span id="cb14-49"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-49"></a></span>
+<span id="cb14-50"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-50"></a><span class="co"># add real duration</span></span>
+<span id="cb14-51"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-51"></a>patch_summary_real[, duration_real <span class="op">:</span><span class="er">=</span><span class="st"> </span>wp_data]</span>
+<span id="cb14-52"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-52"></a></span>
+<span id="cb14-53"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-53"></a><span class="co"># write to file</span></span>
+<span id="cb14-54"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb14-54"></a><span class="kw">fwrite</span>(patch_summary_real, <span class="st">&quot;data/data_real_watlas_stops.csv&quot;</span>)</span></code></pre></div>
 </div>
-<div id="prepare-data" class="section level3" number="1.9.2">
+<div id="prepare-data" class="section level3">
 <h3><span class="header-section-number">1.9.2</span> Prepare data</h3>
 <p>First, we filter data where we know the animal (or in this case, the human-carried tag) spent some time at or near a position, as this is the first step to identify residence patches.
 One way of doing this is by filtering out positions with speeds above which the tag (ideally on an animal) is likely to be in transit.
 Rather than filtering on instantaneous speed estimates, filtering on a median smoothed speed estimate is more reliable.</p>
 </div>
-<div id="exclude-transit-points" class="section level3" number="1.9.3">
+<div id="exclude-transit-points" class="section level3">
 <h3><span class="header-section-number">1.9.3</span> Exclude transit points</h3>
 <p>Here, we aim to remove locations where the tag is clearly moving, by filtering on smoothed speed, using a one-way median smooth with <span class="math inline">\(K\)</span> = 5.
 The speeds between points must be recalculated here because the speed metrics now associated with the data refer to the raw data before median smoothing.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get 4 column data</span></span>
-<span id="cb15-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-2" aria-hidden="true" tabindex="-1"></a>data_for_patch <span class="ot">&lt;-</span> <span class="fu">copy</span>(data_thin)</span>
-<span id="cb15-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># recalculate speeds, removing speed out</span></span>
-<span id="cb15-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-5" aria-hidden="true" tabindex="-1"></a>data_for_patch[, <span class="fu">c</span>(<span class="st">&quot;speed_in&quot;</span>, <span class="st">&quot;speed_out&quot;</span>) <span class="sc">:</span><span class="er">=</span> <span class="fu">list</span>(</span>
-<span id="cb15-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atl_get_speed</span>(data_for_patch),</span>
-<span id="cb15-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="cn">NULL</span></span>
-<span id="cb15-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-8" aria-hidden="true" tabindex="-1"></a>)]</span>
-<span id="cb15-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># get smoothed speed</span></span>
-<span id="cb15-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-11" aria-hidden="true" tabindex="-1"></a>data_for_patch[, speed_smooth <span class="sc">:</span><span class="er">=</span> <span class="fu">runmed</span>(speed_in, <span class="at">k =</span> <span class="dv">5</span>)]</span>
-<span id="cb15-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># save recurse data</span></span>
-<span id="cb15-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="fu">fwrite</span>(data_for_patch, <span class="at">file =</span> <span class="st">&quot;data/data_calib_for_patch.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-1"></a><span class="co"># get 4 column data</span></span>
+<span id="cb15-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-2"></a>data_for_patch &lt;-<span class="st"> </span><span class="kw">copy</span>(data_thin)</span>
+<span id="cb15-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-3"></a></span>
+<span id="cb15-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-4"></a><span class="co"># recalculate speeds, removing speed out</span></span>
+<span id="cb15-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-5"></a>data_for_patch[, <span class="kw">c</span>(<span class="st">&quot;speed_in&quot;</span>, <span class="st">&quot;speed_out&quot;</span>) <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb15-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-6"></a>  <span class="kw">atl_get_speed</span>(data_for_patch),</span>
+<span id="cb15-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-7"></a>  <span class="ot">NULL</span></span>
+<span id="cb15-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-8"></a>)]</span>
+<span id="cb15-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-9"></a></span>
+<span id="cb15-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-10"></a><span class="co"># get smoothed speed</span></span>
+<span id="cb15-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-11"></a>data_for_patch[, speed_smooth <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">runmed</span>(speed_in, <span class="dt">k =</span> <span class="dv">5</span>)]</span>
+<span id="cb15-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-12"></a></span>
+<span id="cb15-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-13"></a><span class="co"># save recurse data</span></span>
+<span id="cb15-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb15-14"></a><span class="kw">fwrite</span>(data_for_patch, <span class="dt">file =</span> <span class="st">&quot;data/data_calib_for_patch.csv&quot;</span>)</span></code></pre></div>
 </div>
-<div id="run-residence-patch-method" class="section level3" number="1.9.4">
+<div id="run-residence-patch-method" class="section level3">
 <h3><span class="header-section-number">1.9.4</span> Run residence patch method</h3>
 <p>We subset data with a smoothed speed &lt; 2 m/s in order to construct residence patches.
 From this subset, we construct residence patches using the parameters: <code>buffer_radius</code> = 5 metres, <code>lim_spat_indep</code> = 50 metres, <code>lim_time_indep</code> = 5 minutes, and <code>min_fixes</code> = 3.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assign id as tag</span></span>
-<span id="cb16-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-2" aria-hidden="true" tabindex="-1"></a>data_for_patch[, id <span class="sc">:</span><span class="er">=</span> <span class="fu">as.character</span>(TAG)]</span>
-<span id="cb16-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># on known residence points</span></span>
-<span id="cb16-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-5" aria-hidden="true" tabindex="-1"></a>patch_res_known <span class="ot">&lt;-</span> <span class="fu">atl_res_patch</span>(</span>
-<span id="cb16-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data_for_patch[speed_smooth <span class="sc">&lt;</span> <span class="dv">2</span>, ],</span>
-<span id="cb16-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">5</span>,</span>
-<span id="cb16-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lim_spat_indep =</span> <span class="dv">50</span>,</span>
-<span id="cb16-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">lim_time_indep =</span> <span class="dv">5</span>,</span>
-<span id="cb16-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_fixes =</span> <span class="dv">3</span></span>
-<span id="cb16-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-1"></a><span class="co"># assign id as tag</span></span>
+<span id="cb16-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-2"></a>data_for_patch[, id <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw">as.character</span>(TAG)]</span>
+<span id="cb16-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-3"></a></span>
+<span id="cb16-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-4"></a><span class="co"># on known residence points</span></span>
+<span id="cb16-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-5"></a>patch_res_known &lt;-<span class="st"> </span><span class="kw">atl_res_patch</span>(</span>
+<span id="cb16-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-6"></a>  <span class="dt">data =</span> data_for_patch[speed_smooth <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>, ],</span>
+<span id="cb16-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-7"></a>  <span class="dt">buffer_radius =</span> <span class="dv">5</span>,</span>
+<span id="cb16-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-8"></a>  <span class="dt">lim_spat_indep =</span> <span class="dv">50</span>,</span>
+<span id="cb16-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-9"></a>  <span class="dt">lim_time_indep =</span> <span class="dv">5</span>,</span>
+<span id="cb16-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-10"></a>  <span class="dt">min_fixes =</span> <span class="dv">3</span></span>
+<span id="cb16-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb16-11"></a>)</span></code></pre></div>
 </div>
-<div id="a-note-on-summary-statistics" class="section level3 unnumbered">
+<div id="a-note-on-summary-statistics" class="section level3">
 <h3>A note on summary statistics</h3>
 <p>Users specifying a <code>summary_variable</code> should make sure that the variable for which they want a summary statistic is present in the data.
 For instance, requesting mean speed by passing <code>summary_variable = "speed"</code> and <code>summary_function = "mean"</code> to <code>atl_res_patch</code>, should make sure that their data includes a column called <code>speed</code>.</p>
 </div>
-<div id="get-spatial-and-summary-objects" class="section level3" number="1.9.5">
+<div id="get-spatial-and-summary-objects" class="section level3">
 <h3><span class="header-section-number">1.9.5</span> Get spatial and summary objects</h3>
 <p>Having classified slow-moving or stationary behavioural bouts into residence patches, many animal ecologists would most probably wish to know something about the environment at or around these patches — more accurately, around the point locations classified into patches.</p>
 <p>How exactly this is done depends on the relative spatial scales of the residence patches and the resolution of the environmental data layer.
@@ -627,162 +604,162 @@ In this case, sampling the layer at the centroid of the patch is as good as samp
 <p>On the other hand, a raster with a 10m resolution (e.g. Sentinel 1 and 2 data) may be worthwhile to sample at all the locations comprising a residence patch, so as to calculate the mean and variance of environmental conditions.</p>
 <p>Furthermore, many (if not all) animals integrate cues from quite a distance (10m – 100m) when making decisions on when to settle in an area, and when to leave. Thus it can also be useful to sample environmental layers not at point locations, but to extract the mean and variance from an <em>area</em>, or a buffer, around the animal’s point locations.</p>
 <p>We have provided a convenient function to get either <em>(1)</em> the points (classified into patches), or <em>(2)</em> a summary ouput of the residence patches (i.e., the median coordinates and their attributes), or finally <em>(3)</em> a spatial buffer around the points from <em>(1)</em>.
-This function, <code>atl_patch_summary</code> implements these options using the <code>which_data</code> argument, where the options are <em>(1)</em> “points,” <em>(2)</em> “summary,” or <em>(3)</em> “spatial.”</p>
+This function, <code>atl_patch_summary</code> implements these options using the <code>which_data</code> argument, where the options are <em>(1)</em> “points”, <em>(2)</em> “summary”, or <em>(3)</em> “spatial”.</p>
 <p>Here, we choose option (3), using a spatial buffer of 20m. The distance of the bufffer is passed to the argument <code>buffer_radius</code>.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for the known and unkniwn patches</span></span>
-<span id="cb17-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-2" aria-hidden="true" tabindex="-1"></a>patch_sf_data <span class="ot">&lt;-</span> <span class="fu">atl_patch_summary</span>(patch_res_known,</span>
-<span id="cb17-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
-<span id="cb17-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">buffer_radius =</span> <span class="dv">20</span></span>
-<span id="cb17-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># assign crs</span></span>
-<span id="cb17-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-8" aria-hidden="true" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">st_crs</span>(patch_sf_data) <span class="ot">&lt;-</span> <span class="dv">32631</span></span>
-<span id="cb17-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># get summary data</span></span>
-<span id="cb17-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-11" aria-hidden="true" tabindex="-1"></a>patch_summary_data <span class="ot">&lt;-</span> <span class="fu">atl_patch_summary</span>(patch_res_known,</span>
-<span id="cb17-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">which_data =</span> <span class="st">&quot;summary&quot;</span></span>
-<span id="cb17-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-1"></a><span class="co"># for the known and unkniwn patches</span></span>
+<span id="cb17-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-2"></a>patch_sf_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known,</span>
+<span id="cb17-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-3"></a>  <span class="dt">which_data =</span> <span class="st">&quot;spatial&quot;</span>,</span>
+<span id="cb17-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-4"></a>  <span class="dt">buffer_radius =</span> <span class="dv">20</span></span>
+<span id="cb17-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-5"></a>)</span>
+<span id="cb17-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-6"></a></span>
+<span id="cb17-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-7"></a><span class="co"># assign crs</span></span>
+<span id="cb17-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-8"></a>sf<span class="op">::</span><span class="kw">st_crs</span>(patch_sf_data) &lt;-<span class="st"> </span><span class="dv">32631</span></span>
+<span id="cb17-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-9"></a></span>
+<span id="cb17-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-10"></a><span class="co"># get summary data</span></span>
+<span id="cb17-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-11"></a>patch_summary_data &lt;-<span class="st"> </span><span class="kw">atl_patch_summary</span>(patch_res_known,</span>
+<span id="cb17-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-12"></a>  <span class="dt">which_data =</span> <span class="st">&quot;summary&quot;</span></span>
+<span id="cb17-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb17-13"></a>)</span></code></pre></div>
 <p>At this stage, users have successfully pre-processed their data from raw positions to residence patches.
 Residence patches are essentially <code>sf</code> objects and can be visualised using the <code>sf</code> method for <code>plot</code>; for instance <code>plot(patch_sf_data)</code>.
 Further sections reproduce the analyses in the main manuscript.</p>
 <hr />
 </div>
-<div id="prepare-to-plot-data" class="section level3" number="1.9.6">
+<div id="prepare-to-plot-data" class="section level3">
 <h3><span class="header-section-number">1.9.6</span> Prepare to plot data</h3>
 <p>We read in the island’s shapefile to plot it as a background for the residence patch figure.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read griend and hut</span></span>
-<span id="cb18-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-2" aria-hidden="true" tabindex="-1"></a>griend <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">&quot;data/griend_polygon/griend_polygon.shp&quot;</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-3" aria-hidden="true" tabindex="-1"></a>hut <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">&quot;data/griend_hut.gpkg&quot;</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-1"></a><span class="co"># read griend and hut</span></span>
+<span id="cb18-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-2"></a>griend &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_read</span>(<span class="st">&quot;data/griend_polygon/griend_polygon.shp&quot;</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb18-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb18-3"></a>hut &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_read</span>(<span class="st">&quot;data/griend_hut.gpkg&quot;</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calib_residence.png" alt="" />
 <p class="caption">Classifying thinned data into residence patches yields robust estimates of the duration of known stops. The island of Griend (53.25<span class="math inline">\(^{\circ}\)</span>N, 5.25<span class="math inline">\(^{\circ}\)</span>E) is shown in beige. Residence patches (green polygons; function parameters in text) correspond well to the locations of known stops (purple triangles). However, the algorithm identified all areas with prolonged residence, including those which were not intended stops (n = 12; green polygons without triangles). The field station on Griend (red triangle) was not intended to be a stop, but the tags were stored here before the trial, and the method correctly picked up this prolonged stationary data as a residence patch. The algorithm failed to find two stops of 6 and 15 seconds duration, since these were lost in the data thinning step (purple triangle without green polygon shows one of these). The area shown is the lower rectangle in Fig. 1.3.</p>
 </div>
 </div>
 </div>
-<div id="compare-patch-metrics" class="section level2" number="1.10">
+<div id="compare-patch-metrics" class="section level2">
 <h2><span class="header-section-number">1.10</span> Compare patch metrics</h2>
 <p>We filter these data to exclude one exceedingly long outlier of about an hour (WP080).</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># round median coordinate for inferred patches</span></span>
-<span id="cb19-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-2" aria-hidden="true" tabindex="-1"></a>patch_summary_inferred <span class="ot">&lt;-</span></span>
-<span id="cb19-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  patch_summary_data[</span>
-<span id="cb19-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-4" aria-hidden="true" tabindex="-1"></a>    ,</span>
-<span id="cb19-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(</span>
-<span id="cb19-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>,</span>
-<span id="cb19-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;nfixes&quot;</span>, <span class="st">&quot;duration&quot;</span>, <span class="st">&quot;patch&quot;</span></span>
-<span id="cb19-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-8" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-9" aria-hidden="true" tabindex="-1"></a>  ][, <span class="st">`</span><span class="at">:=</span><span class="st">`</span>(</span>
-<span id="cb19-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_median =</span> <span class="fu">round</span>(x_median, <span class="at">digits =</span> <span class="sc">-</span><span class="dv">2</span>),</span>
-<span id="cb19-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_median =</span> <span class="fu">round</span>(y_median, <span class="at">digits =</span> <span class="sc">-</span><span class="dv">2</span>)</span>
-<span id="cb19-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-12" aria-hidden="true" tabindex="-1"></a>  )]</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-1"></a><span class="co"># round median coordinate for inferred patches</span></span>
+<span id="cb19-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-2"></a>patch_summary_inferred &lt;-</span>
+<span id="cb19-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-3"></a><span class="st">  </span>patch_summary_data[</span>
+<span id="cb19-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-4"></a>    ,</span>
+<span id="cb19-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-5"></a>    <span class="kw">c</span>(</span>
+<span id="cb19-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-6"></a>      <span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>,</span>
+<span id="cb19-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-7"></a>      <span class="st">&quot;nfixes&quot;</span>, <span class="st">&quot;duration&quot;</span>, <span class="st">&quot;patch&quot;</span></span>
+<span id="cb19-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-8"></a>    )</span>
+<span id="cb19-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-9"></a>  ][, <span class="st">`</span><span class="dt">:=</span><span class="st">`</span>(</span>
+<span id="cb19-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-10"></a>    <span class="dt">x_median =</span> <span class="kw">round</span>(x_median, <span class="dt">digits =</span> <span class="dv">-2</span>),</span>
+<span id="cb19-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-11"></a>    <span class="dt">y_median =</span> <span class="kw">round</span>(y_median, <span class="dt">digits =</span> <span class="dv">-2</span>)</span>
+<span id="cb19-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb19-12"></a>  )]</span></code></pre></div>
 <p>We add data from the known patches, matching by X and Y median.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join with respatch summary</span></span>
-<span id="cb20-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-2" aria-hidden="true" tabindex="-1"></a>patch_summary_compare <span class="ot">&lt;-</span></span>
-<span id="cb20-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">merge</span>(patch_summary_real,</span>
-<span id="cb20-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-4" aria-hidden="true" tabindex="-1"></a>    patch_summary_inferred,</span>
-<span id="cb20-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">on =</span> <span class="fu">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>),</span>
-<span id="cb20-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">all.x =</span> <span class="cn">TRUE</span>, <span class="at">all.y =</span> <span class="cn">TRUE</span></span>
-<span id="cb20-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb20-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># drop nas</span></span>
-<span id="cb20-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-10" aria-hidden="true" tabindex="-1"></a>patch_summary_compare <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(patch_summary_compare)</span>
-<span id="cb20-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co"># drop patch around WP080</span></span>
-<span id="cb20-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-13" aria-hidden="true" tabindex="-1"></a>patch_summary_compare <span class="ot">&lt;-</span> patch_summary_compare[tID <span class="sc">!=</span> <span class="st">&quot;WP080&quot;</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-1"></a><span class="co"># join with respatch summary</span></span>
+<span id="cb20-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-2"></a>patch_summary_compare &lt;-</span>
+<span id="cb20-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-3"></a><span class="st">  </span><span class="kw">merge</span>(patch_summary_real,</span>
+<span id="cb20-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-4"></a>    patch_summary_inferred,</span>
+<span id="cb20-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-5"></a>    <span class="dt">on =</span> <span class="kw">c</span>(<span class="st">&quot;x_median&quot;</span>, <span class="st">&quot;y_median&quot;</span>),</span>
+<span id="cb20-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-6"></a>    <span class="dt">all.x =</span> <span class="ot">TRUE</span>, <span class="dt">all.y =</span> <span class="ot">TRUE</span></span>
+<span id="cb20-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-7"></a>  )</span>
+<span id="cb20-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-8"></a></span>
+<span id="cb20-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-9"></a><span class="co"># drop nas</span></span>
+<span id="cb20-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-10"></a>patch_summary_compare &lt;-<span class="st"> </span><span class="kw">na.omit</span>(patch_summary_compare)</span>
+<span id="cb20-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-11"></a></span>
+<span id="cb20-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-12"></a><span class="co"># drop patch around WP080</span></span>
+<span id="cb20-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb20-13"></a>patch_summary_compare &lt;-<span class="st"> </span>patch_summary_compare[tID <span class="op">!=</span><span class="st"> &quot;WP080&quot;</span>, ]</span></code></pre></div>
 <p>7 patches are identified where there are no waypoints, while 2 waypoints are not identified as patches. These waypoints consisted of 6 and 15 (WP098 and WP092) positions respectively, and were lost when the data were aggregated to 30 second intervals.</p>
-<div id="linear-model-durations" class="section level3" number="1.10.1">
+<div id="linear-model-durations" class="section level3">
 <h3><span class="header-section-number">1.10.1</span> Linear model durations</h3>
 <p>We run a simple linear model.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get linear model</span></span>
-<span id="cb21-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-2" aria-hidden="true" tabindex="-1"></a>model_duration <span class="ot">&lt;-</span> <span class="fu">lm</span>(duration_real <span class="sc">~</span> duration,</span>
-<span id="cb21-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> patch_summary_compare</span>
-<span id="cb21-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># get R2</span></span>
-<span id="cb21-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_duration)</span>
-<span id="cb21-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb21-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb21-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = duration_real ~ duration, data = patch_summary_compare)</span></span>
-<span id="cb21-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb21-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb21-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span id="cb21-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -105.07  -16.51   -4.26    9.54   91.66 </span></span>
-<span id="cb21-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb21-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb21-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb21-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 102.4395    47.4097    2.16    0.046 *  </span></span>
-<span id="cb21-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; duration      1.0225     0.0786   13.02  6.3e-10 ***</span></span>
-<span id="cb21-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb21-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb21-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb21-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 50.2 on 16 degrees of freedom</span></span>
-<span id="cb21-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.914,  Adjusted R-squared:  0.908 </span></span>
-<span id="cb21-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:  169 on 1 and 16 DF,  p-value: 6.29e-10</span></span>
-<span id="cb21-26"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="co"># write to file</span></span>
-<span id="cb21-27"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(</span>
-<span id="cb21-28"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">capture.output</span>(</span>
-<span id="cb21-29"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(model_duration)</span>
-<span id="cb21-30"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-30" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb21-31"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">con =</span> <span class="st">&quot;data/model_output_residence_patch.txt&quot;</span></span>
-<span id="cb21-32"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-1"></a><span class="co"># get linear model</span></span>
+<span id="cb21-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-2"></a>model_duration &lt;-<span class="st"> </span><span class="kw">lm</span>(duration_real <span class="op">~</span><span class="st"> </span>duration,</span>
+<span id="cb21-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-3"></a>  <span class="dt">data =</span> patch_summary_compare</span>
+<span id="cb21-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-4"></a>)</span>
+<span id="cb21-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-5"></a></span>
+<span id="cb21-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-6"></a><span class="co"># get R2</span></span>
+<span id="cb21-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-7"></a><span class="kw">summary</span>(model_duration)</span>
+<span id="cb21-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-8"></a><span class="co">#&gt; </span></span>
+<span id="cb21-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-9"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb21-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-10"></a><span class="co">#&gt; lm(formula = duration_real ~ duration, data = patch_summary_compare)</span></span>
+<span id="cb21-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-11"></a><span class="co">#&gt; </span></span>
+<span id="cb21-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-12"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb21-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-13"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span id="cb21-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-14"></a><span class="co">#&gt; -105.07  -16.51   -4.26    9.54   91.66 </span></span>
+<span id="cb21-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-15"></a><span class="co">#&gt; </span></span>
+<span id="cb21-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-16"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb21-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-17"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb21-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-18"></a><span class="co">#&gt; (Intercept) 102.4395    47.4097    2.16    0.046 *  </span></span>
+<span id="cb21-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-19"></a><span class="co">#&gt; duration      1.0225     0.0786   13.02  6.3e-10 ***</span></span>
+<span id="cb21-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-20"></a><span class="co">#&gt; ---</span></span>
+<span id="cb21-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-21"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb21-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-22"></a><span class="co">#&gt; </span></span>
+<span id="cb21-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-23"></a><span class="co">#&gt; Residual standard error: 50.2 on 16 degrees of freedom</span></span>
+<span id="cb21-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-24"></a><span class="co">#&gt; Multiple R-squared:  0.914,  Adjusted R-squared:  0.908 </span></span>
+<span id="cb21-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-25"></a><span class="co">#&gt; F-statistic:  169 on 1 and 16 DF,  p-value: 6.29e-10</span></span>
+<span id="cb21-26"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-26"></a><span class="co"># write to file</span></span>
+<span id="cb21-27"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-27"></a><span class="kw">writeLines</span>(</span>
+<span id="cb21-28"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-28"></a>  <span class="dt">text =</span> <span class="kw">capture.output</span>(</span>
+<span id="cb21-29"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-29"></a>    <span class="kw">summary</span>(model_duration)</span>
+<span id="cb21-30"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-30"></a>  ),</span>
+<span id="cb21-31"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-31"></a>  <span class="dt">con =</span> <span class="st">&quot;data/model_output_residence_patch.txt&quot;</span></span>
+<span id="cb21-32"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb21-32"></a>)</span></code></pre></div>
 <div class="figure">
 <img src="figures/fig_calib_lm_duration.png" alt="" />
 <p class="caption">The inferred duration of residence patches corresponds very closely to the real duration (grey circles, red line shows linear model fit), with an underestimation of the true duration of around 2%. The dashed black line represents <span class="math inline">\(y = x\)</span> for reference.</p>
 </div>
 </div>
-<div id="linear-model-summary" class="section level3" number="1.10.2">
+<div id="linear-model-summary" class="section level3">
 <h3><span class="header-section-number">1.10.2</span> Linear model summary</h3>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
-<span id="cb22-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">readLines</span>(</span>
-<span id="cb22-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">con =</span> <span class="st">&quot;data/model_output_residence_patch.txt&quot;</span>,</span>
-<span id="cb22-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">encoding =</span> <span class="st">&quot;UTF-8&quot;</span></span>
-<span id="cb22-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb22-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span></span>
-<span id="cb22-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb22-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; lm(formula = duration_real ~ duration, data = patch_summary_compare)</span></span>
-<span id="cb22-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
-<span id="cb22-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span id="cb22-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; -105.07  -16.51   -4.26    9.54   91.66 </span></span>
-<span id="cb22-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
-<span id="cb22-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span id="cb22-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (Intercept) 102.4395    47.4097    2.16    0.046 *  </span></span>
-<span id="cb22-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; duration      1.0225     0.0786   13.02  6.3e-10 ***</span></span>
-<span id="cb22-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
-<span id="cb22-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
-<span id="cb22-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 50.2 on 16 degrees of freedom</span></span>
-<span id="cb22-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared:  0.914,  Adjusted R-squared:  0.908 </span></span>
-<span id="cb22-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; F-statistic:  169 on 1 and 16 DF,  p-value: 6.29e-10</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-1"></a><span class="kw">cat</span>(</span>
+<span id="cb22-2"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-2"></a>  <span class="kw">readLines</span>(</span>
+<span id="cb22-3"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-3"></a>    <span class="dt">con =</span> <span class="st">&quot;data/model_output_residence_patch.txt&quot;</span>,</span>
+<span id="cb22-4"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-4"></a>    <span class="dt">encoding =</span> <span class="st">&quot;UTF-8&quot;</span></span>
+<span id="cb22-5"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-5"></a>  ),</span>
+<span id="cb22-6"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-6"></a>  <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span></span>
+<span id="cb22-7"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-7"></a>)</span>
+<span id="cb22-8"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-8"></a><span class="co">#&gt; </span></span>
+<span id="cb22-9"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-9"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb22-10"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-10"></a><span class="co">#&gt; lm(formula = duration_real ~ duration, data = patch_summary_compare)</span></span>
+<span id="cb22-11"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-11"></a><span class="co">#&gt; </span></span>
+<span id="cb22-12"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-12"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb22-13"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-13"></a><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span id="cb22-14"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-14"></a><span class="co">#&gt; -105.07  -16.51   -4.26    9.54   91.66 </span></span>
+<span id="cb22-15"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-15"></a><span class="co">#&gt; </span></span>
+<span id="cb22-16"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-16"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb22-17"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-17"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb22-18"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-18"></a><span class="co">#&gt; (Intercept) 102.4395    47.4097    2.16    0.046 *  </span></span>
+<span id="cb22-19"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-19"></a><span class="co">#&gt; duration      1.0225     0.0786   13.02  6.3e-10 ***</span></span>
+<span id="cb22-20"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-20"></a><span class="co">#&gt; ---</span></span>
+<span id="cb22-21"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-21"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb22-22"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-22"></a><span class="co">#&gt; </span></span>
+<span id="cb22-23"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-23"></a><span class="co">#&gt; Residual standard error: 50.2 on 16 degrees of freedom</span></span>
+<span id="cb22-24"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-24"></a><span class="co">#&gt; Multiple R-squared:  0.914,  Adjusted R-squared:  0.908 </span></span>
+<span id="cb22-25"><a href="validating-the-residence-patch-method-with-calibration-data.html#cb22-25"></a><span class="co">#&gt; F-statistic:  169 on 1 and 16 DF,  p-value: 6.29e-10</span></span></code></pre></div>
 </div>
 </div>
-<div id="main-text-figure-6" class="section level2" number="1.11">
+<div id="main-text-figure-6" class="section level2">
 <h2><span class="header-section-number">1.11</span> Main text Figure 6</h2>
 <p>Plotting code is not shown in PDF and HTML form, see the <code>.Rmd</code> file.</p>
 
 </div>
 </div>
 <h3> References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-barraquand2008" class="csl-entry">
-Barraquand, Frédéric, and Simon Benhamou. 2008. <span>“Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.”</span> <em>Ecology</em> 89 (12): 3336–48. <a href="https://doi.org/10.1890/08-0162.1">https://doi.org/10.1890/08-0162.1</a>.
+<div id="refs" class="references hanging-indent">
+<div id="ref-barraquand2008">
+<p>Barraquand, Frédéric, and Simon Benhamou. 2008. “Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.” <em>Ecology</em> 89 (12): 3336–48. <a href="https://doi.org/10.1890/08-0162.1">https://doi.org/10.1890/08-0162.1</a>.</p>
 </div>
-<div id="ref-beardsworth2021" class="csl-entry">
-Beardsworth, Christine E., Evy Gobbens, Frank van Maarseveen, Bas Denissen, Anne Dekinga, Ran Nathan, Sivan Toledo, and Allert I. Bijleveld. 2021. <span>“Validating a High-Throughput Tracking System: <span>ATLAS</span> as a Regional-Scale Alternative to <span>GPS</span>.”</span> <em>bioRxiv</em>, February, 2021.02.09.430514. <a href="https://doi.org/10.1101/2021.02.09.430514">https://doi.org/10.1101/2021.02.09.430514</a>.
+<div id="ref-beardsworth2021">
+<p>Beardsworth, Christine E., Evy Gobbens, Frank van Maarseveen, Bas Denissen, Anne Dekinga, Ran Nathan, Sivan Toledo, and Allert I. Bijleveld. 2021. “Validating a High-Throughput Tracking System: ATLAS as a Regional-Scale Alternative to GPS.” <em>bioRxiv</em>, February, 2021.02.09.430514. <a href="https://doi.org/10.1101/2021.02.09.430514">https://doi.org/10.1101/2021.02.09.430514</a>.</p>
 </div>
-<div id="ref-bijleveld2016" class="csl-entry">
-Bijleveld, Allert Imre, Robert B MacCurdy, Ying-Chi Chan, Emma Penning, Richard M. Gabrielson, John Cluderay, Erik L. Spaulding, et al. 2016. <span>“Understanding Spatial Distributions: Negative Density-Dependence in Prey Causes Predators to Trade-Off Prey Quantity with Quality.”</span> <em>Proceedings of the Royal Society B: Biological Sciences</em> 283 (1828): 20151557. <a href="https://doi.org/10.1098/rspb.2015.1557">https://doi.org/10.1098/rspb.2015.1557</a>.
+<div id="ref-bijleveld2016">
+<p>Bijleveld, Allert Imre, Robert B MacCurdy, Ying-Chi Chan, Emma Penning, Richard M. Gabrielson, John Cluderay, Erik L. Spaulding, et al. 2016. “Understanding Spatial Distributions: Negative Density-Dependence in Prey Causes Predators to Trade-Off Prey Quantity with Quality.” <em>Proceedings of the Royal Society B: Biological Sciences</em> 283 (1828): 20151557. <a href="https://doi.org/10.1098/rspb.2015.1557">https://doi.org/10.1098/rspb.2015.1557</a>.</p>
 </div>
-<div id="ref-dowle2020" class="csl-entry">
-Dowle, Matt, and Arun Srinivasan. 2020. <em>Data.table: <span>Extension</span> of ‘Data.frame‘</em>. Manual.
+<div id="ref-dowle2020">
+<p>Dowle, Matt, and Arun Srinivasan. 2020. <em>Data.Table: Extension of ‘data.Frame‘</em>. Manual.</p>
 </div>
-<div id="ref-gupte2020a" class="csl-entry">
-Gupte, Pratik Rajan. 2020. <span>“Atlastools: <span>Pre</span>-Processing <span>Tools</span> for <span>High Frequency Tracking Data</span>.”</span> Zenodo. <a href="https://doi.org/10.5281/ZENODO.4033154">https://doi.org/10.5281/ZENODO.4033154</a>.
+<div id="ref-gupte2020a">
+<p>Gupte, Pratik Rajan. 2020. “Atlastools: Pre-Processing Tools for High Frequency Tracking Data.” Zenodo. <a href="https://doi.org/10.5281/ZENODO.4033154">https://doi.org/10.5281/ZENODO.4033154</a>.</p>
 </div>
-<div id="ref-oudman2018" class="csl-entry">
-Oudman, Thomas, Theunis Piersma, Mohamed V. Ahmedou Salem, Marieke E. Feis, Anne Dekinga, Sander Holthuijsen, Job ten Horn, Jan A. van Gils, and Allert I. Bijleveld. 2018. <span>“Resource Landscapes Explain Contrasting Patterns of Aggregation and Site Fidelity by Red Knots at Two Wintering Sites.”</span> <em>Movement Ecology</em> 6 (1): 24–24. <a href="https://doi.org/10.1186/s40462-018-0142-4">https://doi.org/10.1186/s40462-018-0142-4</a>.
+<div id="ref-oudman2018">
+<p>Oudman, Thomas, Theunis Piersma, Mohamed V. Ahmedou Salem, Marieke E. Feis, Anne Dekinga, Sander Holthuijsen, Job ten Horn, Jan A. van Gils, and Allert I. Bijleveld. 2018. “Resource Landscapes Explain Contrasting Patterns of Aggregation and Site Fidelity by Red Knots at Two Wintering Sites.” <em>Movement Ecology</em> 6 (1): 24–24. <a href="https://doi.org/10.1186/s40462-018-0142-4">https://doi.org/10.1186/s40462-018-0142-4</a>.</p>
 </div>
 </div>
             </section>
