@@ -1,6 +1,8 @@
 #!/bin/bash
 # remove old tex files and pdfs
 
+cd ..
+
 rm docs/*supplement*.pdf
 rm docs/atlastools*.pdf
 
@@ -11,8 +13,11 @@ Rscript --vanilla --slave -e 'styler::style_dir("supplement", filetype = "Rmd", 
 # render supplement
 Rscript --vanilla --slave -e 'bookdown::render_book("supplement/")'
 
+# render worked out examples for Github Pages into docs
+Rscript --vanilla --slave -e 'bookdown::render_book("supplement/", output_format = bookdown::gitbook())'
+
 # to render source files
-Rscript --slave -e 'lapply(list.files(pattern = "supplement\\/\\d{2}\\w+.Rmd"), function(x) knitr::purl(x, output = sprintf("R/%s", gsub(".{4}$", ".R", x))))'
+# Rscript --slave -e 'lapply(list.files(pattern = "supplement\\/\\d{2}\\w+.Rmd"), function(x) knitr::purl(x, output = sprintf("R/%s", gsub(".{4}$", ".R", x))))'
 
 mv docs/supplementary_material.pdf docs/ms_atlas_preproc_supplementary_material_`date -I`.pdf
 

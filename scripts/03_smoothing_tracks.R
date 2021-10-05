@@ -53,154 +53,127 @@ data_plot <- mapply(function(df, offset) {
 SIMPLIFY = F
 )
 
-data_plot <- rbindlist(data_plot)
+pal_smooth <- c(colorspace::sequential_hcl(
+  3,
+  l = 40, palette = "PuBu",
+  rev = T
+), "darkred")
 
-# add offset to data errors
-data_errors <- lapply(
-  c(0, seq(0.4, 1.25, length.out = 4)),
-  function(offset) {
-    df <- copy(data_errors)
-    df[, x := x + offset]
-    df[, offset := offset]
+plot_smooth <- Map(list_of_smooths,
+  pal_smooth,
+  f = function(df, col) {
+    ggplot(df) +
+      geom_path(
+        data = data_errors,
+        aes(x, y),
+        col = "grey70",
+        size = 0.2
+      ) +
+      geom_point(
+        data = data_errors,
+        aes(x, y),
+        col = "grey60",
+        size = 0.2,
+        shape = 16
+      ) +
+      geom_path(
+        data = df,
+        aes(x, y),
+        show.legend = F,
+        # lwd = 0.35,
+        col = col
+      ) +
+      coord_cartesian(
+        expand = T,
+        ylim = c(0.6, 0.78),
+        # xlim = c(NA, 2.3),
+        ratio = 2
+      ) +
+      theme_void(base_size = 8) +
+      theme(
+        plot.background = element_rect(
+          fill = "white", colour = NA
+        ),
+        plot.title = ggtext::element_markdown()
+      ) +
+      labs(
+        title = sprintf("Median smooth; *K* = %i", unique(df$window_size))
+      )
   }
 )
 
-# bind list
-data_errors <- rbindlist(data_errors)
-
-
-## -----------------------------------------------------------------------------
-pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
-
-fig_hist_smooth <-
-  ggplot() +
-  geom_histogram(
-    data = data_errors[offset == 0, ],
-    aes(
-      x = in_speed,
-      fill = "errors"
-    ),
-    bins = 80,
-    alpha = 1
-  ) +
-  geom_histogram(
-    data = data_plot[window_size %in% c(5, 21)],
-    aes(
-      x = speed_in,
-      fill = as.factor(window_size),
-      group = window_size
-    ),
-    bins = 80
-  ) +
-  geom_histogram(
-    data = data,
-    aes(
-      x = speed_in,
-      fill = "real"
-    ),
-    # col = pal[1],
-    alpha = 0.8,
-    bins = 80
-  ) +
-  scale_x_log10() +
-  scale_fill_manual(
-    values = c(
-      "real" = alpha("grey20", .8),
-      "errors" = "grey",
-      "5" = pal2[1],
-      "21" = pal2[2]
-    ),
-    labels = c(
-      "real" = "real track",
-      "errors" = "track w/\nerrors",
-      "5" = "K = 5",
-      "21" = "K = 21"
-    )
-  ) +
-  coord_cartesian(xlim = c(1e-5, .05)) +
-  theme_test(base_family = "sans") +
-  theme(
-    legend.position = c(0.2, 0.65),
-    axis.text = element_blank(),
-    # axis.ticks.y = element_blank(),
-    axis.title.y = element_blank(),
-    plot.title = element_text(
-      face = "bold"
-    ),
-    plot.background = element_blank()
-  ) +
-  labs(
-    x = "Speed [log10 scale]",
-    fill = "Smoothing",
-    title = "(f)"
-  )
-
-
-## ----echo=FALSE---------------------------------------------------------------
-# prepare data to plot
-# make list of data to plot
-figure_median_smooth <-
+# plot the filtered data to show the errors
+plot_errors <-
   ggplot() +
   geom_path(
     data = data_errors,
-    aes(x, y,
-      group = offset
-    ),
-    col = "grey60",
+    aes(x, y),
+    col = "grey90",
     size = 0.1
   ) +
   geom_point(
-    data = data_errors[offset == 0, ],
+    data = data_errors,
     aes(x, y),
     col = pal[3],
+    alpha = 1,
     size = 0.2
   ) +
   geom_path(
     data = data,
     aes(x, y),
-    col = "grey20",
-    lwd = 0.5
-  ) +
-  geom_path(
-    data = data_plot,
-    aes(x, y,
-      group = window_size,
-      col = factor(window_size)
-    ),
-    show.legend = F,
-    lwd = 0.35
+    col = "grey20"
   ) +
   coord_equal(
-    expand = F,
-    ylim = c(0.6, 0.83),
-    xlim = c(NA, 2.3),
-    ratio = 1.75
+    expand = T,
+    ylim = c(0.6, 0.78),
+    # xlim = c(NA, 2.3),
+    ratio = 2
   ) +
-  annotate(
-    geom = "text",
-    x = c(0.75, seq(1.1, 2, length.out = 4)),
-    y = 0.81,
-    label = sprintf("(%s)", letters[seq(5)]),
-    fontface = "bold"
-  ) +
-  scale_colour_manual(
-    values = c(colorspace::sequential_hcl(3,
-      l = 40, palette = "PuBu",
-      rev = T
-    ), "darkred")
-  ) +
-  ggthemes::theme_few() +
+  theme_void(base_size = 8) +
   theme(
-    axis.text = element_blank(),
-    axis.title = element_blank()
+    plot.background = element_rect(
+      fill = "white", colour = NA
+    ),
+    plot.title = ggtext::element_markdown()
+  ) +
+  labs(
+    title = "Filtered data & true path"
   )
 
+# wrap plots manually --- patchwork is stupid like this
+figure_median_smooth <-
+  wrap_plots(
+    plot_errors, plot_smooth[[3]],
+    plot_smooth[[1]], plot_smooth[[2]], plot_smooth[[4]],
+    design = "ABB\nEBB\n#DC"
+  ) +
+    theme(
+      plot.background = element_rect(
+        fill = "white"
+      )
+    ) +
+    plot_annotation(
+      tag_levels = "a",
+      tag_prefix = "(",
+      tag_suffix = ")"
+    ) &
+    theme(
+      plot.tag = element_text(
+        face = "bold"
+      )
+    )
+
+## ----echo=FALSE---------------------------------------------------------------
 # save figure
-ggsave(figure_median_smooth,
+ggsave(
+  figure_median_smooth,
   filename = "figures/fig_04.png",
-  width = 170, height = 170 / 3, units = "mm"
+  width = 170, height = 150,
+  units = "mm"
 )
 
+## -----------------------------------------------------------------------------
+pal2 <- RColorBrewer::brewer.pal(4, "RdPu")[c(2, 4)]
 
 ## -----------------------------------------------------------------------------
 # choose the 11 point median smooth data
@@ -302,13 +275,15 @@ fig_agg_data_smooth <-
       )
     )
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text = element_blank(),
-    axis.title = element_blank()
-  ) +
-  theme(
-    legend.position = "top"
+    axis.title = element_blank(),
+    legend.position = "top",
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    )
   ) +
   coord_cartesian(ylim = c(0.6, NA))
 
@@ -336,6 +311,7 @@ data[, speed := atl_get_speed(data)]
 ## ----echo=FALSE---------------------------------------------------------------
 # prepare data
 data_agg_error <- copy(list_of_agg_errors[[3]]) # 30s aggregate
+
 ### plot figures
 fig_agg_data_error <-
   ggplot() +
@@ -397,13 +373,17 @@ fig_agg_data_error <-
       )
     )
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
   theme(
-    legend.position = "top"
+    legend.position = "top",
+    plot.background = element_rect(
+      fill = "white",
+      colour = NA
+    )
   ) +
   coord_cartesian(
     ylim = c(0.6, NA)
@@ -468,7 +448,7 @@ fig_agg_speed <-
     breaks = c("aggunfil", "aggsmooth"),
     name = NULL
   ) +
-  ggthemes::theme_few() +
+  theme_classic() +
   theme(
     axis.text.y = element_blank(),
     legend.position = "top"

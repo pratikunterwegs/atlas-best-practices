@@ -29,7 +29,7 @@ library(patchwork)
 library(recurse)
 
 # prepare a palette
-pal <- RColorBrewer::brewer.pal(4, "Set1")
+pal <- pals::kovesi.rainbow_bgyr_35_85_c73(3)
 ```
 
 ```{r install_atlastools_2, eval=TRUE}
@@ -38,7 +38,9 @@ if (!require(remotes)) {
 }
 
 # installation using remotes
-remotes::install_github("pratikunterwegs/atlastools")
+if (!require(atlastools)) {
+  remotes::install_github("pratikunterwegs/atlastools", upgrade = FALSE)
+}
 ```
 
 ## Read bat data
@@ -105,20 +107,15 @@ fig_heatmap <-
       xround, yround,
       fill = N
     ),
-    colour = "grey",
     size = 0.1,
     show.legend = F
   ) +
   scale_fill_viridis_c(
-    option = "C",
-    direction = 1,
+    option = "A",
+    direction = -1,
     trans = "log10"
   ) +
-  ggthemes::theme_few() +
-  theme(
-    axis.text = element_blank(),
-    axis.title = element_blank()
-  ) +
+  theme_void() +
   coord_sf(crs = 2039)
 
 ggsave(fig_heatmap,
@@ -149,26 +146,20 @@ fig_lags <-
     position = position_identity(),
     bins = 15,
     # fill = "grey",
-    col = "black",
+    # col = "black",
     show.legend = F
   ) +
-  geom_vline(
-    xintercept = 1,
-    col = "red"
-  ) +
   scale_x_log10(
-    labels = function(x) {
-      sprintf("%ix", x)
-    },
-    breaks = c(1, 3, 10, 100, 1000)
+    breaks = c(1, 1000),
+    labels = c("low", "high")
   ) +
   scale_y_sqrt() +
   scale_fill_viridis_d(
-    option = "H",
-    begin = 0.1,
+    option = "B",
+    begin = 0.4,
     end = 0.8
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text.y = element_blank(),
     axis.text.x = element_text(
@@ -206,24 +197,23 @@ fig_error_histogram <-
     ),
     bins = 15,
     # fill = "grey",
-    col = "black",
+    # col = "black",
     show.legend = F
   ) +
   scale_fill_viridis_d(
-    option = "H",
-    begin = 0.1,
+    option = "B",
+    begin = 0.4,
     end = 0.8
   ) +
   scale_x_log10(
-    labels = function(x) {
-      sprintf("%2.fm", x)
-    }
+    breaks = c(1, 1000),
+    labels = c("low", "high")
   ) +
   scale_y_sqrt() +
   coord_cartesian(
     xlim = c(0.5, 5e3)
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text.y = element_blank(),
     axis.text.x = element_text(
@@ -236,7 +226,7 @@ fig_error_histogram <-
       size = 16
     )
   ) +
-  labs(x = "Variance X")
+  labs(x = "Positioning error")
 
 # save to figures
 ggsave(fig_error_histogram,
@@ -260,9 +250,11 @@ fig_bat_raw <-
   ),
   show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -390,9 +382,11 @@ fig_bat_filter_cov <-
     ),
     show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -496,9 +490,11 @@ fig_bat_filter_speed <-
     aes(X, Y, group = TAG, col = TAG),
     show.legend = F
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(
+    values = pal
+  ) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -581,9 +577,9 @@ fig_bat_smooth <-
     lwd = 0.6,
     show.legend = FALSE
   ) +
-  scale_colour_brewer(palette = "Dark2") +
+  scale_colour_manual(values = pal) +
   ggspatial::annotation_scale(location = "br") +
-  ggthemes::theme_few() +
+  theme_test() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
@@ -599,6 +595,14 @@ fig_bat_smooth <-
 # save to figures
 ggsave(fig_bat_smooth,
   filename = "supplement/figures/fig_bat_smooth.png",
+  dpi = 300,
+  width = 4, height = 6
+)
+
+# for fig 1
+ggsave(
+  fig_bat_smooth + theme_void(),
+  filename = "supplement/figures/fig_bat_preproc_f1.png",
   dpi = 300,
   width = 4, height = 6
 )
@@ -694,19 +698,103 @@ data_residence[, ts := as.POSIXct(time, origin = "1970-01-01")]
 
 # get hour of day to filter for nighttime
 data_residence[, hour := data.table::hour(ts)]
+```
 
+### Movements away from the roost
+
+To focus on night-time bat foraging around fruit trees, we shall filter data _both_ on the timestamps, to select night-time positions, and on the locations, to select positions > 1 km away from the roost-cave at Har Gershom (see main text Fig. 8).
+
+Combining these two filters allows us to exclude bat positions at the roost-cave that may be due to individual-differences in bats' departure or return times to and from their foraging areas.
+
+```{r}
+# read in roosts and select the Har Gershom roost
+roosts = fread("data/Roosts.csv")
+setnames(roosts, "Species", "roost_name")
+roosts = roosts[roost_name == "Har Gershom"]
+
+# define a simple distance function that is vectorised
+get_distance_adhoc = function(x1, y1, x2, y2) {
+  sqrt(((x2 - x1) ^2) + ((y2 - y1) ^2) )
+}
+
+# calculate distance to roost cave at Har Gershom
+data_residence[, distance_roost := get_distance_adhoc(
+  x1 = roosts$X, 
+  x2 = data_residence$X, 
+  y1 = roosts$Y, 
+  y2 = data_residence$Y
+)
+]
+
+# plot for sanity check --- this plot is not shown
+fig_roost_exclude =
+  ggplot(data_residence)+
+  geom_point(
+    aes(X, Y, col = distance_roost)
+  )+
+  geom_point(
+    data = roosts,
+    aes(X, Y),
+    shape = 21, size = 4,
+    fill = "blue",
+    alpha = 0.5
+  )+
+  scale_colour_viridis_c(
+    option = "B", direction = -1,
+    trans = "log10",
+    breaks = c(1000, 2500, 5000),
+    labels = function(x) {
+      scales::comma(
+        x,
+        scale = 0.001, suffix = "km"
+      )
+    },
+    limits = c(1000, NA),
+    na.value = "lightblue"
+  )+
+  ggspatial::annotation_scale(location = "br") +
+  theme_test() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = element_text(vjust = 1)
+  ) +
+  coord_sf(
+    crs = 2039
+  )+
+  labs(
+    colour = "distance (km)"
+  )
+```
+
+```{r}
 # filter for hour between 8pm and 5am
 data_residence <- atl_filter_covariates(
   data = data_residence,
-  filters = "hour > 20 | hour < 5"
+  filters = c(
+    "hour > 20 | hour < 5",
+    "distance_roost > 1000")
 )
+```
+
+### Split data by night-id
+
+We assign a night-id to each position, i.e., the night-time spanning two calendar days. We then filter for data with a residence time > 5 minutes, as we expect that a bat stopped at a location for more than 5 minutes is likely to be foraging.
+
+```{r}
+# split data into separate nights
+data_residence[, night := 1 + c(0, cumsum(diff(hour) > 12)), by = "TAG"]
+
+# filter for residence time > 5 minutes
+data_residence <- data_residence[resTime > 5, ]
 ```
 
 ### Constructing residence patches
 
 Some preparation is required. First, the function requires columns `x`, `y`,
 `time`, and `id`, which we assign using the `data.table` syntax. The `time` column is already present, but the other columns need to be renamed to lower case.
-Then we subset the data to only work with positions where the individual had a residence time of more than 5 minutes.
 
 ```{r}
 # add an id column
@@ -727,14 +815,11 @@ data_residence[, list(
   sd_residence = sd(resTime)
 )]
 
-# filter for residence time > 5 minutes
-data_residence <- data_residence[resTime > 5, ]
-
 # average positions per bat after removing transit points
 data_residence[, list(.N), by = "TAG"][, list(mean_positions_ = mean(N))]
 
 # split the data
-data_residence <- split(data_residence, data_residence$TAG)
+data_residence <- split(data_residence, by = c("TAG", "night"))
 ```
 
 We apply the residence patch method, using the default argument values (`lim_spat_indep = 100` (metres), `lim_time_indep = 30` (minutes)). We change the `buffer_radius` to 25 metres (twice the buffer radius is used, so points must be separated by 50m to be independent bouts), and `min_fixes = 3`.
@@ -743,7 +828,9 @@ We apply the residence patch method, using the default argument values (`lim_spa
 # segment into residence patches
 data_patches <- lapply(data_residence, atl_res_patch,
   buffer_radius = 25,
-  min_fixes = 3
+  min_fixes = 3,
+  summary_variable = c("night", "distance_roost"),
+  summary_functions = c("mean", "sd")
 )
 ```
 
@@ -812,9 +899,6 @@ We exclude the first and last patch of each day as being roosting related, and e
 # make patch summary a datatable
 setDT(patch_summary)
 
-# exclude roost
-patch_summary <- patch_summary[x_median > 254000, ]
-
 # get mean and sd of duration in patches
 patch_summary[, list(
   mean_duration = mean(duration / 60),
@@ -827,14 +911,12 @@ patch_summary[, c("hour", "day") := list(
   data.table::mday(as.POSIXct(time_start, origin = "1970-01-01"))
 )]
 
-patch_summary[, night := 1 + c(0, cumsum(diff(hour) > 12)), by = "id"]
-
 # get total foraging time
 foraging_proportion <- patch_summary[, list(
   time_total_forage = (max(time_end) - min(time_start)) / 60,
   time_forage_site = sum(duration / 60)
 ),
-by = c("id", "night")
+by = c("id", "night_mean")
 ]
 
 # get proporion of foraging that is at a foraging site
@@ -849,4 +931,4 @@ foraging_proportion[, list(
 Bats tended to be resident near fruit trees, which are their main food source, travelling repeatedly between previously visited areas **(b, c)**.
 However, bats also appeared to spend some time at locations where no fruit trees were recorded, prompting questions about their use of other food sources **(b, c)**.
 When bats did occur close together, their residence patches barely overlapped, and their paths to and from the broad area of co-occurrence were not similar **(c)**.
-Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](../figures/fig_07.png)
+Constructing residence patches for multiple individuals over multiple activity periods suggests interesting dynamics of within- and between-individual overlap **(b, c)**.](../figures/fig_08.png)

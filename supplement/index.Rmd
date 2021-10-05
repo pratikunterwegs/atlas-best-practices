@@ -10,7 +10,9 @@ author:
     - Ran Nathan
     - Allert I. Bijleveld
 date: "`r Sys.Date()`"
-output: bookdown::pdf_document2
+output: 
+    bookdown::pdf_document2
+    bookdown::gitbook
 documentclass: scrreprt
 toc-depth: 1
 secnumdepth: 2

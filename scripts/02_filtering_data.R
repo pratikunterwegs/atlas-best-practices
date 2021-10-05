@@ -6,8 +6,6 @@ library(atlastools)
 # to plot
 library(ggplot2)
 library(patchwork)
-library(ggthemes)
-
 
 ## -----------------------------------------------------------------------------
 # source helper functions
@@ -46,6 +44,14 @@ data <- fread("data/data_sim.csv")[5000:10000, ]
 ## -----------------------------------------------------------------------------
 data_copy <- fread("data/data_errors.csv")
 
+## remove 10% positions
+data_copy <- data_copy[!sample(
+  x = seq(nrow(data_copy)),
+  size = as.integer(0.1 * nrow(data_copy)),
+), ]
+
+# save as dataset
+fwrite(data_copy, "data/data_errors_missing.csv")
 
 ## -----------------------------------------------------------------------------
 # define a four colour palette
@@ -96,6 +102,14 @@ data_inside_bbox <- atl_filter_bounds(
 # plot data inside and outside bbox
 fig_filter_bounds <-
   ggplot() +
+  geom_point(
+    data = data_copy[!data_inside_bbox,
+      on = c("x", "y")
+    ],
+    aes(x, y),
+    col = "grey",
+    shape = 1
+  ) +
   geom_path(
     data = data_copy,
     aes(x, y),
@@ -108,15 +122,6 @@ fig_filter_bounds <-
     col = pal[3],
     alpha = 1, size = 0.2
   ) +
-  geom_point(
-    data = data_copy[!data_inside_bbox,
-      on = c("x", "y")
-    ],
-    aes(x, y),
-    col = "grey",
-    shape = 4,
-    size = 0.2
-  ) +
   geom_path(
     data = data,
     aes(x, y),
@@ -128,12 +133,12 @@ fig_filter_bounds <-
     col = "grey",
     lty = 2
   ) +
-  ggthemes::theme_few() +
+  theme_void() +
   theme(
     axis.text = element_blank(),
     axis.title = element_blank()
   ) +
-  theme(plot.background = element_rect(fill = NA)) +
+  theme(plot.background = element_rect(fill = "white", colour = NA)) +
   coord_equal(expand = T)
 
 
@@ -158,9 +163,9 @@ sapply(data_copy[, c("in_speed", "angle")], function(z) {
 
 
 ## -----------------------------------------------------------------------------
-# filter the copy by the 95th percentile
+# filter the copy by the 90th percentile
 data_filtered <- atl_filter_covariates(data_copy,
-  filters = c("(in_speed < 0.025 & out_speed < 0.025) | angle < 35")
+  filters = c("(in_speed < 0.05 & out_speed < 0.05) | angle < 35")
 )
 
 
@@ -174,13 +179,13 @@ fig_hist_speed <-
       fill = ifelse(in_speed > 0.05, "outlier", "good")
     ),
     position = position_identity(),
-    bins = 60
+    bins = 20
   ) +
   geom_histogram(
     data = data_copy[500:800, ],
     aes(x = in_speed),
     fill = pal[4],
-    bins = 60
+    bins = 20
   ) +
   geom_vline(
     xintercept = 0.05,
@@ -190,7 +195,7 @@ fig_hist_speed <-
   annotate(
     geom = "text",
     x = 0.11,
-    y = 150,
+    y = 180,
     label = "Threshold",
     size = 4,
     angle = 90
@@ -203,7 +208,7 @@ fig_hist_speed <-
   ) +
   scale_y_sqrt() +
   scale_x_log10() +
-  theme_test(base_family = "sans") +
+  theme_classic(base_family = "sans") +
   theme(
     legend.position = "none",
     axis.text = element_blank(),
@@ -212,7 +217,8 @@ fig_hist_speed <-
     plot.title = element_text(
       face = "bold"
     ),
-    plot.background = element_blank()
+    axis.title.x = element_text(),
+    plot.background = element_rect(fill = NA)
   ) +
   labs(
     title = "(c)",
@@ -220,39 +226,59 @@ fig_hist_speed <-
   )
 
 
+## -----------------------------------------------------------------------------
+# attempt to remove reflections
+data_no_reflection <- atl_remove_reflections(data_filtered,
+  point_angle_cutoff = 10,
+  reflection_speed_cutoff = 0.05
+)
+# get reflections
+reflection <- data_filtered[!data_no_reflection,
+  on = c("x", "y")
+]
+reflection <- na.omit(reflection)
+
+# set order
+setorder(data_filtered, time)
+
 ## ----echo=FALSE---------------------------------------------------------------
 # data plot
 fig_outlier_remove <-
   ggplot() +
   geom_path(
-    data = data_copy,
-    aes(x, y,
-      col = ifelse(in_speed >= 0.05 | out_speed >= 0.05,
-        "outlier_path", "good_path"
-      ),
-      group = NA
-    ),
+    data = data_copy[!reflection, on = c("x", "y")],
+    aes(x, y, col = "outlier_path"),
+    lwd = 0.2
+  ) +
+  geom_path(
+    data = data_filtered[!reflection, on = c("x", "y")],
+    aes(x, y, col = "good_path"),
     lwd = 0.2
   ) +
   geom_point(
-    data = data_copy[500:800, ],
-    aes(x, y),
+    data = data_copy[!reflection,
+      on = c("x", "y")
+    ][
+      !data_filtered,
+      on = c("x", "y")
+    ],
+    aes(x, y, col = "outlier"),
+    shape = 4, stroke = 1
+  ) +
+  geom_point(
+    data = reflection,
+    aes(x, y, col = "reflection"),
     # size = 0.5,
     alpha = 0.6,
     # stroke = 1,
-    shape = 4, col = pal[4]
+    shape = 1
   ) +
   geom_point(
-    data = data_copy[!data_copy[500:800, ],
-      on = c("x", "y")
-    ],
-    aes(x, y,
-      col = ifelse(in_speed >= 0.03 & out_speed >= 0.03, "outlier", "good"),
-      shape = (in_speed >= 0.03 & out_speed >= 0.03),
-      size = (in_speed >= 0.03 & out_speed >= 0.03)
-    ),
+    data = data_filtered[!reflection, on = c("x", "y")],
+    aes(x, y),
+    col = pal[3],
     show.legend = F,
-    alpha = 1
+    alpha = 1, size = 0.2
   ) +
   geom_path(
     data = data,
@@ -273,13 +299,14 @@ fig_outlier_remove <-
     "outlier_path" = "red",
     "good_path" = "grey",
     "good" = pal[3],
-    "outlier" = "red"
+    "outlier" = "red",
+    "reflection" = pal[4]
   )) +
   scale_shape_manual(values = c(1, 4)) +
   scale_size_manual(
     values = c(0.2, 2)
   ) +
-  ggthemes::theme_few(
+  theme_void(
     base_family = "Arial"
   ) +
   theme(
@@ -288,21 +315,7 @@ fig_outlier_remove <-
     legend.position = "none"
   ) +
   coord_equal() +
-  theme(plot.background = element_rect(fill = NA))
-
-
-## -----------------------------------------------------------------------------
-# attempt to remove reflections
-data_no_reflection <- atl_remove_reflections(data_filtered,
-  point_angle_cutoff = 10,
-  reflection_speed_cutoff = 0.025
-)
-# get reflections
-reflection <- data_filtered[!data_no_reflection,
-  on = c("x", "y")
-]
-reflection <- na.omit(reflection)
-
+  theme(plot.background = element_rect(fill = "white", colour = NA))
 
 ## ----echo=FALSE---------------------------------------------------------------
 # wrap plot
@@ -316,7 +329,10 @@ figure_01 <-
       tag_prefix = "(",
       tag_suffix = ")"
     ) &
-    theme(plot.tag = element_text(face = "bold"))
+    theme(
+      plot.tag = element_text(face = "bold"),
+      plot.tag.position = c(0.1, 0.95)
+    )
 
 # save figure
 ggsave(figure_01,

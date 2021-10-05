@@ -1,7 +1,7 @@
 #!/bin/bash
 # remove old tex files and pdfs
 
-cd docs
+cd ../docs
 rm *main*.pdf
 
 cd ..
