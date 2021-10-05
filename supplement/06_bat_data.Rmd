@@ -38,7 +38,7 @@ if (!require(remotes)) {
 }
 
 # installation using remotes
-if (!require(remotes)) {
+if (!require(atlastools)) {
   remotes::install_github("pratikunterwegs/atlastools", upgrade = FALSE)
 }
 ```
