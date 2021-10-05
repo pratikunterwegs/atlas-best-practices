@@ -60,7 +60,7 @@ jobs:
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt install libv8-dev libprotobuf-dev protobuf-compiler
+          sudo apt install libv8-dev libprotobuf-dev protobuf-compiler libgit2-dev
           while read -r cmd
           do
             eval sudo $cmd
