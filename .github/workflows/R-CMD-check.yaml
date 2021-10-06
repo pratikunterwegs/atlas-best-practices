@@ -68,14 +68,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_cran("gert")
-          remotes::install_cran("Rcurl")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("bookdown")
           remotes::install_cran("tinytex")
           tinytex::install_tinytex()
           remotes::install_cran("renv")
+          remotes::install_cran("gert")
+          remotes::install_cran("Rcurl")
           renv::restore()
           remotes::install_cran("Rcpp")
         shell: Rscript {0}
