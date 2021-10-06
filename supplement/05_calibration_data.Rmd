@@ -918,9 +918,9 @@ cat(
 )
 ```
 
-## Main text Figure 6
+## Main text Figure 7
 
-Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
+See main text for Figure 7. Plotting code is not shown in PDF and HTML form, see the `.Rmd` file.
 
 ```{r echo=FALSE}
 # wrap together
