@@ -76,6 +76,7 @@ jobs:
           remotes::install_cran("renv")
           remotes::install_cran("gert")
           remotes::install_cran("Rcurl")
+          remotes::install_cran("rgdal")
           renv::restore()
           remotes::install_cran("Rcpp")
         shell: Rscript {0}
