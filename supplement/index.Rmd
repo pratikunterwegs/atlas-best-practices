@@ -22,3 +22,9 @@ link-citations: yes
 github-repo: pratikunterwegs/atlas-best-practices
 description: "Supplementary Material for _A Guide to Pre-processing High-Frequency Animal Tracking Data_"
 ---
+
+# Introduction {-}
+
+This is a rendering of the Supplementary Material for _A Guide to Pre-processing High-Frequency Animal Tracking Data_, and contains two fully worked out examples that could provide a useful template for structuring pre-processing pipelines for your own high-throughput tracking data.
+
+The code and data used here are available on Github at [github.com/pratikunterwegs/atlas-best-practices](https://github.com/pratikunterwegs/atlas-best-practices), and on Zendo at [zenodo/atlas-best-practices](https://doi.org/10.5281/zenodo.4287462).
