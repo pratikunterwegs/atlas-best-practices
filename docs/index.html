@@ -4,21 +4,21 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data</title>
-  <meta name="description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <title>Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data</title>
+  <meta name="description" content="Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:title" content="Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta property="og:description" content="Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
   <meta name="github-repo" content="pratikunterwegs/atlas-best-practices" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="twitter:title" content="Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
   
-  <meta name="twitter:description" content="Section 3 References | Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
+  <meta name="twitter:description" content="Supplementary Material for A Guide to Pre-processing High-Frequency Animal Tracking Data" />
   
 
 <meta name="author" content="Pratik R. Gupte" />
@@ -37,8 +37,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="processing-egyptian-fruit-bat-tracks.html"/>
 
+<link rel="next" href="validating-the-residence-patch-method-with-calibration-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -232,49 +232,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1">
-<h1><span class="header-section-number">Section 3</span> References</h1>
+<div id="header">
+<h1 class="title">Supplementary Material for <em>A Guide to Pre-processing High-Frequency Animal Tracking Data</em></h1>
+<p class="author"><em>Pratik R. Gupte</em></p>
+<p class="author"><em>Christine E. Beardsworth</em></p>
+<p class="author"><em>Orr Spiegel</em></p>
+<p class="author"><em>Emmanuel Lourie</em></p>
+<p class="author"><em>Sivan Toledo</em></p>
+<p class="author"><em>Ran Nathan</em></p>
+<p class="author"><em>Allert I. Bijleveld</em></p>
+<p class="date"><em>2021-10-07</em></p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This is a rendering of the Supplementary Material for <em>A Guide to Pre-processing High-Frequency Animal Tracking Data</em>, and contains two fully worked out examples that could provide a useful template for structuring pre-processing pipelines for your own high-throughput tracking data.</p>
+<p>The code and data used here are available on Github at <a href="https://github.com/pratikunterwegs/atlas-best-practices">github.com/pratikunterwegs/atlas-best-practices</a>, and on Zendo at <a href="https://doi.org/10.5281/zenodo.4287462">zenodo/atlas-best-practices</a>.</p>
 
-<div id="refs" class="references hanging-indent">
-<div>
-<p>Barraquand, Frédéric, and Simon Benhamou. 2008. “Animal Movements in Heterogeneous Landscapes: Identifying Profitable Places and Homogeneous Movement Bouts.” <em>Ecology</em> 89 (12): 3336–48. <a href="https://doi.org/10.1890/08-0162.1">https://doi.org/10.1890/08-0162.1</a>.</p>
-</div>
-<div>
-<p>Beardsworth, Christine E., Evy Gobbens, Frank van Maarseveen, Bas Denissen, Anne Dekinga, Ran Nathan, Sivan Toledo, and Allert I. Bijleveld. 2021. “Validating a High-Throughput Tracking System: ATLAS as a Regional-Scale Alternative to GPS.” <em>bioRxiv</em>, February, 2021.02.09.430514. <a href="https://doi.org/10.1101/2021.02.09.430514">https://doi.org/10.1101/2021.02.09.430514</a>.</p>
-</div>
-<div>
-<p>Bijleveld, Allert Imre, Robert B MacCurdy, Ying-Chi Chan, Emma Penning, Richard M. Gabrielson, John Cluderay, Erik L. Spaulding, et al. 2016. “Understanding Spatial Distributions: Negative Density-Dependence in Prey Causes Predators to Trade-Off Prey Quantity with Quality.” <em>Proceedings of the Royal Society B: Biological Sciences</em> 283 (1828): 20151557. <a href="https://doi.org/10.1098/rspb.2015.1557">https://doi.org/10.1098/rspb.2015.1557</a>.</p>
-</div>
-<div>
-<p>Bracis, Chloe, Keith L. Bildstein, and Thomas Mueller. 2018. “Revisitation Analysis Uncovers Spatio-Temporal Patterns in Animal Movement Data.” <em>Ecography</em> 41 (11): 1801–11. <a href="https://doi.org/10.1111/ecog.03618">https://doi.org/10.1111/ecog.03618</a>.</p>
-</div>
-<div>
-<p>Dowle, Matt, and Arun Srinivasan. 2020. <em>Data.Table: Extension of ‘data.Frame‘</em>. Manual.</p>
-</div>
-<div>
-<p>Gupte, Pratik Rajan. 2020. “Atlastools: Pre-Processing Tools for High Frequency Tracking Data.” Zenodo. <a href="https://doi.org/10.5281/ZENODO.4033154">https://doi.org/10.5281/ZENODO.4033154</a>.</p>
-</div>
-<div>
-<p>Oudman, Thomas, Theunis Piersma, Mohamed V. Ahmedou Salem, Marieke E. Feis, Anne Dekinga, Sander Holthuijsen, Job ten Horn, Jan A. van Gils, and Allert I. Bijleveld. 2018. “Resource Landscapes Explain Contrasting Patterns of Aggregation and Site Fidelity by Red Knots at Two Wintering Sites.” <em>Movement Ecology</em> 6 (1): 24–24. <a href="https://doi.org/10.1186/s40462-018-0142-4">https://doi.org/10.1186/s40462-018-0142-4</a>.</p>
-</div>
-<div>
-<p>Shohami, David, and Ran Nathan. 2020. “Cognitive Map-Based Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.” Dryad. <a href="https://doi.org/10.5061/DRYAD.G4F4QRFN2">https://doi.org/10.5061/DRYAD.G4F4QRFN2</a>.</p>
-</div>
-<div>
-<p>Toledo, Sivan, David Shohami, Ingo Schiffner, Emmanuel Lourie, Yotam Orchan, Yoav Bartan, and Ran Nathan. 2020. “Cognitive MapBased Navigation in Wild Bats Revealed by a New High-Throughput Tracking System.” <em>Science</em> 369 (6500): 188–93. <a href="https://doi.org/10.1126/science.aax6904">https://doi.org/10.1126/science.aax6904</a>.</p>
-</div>
-<div>
-<p>Weiser, Adi Weller, Yotam Orchan, Ran Nathan, Motti Charter, Anthony J. Weiss, and Sivan Toledo. 2016. “Characterizing the Accuracy of a Self-Synchronized Reverse-GPS Wildlife Localization System.” In <em>2016 15th ACM/IEEE International Conference on Information Processing in Sensor Networks (IPSN)</em>, 1–12. <a href="https://doi.org/10.1109/IPSN.2016.7460662">https://doi.org/10.1109/IPSN.2016.7460662</a>.</p>
-</div>
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="processing-egyptian-fruit-bat-tracks.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
+<a href="validating-the-residence-patch-method-with-calibration-data.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
